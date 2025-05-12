@@ -1,0 +1,26 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="30"
+  height="32"
+  viewBox="0 0 30 32"
+  fill="none"
+>
+  <rect
+    x="0.1"
+    y="28.9"
+    width="25.8"
+    height="26.363"
+    rx="6.9"
+    transform="rotate(-90 0.1 28.9)"
+    fill="white"
+    stroke="black"
+    stroke-width="0.2"
+  />
+  <path
+    opacity="0.5"
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M12.2578 32H20.998C25.9685 32 29.998 27.9706 29.998 23V9C29.998 4.02944 25.9685 0 20.9979 0H12.2578V1.5H20.9979C25.1401 1.5 28.498 4.85787 28.498 9V23C28.498 27.1421 25.1401 30.5 20.998 30.5H12.2578V32Z"
+    fill="black"
+  />
+</svg>
