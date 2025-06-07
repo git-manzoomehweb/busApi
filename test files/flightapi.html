@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fa">
+  <head>
+    <meta charset="UTF-8">
+    <title>search-engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <link href="[##cms.cms.cdn##]/css/customized.ui.min.css" type="text/css" rel="stylesheet" />
+  </head>
+<body>
+    <basis core="call" file="headerSample.inc" /> 
+  <main class="dir-rtl">
+    <div class="search-banner">
+      <div class="search-box-container w-[1280px] m-auto py-10 max-xl:w-full max-xl:px-3">
+        <div id="search-box" class="dir-rtl"></div>
+      </div>
+    </div>
+    <div class="landing-content">
+      test1
+    </div>
+  </main>
+  <basis core="call" file="footerSample.inc" /> 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    function checkAllResourcesLoaded() {
+        const resources = performance.getEntriesByType("resource");
+        const requiredFiles = [
+            "[##cms.cms.cdn##]/css/customized.ui.min.css",
+            "[##cms.cms.cdn##]/_js/swiper-bundle.11.2.5.min.js"
+        ];
+        const loadedFiles = resources
+            .filter(res => requiredFiles.includes(res.name) && res.responseEnd > 0)
+            .map(res => res.name);
+
+        return requiredFiles.every(file => loadedFiles.includes(file));
+    }
+
+    function fetchEngine() {
+        try {
+            var xhrobj = new XMLHttpRequest();
+            xhrobj.open('GET', 'flightApiEngine');
+            xhrobj.send();
+
+            xhrobj.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var container = document.getElementById('search-box');
+                    container.innerHTML = xhrobj.responseText;
+
+                    var scripts = container.getElementsByTagName("script");
+                    for (var i = 0; i < scripts.length; i++) {
+                        var scriptTag = document.createElement("script");
+                        if (scripts[i].src) {
+                            scriptTag.src = scripts[i].src;
+                            scriptTag.async = false;
+                        } else {
+                            scriptTag.text = scripts[i].textContent;
+                        }
+                        document.head.appendChild(scriptTag).parentNode.removeChild(scriptTag);
+                    }
+                }
+            };
+        } catch (error) {
+            console.error('مشکلی رخ داده است لطفا صبور باشید.', error);
+        }
+    }
+    function waitForFiles() {
+        if (checkAllResourcesLoaded()) {
+            fetchEngine();
+        } else {
+            setTimeout(waitForFiles, 500); 
+        }
+    }
+
+    waitForFiles();
+});
+  </script>
+  <script src="[##cms.cms.cdn##]/_js/swiper-bundle.11.2.5.min.js"></script>
+</body>
+</html>

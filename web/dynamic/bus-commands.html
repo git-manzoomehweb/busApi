@@ -1,0 +1,105 @@
+<!-- CreateSession -->
+<basis core="api" name="api.session" url="http://185.44.36.51:1550/api/bus/CreateSession" method="post"
+    content-type="application/json" run="atclient" body='{
+            "rkey": "[##cms.cookie.rkey##]",
+            "dmnid": "2475"
+        }'>
+</basis>
+<basis core="callback" triggers="api.session" run="atclient" method="setSession"></basis>
+
+<basis core="api" name="bus.search" url="http://185.44.36.51:1550/api/bus/search" method="post" if="{##cms.rule##}"
+    triggers="cms.rule" content-type="application/json" run="atclient" body='{
+  "tripGroup": [
+    {
+      "origin": "THR",
+      "destination": "MHD",
+      "departureDate": "2025-06-11"
+    }
+  ],
+  "rKey": "[##cms.cookie.rkey##]",
+  "dmnid": 2475,
+  "sessionId": "{##cms.rule.SessionId##}",
+  "lid": 1
+}'>
+</basis>
+
+<!-- available-seat -->
+<basis core="api" name="bus.available-seat" url="http://185.44.36.51:1550/api/bus/available-seat" method="post"
+    if="{##cms.rule##}" triggers="cms.rule" content-type="application/json" run="atclient" body='{
+		"busId": "Njg0NDE3YzllZTZkZjM0YTUxMjNhNDMxXzBfMTE4",
+		"busGroup": [
+			{
+				"originTerminal": "پایانه جنوب تهران",
+				"destinationTerminal": "مشهد (خراسان )",
+				"numberOfStops": 0,
+				"departureDate": "1404-03-21",
+				"departureTime": "06:00",
+				"duration": null,
+				"arrivalTime": null,
+				"arrivalDate": null,
+				"refundable": true,
+				"availableSeats": 0,
+				"description": null,
+				"routesInfo": [
+					{
+						"SegmentId": 1,
+						"busOperatorCode": "T12",
+						"departureDate": "1404-03-21",
+						"departureTime": "06:00",
+						"arrivalDate": "",
+						"arrivalTime": "",
+						"duration": null,
+						"originRoute": 1203548,
+						"destinationRoute": 1211083,
+						"busType": "VIP همراه با شارژراختصاصی"
+					}
+				]
+			}
+		],
+    "rKey": "[##cms.cookie.rkey##]", 
+    "dmnid": 2475,
+    "sessionId": "{##cms.rule.SessionId##}",
+    "lid": 1 
+}'>
+</basis>
+
+<!-- bus_rules -->
+<basis core="api" name="bus.rules" url="http://185.44.36.51:1550/api/bus/bus-rules" method="post"
+    if="{##cms.rule##}" triggers="cms.rule" content-type="application/json" run="atclient" body='{
+		"busId": "Njg0NDE3YzllZTZkZjM0YTUxMjNhNDMxXzBfMTE4",
+		"busGroup": [
+			{
+				"originTerminal": "پایانه جنوب تهران",
+				"destinationTerminal": "مشهد (خراسان )",
+				"numberOfStops": 0,
+				"departureDate": "1404-03-21",
+				"departureTime": "06:00",
+				"duration": null,
+				"arrivalTime": null,
+				"arrivalDate": null,
+				"refundable": true,
+				"availableSeats": 0,
+				"description": null,
+				"routesInfo": [
+					{
+						"SegmentId": 1,
+						"busOperatorCode": "T12",
+						"departureDate": "1404-03-21",
+						"departureTime": "06:00",
+						"arrivalDate": "",
+						"arrivalTime": "",
+						"duration": null,
+						"originRoute": 1203548,
+						"destinationRoute": 1211083,
+						"busType": "VIP همراه با شارژراختصاصی"
+					}
+				]
+			}
+		],
+    "rKey": "[##cms.cookie.rkey##]", 
+    "dmnid": 2475,
+    "sessionId": "{##cms.rule.SessionId##}",
+    "lid": 1 
+}'>
+</basis>
+

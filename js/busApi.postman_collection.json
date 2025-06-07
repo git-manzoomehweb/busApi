@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "26791ca7-81ff-420e-85f2-50e6ee8270cf",
+		"name": "busApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2491140",
+		"_collection_link": "https://web.postman.co/workspace/BasisFlyTech-Workspace~e7e710ee-db1e-4c52-8538-0da300c99fef/collection/2491140-26791ca7-81ff-420e-85f2-50e6ee8270cf?action=share&source=collection_link&creator=2491140"
+	},
+	"item": [
+		{
+			"name": "CreateSession",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.globals.set(\"SessionId\", jsonData.SessionId);",
+							"",
+							"console.log('SessionId: ' + jsonData.SessionId);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dmnid\": \"2475\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://185.44.36.51:1550/api/bus/CreateSession",
+					"protocol": "http",
+					"host": [
+						"185",
+						"44",
+						"36",
+						"51"
+					],
+					"port": "1550",
+					"path": [
+						"api",
+						"bus",
+						"CreateSession"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "session-sample",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dmnid\": \"2475\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://185.44.36.51:1550/api/bus/CreateSession",
+							"protocol": "http",
+							"host": [
+								"185",
+								"44",
+								"36",
+								"51"
+							],
+							"port": "1550",
+							"path": [
+								"api",
+								"bus",
+								"CreateSession"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "79"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 25 May 2025 13:47:20 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Python/3.9 aiohttp/3.11.18"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"errorMessage\": null,\n    \"sessionId\": \"68331f685d50f3450cd911a7\"\n}"
+				}
+			]
+		},
+		{
+			"name": "search",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"tripGroup\": [\n    \t{\n        \t\"origin\": \"THR\",\n        \t\"destination\": \"MHD\",\n        \t\"departureDate\": \"2025-05-30\"\n    \t}\n\t],\n\t\"rKey\": \"{{rkey}}\",        //optional\n    \"dmnid\": 2475,\n\t\"sessionId\": \"{{SessionId}}\",\n\t\"lid\": 2     //optional\n\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6969/api/bus/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6969",
+					"path": [
+						"api",
+						"bus",
+						"search"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "search-sample",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tripGroup\": [\n    \t{\n        \t\"origin\": \"THR\",\n        \t\"destination\": \"MHD\",\n        \t\"departureDate\": \"2025-05-30\"\n    \t}\n\t],\n\t\"rKey\": \"{{rkey}}\",        //optional\n    \"dmnid\": 2475,\n\t\"sessionId\": \"{{SessionId}}\",\n\t\"lid\": 2     //optional\n\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6969/api/bus/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6969",
+							"path": [
+								"api",
+								"bus",
+								"search"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "23928"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 May 2025 09:11:31 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Python/3.10 aiohttp/3.11.18"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Status\": true,\n    \"ErrorMessage\": null,\n    \"BusProposals\": [\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzBfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"06:00\",\n                    \"refundable\": true,\n                    \"availableSeats\": 19,\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377746\",\n                            \"BusOperatorCode\": \"T12\",\n                            \"BusOperatorImage\": \"ref647773200001689111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"06:00\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"VIP همراه با شارژراختصاصی\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzFfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"07:00\",\n                    \"refundable\": true,\n                    \"availableSeats\": 17,\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377746\",\n                            \"BusOperatorCode\": \"T12\",\n                            \"BusOperatorImage\": \"ref647773200001689111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"07:00\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"VIP همراه با شارژراختصاصی\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzJfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"22:00\",\n                    \"refundable\": true,\n                    \"availableSeats\": 17,\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377746\",\n                            \"BusOperatorCode\": \"T12\",\n                            \"BusOperatorImage\": \"ref647773200001689111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"22:00\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"VIP همراه با شارژراختصاصی\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzNfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"22:45\",\n                    \"refundable\": true,\n                    \"availableSeats\": 19,\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377746\",\n                            \"BusOperatorCode\": \"T12\",\n                            \"BusOperatorImage\": \"ref647773200001689111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"22:45\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"VIP همراه با شارژراختصاصی\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzRfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"23:15\",\n                    \"refundable\": true,\n                    \"availableSeats\": 16,\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377746\",\n                            \"BusOperatorCode\": \"T12\",\n                            \"BusOperatorImage\": \"ref647773200001689111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"23:15\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"VIP همراه با شارژراختصاصی\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzVfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"19:00\",\n                    \"refundable\": true,\n                    \"availableSeats\": 14,\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377749\",\n                            \"BusOperatorCode\": \"T15\",\n                            \"BusOperatorImage\": \"ref947773200001989111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"19:00\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"VIP تخت شو+شارژر اختصاصی\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6700000\",\n                \"providerFare\": \"6700000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6700000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6700000\",\n                        \"baseFare\": \"6700000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6700000\",\n                        \"total\": \"6700000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzZfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه شرق(تهران)\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"20:30\",\n                    \"refundable\": true,\n                    \"availableSeats\": 19,\n                    \"description\": \"محل سوارشدن ترمینال پردیس جدید\",\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377749\",\n                            \"BusOperatorCode\": \"T15\",\n                            \"BusOperatorImage\": \"ref947773200001989111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"20:30\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"25نفرهVOLVO-B9VIPتخت شو\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzdfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"15:45\",\n                    \"refundable\": true,\n                    \"availableSeats\": 21,\n                    \"description\": \"حضورمسافرین محترم 15 دقیقه قبل از حرکت الزامیست 55185424الی26\",\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377732\",\n                            \"BusOperatorCode\": \"SYRSFR\",\n                            \"BusOperatorImage\": \"ref237773200001679111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"15:45\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"مارال25* V.I.P + شارژر\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzhfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"16:45\",\n                    \"refundable\": true,\n                    \"availableSeats\": 18,\n                    \"description\": \"حضورمسافرین محترم 15 دقیقه قبل از حرکت الزامیست 55185424الی26\",\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377732\",\n                            \"BusOperatorCode\": \"SYRSFR\",\n                            \"BusOperatorImage\": \"ref237773200001679111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"16:45\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"مارال25* V.I.P + شارژر\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzlfMTE4\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"17:45\",\n                    \"refundable\": true,\n                    \"availableSeats\": 22,\n                    \"description\": \"حضورمسافرین محترم 15 دقیقه قبل از حرکت الزامیست 55185424الی26\",\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377732\",\n                            \"BusOperatorCode\": \"SYRSFR\",\n                            \"BusOperatorImage\": \"ref237773200001679111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"17:45\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"بی*9 + V.I.P + شارژر\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzEwXzExOA==\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"18:45\",\n                    \"refundable\": true,\n                    \"availableSeats\": 9,\n                    \"description\": \"حضورمسافرین محترم 15 دقیقه قبل از حرکت الزامیست 55185424الی26\",\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377732\",\n                            \"BusOperatorCode\": \"SYRSFR\",\n                            \"BusOperatorImage\": \"ref237773200001679111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"18:45\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"بی*9 + V.I.P + شارژر\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzExXzExOA==\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"20:15\",\n                    \"refundable\": true,\n                    \"availableSeats\": 5,\n                    \"description\": \"حضورمسافرین محترم 15 دقیقه قبل از حرکت الزامیست 55185424الی26\",\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377732\",\n                            \"BusOperatorCode\": \"SYRSFR\",\n                            \"BusOperatorImage\": \"ref237773200001679111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"20:15\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"بی*9 + V.I.P + شارژر\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        },\n        {\n            \"BusId\": \"NjgyZDk4YzI0N2M2MTAwNWIzZmQ3NDFhXzEyXzExOA==\",\n            \"BusGroup\": [\n                {\n                    \"origin\": 1203548,\n                    \"originTerminal\": \"پایانه جنوب تهران\",\n                    \"destination\": 1211083,\n                    \"destinationTerminal\": \"مشهد (خراسان )\",\n                    \"numberOfStops\": 0,\n                    \"departureDate\": \"1404-03-09\",\n                    \"departureTime\": \"21:00\",\n                    \"refundable\": true,\n                    \"availableSeats\": 1,\n                    \"description\": \"حضورمسافرین محترم 15 دقیقه قبل از حرکت الزامیست 55185424الی26\",\n                    \"RoutesInfo\": [\n                        {\n                            \"SegmentId\": 1,\n                            \"BusOperatorID\": \"2377732\",\n                            \"BusOperatorCode\": \"SYRSFR\",\n                            \"BusOperatorImage\": \"ref237773200001679111320001\",\n                            \"DepartureDate\": \"1404-03-09\",\n                            \"mdepartureDate\": \"2025-05-30\",\n                            \"DepartureTime\": \"21:00\",\n                            \"ArrivalDate\": \"\",\n                            \"ArrivalTime\": \"\",\n                            \"Duration\": \"\",\n                            \"OriginRoute\": 1203548,\n                            \"DestinationRoute\": 1211083,\n                            \"BusType\": \"مارال25* V.I.P + شارژر\"\n                        }\n                    ]\n                }\n            ],\n            \"priceInfo\": {\n                \"baseFare\": \"6695000\",\n                \"providerFare\": \"6695000\",\n                \"totalCommission\": \"\",\n                \"total\": \"6695000\",\n                \"currency\": \"IRR\",\n                \"passengerFare\": [\n                    {\n                        \"passengerType\": \"Adult\",\n                        \"count\": 1,\n                        \"unit\": \"6695000\",\n                        \"baseFare\": \"6695000\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"6695000\",\n                        \"total\": \"6695000\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Child\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    },\n                    {\n                        \"passengerType\": \"Infant\",\n                        \"count\": 0,\n                        \"unit\": \"0\",\n                        \"baseFare\": \"0\",\n                        \"tax\": \"0\",\n                        \"providerFare\": \"0\",\n                        \"total\": \"0\",\n                        \"commission\": \"0\",\n                        \"totalCommission\": \"0\",\n                        \"currency\": \"IRR\"\n                    }\n                ]\n            },\n            \"Provider\": {\n                \"ProviderId\": \"118\",\n                \"Dmnid\": \"2475\"\n            }\n        }\n    ],\n    \"dictionaries\": {\n        \"location\": {\n            \"1203548\": {\n                \"country\": \"ایران\",\n                \"city\": \"تهران\"\n            },\n            \"1211083\": {\n                \"country\": \"ایران\",\n                \"city\": \"مشهد (خراسان )\"\n            }\n        },\n        \"carriers\": {\n            \"T12\": {\n                \"name\": \"گیتی نورد تعاونی 12\",\n                \"image\": \"\"\n            },\n            \"T15\": {\n                \"name\": \"ترابربی تا تعاونی 15\",\n                \"image\": \"\"\n            },\n            \"SYRSFR\": {\n                \"name\": \"سیروسفر\",\n                \"image\": \"\"\n            }\n        },\n        \"currency\": {\n            \"IRR\": \"ریال\"\n        },\n        \"internal\": false\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "available-seat",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"busId\": \"NjgzMmZjOGUyYzU4OWVlODQxMDE3NDAxXzBfMTE4\",\n    \"busGroup\": [\n        {\n            \"origin\": 1203548,\n            \"originTerminal\": \"پایانه جنوب تهران\",\n            \"destination\": 1211083,\n            \"destinationTerminal\": \"مشهد (خراسان )\",\n            \"numberOfStops\": 0,\n            \"departureDate\": \"1404-03-09\",\n            \"departureTime\": \"16:00\",\n            \"refundable\": true,\n            \"availableSeats\": 18,\n            \"description\": \"09156111915بهرامپور\",\n            \"routesInfo\": [\n                {\n                    \"SegmentId\": 1,\n                    \"busOperatorID\": \"2377745\",\n                    \"busOperatorCode\": \"T11\",\n                    \"busOperatorImage\": \"ref547773200001589111320001\",\n                    \"departureDate\": \"1404-03-09\",\n                    \"mdepartureDate\": \"2025-05-30\",\n                    \"departureTime\": \"16:00\",\n                    \"arrivalDate\": \"\",\n                    \"arrivalTime\": \"\",\n                    \"duration\": \"\",\n                    \"originRoute\": 1203548,\n                    \"destinationRoute\": 1211083,\n                    \"busType\": \"VIPتخت شو شارژ اختصاصی\"\n                }\n            ]\n        }\n    ],\n    \"rKey\": \"{{rkey}}\", //optional\n    \"dmnid\": 2475,\n    \"sessionId\": \"{{SessionId}}\",\n    \"lid\": 2 //optional\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://185.44.36.51:1550/api/bus/available-seat",
+					"protocol": "http",
+					"host": [
+						"185",
+						"44",
+						"36",
+						"51"
+					],
+					"port": "1550",
+					"path": [
+						"api",
+						"bus",
+						"available-seat"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "sample",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"busId\": \"NjgzMmZjOGUyYzU4OWVlODQxMDE3NDAxXzBfMTE4\",\n    \"busGroup\": [\n        {\n            \"origin\": 1203548,\n            \"originTerminal\": \"پایانه جنوب تهران\",\n            \"destination\": 1211083,\n            \"destinationTerminal\": \"مشهد (خراسان )\",\n            \"numberOfStops\": 0,\n            \"departureDate\": \"1404-03-09\",\n            \"departureTime\": \"16:00\",\n            \"refundable\": true,\n            \"availableSeats\": 18,\n            \"description\": \"09156111915بهرامپور\",\n            \"routesInfo\": [\n                {\n                    \"SegmentId\": 1,\n                    \"busOperatorID\": \"2377745\",\n                    \"busOperatorCode\": \"T11\",\n                    \"busOperatorImage\": \"ref547773200001589111320001\",\n                    \"departureDate\": \"1404-03-09\",\n                    \"mdepartureDate\": \"2025-05-30\",\n                    \"departureTime\": \"16:00\",\n                    \"arrivalDate\": \"\",\n                    \"arrivalTime\": \"\",\n                    \"duration\": \"\",\n                    \"originRoute\": 1203548,\n                    \"destinationRoute\": 1211083,\n                    \"busType\": \"VIPتخت شو شارژ اختصاصی\"\n                }\n            ]\n        }\n    ],\n    \"rKey\": \"{{rkey}}\", //optional\n    \"dmnid\": 2475,\n    \"sessionId\": \"{{SessionId}}\",\n    \"lid\": 2 //optional\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://185.44.36.51:1550/api/bus/available-seat",
+							"protocol": "http",
+							"host": [
+								"185",
+								"44",
+								"36",
+								"51"
+							],
+							"port": "1550",
+							"path": [
+								"api",
+								"bus",
+								"available-seat"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2828"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 25 May 2025 11:18:59 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Python/3.9 aiohttp/3.11.18"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"errorMessage\": null,\n    \"busId\": \"NjgzMmZjOGUyYzU4OWVlODQxMDE3NDAxXzBfMTE4\",\n    \"layout\": [\n        {\n            \"type\": \"seat\",\n            \"number\": \"1\",\n            \"id\": \"1021bb8d-7402-44b5-ab49-7073211b9321\",\n            \"status\": \"reserved\",\n            \"gender\": \"Male\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"2\",\n            \"id\": \"d6cd3933-7d26-47d1-8eb2-a229dc3de0fc\",\n            \"status\": \"reserved\",\n            \"gender\": \"Male\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"3\",\n            \"id\": \"29d1847d-ca0d-494d-9872-5616efccc244\",\n            \"status\": \"reserved\",\n            \"gender\": \"Male\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"4\",\n            \"id\": \"f70e87f5-80a6-42b4-a7a9-219437d3872c\",\n            \"status\": \"reserved\",\n            \"gender\": \"Female\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"5\",\n            \"id\": \"0cbe75f2-9405-4df8-81cf-c336031b75f1\",\n            \"status\": \"reserved\",\n            \"gender\": \"Female\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"6\",\n            \"id\": \"f1c9b481-3007-4b04-8356-3243fc0f24e9\",\n            \"status\": \"reserved\",\n            \"gender\": \"Female\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"7\",\n            \"id\": \"c0b17e47-b68d-4a26-8433-cbd727dde569\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"8\",\n            \"id\": \"efd08bd9-9750-4875-9b7c-c94f10b5e000\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"9\",\n            \"id\": \"fa007b21-d6e0-424b-8e11-f810c0628c6d\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"10\",\n            \"id\": \"2346ad34-1cc2-4561-bfc9-2db7395f5485\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"11\",\n            \"id\": \"2ca52699-79db-47a4-93f9-601fff0e9afb\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"12\",\n            \"id\": \"9bae8dc6-6361-4500-8387-38937db11f71\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"gap\"\n        },\n        {\n            \"type\": \"gap\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"13\",\n            \"id\": \"d6c6ebe1-e090-4669-9d41-cb5182ff9a80\",\n            \"status\": \"reserved\",\n            \"gender\": \"Male\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"14\",\n            \"id\": \"44623321-b990-45b2-98be-1960c7fca581\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"15\",\n            \"id\": \"92209afa-cbcc-423c-9960-172af8818fc1\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"16\",\n            \"id\": \"3aecc85b-4287-4322-86ad-ae5de154165a\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"17\",\n            \"id\": \"75dfd1a0-0927-42e7-a5f6-74cb25b64a46\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"18\",\n            \"id\": \"804136ff-feee-4372-b251-a39e0bea236c\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"19\",\n            \"id\": \"0923a42d-1a16-408f-900e-02697dfb92ca\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"20\",\n            \"id\": \"adb03aca-fb6f-4675-bb4c-e3949b945f71\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"21\",\n            \"id\": \"d29eda3a-dc54-4fbf-8e70-0393dade5064\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"22\",\n            \"id\": \"89b5c8d3-b449-4ba2-a585-6e3c03df3549\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"23\",\n            \"id\": \"81530a90-e9e7-41fc-9b39-b0db0ea915dd\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"24\",\n            \"id\": \"ee73f0eb-7d3b-476c-8962-9dd761dfd9bf\",\n            \"status\": \"available\"\n        },\n        {\n            \"type\": \"seat\",\n            \"number\": \"25\",\n            \"id\": \"2933600f-341b-465d-9b65-ddc579a1a1fa\",\n            \"status\": \"available\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "reserve",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"tripGroup\": [\n    \t{\n        \t\"origin\": \"THR\",\n        \t\"destination\": \"MHD\",\n        \t\"departureDate\": \"2025-05-30\"\n    \t}\n\t],\n\t\"rKey\": \"{{rkey}}\",        //optional\n    \"dmnid\": 2475,\n\t\"sessionId\": \"{{SessionId}}\",\n\t\"lid\": 2     //optional\n\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6969/api/bus/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6969",
+					"path": [
+						"api",
+						"bus",
+						"search"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "reserve-sample",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"busId\": \"NjgzMmZjOGUyYzU4OWVlODQxMDE3NDAxXzBfMTE4\",\n    \"busGroup\": [\n        {\n            \"origin\": 1203548,\n            \"originTerminal\": \"پایانه جنوب تهران\",\n            \"destination\": 1211083,\n            \"destinationTerminal\": \"مشهد (خراسان )\",\n            \"numberOfStops\": 0,\n            \"departureDate\": \"1404-03-09\",\n            \"departureTime\": \"16:00\",\n            \"refundable\": true,\n            \"availableSeats\": 18,\n            \"description\": \"09156111915بهرامپور\",\n            \"routesInfo\": [\n                {\n                    \"SegmentId\": 1,\n                    \"busOperatorID\": \"2377745\",\n                    \"busOperatorCode\": \"T11\",\n                    \"busOperatorImage\": \"ref547773200001589111320001\",\n                    \"departureDate\": \"1404-03-09\",\n                    \"mdepartureDate\": \"2025-05-30\",\n                    \"departureTime\": \"16:00\",\n                    \"arrivalDate\": \"\",\n                    \"arrivalTime\": \"\",\n                    \"duration\": \"\",\n                    \"originRoute\": 1203548,\n                    \"destinationRoute\": 1211083,\n                    \"busType\": \"VIPتخت شو شارژ اختصاصی\"\n                }\n            ]\n        }\n    ],\n    \"travelers\": [\n        {\n            \"id\": null,\n            \"type\": \"ADT\",\n            \"firstName\": \"AHMAD\",\n            \"lastName\": \"SAFFARI\",\n            \"gender\": \"MR\",\n            \"passportCode\": \"CFC418601\",\n            \"passportExpiration\": \"2034-02-02\",\n            \"nationalCode\": \"0015722351\",\n            \"dateOfBirth\": \"1965-03-23\",\n            \"placeOfBirth\": \"IRN\",\n            \"parentId\": null,\n            \"seatId\": [\n                \"c0b17e47-b68d-4a26-8433-cbd727dde569\"\n            ]\n        }\n    ],\n    \"account\": {\n        \"fullname\": {\n            \"firstname\": \"AMIR\",\n            \"lastname\": \"TAHERI\"\n        },\n        \"email\": \"kmg.d126@gmail.com\",\n        \"tel\": \"-\",\n        \"mobile\": \"+989385009495\",\n        \"address\": \"-\",\n        \"gender\": \"1\",\n        \"countryid\": \"1002236\",\n        \"cityid\": \"1203548\"\n    },\n    \"rKey\": \"{{rkey}}\", //optional\n    \"agencycountername\": \"-\",\n    \"agencycounter\": \"0\",\n    \"clear\": \"1\",\n    \"accounttype\": \"3\",\n    \"share\": \"0\",\n    \"mid\": \"24\",\n    \"sessionId\": \"6832fc3e2c589ee8410173ff\",\n    \"lid\": 2 //optional\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://185.44.36.51:1550/api/bus/reserve",
+							"protocol": "http",
+							"host": [
+								"185",
+								"44",
+								"36",
+								"51"
+							],
+							"port": "1550",
+							"path": [
+								"api",
+								"bus",
+								"reserve"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "683"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 25 May 2025 11:29:23 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Python/3.9 aiohttp/3.11.18"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"errorMessage\": \"successful\",\n    \"priceChange\": null,\n    \"airReservation\": {\n        \"basisFlyBookId\": \"10000445120\",\n        \"priceInfo\": {\n            \"baseFare\": 20085000,\n            \"tax\": 0,\n            \"providerFare\": 0,\n            \"totalCommission\": 0,\n            \"total\": 20085000,\n            \"currency\": \"IRR\",\n            \"passengerFare\": [\n                {\n                    \"passengerType\": \"Adult\",\n                    \"count\": 1,\n                    \"unit\": 20085000,\n                    \"baseFare\": 20085000,\n                    \"tax\": 0,\n                    \"providerFare\": 0,\n                    \"total\": 20085000,\n                    \"currency\": \"IRR\"\n                },\n                {\n                    \"passengerType\": \"Child\",\n                    \"count\": 0,\n                    \"unit\": 0,\n                    \"baseFare\": 0,\n                    \"tax\": 0,\n                    \"providerFare\": 0,\n                    \"total\": 0,\n                    \"currency\": \"IRR\"\n                },\n                {\n                    \"passengerType\": \"Infant\",\n                    \"count\": 0,\n                    \"unit\": 0,\n                    \"baseFare\": 0,\n                    \"tax\": 0,\n                    \"providerFare\": 0,\n                    \"total\": 0,\n                    \"currency\": \"IRR\"\n                }\n            ]\n        }\n    }\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"value": "",
+			"type": "default",
+			"disabled": true
+		}
+	]
+}

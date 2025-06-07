@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  prefix: 'book-',
   content: [
     "./mobile/static/**/*.html",
     "./mobile/dynamic/**/*.html",
