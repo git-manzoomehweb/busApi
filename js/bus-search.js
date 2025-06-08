@@ -68,56 +68,58 @@ if (document.querySelector(".book-categories-show")) {
   });
 }
 // _____________________________________________________________
-busCards = document.querySelectorAll(".book-bus-card");
-if (document.querySelector(".book-bus-cards-container")) {
-  busCards.forEach((card) => {
-    const seeMore = card.querySelector(".book-see-and-buy-ticket");
-    seeMore.addEventListener("click", () => {
-      seeMore.classList.add("book-hidden");
-      card.querySelectorAll(".book-hidden-elements").forEach((item) => {
-        item.classList.remove("book-hidden");
-      });
-      card.classList.remove("book-h-[240px]");
-      card.classList.add("book-h-[482px]");
-    });
-    const closeCard = card.querySelector(".book-closeCard");
+// busCards = document.querySelectorAll(".book-bus-card");
+// if (document.querySelector(".book-bus-cards-container")) {
+//   busCards.forEach((card) => {
+//     const seeMore = card.querySelector(".book-see-and-buy-ticket");
+//     seeMore.addEventListener("click", () => {
+//       seeMore.classList.add("book-hidden");
+//       card.querySelectorAll(".book-hidden-elements").forEach((item) => {
+//         item.classList.remove("book-hidden");
+//       });
+//       card.classList.remove("book-h-[240px]");
+//       card.classList.add("book-h-[482px]");
+//     });
+//     const closeCard = card.querySelector(".book-closeCard");
 
-    closeCard.addEventListener("click", () => {
-      seeMore.classList.remove("book-hidden");
-      card.querySelectorAll(".book-hidden-elements").forEach((item) => {
-        item.classList.add("book-hidden");
-      });
-      card.classList.add("book-h-[240px]");
-      card.classList.remove("book-h-[482px]");
-    });
-    const openFirstMenu = card.querySelector(".book-open-first-menu");
-    openFirstMenu.addEventListener("click", () => {
-      card.querySelector(".book-first-menu").classList.remove("book-translate-x-[105%]");
-    });
-    const closeFirtMenu = card.querySelector(".book-first-menu .book-clode-menu");
-    closeFirtMenu.addEventListener("click", () => {
-      card.querySelector(".book-first-menu").classList.add("book-translate-x-[105%]");
-    });
+//     closeCard.addEventListener("click", () => {
+//       seeMore.classList.remove("book-hidden");
+//       card.querySelectorAll(".book-hidden-elements").forEach((item) => {
+//         item.classList.add("book-hidden");
+//       });
+//       card.classList.add("book-h-[240px]");
+//       card.classList.remove("book-h-[482px]");
+//     });
+//     const openFirstMenu = card.querySelector(".book-open-first-menu");
+//     openFirstMenu.addEventListener("click", () => {
+//       card.querySelector(".book-first-menu").classList.remove("book-translate-x-[105%]");
+//     });
+//     const closeFirtMenu = card.querySelector(".book-first-menu .book-clode-menu");
+//     closeFirtMenu.addEventListener("click", () => {
+//       card.querySelector(".book-first-menu").classList.add("book-translate-x-[105%]");
+//     });
 
-    const openSecondMenu = card.querySelector(".book-open-second-menu");
-    openSecondMenu.addEventListener("click", () => {
-      card.querySelector(".book-second-menu").classList.remove("book-translate-x-[105%]");
-    });
-    const closeSecondMenu = card.querySelector(".book-second-menu .book-clode-menu");
-    closeSecondMenu.addEventListener("click", () => {
-      card.querySelector(".book-second-menu").classList.add("book-translate-x-[105%]");
-    });
+//     const openSecondMenu = card.querySelector(".book-open-second-menu");
+//     openSecondMenu.addEventListener("click", () => {
+//       card.querySelector(".book-second-menu").classList.remove("book-translate-x-[105%]");
+//     });
+//     const closeSecondMenu = card.querySelector(".book-second-menu .book-clode-menu");
+//     closeSecondMenu.addEventListener("click", () => {
+//       card.querySelector(".book-second-menu").classList.add("book-translate-x-[105%]");
+//     });
 
-    const openThirddMenu = card.querySelector(".book-open-third-menu");
-    openThirddMenu.addEventListener("click", () => {
-      card.querySelector(".book-third-menu").classList.remove("book-translate-x-[105%]");
-    });
-    const closeThirdMenu = card.querySelector(".book-third-menu .book-clode-menu");
-    closeThirdMenu.addEventListener("click", () => {
-      card.querySelector(".book-third-menu").classList.add("book-translate-x-[105%]");
-    });
-  });
-}
+//     const openThirddMenu = card.querySelector(".book-open-third-menu");
+//     openThirddMenu.addEventListener("click", () => {
+//       card.querySelector(".book-third-menu").classList.remove("book-translate-x-[105%]");
+//     });
+//     const closeThirdMenu = card.querySelector(".book-third-menu .book-clode-menu");
+//     closeThirdMenu.addEventListener("click", () => {
+//       card.querySelector(".book-third-menu").classList.add("book-translate-x-[105%]");
+//     });
+//   });
+// }
+
+
 // _____________________________________________________
 
 busCardsMobile = document.querySelectorAll(".book-bus-card-mobile");

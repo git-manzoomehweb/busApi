@@ -1,0 +1,356 @@
+{
+    "status": true,
+    "errorMessage": null,
+    "busProposals": [
+        {
+            "busId": "Njg0NTM2ZGUyZjNhNzQ1Y2FmOGEzMTYzXzBfMTE4",
+            "busGroup": [
+                {
+                    "originTerminal": "پایانه جنوب تهران",
+                    "destinationTerminal": "مشهد (خراسان )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-03-21",
+                    "departureTime": "06:00",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 0,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T12",
+                            "departureDate": "1404-03-21",
+                            "departureTime": "06:00",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "VIP همراه با شارژراختصاصی"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "6695000",
+                "tax": "0",
+                "providerFare": "803400",
+                "totalCommission": "7498400",
+                "total": "7498400",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "7498400",
+                        "baseFare": "6695000",
+                        "tax": "0",
+                        "providerFare": "803400",
+                        "total": "7498400",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg0NTM2ZGUyZjNhNzQ1Y2FmOGEzMTYzXzFfMTE4",
+            "busGroup": [
+                {
+                    "originTerminal": "پایانه جنوب تهران",
+                    "destinationTerminal": "مشهد (خراسان )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-03-21",
+                    "departureTime": "07:00",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 0,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T12",
+                            "departureDate": "1404-03-21",
+                            "departureTime": "07:00",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "VIP همراه با شارژراختصاصی"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "6695000",
+                "tax": "0",
+                "providerFare": "803400",
+                "totalCommission": "7498400",
+                "total": "7498400",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "7498400",
+                        "baseFare": "6695000",
+                        "tax": "0",
+                        "providerFare": "803400",
+                        "total": "7498400",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg0NTM2ZGUyZjNhNzQ1Y2FmOGEzMTYzXzJfMTE4",
+            "busGroup": [
+                {
+                    "originTerminal": "پایانه جنوب تهران",
+                    "destinationTerminal": "مشهد (خراسان )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-03-21",
+                    "departureTime": "22:45",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 0,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T12",
+                            "departureDate": "1404-03-21",
+                            "departureTime": "22:45",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "VIP همراه با شارژراختصاصی"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "6695000",
+                "tax": "0",
+                "providerFare": "803400",
+                "totalCommission": "7498400",
+                "total": "7498400",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "7498400",
+                        "baseFare": "6695000",
+                        "tax": "0",
+                        "providerFare": "803400",
+                        "total": "7498400",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg0NTM2ZGUyZjNhNzQ1Y2FmOGEzMTYzXzNfMTE4",
+            "busGroup": [
+                {
+                    "originTerminal": "پایانه جنوب تهران",
+                    "destinationTerminal": "مشهد (خراسان )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-03-21",
+                    "departureTime": "23:15",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 0,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T12",
+                            "departureDate": "1404-03-21",
+                            "departureTime": "23:15",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "VIP همراه با شارژراختصاصی"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "6695000",
+                "tax": "0",
+                "providerFare": "803400",
+                "totalCommission": "7498400",
+                "total": "7498400",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "7498400",
+                        "baseFare": "6695000",
+                        "tax": "0",
+                        "providerFare": "803400",
+                        "total": "7498400",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        }
+    ],
+    "dictionaries": {
+        "location": {
+            "1203548": {
+                "country": "ایران",
+                "city": "تهران"
+            },
+            "1211083": {
+                "country": "ایران",
+                "city": "مشهد (خراسان )"
+            }
+        },
+        "carriers": {
+            "T12": {
+                "name": "گیتی نورد تعاوني 12",
+                "image": "ref647773200001689111320001"
+            }
+        },
+        "currency": {
+            "IRR": "ریال"
+        },
+        "internal": false
+    }
+}

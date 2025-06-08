@@ -35,59 +35,60 @@
   <main data-dmnid="[##cms.cms.domainid##]" class="book-py-6 book-relative book-flex book-justify-center">
 
     <!-- Commands / Requests -->
-    <basis core="call" file="bus/commands" lid="1"></basis>
+    <basis core="call" file="bus/commands" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
 
 
+    <div
+      class="book-layout__main book-w-full book-flex book-justify-between xl:book-w-[1280px] book-p-5 book-glass book-rounded-lg book-z-10">
 
-    <div class="book-absolute book-top-0 book-left-0 book-w-full book-h-[800px] book-bg-gradient-to-b book-from-primary-200 book-from-[5%]"></div>
-
-    <div class="book-layout__main book-w-full book-flex book-justify-between xl:book-w-[1280px] book-p-5 book-glass book-rounded-lg book-z-10">
-            <!-- Expire  Modal-->
-            <div
-                class="book-expire__message__modal__container book-modal__container book-fixed book-top-0 book-left-0 book-w-screen book-h-screen book-overflow-hidden book-z-50 book-hidden">
-                <div
-                    class="book-modal__content book-bg-white book-fixed book-inset-x-0 book-top-1.2 book--translate-y-1.2 book-w-[560px] book-rounded-2xl book-mx-auto book-p-5 book-text-center">
-                    <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
-                        <use xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#hour-expire-icon">
-                        </use>
-                    </svg>
-                    <div class="book-no__time book-hidden">
-                        <div class="book-text-2xl book-font-bold book-mt-6">اعتبار
-                            نتایج به پایان رسید</div>
-                        <div class="book-text-zinc-500 book-mt-3">لطفا برای
-                            نمایش جدیدترین اطلاعات و قیمت‌ها نتایج جستجو را
-                            بروز رسانی
-                            کنید</div>
-                        <div class="book-flex book-justify-between book-mt-6">
-                            <button onclick="location.reload()" type="button"
-                                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">بروز
-                                رسانی جستجو</button>
-                            <button onclick="window.location='/'" type="button"
-                                class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-primary-400 hover:book-book-text-white">بازگشت
-                                به صفحه اصلی</button>
-                        </div>
-                    </div>
-                    <div class="book-some__time book-hidden">
-                        <div class="book-text-2xl book-font-bold book-mt-6">نتایج جستجو تا 6 دقیقه دیگر معتبر می باشد.
-                        </div>
-                        <div class="book-text-zinc-500 book-mt-3">بعد از به پایان رسیدن مدت اعتبار، اتوبوس دیگر در دسترس
-                            نمی‌باشد.</div>
-                        <div class="book-mt-6">
-                            <button
-                                onclick="document.querySelector('.book-expire__message__modal__container').classList.add('book-hidden')"
-                                type="button"
-                                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">
-                                متوجه شدم</button>
-
-                        </div>
-                    </div>
-
-                </div>
+      <!-- Expire  Modal-->
+      <div
+        class="book-expire__message__modal__container book-modal__container book-fixed book-top-0 book-left-0 book-w-screen book-h-screen book-overflow-hidden book-z-50 book-hidden">
+        <div
+          class="book-modal__content book-bg-white book-fixed book-inset-x-0 book-top-1.2 book--translate-y-1.2 book-w-[560px] book-rounded-2xl book-mx-auto book-p-5 book-text-center">
+          <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
+            <use xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#hour-expire-icon">
+            </use>
+          </svg>
+          <div class="book-no__time book-hidden">
+            <div class="book-text-2xl book-font-bold book-mt-6">اعتبار
+              نتایج به پایان رسید</div>
+            <div class="book-text-zinc-500 book-mt-3">لطفا برای
+              نمایش جدیدترین اطلاعات و قیمت‌ها نتایج جستجو را
+              بروز رسانی
+              کنید</div>
+            <div class="book-flex book-justify-between book-mt-6">
+              <button onclick="location.reload()" type="button"
+                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">بروز
+                رسانی جستجو</button>
+              <button onclick="window.location='/'" type="button"
+                class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-primary-400 hover:book-book-text-white">بازگشت
+                به صفحه اصلی</button>
             </div>
+          </div>
+          <div class="book-some__time book-hidden">
+            <div class="book-text-2xl book-font-bold book-mt-6">نتایج جستجو تا 6 دقیقه دیگر معتبر می باشد.
+            </div>
+            <div class="book-text-zinc-500 book-mt-3">بعد از به پایان رسیدن مدت اعتبار، اتوبوس دیگر در دسترس
+              نمی‌باشد.</div>
+            <div class="book-mt-6">
+              <button
+                onclick="document.querySelector('.book-expire__message__modal__container').classList.add('book-hidden')"
+                type="button"
+                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">
+                متوجه شدم</button>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       <!-- aside Filter -->
       <aside class="book-w-[22%] book-h-full book-relative book-flex book-flex-col book-gap-5">
         <div class="book-flex book-flex-col book-gap-5 book-w-full book-sticky book-top-5">
-          <div class="book-flex book-justify-between book-w-full book-glass2 book-px-5 book-h-12 book-items-center book-rounded-lg">
+          <div
+            class="book-flex book-justify-between book-w-full book-glass2 book-px-5 book-h-12 book-items-center book-rounded-lg">
             <h1 class="book-text-primary-950 book-font-bold book-flex book-items-center book-gap-1">
               <span>بلیط اتوبوس</span>
               <span>تهران</span>
@@ -97,8 +98,8 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M6 9.96c3.63-2.81 8.37-2.81 12 0M7.6 13.05c2.67-2.06 6.14-2.06 8.81 0M9.8 16.14c1.33-1.03 3.07-1.03 4.4 0"
-                  stroke="currentColor" class="group-hover:book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round"
-                  stroke-linejoin="round"></path>
+                  stroke="currentColor" class="group-hover:book-stroke-primary-700" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
                 <path d="M9 22h6c5 0 7-2 7-7V9c0-5-2-7-7-7H9C4 2 2 4 2 9v6c0 5 2 7 7 7Z" stroke="currentColor"
                   class="group-hover:book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round"
                   stroke-linejoin="round"></path>
@@ -108,7 +109,15 @@
           <div class="book-overflow-hidden book-w-full">
             <div dir="ltr"
               class="book-w-full book-flex book-flex-col book-gap-5 book-overflow-auto book-h-[640px] [&::-webkit-scrollbar]:book-bg-zinc-50 [&::-webkit-scrollbar]:book-w-[6px] [&::-webkit-scrollbar]:book-rounded-full [&::-webkit-scrollbar-thumb]:book-bg-primary-700 [&::-webkit-scrollbar-thumb]:book-w-[4px] [&::-webkit-scrollbar-thumb]:book-rounded-full">
+
+
+
+
+
+
+
               <div dir="rtl" class="book-flex book-flex-col book-gap-5 book-pr-2 book-w-full">
+                <!-- <bassssssssssssssssssssssssssssssssis core="call" file="/module/retry/search" run="atclient" pageindex="[##cms.cms.pageindex|(1)##]"></basissssssssssssssssssssssssss> -->
                 <form class="book-flex book-flex-col book-gap-5 book-w-full book-glass2 book-p-5 book-rounded-lg">
                   <div class="book-flex book-flex-col book-routes book-w-full book-relative book-gap-5">
                     <div class="book-flex book-flex-col book-gap-3 book-w-full">
@@ -145,7 +154,8 @@
                     گزینه های فیلتر
                   </header>
                   <div class="book-flex book-flex-col book-w-full book-px-5 book-pb-5">
-                    <div class="book-filtering-box book-w-full book-flex book-flex-col book-gap-5 book-py-5 book-border-b book-border-b-zinc-300">
+                    <div
+                      class="book-filtering-box book-w-full book-flex book-flex-col book-gap-5 book-py-5 book-border-b book-border-b-zinc-300">
                       <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
                         <p class="book-text-zinc-900">مرتب سازی بر اساس</p>
                         <span class="book-arrow book-transition-all book-duration-200">
@@ -157,19 +167,23 @@
                           </svg>
                         </span>
                       </div>
-                      <div class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
+                      <div
+                        class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
                         <div class="book-w-full book-flex book-gap-2 book-items-center">
                           <input type="radio" name="sortBy" id="asc" class="book-accent-primary-800 book-size-3" />
-                          <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="asc">زودترین زمان حرکت</label>
+                          <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="asc">زودترین زمان
+                            حرکت</label>
                         </div>
                         <div class="book-w-full book-flex book-gap-2 book-items-center">
                           <input type="radio" name="sortBy" id="desc" class="book-accent-primary-800 book-size-3" />
-                          <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="desc">دیرترین زمان حرکت</label>
+                          <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="desc">دیرترین زمان
+                            حرکت</label>
                         </div>
                       </div>
                     </div>
 
-                    <div class="book-filtering-box book-w-full book-flex book-flex-col book-gap-5 book-py-5 book-border-b book-border-b-zinc-300">
+                    <div
+                      class="book-filtering-box book-w-full book-flex book-flex-col book-gap-5 book-py-5 book-border-b book-border-b-zinc-300">
                       <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
                         <p class="book-text-zinc-900">ساعت</p>
                         <span class="book-arrow book-transition-all book-duration-200">
@@ -181,7 +195,8 @@
                           </svg>
                         </span>
                       </div>
-                      <div class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
+                      <div
+                        class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
                         <div class="book-w-full book-flex book-gap-2 book-items-center">
                           <input type="checkbox" id="6-12-A-M" class="book-accent-primary-800 book-size-3" />
                           <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="6-12-A-M">
@@ -209,7 +224,8 @@
                       </div>
                     </div>
 
-                    <div class="book-filtering-box book-w-full book-flex book-flex-col book-gap-5 book-py-5 book-border-b book-border-b-zinc-300">
+                    <div
+                      class="book-filtering-box book-w-full book-flex book-flex-col book-gap-5 book-py-5 book-border-b book-border-b-zinc-300">
                       <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
                         <p class="book-text-zinc-900">شرکت مسافربری</p>
                         <span class="book-arrow book-transition-all book-duration-200">
@@ -221,7 +237,8 @@
                           </svg>
                         </span>
                       </div>
-                      <div class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
+                      <div
+                        class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
                         <div class="book-w-full book-flex book-gap-2 book-items-center">
                           <input type="checkbox" id="lorem1" class="book-accent-primary-800 book-size-3" />
                           <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem1">
@@ -255,7 +272,8 @@
                           </svg>
                         </span>
                       </div>
-                      <div class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
+                      <div
+                        class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
                         <div class="book-w-full book-flex book-flex-col book-gap-3">
                           <p class="book-font-bold">ترمینال مبدا</p>
                           <div class="book-w-full book-flex book-gap-2 book-items-center">
@@ -375,15 +393,26 @@
         <div class="book-w-full book-flex book-flex-col book-gap-5 book-bus-cards-container">
 
 
-          <div class="book-bus-card book-transition-all book-ease-in-out book-overflow-hidden book-relative book-w-full book-flex book-h-[240px]">
-            <div
+          <!-- BasisCore Print Component برای نمایش جدول -->
+          <basis core="print" datamembername="busData.formatted" run="atclient">
+            <layout>
+              <script type="text/template">
+                                    <div class="book-list__cards__container">
+                                        @child
+                                     </div>
+                                  </script>
+            </layout>
+            <face>
+              <script type="text/template">
+                                        <div id="bus__@index@" data-id="@busId@" data-index="@index@" class="book-bus-card book-drop-shadow-sm book-transition-all book-ease-in-out book-overflow-hidden book-relative book-w-full book-flex book-h-[240px] book-mb-4">
+                                                        <div
               class="book-translate-x-[105%] book-absolute book-first-menu book-flex book-flex-col book-gap-4 book-justify-center book-items-center book-top-0 book-left-0 book-w-full book-h-full book-rounded-2xl book-glass2 book-z-20 book-transition-all book-duration-200">
               <a href=""
                 class="book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
                 بلیط</a>
               <a href=""
                 class="book-w-[330px] book-text-sm book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-700 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
-                اطلاعات ترمینال (پایانه جنوب - خزانه)</a>
+                اطلاعات ترمینال (@originTerminal@ - @destinationTerminal@)</a>
               <button type="button"
                 class="book-clode-menu book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
                 بستـن
@@ -396,7 +425,7 @@
                 بلیط</a>
               <a href=""
                 class="book-w-[330px] book-text-sm book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-700 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
-                اطلاعات ترمینال (پایانه امام رضا)</a>
+                اطلاعات ترمینال (@originTerminal@)</a>
               <button type="button"
                 class="book-clode-menu book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
                 بستـن
@@ -409,7 +438,7 @@
                 بلیط</a>
               <a href=""
                 class="book-w-[330px] book-text-sm book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-700 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
-                اطلاعات تعاونی 12 گیتی نورد</a>
+                @carrierName@</a>
               <button type="button"
                 class="book-clode-menu book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
                 بستـن
@@ -449,26 +478,31 @@
             </div>
             <div
               class="book-rounded-r-2xl book-px-9 book-p-3 book-flex book-flex-col book-justify-center book-gap-6 book-rounded-l-[32px] book-h-full book-w-[73%] book-bg-white">
-              <div class="book-flex book-items-center book-cursor-pointer book-open-third-menu book-gap-2 book-text-sm book-text-zinc-700">
-                <img class="book-w-12 book-h-12" src="[##cms.cms.cdn##]/booking/images/giti-navard.webp" alt="taavoni-logo" />
-                تعاونی 12 گیتی نورد
+              <div
+                class="book-flex book-items-center book-cursor-pointer book-open-third-menu book-gap-2 book-text-sm book-text-zinc-700">
+                <img class="book-w-12 book-h-12" src="[##cms.cms.cdn##]/@carrierImage@"
+                  alt="@carrierName@" />
+                @carrierName@
               </div>
               <div class="book-w-full book-flex book-justify-between book-items-center">
-                <div class="book-flex book-open-first-menu book-cursor-pointer book-items-center book-gap-1 book-whitespace-nowrap">
-                  <p class="book-font-bold book-text-lg">تهران</p>
-                  <p class="book-text-zinc-700 book-text-sm">(پایانه جنوب - خزانه)</p>
+                <div
+                  class="book-flex book-open-first-menu book-cursor-pointer book-items-center book-gap-1 book-whitespace-nowrap">
+                  <p class="book-font-bold book-text-lg">@originCity@</p>
+                  <p class="book-text-zinc-700 book-text-sm">( @originTerminal@ )</p>
                 </div>
-                <div class="book-w-[40%] book-set-before-after book-relative book-h-[1px] book-border-t book-border-dashed book-border-zinc-800">
+                <div
+                  class="book-w-[40%] book-set-before-after book-relative book-h-[1px] book-border-t book-border-dashed book-border-zinc-800">
                   <span></span><span></span>
                 </div>
-                <div class="book-flex book-items-center book-cursor-pointer book-open-second-menu book-gap-1 book-whitespace-nowrap">
-                  <p class="book-font-bold book-text-lg">مشهد</p>
-                  <p class="book-text-zinc-700 book-text-sm">(پایانه امام رضا)</p>
+                <div
+                  class="book-flex book-items-center book-cursor-pointer book-open-second-menu book-gap-1 book-whitespace-nowrap">
+                  <p class="book-font-bold book-text-lg">@destinationCity@</p>
+                  <p class="book-text-zinc-700 book-text-sm">( @destinationTerminal@ )</p>
                 </div>
               </div>
               <div class="book-flex book-gap-2 book-items-center book-text-sm book-text-zinc-700">
                 <img src="[##cms.cms.cdn##]/booking/images/bus.svg" alt="bus" />
-                VIP همراه با شارژراختصاصی
+                @busType@
               </div>
               <div class="book-hidden-elements book-hidden book-w-full book-flex book-flex-col book-gap-3">
                 <div class="book-flex book-w-full book-relative book-h-[240px]">
@@ -571,7 +605,8 @@
                         </button>
                       </div>
                     </div>
-                    <div dir="ltr" class="book-w-full book-z-0 book-flex book-items-center book-gap-2 book-justify-between">
+                    <div dir="ltr"
+                      class="book-w-full book-z-0 book-flex book-items-center book-gap-2 book-justify-between">
                       <button type="button"
                         class="book-seat-by-for-gentlemans book-bg-center book-bg-cover book-w-[30px] book-!h-[34px] book-text-primary-900 book-flex book-justify-center book-items-center"
                         title="gentleman">
@@ -651,33 +686,39 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
                   class="book-size-6">
                   <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
-                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  </path>
                   <path d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1" class="book-stroke-primary-700"
                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
-                07:00 صبح
+                @departureTime@
               </div>
-              <div class="book-text-zinc-800">12 صندلی خالی</div>
+              <div class="book-text-zinc-800">@availableSeats@ صندلی خالی</div>
               <div class="book-flex book-items-center book-gap-2 book-text-primary-700 book-font-bold">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   class="book-size-6">
                   <path
                     d="M18.5 12.65v3.7c0 3.12-2.91 5.65-6.5 5.65s-6.5-2.53-6.5-5.65v-3.7C5.5 15.77 8.41 18 12 18s6.5-2.23 6.5-5.35Z"
-                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  </path>
                   <path
                     d="M18.5 7.65c0 .91-.25 1.75-.69 2.47C16.74 11.88 14.54 13 12 13c-2.54 0-4.74-1.12-5.81-2.88-.44-.72-.69-1.56-.69-2.47 0-1.56.73-2.97 1.9-3.99C8.58 2.63 10.2 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
-                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  </path>
                   <path
                     d="M18.5 7.65v5c0 3.12-2.91 5.35-6.5 5.35s-6.5-2.23-6.5-5.35v-5C5.5 4.53 8.41 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
-                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  </path>
                 </svg>
-                6,695,000ريال
+                @formattedPrice@
+
               </div>
-              <button type="button"
+              <button type="button" onclick='initializeBusCards("@busId@")'
                 class="book-w-[90%] book-see-and-buy-ticket book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
                 مشاهده و خرید
               </button>
-              <div class="book-hidden-elements book-hidden book-flex book-flex-col book-gap-3 book-w-full book-items-center">
+              <div
+                class="book-hidden-elements book-hidden book-flex book-flex-col book-gap-3 book-w-full book-items-center">
                 <div class="book-flex book-mb-3 book-mt-9 book-items-center book-gap-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path
@@ -713,7 +754,11 @@
                   class="book-mt-8 book-w-[90%] book-h-10 book-bg-primary-900 book-text-white book-justify-center book-items-center book-flex book-rounded-lg hover:book-bg-primary-200 hover:book-text-primary-950 hover:book-shadow-lg">خرید</a>
               </div>
             </div>
-          </div>
+                                        </div>
+                                    </script>
+            </face>
+          </basis>
+
 
         </div>
       </section>
@@ -729,63 +774,299 @@
 
 
 <script>
-    /**
- * Global state for session management and UI updates.
- */
-    let busSearchLocalStorage = localStorage.getItem("busSearch")
-        ? JSON.parse(localStorage.getItem("busSearch"))
-        : {};
+  /**
+* Global state for session management and UI updates.
+*/
+  let listData ;
 
-    let schemaId = 0;
-    const cookieValue = `; ${document.cookie}`;
-    const cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
+  let busSearchLocalStorage = localStorage.getItem("busSearch")
+    ? JSON.parse(localStorage.getItem("busSearch"))
+    : {};
 
-
-
-    const setSession = async (args) => {
-
-        console.log("argssssssssssss:" , args);
-        if (!busSearchLocalStorage) return;
-
-        // Update session data
-        schemaId = busSearchLocalStorage.Schemaid;
-        busSearchLocalStorage.SessionId = args.source._rows[0].sessionId;
-        busSearchLocalStorage.rkey = cookieParts[1];
-        localStorage.setItem("busSearch", JSON.stringify(busSearchLocalStorage));
-        // $bc.setSource("cms.session");
+  let schemaId = 0;
+  const cookieValue = `; ${document.cookie}`;
+  const cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
 
 
-        $bc.setSource("cms.rule", {
-            type: "upselling",
-            SessionId: busSearchLocalStorage.SessionId || "",
-            run: true
-        });
+
+  const setSession = async (args) => {
+
+    console.log("args:", args);
+    if (!busSearchLocalStorage) return;
+
+    // Update session data
+    schemaId = busSearchLocalStorage.Schemaid;
+    busSearchLocalStorage.SessionId = args.source._rows[0].sessionId;
+    busSearchLocalStorage.rkey = cookieParts[1];
+    localStorage.setItem("busSearch", JSON.stringify(busSearchLocalStorage));
+    // $bc.setSource("cms.session");
 
 
-        // Set session expiry (20 minutes)
-        const now = new Date();
-        const ttl = 20 * 60 * 1000; // 20 minutes in milliseconds
-        busSearchLocalStorage = { ...busSearchLocalStorage, Expiry: now.getTime() + ttl };
+let cleanTripGroup = [];
 
-        // Fetch provider data for client users
+if (
+  Array.isArray(busSearchLocalStorage.tripGroup)
+) {
+  cleanTripGroup = busSearchLocalStorage.tripGroup.map(item => {
+    const { destinationName, originName, ...rest } = item; // حذف فیلدهای موردنظر
+    return rest;
+  });
+}
 
-        if (cookieParts.length === 2) {
-            try {
-                const userResponse = await fetch('/Client_User_Type.inc');
-                const user = await userResponse.text();
-                if (user === "1") {
-                    const providerResponse = await fetch('/Client_Provider_Library.bc');
-                    providerDataList = await providerResponse.json();
-                }
-            } catch (error) {
-                console.error("setSession: Failed to fetch provider data - " + error.message);
-            }
+const cleanedTripGroupJson = JSON.stringify(cleanTripGroup);
+
+    $bc.setSource("cms.rule", {
+      type: "upselling",
+      TripGroup: cleanedTripGroupJson ,
+      dmnid: busSearchLocalStorage.dmnid || "",
+      Type: busSearchLocalStorage.Type || "",
+      lid: busSearchLocalStorage.lid || "",
+      SessionId: busSearchLocalStorage.SessionId || "",
+      run: true
+    });
+
+
+    // Set session expiry (20 minutes)
+    const now = new Date();
+    const ttl = 20 * 60 * 1000; // 20 minutes in milliseconds
+    busSearchLocalStorage = { ...busSearchLocalStorage, Expiry: now.getTime() + ttl };
+
+    // Fetch provider data for client users
+
+    if (cookieParts.length === 2) {
+      try {
+        const userResponse = await fetch('/Client_User_Type.inc');
+        const user = await userResponse.text();
+        if (user === "1") {
+          const providerResponse = await fetch('/Client_Provider_Library.bc');
+          providerDataList = await providerResponse.json();
         }
-    };
+      } catch (error) {
+        console.error("setSession: Failed to fetch provider data - " + error.message);
+      }
+    }
+  };
+
+
+
+
+function formatBusData(dataresponse) {
+  listData = dataresponse;
+  console.log(listData);
+  console.table(listData);
+  const data = dataresponse.source._rows[0]; // دریافت داده اصلی از ردیف اول
+
+  const enriched = [];
+
+  const locationDict = data.dictionaries?.location || {};
+  const carrierDict = data.dictionaries?.carriers || {};
+  const currencyDict = data.dictionaries?.currency || {};
+
+  (data.busProposals || []).forEach((proposal, index) => {
+    const busGroup = proposal.busGroup?.[0] || {};
+    const routeInfo = busGroup.routesInfo?.[0] || {}; // فرض بر تک سگمنت بودن
+    const price = proposal.priceInfo?.total || 0;
+    const currencyCode = proposal.priceInfo?.currency || '';
+
+    const originId = routeInfo.originRoute;
+    const destinationId = routeInfo.destinationRoute;
+    const carrierCode = routeInfo.busOperatorCode;
+
+    enriched.push({
+      rowNumber: index + 1,
+      busId: proposal.busId || '',
+      originTerminal: busGroup.originTerminal || '',
+      originCity: locationDict[originId]?.city || '',
+
+      destinationTerminal: busGroup.destinationTerminal || '',
+      destinationCity: locationDict[destinationId]?.city || '',
+
+      departureDate: busGroup.departureDate || '',
+      departureTime: busGroup.departureTime || '',
+      busType: routeInfo.busType || '',
+
+      availableSeats: busGroup.availableSeats || 0,
+      refundable: busGroup.refundable || false,
+      refundableText: busGroup.refundable ? 'بله' : 'خیر',
+
+      price: price,
+      formattedPrice: formatPrice(price, currencyDict[currencyCode] || ''),
+
+      currency: currencyDict[currencyCode] || '',
+
+      carrierName: carrierDict[carrierCode]?.name || '',
+      carrierImage: carrierDict[carrierCode]?.image || '',
+    });
+  });
+
+  $bc.setSource('busData.formatted', enriched);
+  return enriched;
+
+
+}
+
+function formatPrice(price, currencyText) {
+  const formatted = (+price).toLocaleString('fa-IR');
+  return `${formatted} ${currencyText}`;
+  
+}
+
+
+function initializeBusCards(idToFind) {
+  idToFind = String(idToFind).trim();
+
+  if (!listData || !listData.source || !Array.isArray(listData.source._rows)) {
+    console.error("listData یا listData.source._rows تعریف نشده یا آرایه نیست");
+    return;
+  }
+
+  const rows = listData.source._rows;
+
+  let foundObject = rows[0].busProposals.find(item => 
+    item.busId && String(item.busId).trim() === idToFind
+  );
+
+  if (!foundObject) {
+    console.warn("آیتم مورد نظر با busId پیدا نشد:", idToFind);
+    return;
+  }
+
+  console.log("foundObject:", foundObject);
+
+  // افزودن origin و destination به busGroup
+  const enrichedBusGroup = {
+    ...(foundObject.busGroup || {}),
+    origin: busSearchLocalStorage.tripGroup.origin,
+    destination: busSearchLocalStorage.tripGroup.destination
+  };
+
+  console.log(enrichedBusGroup);
+  $bc.setSource("cms.seat", {
+    type: "upselling",
+    busId: idToFind,
+    busGroup: JSON.stringify(enrichedBusGroup),
+    run: true
+  });
+
+
+  const container = document.querySelector(".book-bus-cards-container");
+  if (!container) return;
+
+  container.addEventListener("click", (event) => {
+    const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
+    const closeCardBtn = event.target.closest(".book-closeCard");
+    const openFirstMenu = event.target.closest(".book-open-first-menu");
+    const closeFirstMenu = event.target.closest(".book-first-menu .book-clode-menu");
+    const openSecondMenu = event.target.closest(".book-open-second-menu");
+    const closeSecondMenu = event.target.closest(".book-second-menu .book-clode-menu");
+    const openThirdMenu = event.target.closest(".book-open-third-menu");
+    const closeThirdMenu = event.target.closest(".book-third-menu .book-clode-menu");
+
+    const card = event.target.closest(".book-bus-card");
+    if (!card) return;
+
+    // باز کردن کارت
+    if (seeMoreBtn) {
+      seeMoreBtn.classList.add("book-hidden");
+      card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.remove("book-hidden"));
+      card.classList.remove("book-h-[240px]");
+      card.classList.add("book-h-[482px]");
+    }
+
+    // بستن کارت
+    if (closeCardBtn) {
+      const seeMore = card.querySelector(".book-see-and-buy-ticket");
+      if (seeMore) seeMore.classList.remove("book-hidden");
+      card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.add("book-hidden"));
+      card.classList.add("book-h-[240px]");
+      card.classList.remove("book-h-[482px]");
+    }
+
+    // منوی اول
+    if (openFirstMenu) {
+      card.querySelector(".book-first-menu")?.classList.remove("book-translate-x-[105%]");
+    }
+    if (closeFirstMenu) {
+      card.querySelector(".book-first-menu")?.classList.add("book-translate-x-[105%]");
+    }
+
+    // منوی دوم
+    if (openSecondMenu) {
+      card.querySelector(".book-second-menu")?.classList.remove("book-translate-x-[105%]");
+    }
+    if (closeSecondMenu) {
+      card.querySelector(".book-second-menu")?.classList.add("book-translate-x-[105%]");
+    }
+
+    // منوی سوم
+    if (openThirdMenu) {
+      card.querySelector(".book-third-menu")?.classList.remove("book-translate-x-[105%]");
+    }
+    if (closeThirdMenu) {
+      card.querySelector(".book-third-menu")?.classList.add("book-translate-x-[105%]");
+    }
+  });
+
+}
+
+
+// function formatBusData(apiResponse) {
+//     let parsedData = apiResponse;
+
+//     if (typeof apiResponse === 'string') {
+//         try {
+//             parsedData = JSON.parse(apiResponse);
+//         } catch (e) {
+//             console.error('خطا در parse کردن JSON:', e);
+//             $bc.setSource('busData.formatted', []);
+//             return;
+//         }
+//     }
+
+//     const allFormattedData = [];
+
+//     const rows = parsedData?.source?._rows || [];
+
+//     rows.forEach((row, rowIndex) => {
+//         const carriers = row.dictionaries?.carriers || {};
+//         const busProposals = row.busProposals || [];
+
+//         busProposals.forEach((bus, index) => {
+//             const busGroup = bus.busGroup?.[0];
+//             const routeInfo = busGroup?.routesInfo?.[0];
+
+//             if (!busGroup || !routeInfo) return;
+
+//             const carrierName = carriers[routeInfo.busOperatorCode]?.name || routeInfo.busOperatorCode;
+
+//             allFormattedData.push({
+//                 rowNumber: allFormattedData.length + 1,
+//                 busId: bus.busId,
+//                 originTerminal: busGroup.originTerminal,
+//                 destinationTerminal: busGroup.destinationTerminal,
+//                 departureDate: busGroup.departureDate,
+//                 departureTime: busGroup.departureTime,
+//                 busType: routeInfo.busType,
+//                 carrierName: carrierName,
+//                 price: bus.priceInfo.total,
+//                 formattedPrice: parseInt(bus.priceInfo.total).toLocaleString('fa-IR'),
+//                 refundable: busGroup.refundable,
+//                 refundableText: busGroup.refundable ? 'بله' : 'خیر',
+//                 availableSeats: busGroup.availableSeats
+//             });
+//         });
+//     });
+
+//     console.log("formattedData:", allFormattedData);
+    
+//     $bc.setSource('busData.formatted', allFormattedData);
+
+
+// }
+
+
 
 </script>
-
-
 
 </html>
 <!-- https://safar724.com/bus/tehran-mashhad?date=1404-02-09 -->

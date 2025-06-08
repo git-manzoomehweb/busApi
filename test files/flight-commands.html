@@ -29,6 +29,7 @@
       cms.departuretime cms.outbounddeparturetime cms.inbounddeparturetime cms.outboundhour cms.inboundhour cms.hour cms.outboundbaggage cms.inboundbaggage cms.baggage cms.systemflight cms.farefamily cms.price cms.sort cms.flight"
     method="manipulation">
 </basis>
+
 <basis core="api" name="api.rule"
     url="[##cms.host.test##]/Flight/{##cms.rule.type##}" method="post"
     content-type="application/json" run="atclient" triggers="cms.rule"

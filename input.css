@@ -6,19 +6,19 @@
   font-family: "Dana";
   font-weight: 400;
   font-style: normal;
-  src: url("../../fonts/DanaFaNum-Regular.woff");
+  src: url("../../_fonts/DanaFaNum-Regular.woff");
 }
 @font-face {
   font-family: "Dana";
   font-weight: 500;
   font-style: normal;
-  src: url("../../fonts/DanaFaNum-Medium.woff");
+  src: url("../../_fonts/DanaFaNum-Medium.woff");
 }
 @font-face {
   font-family: "Dana";
   font-weight: 700;
   font-style: normal;
-  src: url("../../fonts/DanaFaNum-Bold.woff");
+  src: url("../../_fonts/DanaFaNum-Bold.woff");
 }
 
 html,
@@ -177,13 +177,13 @@ body {
 .book-bus-card.book-h-\[482px\]::after {
   height: 92%;
 }
-.book-bus-card {
+/* .book-bus-card {
   filter: drop-shadow(0 0 7px rgba(0, 0, 0, 0.259));
-}
-.book-bus-card-mobile {
+} */
+/* .book-bus-card-mobile {
   filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.213))
     drop-shadow(3px 0 0 var(--primary-500));
-}
+} */
 .book-bus-card-mobile::before {
   content: "";
   position: absolute;
