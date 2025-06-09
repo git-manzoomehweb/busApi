@@ -8,13 +8,15 @@
 
 <basis core="callback" triggers="api.session" run="atclient" method="setSession"></basis>
 
-<basis core="api" name="bus.search" url="http://185.44.36.51:1550/api/bus/search" method="post" if="{##cms.rule##}"
-    triggers="cms.rule" content-type="application/json" run="atclient" body='{
-  "tripGroup": "{##cms.rule.TripGroup##}",
+<basis core="api" name="bus.search" url="http://185.44.36.51:1550/api/bus/search" method="post" 
+if="{##cms.rule.run|(false)##}"
+    triggers="cms.rule" 
+    content-type="application/json" run="atclient" body='{
+  "tripGroup": {##cms.rule.TripGroup##},
   "rKey": "[##cms.cookie.rkey##]",
-  "dmnid":  "{##cms.rule.dmnid##}",
+  "dmnid":  {##cms.rule.dmnid##},
   "sessionId": "{##cms.rule.SessionId##}",
-  "lid": "{##cms.rule.lid##}"
+  "lid": {##cms.rule.lid##}
 }'>
 </basis>
 <basis core="callback" triggers="bus.search cms.page cms.nextpage cms.prevpage" run="atclient" method="formatBusData">
@@ -22,52 +24,26 @@
 
 <!-- available-seat -->
 <basis core="api" name="bus.available-seat" url="http://185.44.36.51:1550/api/bus/available-seat" method="post"
-    if="{##cms.seat##} " triggers="cms.seat" content-type="application/json" run="atclient" body='{
+    if="{##cms.seat.run|(false)##} " triggers="cms.seat" 
+    content-type="application/json" run="atclient" body='{
     "busId": "{##cms.seat.busId##}",
-    "busGroup": "{##cms.seat.busGroup##}",
+    "busGroup": {##cms.seat.busGroup##},
     "rKey": "[##cms.cookie.rkey##]", 
-    "dmnid":  "{##cms.rule.dmnid##}",
+    "dmnid":  {##cms.rule.dmnid##},
     "sessionId": "{##cms.rule.SessionId##}",
     "lid": "{##cms.rule.lid##}"
 }'>
 </basis>
 
 <!-- bus_rules -->
-<basis core="api" name="bus.rules" url="http://185.44.36.51:1550/api/bus/bus-rules" method="post" if="{##cms.rule##}"
-    triggers="cms.rule" content-type="application/json" run="atclient" body='{
-		            "busId": "Njg0NTJmYzkyZjNhNzQ1Y2FmOGEzMTU5XzFfMTE4",
-            "busGroup": [
-                {
-                    "originTerminal": "پایانه جنوب تهران",
-                    "destinationTerminal": "مشهد (خراسان )",
-                    "numberOfStops": 0,
-                    "departureDate": "1404-03-21",
-                    "departureTime": "07:00",
-                    "duration": null,
-                    "arrivalTime": null,
-                    "arrivalDate": null,
-                    "refundable": true,
-                    "availableSeats": 0,
-                    "description": null,
-                    "routesInfo": [
-                        {
-                            "SegmentId": 1,
-                            "busOperatorCode": "T12",
-                            "departureDate": "1404-03-21",
-                            "departureTime": "07:00",
-                            "arrivalDate": "",
-                            "arrivalTime": "",
-                            "duration": null,
-                            "originRoute": 1203548,
-                            "destinationRoute": 1211083,
-                            "busType": "VIP همراه با شارژراختصاصی"
-                        }
-                    ]
-                }
-            ],
+<basis core="api" name="bus.rules" url="http://185.44.36.51:1550/api/bus/bus-rules" method="post" 
+    if="{##cms.seat.run|(false)##} " triggers="cms.seat" 
+    content-type="application/json" run="atclient" body='{
+    "busId": "{##cms.seat.busId##}",
+    "busGroup": {##cms.seat.busGroup##},
     "rKey": "[##cms.cookie.rkey##]", 
-    "dmnid": 2475,
+    "dmnid":  {##cms.rule.dmnid##},
     "sessionId": "{##cms.rule.SessionId##}",
-    "lid": 1 
+    "lid": "{##cms.rule.lid##}"
 }'>
 </basis>

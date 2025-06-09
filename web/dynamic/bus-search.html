@@ -779,10 +779,10 @@
 */
   let listData ;
 
-  let busSearchLocalStorage = localStorage.getItem("busSearch")
-    ? JSON.parse(localStorage.getItem("busSearch"))
-    : {};
+  let busSearchLocalStorage = localStorage.getItem("busSearch") ? JSON.parse(localStorage.getItem("busSearch")) : {};
 
+  console.log(busSearchLocalStorage);
+  console.log(typeof busSearchLocalStorage);
   let schemaId = 0;
   const cookieValue = `; ${document.cookie}`;
   const cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
@@ -804,26 +804,25 @@
 
 let cleanTripGroup = [];
 
-if (
-  Array.isArray(busSearchLocalStorage.tripGroup)
-) {
+if (Array.isArray(busSearchLocalStorage.tripGroup)) {
   cleanTripGroup = busSearchLocalStorage.tripGroup.map(item => {
-    const { destinationName, originName, ...rest } = item; // حذف فیلدهای موردنظر
+    const { destinationName, originName, ...rest } = item;
     return rest;
   });
 }
 
-const cleanedTripGroupJson = JSON.stringify(cleanTripGroup);
+$bc.setSource("cms.rule", {
+  type: "upselling",
+  TripGroup: JSON.stringify(cleanTripGroup) ,
+  dmnid: busSearchLocalStorage.dmnid || 0,
+  Type: busSearchLocalStorage.Type || "",
+  lid: busSearchLocalStorage.lid || 1 ,
+  SessionId: busSearchLocalStorage.SessionId || "",
+  run: true
+});
 
-    $bc.setSource("cms.rule", {
-      type: "upselling",
-      TripGroup: cleanedTripGroupJson ,
-      dmnid: busSearchLocalStorage.dmnid || "",
-      Type: busSearchLocalStorage.Type || "",
-      lid: busSearchLocalStorage.lid || "",
-      SessionId: busSearchLocalStorage.SessionId || "",
-      run: true
-    });
+
+
 
 
     // Set session expiry (20 minutes)
