@@ -32,7 +32,7 @@ if="{##cms.rule.run|(false)##}"
     "dmnid":  {##cms.rule.dmnid##},
     "sessionId": "{##cms.rule.SessionId##}",
     "lid": "{##cms.rule.lid##}"
-}'>
+}' onprocessed='onProcessedRenderSeatMap'>
 </basis>
 
 <!-- bus_rules -->
@@ -45,5 +45,9 @@ if="{##cms.rule.run|(false)##}"
     "dmnid":  {##cms.rule.dmnid##},
     "sessionId": "{##cms.rule.SessionId##}",
     "lid": "{##cms.rule.lid##}"
-}'>
+}'  onprocessed='onProcessedRenderBusRules' >
 </basis>
+
+
+
+

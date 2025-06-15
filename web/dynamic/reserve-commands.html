@@ -1,0 +1,52 @@
+<basis core="api" name="api.reserve"
+    url="http://185.44.36.51:1550/api/bus/reserve"
+    method="post" content-type="application/json" 
+    run="atclient" body='{
+    "sessionId": "[##cms.form.SessionId##]",
+    "busId": "[##cms.form.busId##]",
+    "busGroup": [##cms.form.busGroup##],
+    "travelers": [##cms.form.Travelers##],
+    "account": [##cms.form.account##],
+    "agencycountername": "[##cms.form.agencycountername##]",
+    "agencycounter": "[##cms.form.agencycounter##]",
+    "rkey": "[##cms.cookie.rkey##]",
+    "clear": "[##cms.form.clear##]",
+    "accounttype": "[##cms.form.accounttype##]",
+    "lid": "[##cms.query.lid|(1)##]",
+    "mid": "[##cms.form.mid##]"
+    "share": "0",
+}'>
+</basis>
+
+<basis core="api" name="api.issue-ticket" url="http://185.44.36.51:1550/api/bus/issue-ticket" method="post"
+    content-type="application/json" run="atclient" body='{
+"rKey": "209eb83190d1241bf0fda90697d8b439e5f71840",
+"basisFlyBookId": "536321",
+"sessionId": "67f5be25300c608f51f7a588"
+}'>
+</basis>
+
+
+
+
+
+<!-- <basis core="api" name="api.reserve" url="{##cms.url.value##}/Flight/Reserve" method="post" content-type="application/json" run="atclient" if="{##cms.url##}" triggers="cms.url" body='{
+    "SessionId": "[##cms.form.SessionId##]",
+    "FlightId": "[##cms.form.FlightId##]",
+    "FlightGroup": [##cms.form.FlightGroup##],
+    "Travelers": [##cms.form.Travelers##],
+    "account": [##cms.form.account##],
+    "agencycountername": "[##cms.form.agencycountername##]",
+    "agencycounter": "[##cms.form.agencycounter##]",
+    "rkey": "[##cms.cookie.rkey##]",
+    "clear": "[##cms.form.clear##]",
+    "accounttype": "[##cms.form.accounttype##]",
+    "lid": "[##cms.query.lid|(1)##]",
+    "mid": "[##cms.form.mid##]"
+    "dmnid": "[##cms.cms.domainid##]",
+    "code": "[##cms.form.code##]",
+    "club_discount": "[##cms.form.club_discount##]",
+    "invoicedesc": "[##cms.form.invoicedesc##]",
+    "ownerid": "[##cms.cms.ownerid##]",
+}'>
+</basis> -->

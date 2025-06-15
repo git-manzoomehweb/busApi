@@ -317,6 +317,31 @@
 				}
 			]
 		},
+
+
+
+
+
+
+
+
+"{
+	"tripGroup": [
+    	{
+        	"origin": "THR",
+        	"destination": "MHD",
+        	"departureDate": "2025-05-30"
+    	}
+	],
+	"rKey": "{{rkey}}",        //optional
+    "dmnid": 2475,
+	"sessionId": "{{SessionId}}",
+	"lid": 2     //optional
+
+}
+"
+
+
 		{
 			"name": "reserve",
 			"request": {

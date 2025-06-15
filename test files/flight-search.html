@@ -2251,1168 +2251,1168 @@
         */
         startProgressBar(1000);
 
-        const manipulation = async (args) => {
-            // Initialize pagination and UI update variables
-            let currentIndex = 0;
-            let start = 0;
-            let end = 30;
-            let dynamicFlightProposalsCount = 0;
-            elseExecuted = false;
-            startProgressBar();
+        // const manipulation = async (args) => {
+        //     // Initialize pagination and UI update variables
+        //     let currentIndex = 0;
+        //     let start = 0;
+        //     let end = 30;
+        //     let dynamicFlightProposalsCount = 0;
+        //     elseExecuted = false;
+        //     startProgressBar();
 
-            /**
-             * Handle pagination controls (page number, next, previous).
-             */
-            if (args.source.id === 'cms.page') {
-                mustUpdate = true;
-                InUpdatePaging = false;
-                InUpdateFiltering = false;
-                selectedFlightId = null;
+        //     /**
+        //      * Handle pagination controls (page number, next, previous).
+        //      */
+        //     if (args.source.id === 'cms.page') {
+        //         mustUpdate = true;
+        //         InUpdatePaging = false;
+        //         InUpdateFiltering = false;
+        //         selectedFlightId = null;
 
-                const currentValue = parseInt(args.source.rows[0].value);
-                const prevButton = document.querySelector(".book-prevpage");
-                const nextButton = document.querySelector(".book-nextpage");
-                const pagingContainer = document.querySelector(".book-paging__cards__container");
+        //         const currentValue = parseInt(args.source.rows[0].value);
+        //         const prevButton = document.querySelector(".book-prevpage");
+        //         const nextButton = document.querySelector(".book-nextpage");
+        //         const pagingContainer = document.querySelector(".book-paging__cards__container");
 
-                // Update active page styling
-                const activeButton = document.querySelector(".book-active__paging");
-                activeButton.classList.remove("book-active__paging");
-                activeButton.classList.add("bg-white");
-                const newActive = pagingContainer.querySelector(`[bc-value="${currentValue}"]`);
-                newActive.classList.add("book-active__paging");
-                newActive.classList.remove("bg-white");
+        //         // Update active page styling
+        //         const activeButton = document.querySelector(".book-active__paging");
+        //         activeButton.classList.remove("book-active__paging");
+        //         activeButton.classList.add("bg-white");
+        //         const newActive = pagingContainer.querySelector(`[bc-value="${currentValue}"]`);
+        //         newActive.classList.add("book-active__paging");
+        //         newActive.classList.remove("bg-white");
 
-                // Calculate pagination range
-                start = currentValue * 30;
-                end = start + 30;
+        //         // Calculate pagination range
+        //         start = currentValue * 30;
+        //         end = start + 30;
 
-                // Toggle previous button visibility
-                prevButton.classList.toggle("book-hidden", currentValue === 0);
+        //         // Toggle previous button visibility
+        //         prevButton.classList.toggle("book-hidden", currentValue === 0);
 
-                // Toggle next button visibility
-                const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
-                const lastButton = allButtons[allButtons.length - 1];
-                nextButton.classList.toggle("book-hidden", newActive === lastButton);
-            } else if (args.source.id === 'cms.nextpage') {
-                mustUpdate = true;
-                InUpdatePaging = false;
-                InUpdateFiltering = false;
-                selectedFlightId = null;
+        //         // Toggle next button visibility
+        //         const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
+        //         const lastButton = allButtons[allButtons.length - 1];
+        //         nextButton.classList.toggle("book-hidden", newActive === lastButton);
+        //     } else if (args.source.id === 'cms.nextpage') {
+        //         mustUpdate = true;
+        //         InUpdatePaging = false;
+        //         InUpdateFiltering = false;
+        //         selectedFlightId = null;
 
-                const prevButton = document.querySelector(".book-prevpage");
-                const nextButton = document.querySelector(".book-nextpage");
-                const activeButton = document.querySelector(".book-active__paging");
-                const currentValue = parseInt(activeButton.getAttribute("bc-value"));
-                const nextValue = currentValue + 1;
-                const nextPage = document.querySelector(`.book-paging__cards__container [bc-value="${nextValue}"]`);
+        //         const prevButton = document.querySelector(".book-prevpage");
+        //         const nextButton = document.querySelector(".book-nextpage");
+        //         const activeButton = document.querySelector(".book-active__paging");
+        //         const currentValue = parseInt(activeButton.getAttribute("bc-value"));
+        //         const nextValue = currentValue + 1;
+        //         const nextPage = document.querySelector(`.book-paging__cards__container [bc-value="${nextValue}"]`);
 
-                if (nextPage) {
-                    // Update active page styling
-                    activeButton.classList.remove("book-active__paging");
-                    activeButton.classList.add("bg-white");
-                    nextPage.classList.add("book-active__paging");
-                    nextPage.classList.remove("bg-white");
+        //         if (nextPage) {
+        //             // Update active page styling
+        //             activeButton.classList.remove("book-active__paging");
+        //             activeButton.classList.add("bg-white");
+        //             nextPage.classList.add("book-active__paging");
+        //             nextPage.classList.remove("bg-white");
 
-                    // Show next page if hidden
-                    if (nextPage.classList.contains("book-hidden")) {
-                        nextPage.classList.remove("book-hidden");
-                        const firstVisible = document.querySelector(".book-paging__container:not(.hidden):not(.book-prevpage):not(.book-nextpage)");
-                        if (firstVisible) firstVisible.classList.add("book-hidden");
-                    }
+        //             // Show next page if hidden
+        //             if (nextPage.classList.contains("book-hidden")) {
+        //                 nextPage.classList.remove("book-hidden");
+        //                 const firstVisible = document.querySelector(".book-paging__container:not(.hidden):not(.book-prevpage):not(.book-nextpage)");
+        //                 if (firstVisible) firstVisible.classList.add("book-hidden");
+        //             }
 
-                    // Show previous button if not on first page
-                    prevButton.classList.toggle("book-hidden", nextValue === 0);
-                }
+        //             // Show previous button if not on first page
+        //             prevButton.classList.toggle("book-hidden", nextValue === 0);
+        //         }
 
-                // Toggle next button visibility
-                const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
-                const lastButton = allButtons[allButtons.length - 1];
-                nextButton.classList.toggle("book-hidden", nextPage === lastButton);
+        //         // Toggle next button visibility
+        //         const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
+        //         const lastButton = allButtons[allButtons.length - 1];
+        //         nextButton.classList.toggle("book-hidden", nextPage === lastButton);
 
-                // Update pagination range
-                start = nextValue * 30;
-                end = start + 30;
-            } else if (args.source.id === 'cms.prevpage') {
-                mustUpdate = true;
-                InUpdatePaging = false;
-                InUpdateFiltering = false;
-                selectedFlightId = null;
+        //         // Update pagination range
+        //         start = nextValue * 30;
+        //         end = start + 30;
+        //     } else if (args.source.id === 'cms.prevpage') {
+        //         mustUpdate = true;
+        //         InUpdatePaging = false;
+        //         InUpdateFiltering = false;
+        //         selectedFlightId = null;
 
-                const prevButton = document.querySelector(".book-prevpage");
-                const nextButton = document.querySelector(".book-nextpage");
-                const activeButton = document.querySelector(".book-active__paging");
-                const currentValue = parseInt(activeButton.getAttribute("bc-value"));
-                const prevValue = currentValue - 1;
-                const prevPage = document.querySelector(`.book-paging__cards__container [bc-value="${prevValue}"]`);
+        //         const prevButton = document.querySelector(".book-prevpage");
+        //         const nextButton = document.querySelector(".book-nextpage");
+        //         const activeButton = document.querySelector(".book-active__paging");
+        //         const currentValue = parseInt(activeButton.getAttribute("bc-value"));
+        //         const prevValue = currentValue - 1;
+        //         const prevPage = document.querySelector(`.book-paging__cards__container [bc-value="${prevValue}"]`);
 
-                if (prevPage) {
-                    // Update active page styling
-                    activeButton.classList.remove("book-active__paging");
-                    activeButton.classList.add("bg-white");
-                    prevPage.classList.add("book-active__paging");
-                    prevPage.classList.remove("bg-white");
+        //         if (prevPage) {
+        //             // Update active page styling
+        //             activeButton.classList.remove("book-active__paging");
+        //             activeButton.classList.add("bg-white");
+        //             prevPage.classList.add("book-active__paging");
+        //             prevPage.classList.remove("bg-white");
 
-                    // Show previous page if hidden
-                    if (prevPage.classList.contains("book-hidden")) {
-                        prevPage.classList.remove("book-hidden");
-                        const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
-                        const lastVisible = allButtons.reverse().find(btn => !btn.classList.contains("book-hidden"));
-                        if (lastVisible) lastVisible.classList.add("book-hidden");
-                    }
+        //             // Show previous page if hidden
+        //             if (prevPage.classList.contains("book-hidden")) {
+        //                 prevPage.classList.remove("book-hidden");
+        //                 const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
+        //                 const lastVisible = allButtons.reverse().find(btn => !btn.classList.contains("book-hidden"));
+        //                 if (lastVisible) lastVisible.classList.add("book-hidden");
+        //             }
 
-                    // Toggle previous and next button visibility
-                    prevButton.classList.toggle("book-hidden", prevValue === 0);
-                    nextButton.classList.remove("book-hidden");
-                }
+        //             // Toggle previous and next button visibility
+        //             prevButton.classList.toggle("book-hidden", prevValue === 0);
+        //             nextButton.classList.remove("book-hidden");
+        //         }
 
-                // Update pagination range
-                start = prevValue * 30;
-                end = start + 30;
-            }
+        //         // Update pagination range
+        //         start = prevValue * 30;
+        //         end = start + 30;
+        //     }
 
-            /**
-             * Handle filter updates for airlines, airports, stops, baggage, etc.
-             */
-            else if (args.source.id === "cms.outboundairline") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                const value = args.source.rows[0].value;
-                const index = outboundAirlineNames.indexOf(value);
-                if (index !== -1) {
-                    outboundAirlineNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-outboundairline__content", value, false);
-                } else {
-                    outboundAirlineNames.push(value);
-                    toggleFilterCheckbox(".book-outboundairline__content", value, true);
-                }
-            } else if (args.source.id === "cms.inboundairline") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                const value = args.source.rows[0].value;
-                const index = inboundAirlineNames.indexOf(value);
-                if (index !== -1) {
-                    inboundAirlineNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-inboundairline__content", value, false);
-                } else {
-                    inboundAirlineNames.push(value);
-                    toggleFilterCheckbox(".book-inboundairline__content", value, true);
-                }
-            } else if (args.source.id === "cms.airline") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                const value = args.source.rows[0].value;
-                const index = airlineNames.indexOf(value);
-                if (index !== -1) {
-                    airlineNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-airline__content", value, false);
-                } else {
-                    airlineNames.push(value);
-                    toggleFilterCheckbox(".book-airline__content", value, true);
-                }
-            } else if (args.source.id === "cms.outboundairport") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                const value = args.source.rows[0].value;
-                const index = outboundAirportNames.indexOf(value);
-                if (index !== -1) {
-                    outboundAirportNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-outboundairport__content", value, false);
-                } else {
-                    outboundAirportNames.push(value);
-                    toggleFilterCheckbox(".book-outboundairport__content", value, true);
-                }
-            } else if (args.source.id === "cms.inboundairport") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                const value = args.source.rows[0].value;
-                const index = inboundAirportNames.indexOf(value);
-                if (index !== -1) {
-                    inboundAirportNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-inboundairport__content", value, false);
-                } else {
-                    inboundAirportNames.push(value);
-                    toggleFilterCheckbox(".book-inboundairport__content", value, true);
-                }
-            } else if (args.source.id === "cms.airport") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                const value = args.source.rows[0].value;
-                const index = airportNames.indexOf(value);
-                if (index !== -1) {
-                    airportNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-airport__content", value, false);
-                } else {
-                    airportNames.push(value);
-                    toggleFilterCheckbox(".book-airport__content", value, true);
-                }
-            } else if (args.source.id === "cms.outboundstop") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
-                const index = outboundStopNames.indexOf(stopValue);
-                if (index !== -1) {
-                    outboundStopNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-outboundstop__content", args.source.rows[0].value, false, "");
-                } else {
-                    outboundStopNames.push(stopValue);
-                    toggleFilterCheckbox(".book-outboundstop__content", args.source.rows[0].value, true, "");
-                }
-            } else if (args.source.id === "cms.inboundstop") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
-                const index = inboundStopNames.indexOf(stopValue);
-                if (index !== -1) {
-                    inboundStopNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-inboundstop__content", args.source.rows[0].value, false, "");
-                } else {
-                    inboundStopNames.push(stopValue);
-                    toggleFilterCheckbox(".book-inboundstop__content", args.source.rows[0].value, true, "");
-                }
-            } else if (args.source.id === "cms.stop") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
-                const index = stopNames.indexOf(stopValue);
-                if (index !== -1) {
-                    stopNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-stop__content", args.source.rows[0].value, false, "");
-                } else {
-                    stopNames.push(stopValue);
-                    toggleFilterCheckbox(".book-stop__content", args.source.rows[0].value, true, "");
-                }
-            } else if (args.source.id === "cms.outboundflightnumber") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                outboundFlightNumberNames = args.source.rows[0].value
-                    .split(",")
-                    .map(item => item.trim().toLowerCase())
-                    .filter(item => item !== "");
-            } else if (args.source.id === "cms.inboundflightnumber") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                inboundFlightNumberNames = args.source.rows[0].value
-                    .split(",")
-                    .map(item => item.trim().toLowerCase())
-                    .filter(item => item !== "");
-            } else if (args.source.id === "cms.flightnumber") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
-                flightNumberNames = args.source.rows[0].value
-                    .split(",")
-                    .map(item => item.trim().toLowerCase())
-                    .filter(item => item !== "");
-            } else if (args.source.id === "cms.outbounddeparturetime") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                const content = document.querySelector(".book-outbounddeparturetime__content");
-                if (!content) return;
+        //     /**
+        //      * Handle filter updates for airlines, airports, stops, baggage, etc.
+        //      */
+        //     else if (args.source.id === "cms.outboundairline") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         const value = args.source.rows[0].value;
+        //         const index = outboundAirlineNames.indexOf(value);
+        //         if (index !== -1) {
+        //             outboundAirlineNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-outboundairline__content", value, false);
+        //         } else {
+        //             outboundAirlineNames.push(value);
+        //             toggleFilterCheckbox(".book-outboundairline__content", value, true);
+        //         }
+        //     } else if (args.source.id === "cms.inboundairline") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         const value = args.source.rows[0].value;
+        //         const index = inboundAirlineNames.indexOf(value);
+        //         if (index !== -1) {
+        //             inboundAirlineNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-inboundairline__content", value, false);
+        //         } else {
+        //             inboundAirlineNames.push(value);
+        //             toggleFilterCheckbox(".book-inboundairline__content", value, true);
+        //         }
+        //     } else if (args.source.id === "cms.airline") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         const value = args.source.rows[0].value;
+        //         const index = airlineNames.indexOf(value);
+        //         if (index !== -1) {
+        //             airlineNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-airline__content", value, false);
+        //         } else {
+        //             airlineNames.push(value);
+        //             toggleFilterCheckbox(".book-airline__content", value, true);
+        //         }
+        //     } else if (args.source.id === "cms.outboundairport") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         const value = args.source.rows[0].value;
+        //         const index = outboundAirportNames.indexOf(value);
+        //         if (index !== -1) {
+        //             outboundAirportNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-outboundairport__content", value, false);
+        //         } else {
+        //             outboundAirportNames.push(value);
+        //             toggleFilterCheckbox(".book-outboundairport__content", value, true);
+        //         }
+        //     } else if (args.source.id === "cms.inboundairport") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         const value = args.source.rows[0].value;
+        //         const index = inboundAirportNames.indexOf(value);
+        //         if (index !== -1) {
+        //             inboundAirportNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-inboundairport__content", value, false);
+        //         } else {
+        //             inboundAirportNames.push(value);
+        //             toggleFilterCheckbox(".book-inboundairport__content", value, true);
+        //         }
+        //     } else if (args.source.id === "cms.airport") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         const value = args.source.rows[0].value;
+        //         const index = airportNames.indexOf(value);
+        //         if (index !== -1) {
+        //             airportNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-airport__content", value, false);
+        //         } else {
+        //             airportNames.push(value);
+        //             toggleFilterCheckbox(".book-airport__content", value, true);
+        //         }
+        //     } else if (args.source.id === "cms.outboundstop") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
+        //         const index = outboundStopNames.indexOf(stopValue);
+        //         if (index !== -1) {
+        //             outboundStopNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-outboundstop__content", args.source.rows[0].value, false, "");
+        //         } else {
+        //             outboundStopNames.push(stopValue);
+        //             toggleFilterCheckbox(".book-outboundstop__content", args.source.rows[0].value, true, "");
+        //         }
+        //     } else if (args.source.id === "cms.inboundstop") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
+        //         const index = inboundStopNames.indexOf(stopValue);
+        //         if (index !== -1) {
+        //             inboundStopNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-inboundstop__content", args.source.rows[0].value, false, "");
+        //         } else {
+        //             inboundStopNames.push(stopValue);
+        //             toggleFilterCheckbox(".book-inboundstop__content", args.source.rows[0].value, true, "");
+        //         }
+        //     } else if (args.source.id === "cms.stop") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
+        //         const index = stopNames.indexOf(stopValue);
+        //         if (index !== -1) {
+        //             stopNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-stop__content", args.source.rows[0].value, false, "");
+        //         } else {
+        //             stopNames.push(stopValue);
+        //             toggleFilterCheckbox(".book-stop__content", args.source.rows[0].value, true, "");
+        //         }
+        //     } else if (args.source.id === "cms.outboundflightnumber") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         outboundFlightNumberNames = args.source.rows[0].value
+        //             .split(",")
+        //             .map(item => item.trim().toLowerCase())
+        //             .filter(item => item !== "");
+        //     } else if (args.source.id === "cms.inboundflightnumber") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         inboundFlightNumberNames = args.source.rows[0].value
+        //             .split(",")
+        //             .map(item => item.trim().toLowerCase())
+        //             .filter(item => item !== "");
+        //     } else if (args.source.id === "cms.flightnumber") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
+        //         flightNumberNames = args.source.rows[0].value
+        //             .split(",")
+        //             .map(item => item.trim().toLowerCase())
+        //             .filter(item => item !== "");
+        //     } else if (args.source.id === "cms.outbounddeparturetime") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         const content = document.querySelector(".book-outbounddeparturetime__content");
+        //         if (!content) return;
 
-                const value = args.source.rows[0].value;
-                const selectedEl = content.querySelector(`[bc-value="${value}"]`);
-                if (!selectedEl) return;
+        //         const value = args.source.rows[0].value;
+        //         const selectedEl = content.querySelector(`[bc-value="${value}"]`);
+        //         if (!selectedEl) return;
 
-                const timePeriod = selectedEl.dataset.timePeriod || "";
-                const timeRange = selectedEl.dataset.timeRange || "";
-                const flexContainer = content.querySelector(".book-flex.book-justify-between");
+        //         const timePeriod = selectedEl.dataset.timePeriod || "";
+        //         const timeRange = selectedEl.dataset.timeRange || "";
+        //         const flexContainer = content.querySelector(".book-flex.book-justify-between");
 
 
-                const index = outboundDepartureTimeNames.indexOf(value);
-                if (index !== -1) {
-                    outboundDepartureTimeNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-outbounddeparturetime__content", value, false, "");
-                    // Find and remove the corresponding book-time__content
-                    const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-                    if (existingElement) {
-                        existingElement.remove();
-                    }
-                    // If no time content remains, restore default (morning)
-                    if (!content.querySelector(".book-time__content")) {
-                        const defaultTimeContent = document.createElement("div");
-                        defaultTimeContent.className = "book-time__content";
-                        defaultTimeContent.setAttribute("data-value", "5-11"); // Default to "morning"
-                        defaultTimeContent.innerHTML = `
-                <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">صبح</div>
-                <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                    ساعت فیلتر شده از
-                    <span class="book-hour">00:00 الی 00:00</span>
-                </div>
-            `;
-                        content.insertBefore(defaultTimeContent, flexContainer);
-                    }
-                } else {
-                    outboundDepartureTimeNames.push(value);
-                    toggleFilterCheckbox(".book-outbounddeparturetime__content", value, true, "");
-                    // Check if this is the first selection (update default)
-                    const existingTimeContents = content.querySelectorAll(".book-time__content");
-                    if (existingTimeContents.length === 1 && outboundDepartureTimeNames.length === 1) {
-                        // Update the default book-time__content
-                        const defaultTimeContent = existingTimeContents[0];
-                        defaultTimeContent.setAttribute("data-value", value);
-                        defaultTimeContent.innerHTML = `
-                <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
-                <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                    ساعت فیلتر شده از
-                    <span class="book-hour">${timeRange}</span>
-                </div>
-            `;
-                    } else {
-                        // Create new book-time__content for additional selections
-                        // Remove any existing element with the same value to avoid duplicates
-                        const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-                        if (duplicateElement) {
-                            duplicateElement.remove();
-                        }
+        //         const index = outboundDepartureTimeNames.indexOf(value);
+        //         if (index !== -1) {
+        //             outboundDepartureTimeNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-outbounddeparturetime__content", value, false, "");
+        //             // Find and remove the corresponding book-time__content
+        //             const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+        //             if (existingElement) {
+        //                 existingElement.remove();
+        //             }
+        //             // If no time content remains, restore default (morning)
+        //             if (!content.querySelector(".book-time__content")) {
+        //                 const defaultTimeContent = document.createElement("div");
+        //                 defaultTimeContent.className = "book-time__content";
+        //                 defaultTimeContent.setAttribute("data-value", "5-11"); // Default to "morning"
+        //                 defaultTimeContent.innerHTML = `
+        //         <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">صبح</div>
+        //         <div class="book-text-zinc-900 book-text-xs book-mb-4">
+        //             ساعت فیلتر شده از
+        //             <span class="book-hour">00:00 الی 00:00</span>
+        //         </div>
+        //     `;
+        //                 content.insertBefore(defaultTimeContent, flexContainer);
+        //             }
+        //         } else {
+        //             outboundDepartureTimeNames.push(value);
+        //             toggleFilterCheckbox(".book-outbounddeparturetime__content", value, true, "");
+        //             // Check if this is the first selection (update default)
+        //             const existingTimeContents = content.querySelectorAll(".book-time__content");
+        //             if (existingTimeContents.length === 1 && outboundDepartureTimeNames.length === 1) {
+        //                 // Update the default book-time__content
+        //                 const defaultTimeContent = existingTimeContents[0];
+        //                 defaultTimeContent.setAttribute("data-value", value);
+        //                 defaultTimeContent.innerHTML = `
+        //         <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
+        //         <div class="book-text-zinc-900 book-text-xs book-mb-4">
+        //             ساعت فیلتر شده از
+        //             <span class="book-hour">${timeRange}</span>
+        //         </div>
+        //     `;
+        //             } else {
+        //                 // Create new book-time__content for additional selections
+        //                 // Remove any existing element with the same value to avoid duplicates
+        //                 const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+        //                 if (duplicateElement) {
+        //                     duplicateElement.remove();
+        //                 }
 
-                        const newTimeContent = document.createElement("div");
-                        newTimeContent.className = "book-time__content";
-                        newTimeContent.setAttribute("data-value", value);
-                        newTimeContent.innerHTML = `
-                <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
-                <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                    ساعت فیلتر شده از
-                    <span class="book-hour">${timeRange}</span>
-                </div>
-            `;
-                        content.insertBefore(newTimeContent, flexContainer);
-                    }
-                }
-            } else if (args.source.id === "cms.inbounddeparturetime") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                const content = document.querySelector(".book-inbounddeparturetime__content");
-                if (!content) return;
+        //                 const newTimeContent = document.createElement("div");
+        //                 newTimeContent.className = "book-time__content";
+        //                 newTimeContent.setAttribute("data-value", value);
+        //                 newTimeContent.innerHTML = `
+        //         <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
+        //         <div class="book-text-zinc-900 book-text-xs book-mb-4">
+        //             ساعت فیلتر شده از
+        //             <span class="book-hour">${timeRange}</span>
+        //         </div>
+        //     `;
+        //                 content.insertBefore(newTimeContent, flexContainer);
+        //             }
+        //         }
+        //     } else if (args.source.id === "cms.inbounddeparturetime") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         const content = document.querySelector(".book-inbounddeparturetime__content");
+        //         if (!content) return;
 
-                const value = args.source.rows[0].value;
-                const selectedEl = content.querySelector(`[bc-value="${value}"]`);
-                if (!selectedEl) return;
+        //         const value = args.source.rows[0].value;
+        //         const selectedEl = content.querySelector(`[bc-value="${value}"]`);
+        //         if (!selectedEl) return;
 
-                const timePeriod = selectedEl.dataset.timePeriod || "";
-                const timeRange = selectedEl.dataset.timeRange || "";
-                const flexContainer = content.querySelector(".book-flex.book-justify-between");
+        //         const timePeriod = selectedEl.dataset.timePeriod || "";
+        //         const timeRange = selectedEl.dataset.timeRange || "";
+        //         const flexContainer = content.querySelector(".book-flex.book-justify-between");
 
-                const index = inboundDepartureTimeNames.indexOf(value);
-                if (index !== -1) {
-                    // Remove from selection and DOM
-                    inboundDepartureTimeNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-inbounddeparturetime__content", value, false, "");
+        //         const index = inboundDepartureTimeNames.indexOf(value);
+        //         if (index !== -1) {
+        //             // Remove from selection and DOM
+        //             inboundDepartureTimeNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-inbounddeparturetime__content", value, false, "");
 
-                    // Find and remove the corresponding book-time__content
-                    const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-                    if (existingElement) {
-                        existingElement.remove();
-                    }
+        //             // Find and remove the corresponding book-time__content
+        //             const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+        //             if (existingElement) {
+        //                 existingElement.remove();
+        //             }
 
-                    // If no time content remains, restore default (morning)
-                    if (!content.querySelector(".book-time__content")) {
-                        const defaultTimeContent = document.createElement("div");
-                        defaultTimeContent.className = "book-time__content";
-                        defaultTimeContent.setAttribute("data-value", "5-11"); // Default to "morning"
-                        defaultTimeContent.innerHTML = `
-                <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">صبح</div>
-                <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                    ساعت فیلتر شده از
-                    <span class="book-hour">5:00 الی 11:59</span>
-                </div>
-            `;
-                        content.insertBefore(defaultTimeContent, flexContainer);
-                    }
-                } else {
-                    // Add to selection
-                    inboundDepartureTimeNames.push(value);
-                    toggleFilterCheckbox(".book-inbounddeparturetime__content", value, true, "");
+        //             // If no time content remains, restore default (morning)
+        //             if (!content.querySelector(".book-time__content")) {
+        //                 const defaultTimeContent = document.createElement("div");
+        //                 defaultTimeContent.className = "book-time__content";
+        //                 defaultTimeContent.setAttribute("data-value", "5-11"); // Default to "morning"
+        //                 defaultTimeContent.innerHTML = `
+        //         <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">صبح</div>
+        //         <div class="book-text-zinc-900 book-text-xs book-mb-4">
+        //             ساعت فیلتر شده از
+        //             <span class="book-hour">5:00 الی 11:59</span>
+        //         </div>
+        //     `;
+        //                 content.insertBefore(defaultTimeContent, flexContainer);
+        //             }
+        //         } else {
+        //             // Add to selection
+        //             inboundDepartureTimeNames.push(value);
+        //             toggleFilterCheckbox(".book-inbounddeparturetime__content", value, true, "");
 
-                    // Check if this is the first selection (update default)
-                    const existingTimeContents = content.querySelectorAll(".book-time__content");
-                    if (existingTimeContents.length === 1 && inboundDepartureTimeNames.length === 1) {
-                        // Update the default book-time__content
-                        const defaultTimeContent = existingTimeContents[0];
-                        defaultTimeContent.setAttribute("data-value", value);
-                        defaultTimeContent.innerHTML = `
-                <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
-                <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                    ساعت فیلتر شده از
-                    <span class="book-hour">${timeRange}</span>
-                </div>
-            `;
-                    } else {
-                        // Create new book-time__content for additional selections
-                        // Remove any existing element with the same value to avoid duplicates
-                        const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-                        if (duplicateElement) {
-                            duplicateElement.remove();
-                        }
+        //             // Check if this is the first selection (update default)
+        //             const existingTimeContents = content.querySelectorAll(".book-time__content");
+        //             if (existingTimeContents.length === 1 && inboundDepartureTimeNames.length === 1) {
+        //                 // Update the default book-time__content
+        //                 const defaultTimeContent = existingTimeContents[0];
+        //                 defaultTimeContent.setAttribute("data-value", value);
+        //                 defaultTimeContent.innerHTML = `
+        //         <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
+        //         <div class="book-text-zinc-900 book-text-xs book-mb-4">
+        //             ساعت فیلتر شده از
+        //             <span class="book-hour">${timeRange}</span>
+        //         </div>
+        //     `;
+        //             } else {
+        //                 // Create new book-time__content for additional selections
+        //                 // Remove any existing element with the same value to avoid duplicates
+        //                 const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+        //                 if (duplicateElement) {
+        //                     duplicateElement.remove();
+        //                 }
 
-                        const newTimeContent = document.createElement("div");
-                        newTimeContent.className = "book-time__content";
-                        newTimeContent.setAttribute("data-value", value);
-                        newTimeContent.innerHTML = `
-                <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
-                <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                    ساعت فیلتر شده از
-                    <span class="book-hour">${timeRange}</span>
-                </div>
-            `;
-                        content.insertBefore(newTimeContent, flexContainer);
-                    }
-                }
-            } else if (args.source.id === "cms.departuretime") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                const content = document.querySelector(".book-departuretime__content");
-                if (!content) return;
+        //                 const newTimeContent = document.createElement("div");
+        //                 newTimeContent.className = "book-time__content";
+        //                 newTimeContent.setAttribute("data-value", value);
+        //                 newTimeContent.innerHTML = `
+        //         <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
+        //         <div class="book-text-zinc-900 book-text-xs book-mb-4">
+        //             ساعت فیلتر شده از
+        //             <span class="book-hour">${timeRange}</span>
+        //         </div>
+        //     `;
+        //                 content.insertBefore(newTimeContent, flexContainer);
+        //             }
+        //         }
+        //     } else if (args.source.id === "cms.departuretime") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         const content = document.querySelector(".book-departuretime__content");
+        //         if (!content) return;
 
-                const value = args.source.rows[0].value;
-                const selectedEl = content.querySelector(`[bc-value="${value}"]`);
-                if (!selectedEl) return;
+        //         const value = args.source.rows[0].value;
+        //         const selectedEl = content.querySelector(`[bc-value="${value}"]`);
+        //         if (!selectedEl) return;
 
-                const timePeriod = selectedEl.dataset.timePeriod || "";
-                const timeRange = selectedEl.dataset.timeRange || "";
-                const flexContainer = content.querySelector(".book-flex.book-justify-between");
+        //         const timePeriod = selectedEl.dataset.timePeriod || "";
+        //         const timeRange = selectedEl.dataset.timeRange || "";
+        //         const flexContainer = content.querySelector(".book-flex.book-justify-between");
 
-                const index = departureTimeNames.indexOf(value);
-                if (index !== -1) {
-                    // Remove from selection and DOM
-                    departureTimeNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-departuretime__content", value, false, "");
+        //         const index = departureTimeNames.indexOf(value);
+        //         if (index !== -1) {
+        //             // Remove from selection and DOM
+        //             departureTimeNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-departuretime__content", value, false, "");
 
-                    // Find and remove the corresponding book-time__content
-                    const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-                    if (existingElement) {
-                        existingElement.remove();
-                    }
+        //             // Find and remove the corresponding book-time__content
+        //             const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+        //             if (existingElement) {
+        //                 existingElement.remove();
+        //             }
 
-                    // If no time content remains, restore default (morning)
-                    if (!content.querySelector(".book-time__content")) {
-                        const defaultTimeContent = document.createElement("div");
-                        defaultTimeContent.className = "book-time__content";
-                        defaultTimeContent.setAttribute("data-value", "5-11"); // Default to "morning"
-                        defaultTimeContent.innerHTML = `
-                <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">صبح</div>
-                <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                    ساعت فیلتر شده از
-                    <span class="book-hour">5:00 الی 11:59</span>
-                </div>
-            `;
-                        content.insertBefore(defaultTimeContent, flexContainer);
-                    }
-                } else {
-                    // Add to selection
-                    departureTimeNames.push(value);
-                    toggleFilterCheckbox(".book-departuretime__content", value, true, "");
+        //             // If no time content remains, restore default (morning)
+        //             if (!content.querySelector(".book-time__content")) {
+        //                 const defaultTimeContent = document.createElement("div");
+        //                 defaultTimeContent.className = "book-time__content";
+        //                 defaultTimeContent.setAttribute("data-value", "5-11"); // Default to "morning"
+        //                 defaultTimeContent.innerHTML = `
+        //         <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">صبح</div>
+        //         <div class="book-text-zinc-900 book-text-xs book-mb-4">
+        //             ساعت فیلتر شده از
+        //             <span class="book-hour">5:00 الی 11:59</span>
+        //         </div>
+        //     `;
+        //                 content.insertBefore(defaultTimeContent, flexContainer);
+        //             }
+        //         } else {
+        //             // Add to selection
+        //             departureTimeNames.push(value);
+        //             toggleFilterCheckbox(".book-departuretime__content", value, true, "");
 
-                    // Check if this is the first selection (update default)
-                    const existingTimeContents = content.querySelectorAll(".book-time__content");
-                    if (existingTimeContents.length === 1 && departureTimeNames.length === 1) {
-                        // Update the default book-time__content
-                        const defaultTimeContent = existingTimeContents[0];
-                        defaultTimeContent.setAttribute("data-value", value);
-                        defaultTimeContent.innerHTML = `
-                <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
-                <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                    ساعت فیلتر شده از
-                    <span class="book-hour">${timeRange}</span>
-                </div>
-            `;
-                    } else {
-                        // Create new book-time__content for additional selections
-                        // Remove any existing element with the same value to avoid duplicates
-                        const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-                        if (duplicateElement) {
-                            duplicateElement.remove();
-                        }
+        //             // Check if this is the first selection (update default)
+        //             const existingTimeContents = content.querySelectorAll(".book-time__content");
+        //             if (existingTimeContents.length === 1 && departureTimeNames.length === 1) {
+        //                 // Update the default book-time__content
+        //                 const defaultTimeContent = existingTimeContents[0];
+        //                 defaultTimeContent.setAttribute("data-value", value);
+        //                 defaultTimeContent.innerHTML = `
+        //         <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
+        //         <div class="book-text-zinc-900 book-text-xs book-mb-4">
+        //             ساعت فیلتر شده از
+        //             <span class="book-hour">${timeRange}</span>
+        //         </div>
+        //     `;
+        //             } else {
+        //                 // Create new book-time__content for additional selections
+        //                 // Remove any existing element with the same value to avoid duplicates
+        //                 const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+        //                 if (duplicateElement) {
+        //                     duplicateElement.remove();
+        //                 }
 
-                        const newTimeContent = document.createElement("div");
-                        newTimeContent.className = "book-time__content";
-                        newTimeContent.setAttribute("data-value", value);
-                        newTimeContent.innerHTML = `
-                <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
-                <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                    ساعت فیلتر شده از
-                    <span class="book-hour">${timeRange}</span>
-                </div>
-            `;
-                        content.insertBefore(newTimeContent, flexContainer);
-                    }
-                }
-            } else if (args.source.id === "cms.systemflight") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
+        //                 const newTimeContent = document.createElement("div");
+        //                 newTimeContent.className = "book-time__content";
+        //                 newTimeContent.setAttribute("data-value", value);
+        //                 newTimeContent.innerHTML = `
+        //         <div class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">${timePeriod}</div>
+        //         <div class="book-text-zinc-900 book-text-xs book-mb-4">
+        //             ساعت فیلتر شده از
+        //             <span class="book-hour">${timeRange}</span>
+        //         </div>
+        //     `;
+        //                 content.insertBefore(newTimeContent, flexContainer);
+        //             }
+        //         }
+        //     } else if (args.source.id === "cms.systemflight") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
                 
-                const value = args.source.rows[0].value.split('-')[1];
-                const index = systemFlightNames.indexOf(value);
-                const element = document.querySelector(`[bc-value="${args.source.rows[0].value}"]`);
-                if (index !== -1) {
-                    systemFlightNames.splice(index, 1);
-                    element.classList.remove("book-checked");
-                } else {
-                    systemFlightNames.push(value);
-                    element.classList.add("book-checked");
-                }
-            } else if (args.source.id === "cms.farefamily") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
+        //         const value = args.source.rows[0].value.split('-')[1];
+        //         const index = systemFlightNames.indexOf(value);
+        //         const element = document.querySelector(`[bc-value="${args.source.rows[0].value}"]`);
+        //         if (index !== -1) {
+        //             systemFlightNames.splice(index, 1);
+        //             element.classList.remove("book-checked");
+        //         } else {
+        //             systemFlightNames.push(value);
+        //             element.classList.add("book-checked");
+        //         }
+        //     } else if (args.source.id === "cms.farefamily") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
                 
-                const value = args.source.rows[0].value;
-                const index = fareFamilyNames.indexOf(value);
-                const element = document.querySelector(`[bc-value="${value}"]`);
-                if (index !== -1) {
-                    fareFamilyNames.splice(index, 1);
-                    element.classList.remove("book-checked");
-                } else {
-                    fareFamilyNames.push(value);
-                    element.classList.add("book-checked");
-                }
-            } else if (args.source.id === "cms.price") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
+        //         const value = args.source.rows[0].value;
+        //         const index = fareFamilyNames.indexOf(value);
+        //         const element = document.querySelector(`[bc-value="${value}"]`);
+        //         if (index !== -1) {
+        //             fareFamilyNames.splice(index, 1);
+        //             element.classList.remove("book-checked");
+        //         } else {
+        //             fareFamilyNames.push(value);
+        //             element.classList.add("book-checked");
+        //         }
+        //     } else if (args.source.id === "cms.price") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
                 
-                const sliderRect = priceSlider.getBoundingClientRect();
+        //         const sliderRect = priceSlider.getBoundingClientRect();
 
-                /**
-                 * Update price slider position on mouse move.
-                 */
-                function onMouseMove(e) {
-                    const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
-                    const percent = (x / sliderRect.width) * 100;
+        //         /**
+        //          * Update price slider position on mouse move.
+        //          */
+        //         function onMouseMove(e) {
+        //             const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
+        //             const percent = (x / sliderRect.width) * 100;
 
-                    if (args.source.rows[0].value === "min" && percent <= maxPercent) {
-                        minPercent = percent;
-                    } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
-                        maxPercent = percent;
-                    }
-                    updatePriceSlider();
-                }
+        //             if (args.source.rows[0].value === "min" && percent <= maxPercent) {
+        //                 minPercent = percent;
+        //             } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
+        //                 maxPercent = percent;
+        //             }
+        //             updatePriceSlider();
+        //         }
 
-                /**
-                 * Remove event listeners on mouse up.
-                 */
-                function onMouseUp() {
-                    document.removeEventListener("mousemove", onMouseMove);
-                    document.removeEventListener("mouseup", onMouseUp);
-                }
+        //         /**
+        //          * Remove event listeners on mouse up.
+        //          */
+        //         function onMouseUp() {
+        //             document.removeEventListener("mousemove", onMouseMove);
+        //             document.removeEventListener("mouseup", onMouseUp);
+        //         }
 
-                document.addEventListener("mousemove", onMouseMove);
-                document.addEventListener("mouseup", onMouseUp);
+        //         document.addEventListener("mousemove", onMouseMove);
+        //         document.addEventListener("mouseup", onMouseUp);
 
-                /**
-                 * Update price slider UI and range values.
-                 */
-                function updatePriceSlider() {
-                    const totalRange = maxPrice - minPrice;
-                    const priceMinValue = Math.round((minPercent / 100) * totalRange + minPrice);
-                    const priceMaxValue = Math.round((maxPercent / 100) * totalRange + minPrice);
+        //         /**
+        //          * Update price slider UI and range values.
+        //          */
+        //         function updatePriceSlider() {
+        //             const totalRange = maxPrice - minPrice;
+        //             const priceMinValue = Math.round((minPercent / 100) * totalRange + minPrice);
+        //             const priceMaxValue = Math.round((maxPercent / 100) * totalRange + minPrice);
 
-                    priceMinValueLabel.textContent = new Intl.NumberFormat().format(priceMinValue).replace(/,/g, '/');
-                    priceMaxValueLabel.textContent = new Intl.NumberFormat().format(priceMaxValue).replace(/,/g, '/');
+        //             priceMinValueLabel.textContent = new Intl.NumberFormat().format(priceMinValue).replace(/,/g, '/');
+        //             priceMaxValueLabel.textContent = new Intl.NumberFormat().format(priceMaxValue).replace(/,/g, '/');
 
-                    priceRange = [priceMinValue, priceMaxValue];
-                    priceThumbMin.style.left = `${minPercent}%`;
-                    priceThumbMax.style.left = `${maxPercent}%`;
-                    priceTrack.style.left = `${minPercent}%`;
-                    priceTrack.style.right = `${100 - maxPercent}%`;
-                }
-            } else if (args.source.id === "cms.outboundhour") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
+        //             priceRange = [priceMinValue, priceMaxValue];
+        //             priceThumbMin.style.left = `${minPercent}%`;
+        //             priceThumbMax.style.left = `${maxPercent}%`;
+        //             priceTrack.style.left = `${minPercent}%`;
+        //             priceTrack.style.right = `${100 - maxPercent}%`;
+        //         }
+        //     } else if (args.source.id === "cms.outboundhour") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
                 
-                const hourContainer = document.querySelector(".book-outboundhour__content .book-filter__hour__container");
-                initializeSlider(hourContainer, args.source.rows[0].value, outboundMaxHour, outboundMinHour, outboundHourMinValueLabel, outboundHourMaxValueLabel, outboundHourRange);
-            } else if (args.source.id === "cms.inboundhour") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
+        //         const hourContainer = document.querySelector(".book-outboundhour__content .book-filter__hour__container");
+        //         initializeSlider(hourContainer, args.source.rows[0].value, outboundMaxHour, outboundMinHour, outboundHourMinValueLabel, outboundHourMaxValueLabel, outboundHourRange);
+        //     } else if (args.source.id === "cms.inboundhour") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
                 
-                const hourContainer = document.querySelector(".book-inboundhour__content .book-filter__hour__container");
-                initializeSlider(hourContainer, args.source.rows[0].value, inboundMaxHour, inboundMinHour, inboundHourMinValueLabel, inboundHourMaxValueLabel, inboundHourRange);
-            } else if (args.source.id === "cms.hour") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
+        //         const hourContainer = document.querySelector(".book-inboundhour__content .book-filter__hour__container");
+        //         initializeSlider(hourContainer, args.source.rows[0].value, inboundMaxHour, inboundMinHour, inboundHourMinValueLabel, inboundHourMaxValueLabel, inboundHourRange);
+        //     } else if (args.source.id === "cms.hour") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
                 
-                const hourContainer = document.querySelector(".book-hour__content .book-filter__hour__container");
-                initializeSlider(hourContainer, args.source.rows[0].value, maxHour, minHour, hourMinValueLabel, hourMaxValueLabel, hourRange);
-            } else if (args.source.id === "cms.outboundbaggage") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
+        //         const hourContainer = document.querySelector(".book-hour__content .book-filter__hour__container");
+        //         initializeSlider(hourContainer, args.source.rows[0].value, maxHour, minHour, hourMinValueLabel, hourMaxValueLabel, hourRange);
+        //     } else if (args.source.id === "cms.outboundbaggage") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
                 
-                const baggageValue = parseInt(args.source.rows[0].value.split('-')[1]);
-                const index = outboundBaggageNames.indexOf(baggageValue);
-                if (index !== -1) {
-                    outboundBaggageNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-outboundbaggage__content", args.source.rows[0].value, false);
-                } else {
-                    outboundBaggageNames.push(baggageValue);
-                    toggleFilterCheckbox(".book-outboundbaggage__content", args.source.rows[0].value, true);
-                }
-            } else if (args.source.id === "cms.inboundbaggage") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
+        //         const baggageValue = parseInt(args.source.rows[0].value.split('-')[1]);
+        //         const index = outboundBaggageNames.indexOf(baggageValue);
+        //         if (index !== -1) {
+        //             outboundBaggageNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-outboundbaggage__content", args.source.rows[0].value, false);
+        //         } else {
+        //             outboundBaggageNames.push(baggageValue);
+        //             toggleFilterCheckbox(".book-outboundbaggage__content", args.source.rows[0].value, true);
+        //         }
+        //     } else if (args.source.id === "cms.inboundbaggage") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
                 
-                const baggageValue = parseInt(args.source.rows[0].value.split('-')[1]);
-                const index = inboundBaggageNames.indexOf(baggageValue);
-                if (index !== -1) {
-                    inboundBaggageNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-inboundbaggage__content", args.source.rows[0].value, false);
-                } else {
-                    inboundBaggageNames.push(baggageValue);
-                    toggleFilterCheckbox(".book-inboundbaggage__content", args.source.rows[0].value, true);
-                }
-            } else if (args.source.id === "cms.baggage") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
+        //         const baggageValue = parseInt(args.source.rows[0].value.split('-')[1]);
+        //         const index = inboundBaggageNames.indexOf(baggageValue);
+        //         if (index !== -1) {
+        //             inboundBaggageNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-inboundbaggage__content", args.source.rows[0].value, false);
+        //         } else {
+        //             inboundBaggageNames.push(baggageValue);
+        //             toggleFilterCheckbox(".book-inboundbaggage__content", args.source.rows[0].value, true);
+        //         }
+        //     } else if (args.source.id === "cms.baggage") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
                 
-                const baggageValue = parseInt(args.source.rows[0].value.split('-')[1]);
-                const index = baggageNames.indexOf(baggageValue);
-                if (index !== -1) {
-                    baggageNames.splice(index, 1);
-                    toggleFilterCheckbox(".book-baggage__content", args.source.rows[0].value, false);
-                } else {
-                    baggageNames.push(baggageValue);
-                    toggleFilterCheckbox(".book-baggage__content", args.source.rows[0].value, true);
-                }
-            } else if (args.source.id === "cms.sort") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
-                selectedFlightId = null;
+        //         const baggageValue = parseInt(args.source.rows[0].value.split('-')[1]);
+        //         const index = baggageNames.indexOf(baggageValue);
+        //         if (index !== -1) {
+        //             baggageNames.splice(index, 1);
+        //             toggleFilterCheckbox(".book-baggage__content", args.source.rows[0].value, false);
+        //         } else {
+        //             baggageNames.push(baggageValue);
+        //             toggleFilterCheckbox(".book-baggage__content", args.source.rows[0].value, true);
+        //         }
+        //     } else if (args.source.id === "cms.sort") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
+        //         selectedFlightId = null;
                 
-                const sortValue = args.source.rows[0].value;
-                const sortItem = document.querySelector(`[bc-value="${sortValue}"]`);
-                const sortOrder = sortItem.getAttribute('data-sort');
-                const listItems = document.querySelectorAll(".book-sort__cards__container .book-sort__item__content");
+        //         const sortValue = args.source.rows[0].value;
+        //         const sortItem = document.querySelector(`[bc-value="${sortValue}"]`);
+        //         const sortOrder = sortItem.getAttribute('data-sort');
+        //         const listItems = document.querySelectorAll(".book-sort__cards__container .book-sort__item__content");
 
-                // Reset all sort items
-                listItems.forEach(item => {
-                    if (item.getAttribute('data-sort')) {
-                        item.setAttribute('data-sort', 'descend');
-                    }
-                    const svg = item.querySelector('svg');
-                    if (svg) {
-                        svg.innerHTML = '<use xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#sort-up-icon"></use>';
-                    }
-                    item.classList.remove('book-sorting__active');
-                });
+        //         // Reset all sort items
+        //         listItems.forEach(item => {
+        //             if (item.getAttribute('data-sort')) {
+        //                 item.setAttribute('data-sort', 'descend');
+        //             }
+        //             const svg = item.querySelector('svg');
+        //             if (svg) {
+        //                 svg.innerHTML = '<use xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#sort-up-icon"></use>';
+        //             }
+        //             item.classList.remove('book-sorting__active');
+        //         });
 
-                // Update sort state
-                if (sortValue === "default") {
-                    currentSort = { value: "default", order: "" };
-                } else {
-                    const newOrder = sortOrder === "ascend" ? "descend" : "ascend";
-                    sortItem.setAttribute('data-sort', newOrder);
-                    sortItem.classList.add('book-sorting__active');
-                    toggleSvg(sortItem.querySelector('svg'), newOrder === "ascend");
-                    currentSort = { value: sortValue, order: newOrder };
-                }
-                mustUpdate = true; // Trigger full dataset reprocessing
-            } else if (args.source.id === "cms.flight") {
-                InUpdateFiltering = false;
-                InUpdatePaging = true;
+        //         // Update sort state
+        //         if (sortValue === "default") {
+        //             currentSort = { value: "default", order: "" };
+        //         } else {
+        //             const newOrder = sortOrder === "ascend" ? "descend" : "ascend";
+        //             sortItem.setAttribute('data-sort', newOrder);
+        //             sortItem.classList.add('book-sorting__active');
+        //             toggleSvg(sortItem.querySelector('svg'), newOrder === "ascend");
+        //             currentSort = { value: sortValue, order: newOrder };
+        //         }
+        //         mustUpdate = true; // Trigger full dataset reprocessing
+        //     } else if (args.source.id === "cms.flight") {
+        //         InUpdateFiltering = false;
+        //         InUpdatePaging = true;
                 
-                selectedFlightId = args.source.rows[0].value;
-            } else if (args.source.id === "flight.list") {
-                newDataCame = true;
-                allDataProcessed = false; // Reset flag when new data arrives
+        //         selectedFlightId = args.source.rows[0].value;
+        //     } else if (args.source.id === "flight.list") {
+        //         newDataCame = true;
+        //         allDataProcessed = false; // Reset flag when new data arrives
                 
-            }
+        //     }
 
-            /**
-             * Process UI updates when required and not already in progress.
-             */
-            if (mustUpdate && !InUpdateUIProcess) {
-                InUpdateUIProcess = true;
+        //     /**
+        //      * Process UI updates when required and not already in progress.
+        //      */
+        //     if (mustUpdate && !InUpdateUIProcess) {
+        //         InUpdateUIProcess = true;
 
-                // CHANGED: Collect new flight proposals and reset allFlightProposals for new searches
-                if (newDataCame) {
-                    const source = args.context.tryToGetSource("flight.list");
-                    // Reset allFlightProposals and dictionaries for new search to avoid old data
-                    if (source.rows[0]?.isNewSearch) { // Assuming isNewSearch flag exists
-                        allFlightProposals = [];
-                        dictionaries = [];
+        //         // CHANGED: Collect new flight proposals and reset allFlightProposals for new searches
+        //         if (newDataCame) {
+        //             const source = args.context.tryToGetSource("flight.list");
+        //             // Reset allFlightProposals and dictionaries for new search to avoid old data
+        //             if (source.rows[0]?.isNewSearch) { // Assuming isNewSearch flag exists
+        //                 allFlightProposals = [];
+        //                 dictionaries = [];
 
-                    }
-                    const existingFlightIds = new Set(allFlightProposals.map(flight => flight.FlightId));
-                    source.rows.forEach(row => {
-                        if (Array.isArray(row.FlightProposals)) {
-                            const newFlights = row.FlightProposals.filter(flight => !existingFlightIds.has(flight.FlightId));
-                            allFlightProposals.push(...newFlights);
-                            newFlights.forEach(flight => existingFlightIds.add(flight.FlightId));
-                        }
-                    });
-                    dictionaries.push(source.rows[source.rows.length - 1].dictionaries);
-                    newDataCame = false;
-                    allDataProcessed = true;
+        //             }
+        //             const existingFlightIds = new Set(allFlightProposals.map(flight => flight.FlightId));
+        //             source.rows.forEach(row => {
+        //                 if (Array.isArray(row.FlightProposals)) {
+        //                     const newFlights = row.FlightProposals.filter(flight => !existingFlightIds.has(flight.FlightId));
+        //                     allFlightProposals.push(...newFlights);
+        //                     newFlights.forEach(flight => existingFlightIds.add(flight.FlightId));
+        //                 }
+        //             });
+        //             dictionaries.push(source.rows[source.rows.length - 1].dictionaries);
+        //             newDataCame = false;
+        //             allDataProcessed = true;
 
-                }
+        //         }
 
-                const flightList = args.context.tryToGetSource("flight.updated");
+        //         const flightList = args.context.tryToGetSource("flight.updated");
 
-                // Apply sorting to entire dataset if not default and all data is processed
-                if (allDataProcessed && currentSort.value !== "default") {
-                    allFlightProposals.sort((a, b) => {
-                        let fieldA, fieldB;
-                        if (currentSort.value === "price") {
-                            // CHANGED: Parse price strings if formatted
-                            fieldA = a.PriceInfo?.TotalCommission ? parseFloat(a.PriceInfo.TotalCommission.replace(/[,/]/g, '')) : Infinity;
-                            fieldB = b.PriceInfo?.TotalCommission ? parseFloat(b.PriceInfo.TotalCommission.replace(/[,/]/g, '')) : Infinity;
-                        } else if (currentSort.value === "stop") {
-                            fieldA = a.FlightGroup?.[0]?.NumberOfStops || 0;
-                            fieldB = b.FlightGroup?.[0]?.NumberOfStops || 0;
-                        } else if (currentSort.value === "time") {
-                            fieldA = convertToMinutes(a.FlightGroup?.[0]?.Duration || "");
-                            fieldB = convertToMinutes(b.FlightGroup?.[0]?.Duration || "");
-                        } else if (currentSort.value === "hour") {
-                            fieldA = convertToMinutes(a.FlightGroup?.[0]?.DepartureTime || "");
-                            fieldB = convertToMinutes(b.FlightGroup?.[0]?.DepartureTime || "");
-                        }
+        //         // Apply sorting to entire dataset if not default and all data is processed
+        //         if (allDataProcessed && currentSort.value !== "default") {
+        //             allFlightProposals.sort((a, b) => {
+        //                 let fieldA, fieldB;
+        //                 if (currentSort.value === "price") {
+        //                     // CHANGED: Parse price strings if formatted
+        //                     fieldA = a.PriceInfo?.TotalCommission ? parseFloat(a.PriceInfo.TotalCommission.replace(/[,/]/g, '')) : Infinity;
+        //                     fieldB = b.PriceInfo?.TotalCommission ? parseFloat(b.PriceInfo.TotalCommission.replace(/[,/]/g, '')) : Infinity;
+        //                 } else if (currentSort.value === "stop") {
+        //                     fieldA = a.FlightGroup?.[0]?.NumberOfStops || 0;
+        //                     fieldB = b.FlightGroup?.[0]?.NumberOfStops || 0;
+        //                 } else if (currentSort.value === "time") {
+        //                     fieldA = convertToMinutes(a.FlightGroup?.[0]?.Duration || "");
+        //                     fieldB = convertToMinutes(b.FlightGroup?.[0]?.Duration || "");
+        //                 } else if (currentSort.value === "hour") {
+        //                     fieldA = convertToMinutes(a.FlightGroup?.[0]?.DepartureTime || "");
+        //                     fieldB = convertToMinutes(b.FlightGroup?.[0]?.DepartureTime || "");
+        //                 }
 
-                        if (fieldA !== undefined && fieldB !== undefined) {
-                            return currentSort.order === "ascend" ? fieldA - fieldB : fieldB - fieldA;
-                        }
-                        return 0;
-                    });
-                }
+        //                 if (fieldA !== undefined && fieldB !== undefined) {
+        //                     return currentSort.order === "ascend" ? fieldA - fieldB : fieldB - fieldA;
+        //                 }
+        //                 return 0;
+        //             });
+        //         }
 
-                // Define filters for flight proposals
-                const filters = [
-                    // Airline filters
-                    item => !outboundAirlineNames.length || item.FlightGroup[0]?.RoutesInfo.some(route => outboundAirlineNames.includes(route.AirlineCode)),
-                    item => !inboundAirlineNames.length || (item.FlightGroup[1]?.RoutesInfo || []).some(route => inboundAirlineNames.includes(route.AirlineCode)),
-                    item => !airlineNames.length || item.FlightGroup.some(flight => flight.RoutesInfo.some(route => airlineNames.includes(route.AirlineCode))),
-                    // Airport filters
-                    item => !outboundAirportNames.length || item.FlightGroup[0]?.RoutesInfo.some(route => outboundAirportNames.includes(route.DestinationAirport)),
-                    item => !inboundAirportNames.length || (item.FlightGroup[1]?.RoutesInfo || []).some(route => inboundAirportNames.includes(route.DestinationAirport)),
-                    item => !airportNames.length || item.FlightGroup.some(flight => flight.RoutesInfo.some(route => airportNames.includes(route.DestinationAirport))),
-                    // Stop filters
-                    item => !outboundStopNames.length || (outboundStopNames.length > 1 ? item.FlightGroup[0]?.NumberOfStops > 1 : outboundStopNames.includes(parseInt(item.FlightGroup[0]?.NumberOfStops))),
-                    item => !inboundStopNames.length || (inboundStopNames.length > 1 ? item.FlightGroup[1]?.NumberOfStops > 1 : inboundStopNames.includes(parseInt(item.FlightGroup[1]?.NumberOfStops))),
-                    item => !stopNames.length || (stopNames.length > 1 ? item.FlightGroup.some(flight => flight.NumberOfStops > 1) : item.FlightGroup.some(flight => stopNames.includes(parseInt(flight.NumberOfStops)))),
-                    // Flight number filters
-                    item => !outboundFlightNumberNames.length || outboundFlightNumberNames.every(fn => item.FlightGroup[0]?.RoutesInfo.some(route => route.FlightNumber.toLowerCase() === fn)),
-                    item => !inboundFlightNumberNames.length || inboundFlightNumberNames.every(fn => (item.FlightGroup[1]?.RoutesInfo || []).some(route => route.FlightNumber.toLowerCase() === fn)),
-                    item => !flightNumberNames.length || flightNumberNames.every(fn => item.FlightGroup.some(flight => flight.RoutesInfo.some(route => route.FlightNumber.toLowerCase() === fn))),
-                    // Baggage filters
-                    item => !outboundBaggageNames.length || outboundBaggageNames.includes(parseInt(item.Baggages[0]?.Baggage)),
-                    item => !inboundBaggageNames.length || inboundBaggageNames.includes(parseInt(item.Baggages[1]?.Baggage)),
-                    item => !baggageNames.length || item.Baggages.some(flight => baggageNames.includes(parseInt(flight.Baggage))),
-                    // Departure time filters
-                    item => {
-                        if (!outboundDepartureTimeNames.length) return true;
-                        const [hour, minute] = item.FlightGroup[0]?.DepartureTime.split(":").map(Number);
-                        if (hour == null || minute == null) return false;
-                        return outboundDepartureTimeNames.some(range => {
-                            const [start, end] = range.split("-").map(Number);
-                            return hour >= start && hour <= end;
-                        });
-                    },
-                    item => {
-                        if (!inboundDepartureTimeNames.length) return true;
-                        const [hour, minute] = item.FlightGroup[1]?.DepartureTime?.split(":")?.map(Number) || [];
-                        if (hour == null || minute == null) return false;
-                        return inboundDepartureTimeNames.some(range => {
-                            const [start, end] = range.split("-").map(Number);
-                            return hour >= start && hour <= end;
-                        });
-                    },
-                    item => {
-                        if (!departureTimeNames.length) return true;
-                        return item.FlightGroup.some(flight => {
-                            const [hour, minute] = flight.DepartureTime?.split(":")?.map(Number) || [];
-                            if (hour == null || minute == null) return false;
-                            return departureTimeNames.some(range => {
-                                const [start, end] = range.split("-").map(Number);
-                                return hour >= start && hour <= end;
-                            });
-                        });
-                    },
-                    // Hour range filters
-                    item => {
-                        const outboundDuration = item.FlightGroup[0]?.Duration;
-                        if (!outboundDuration) return false;
-                        const outboundDurationInMinutes = convertToMinutes(outboundDuration);
-                        return outboundDurationInMinutes >= outboundHourRange[0] && outboundDurationInMinutes <= outboundHourRange[1];
-                    },
-                    item => {
-                        return item.FlightGroup.some(flight => {
-                            const duration = flight.Duration;
-                            if (!duration) return false;
-                            const durationInMinutes = convertToMinutes(duration);
-                            return durationInMinutes >= hourRange[0] && durationInMinutes <= hourRange[1];
-                        });
-                    },
-                    item => {
-                        if (item.schemaid !== 290) return true;
-                        const inboundDuration = item.FlightGroup[1]?.Duration;
-                        if (!inboundDuration) return false;
-                        const inboundDurationInMinutes = convertToMinutes(inboundDuration);
-                        return inboundDurationInMinutes >= inboundHourRange[0] && inboundDurationInMinutes <= inboundHourRange[1];
-                    },
-                    // System flight and fare family filters
-                    item => !systemFlightNames.length || item.FlightGroup.some(flight => systemFlightNames.includes(flight.isSystemFlight)),
-                    item => !fareFamilyNames.length || (fareFamilyNames.includes("farefamily") && item.FlightGroup.some(flight => flight.FareFamily === true)),
-                    // Price filter
-                    item => {
-                        const price = item.PriceInfo?.TotalCommission ? parseFloat(item.PriceInfo.TotalCommission.replace(/[,/]/g, '')) : Infinity;
-                        return price >= priceRange[0] && price <= priceRange[1];
-                    }
-                ];
+        //         // Define filters for flight proposals
+        //         const filters = [
+        //             // Airline filters
+        //             item => !outboundAirlineNames.length || item.FlightGroup[0]?.RoutesInfo.some(route => outboundAirlineNames.includes(route.AirlineCode)),
+        //             item => !inboundAirlineNames.length || (item.FlightGroup[1]?.RoutesInfo || []).some(route => inboundAirlineNames.includes(route.AirlineCode)),
+        //             item => !airlineNames.length || item.FlightGroup.some(flight => flight.RoutesInfo.some(route => airlineNames.includes(route.AirlineCode))),
+        //             // Airport filters
+        //             item => !outboundAirportNames.length || item.FlightGroup[0]?.RoutesInfo.some(route => outboundAirportNames.includes(route.DestinationAirport)),
+        //             item => !inboundAirportNames.length || (item.FlightGroup[1]?.RoutesInfo || []).some(route => inboundAirportNames.includes(route.DestinationAirport)),
+        //             item => !airportNames.length || item.FlightGroup.some(flight => flight.RoutesInfo.some(route => airportNames.includes(route.DestinationAirport))),
+        //             // Stop filters
+        //             item => !outboundStopNames.length || (outboundStopNames.length > 1 ? item.FlightGroup[0]?.NumberOfStops > 1 : outboundStopNames.includes(parseInt(item.FlightGroup[0]?.NumberOfStops))),
+        //             item => !inboundStopNames.length || (inboundStopNames.length > 1 ? item.FlightGroup[1]?.NumberOfStops > 1 : inboundStopNames.includes(parseInt(item.FlightGroup[1]?.NumberOfStops))),
+        //             item => !stopNames.length || (stopNames.length > 1 ? item.FlightGroup.some(flight => flight.NumberOfStops > 1) : item.FlightGroup.some(flight => stopNames.includes(parseInt(flight.NumberOfStops)))),
+        //             // Flight number filters
+        //             item => !outboundFlightNumberNames.length || outboundFlightNumberNames.every(fn => item.FlightGroup[0]?.RoutesInfo.some(route => route.FlightNumber.toLowerCase() === fn)),
+        //             item => !inboundFlightNumberNames.length || inboundFlightNumberNames.every(fn => (item.FlightGroup[1]?.RoutesInfo || []).some(route => route.FlightNumber.toLowerCase() === fn)),
+        //             item => !flightNumberNames.length || flightNumberNames.every(fn => item.FlightGroup.some(flight => flight.RoutesInfo.some(route => route.FlightNumber.toLowerCase() === fn))),
+        //             // Baggage filters
+        //             item => !outboundBaggageNames.length || outboundBaggageNames.includes(parseInt(item.Baggages[0]?.Baggage)),
+        //             item => !inboundBaggageNames.length || inboundBaggageNames.includes(parseInt(item.Baggages[1]?.Baggage)),
+        //             item => !baggageNames.length || item.Baggages.some(flight => baggageNames.includes(parseInt(flight.Baggage))),
+        //             // Departure time filters
+        //             item => {
+        //                 if (!outboundDepartureTimeNames.length) return true;
+        //                 const [hour, minute] = item.FlightGroup[0]?.DepartureTime.split(":").map(Number);
+        //                 if (hour == null || minute == null) return false;
+        //                 return outboundDepartureTimeNames.some(range => {
+        //                     const [start, end] = range.split("-").map(Number);
+        //                     return hour >= start && hour <= end;
+        //                 });
+        //             },
+        //             item => {
+        //                 if (!inboundDepartureTimeNames.length) return true;
+        //                 const [hour, minute] = item.FlightGroup[1]?.DepartureTime?.split(":")?.map(Number) || [];
+        //                 if (hour == null || minute == null) return false;
+        //                 return inboundDepartureTimeNames.some(range => {
+        //                     const [start, end] = range.split("-").map(Number);
+        //                     return hour >= start && hour <= end;
+        //                 });
+        //             },
+        //             item => {
+        //                 if (!departureTimeNames.length) return true;
+        //                 return item.FlightGroup.some(flight => {
+        //                     const [hour, minute] = flight.DepartureTime?.split(":")?.map(Number) || [];
+        //                     if (hour == null || minute == null) return false;
+        //                     return departureTimeNames.some(range => {
+        //                         const [start, end] = range.split("-").map(Number);
+        //                         return hour >= start && hour <= end;
+        //                     });
+        //                 });
+        //             },
+        //             // Hour range filters
+        //             item => {
+        //                 const outboundDuration = item.FlightGroup[0]?.Duration;
+        //                 if (!outboundDuration) return false;
+        //                 const outboundDurationInMinutes = convertToMinutes(outboundDuration);
+        //                 return outboundDurationInMinutes >= outboundHourRange[0] && outboundDurationInMinutes <= outboundHourRange[1];
+        //             },
+        //             item => {
+        //                 return item.FlightGroup.some(flight => {
+        //                     const duration = flight.Duration;
+        //                     if (!duration) return false;
+        //                     const durationInMinutes = convertToMinutes(duration);
+        //                     return durationInMinutes >= hourRange[0] && durationInMinutes <= hourRange[1];
+        //                 });
+        //             },
+        //             item => {
+        //                 if (item.schemaid !== 290) return true;
+        //                 const inboundDuration = item.FlightGroup[1]?.Duration;
+        //                 if (!inboundDuration) return false;
+        //                 const inboundDurationInMinutes = convertToMinutes(inboundDuration);
+        //                 return inboundDurationInMinutes >= inboundHourRange[0] && inboundDurationInMinutes <= inboundHourRange[1];
+        //             },
+        //             // System flight and fare family filters
+        //             item => !systemFlightNames.length || item.FlightGroup.some(flight => systemFlightNames.includes(flight.isSystemFlight)),
+        //             item => !fareFamilyNames.length || (fareFamilyNames.includes("farefamily") && item.FlightGroup.some(flight => flight.FareFamily === true)),
+        //             // Price filter
+        //             item => {
+        //                 const price = item.PriceInfo?.TotalCommission ? parseFloat(item.PriceInfo.TotalCommission.replace(/[,/]/g, '')) : Infinity;
+        //                 return price >= priceRange[0] && price <= priceRange[1];
+        //             }
+        //         ];
 
-                // Filter flight proposals
-                const newsource = allFlightProposals.filter(item => filters.every(filter => filter(item)));
+        //         // Filter flight proposals
+        //         const newsource = allFlightProposals.filter(item => filters.every(filter => filter(item)));
 
-                // Update flight count display
-                dynamicFlightProposalsCount = newsource.length;
-                document.querySelector(".book-count__api__content").innerHTML = dynamicFlightProposalsCount;
+        //         // Update flight count display
+        //         dynamicFlightProposalsCount = newsource.length;
+        //         document.querySelector(".book-count__api__content").innerHTML = dynamicFlightProposalsCount;
 
-                // Add index and selection state
-                const indexedSource = newsource.map((item, i) => ({
-                    ...item,
-                    SelectedFlight: item.FlightId === selectedFlightId,
-                    index: currentIndex + i
-                }));
-                currentIndex += newsource.length;
+        //         // Add index and selection state
+        //         const indexedSource = newsource.map((item, i) => ({
+        //             ...item,
+        //             SelectedFlight: item.FlightId === selectedFlightId,
+        //             index: currentIndex + i
+        //         }));
+        //         currentIndex += newsource.length;
 
-                // Handle selected flight scrolling
-                const selectedIndex = indexedSource.findIndex(item => item.SelectedFlight);
-                if (selectedIndex !== -1) {
-                    const page = Math.floor(selectedIndex / 30);
-                    start = page * 30;
-                    end = start + 30;
-                    setTimeout(() => {
-                        const targetElement = document.getElementById(`flight__${selectedIndex}`);
-                        if (targetElement) {
-                            targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
-                        }
-                    }, 0);
-                }
+        //         // Handle selected flight scrolling
+        //         const selectedIndex = indexedSource.findIndex(item => item.SelectedFlight);
+        //         if (selectedIndex !== -1) {
+        //             const page = Math.floor(selectedIndex / 30);
+        //             start = page * 30;
+        //             end = start + 30;
+        //             setTimeout(() => {
+        //                 const targetElement = document.getElementById(`flight__${selectedIndex}`);
+        //                 if (targetElement) {
+        //                     targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        //                 }
+        //             }, 0);
+        //         }
 
-                // Apply pagination
-                const pagedSource = indexedSource.slice(start, end);
-                FlightProposalsSource = pagedSource;
+        //         // Apply pagination
+        //         const pagedSource = indexedSource.slice(start, end);
+        //         FlightProposalsSource = pagedSource;
 
-                if (pagedSource.length > 0) {
-                    // CHANGED: Update price range with parsed prices
-                    const pricesSource = allFlightProposals.map(item => item.PriceInfo?.TotalCommission ? parseFloat(item.PriceInfo.TotalCommission.replace(/[,/]/g, '')) : null).filter(price => price != null);
-                    minPrice = pricesSource.length ? Math.min(...pricesSource) : 0;
-                    maxPrice = pricesSource.length ? Math.max(...pricesSource) : 0;
-                    priceMaxValueLabel.textContent = new Intl.NumberFormat().format(maxPrice).replace(/,/g, '/');
-                    priceMinValueLabel.textContent = new Intl.NumberFormat().format(minPrice).replace(/,/g, '/');
+        //         if (pagedSource.length > 0) {
+        //             // CHANGED: Update price range with parsed prices
+        //             const pricesSource = allFlightProposals.map(item => item.PriceInfo?.TotalCommission ? parseFloat(item.PriceInfo.TotalCommission.replace(/[,/]/g, '')) : null).filter(price => price != null);
+        //             minPrice = pricesSource.length ? Math.min(...pricesSource) : 0;
+        //             maxPrice = pricesSource.length ? Math.max(...pricesSource) : 0;
+        //             priceMaxValueLabel.textContent = new Intl.NumberFormat().format(maxPrice).replace(/,/g, '/');
+        //             priceMinValueLabel.textContent = new Intl.NumberFormat().format(minPrice).replace(/,/g, '/');
 
-                    // Update pagination UI
-                    if (InUpdatePaging) {
-                        const container = document.querySelector(".book-paging__cards__container");
-                        const nextPage = container.querySelector(".book-nextpage");
-                        const prevPage = container.querySelector(".book-prevpage");
-                        prevPage.classList.add("book-hidden");
+        //             // Update pagination UI
+        //             if (InUpdatePaging) {
+        //                 const container = document.querySelector(".book-paging__cards__container");
+        //                 const nextPage = container.querySelector(".book-nextpage");
+        //                 const prevPage = container.querySelector(".book-prevpage");
+        //                 prevPage.classList.add("book-hidden");
 
-                        const roundedNumber = Math.round(currentIndex / 30);
-                        const activePage = selectedIndex !== -1 ? Math.floor(selectedIndex / 30) : 0;
-                        const maxVisiblePages = 5;
-                        const startPage = Math.max(0, activePage - Math.floor(maxVisiblePages / 2));
-                        const endPage = Math.min(roundedNumber, startPage + maxVisiblePages);
-                        const adjustedStartPage = endPage - startPage < maxVisiblePages ? Math.max(0, endPage - maxVisiblePages) : startPage;
+        //                 const roundedNumber = Math.round(currentIndex / 30);
+        //                 const activePage = selectedIndex !== -1 ? Math.floor(selectedIndex / 30) : 0;
+        //                 const maxVisiblePages = 5;
+        //                 const startPage = Math.max(0, activePage - Math.floor(maxVisiblePages / 2));
+        //                 const endPage = Math.min(roundedNumber, startPage + maxVisiblePages);
+        //                 const adjustedStartPage = endPage - startPage < maxVisiblePages ? Math.max(0, endPage - maxVisiblePages) : startPage;
 
-                        const arrayPaging = Array.from({ length: roundedNumber }, (_, i) => ({
-                            index: i,
-                            page: i + 1,
-                            isActive: i === activePage,
-                            isVisible: i >= adjustedStartPage && i < endPage
-                        }));
+        //                 const arrayPaging = Array.from({ length: roundedNumber }, (_, i) => ({
+        //                     index: i,
+        //                     page: i + 1,
+        //                     isActive: i === activePage,
+        //                     isVisible: i >= adjustedStartPage && i < endPage
+        //                 }));
 
-                        nextPage.classList.toggle("book-hidden", arrayPaging.length <= 1);
-                        args.context.setAsSource("flight.paging", arrayPaging);
-                    }
+        //                 nextPage.classList.toggle("book-hidden", arrayPaging.length <= 1);
+        //                 args.context.setAsSource("flight.paging", arrayPaging);
+        //             }
 
-                    // CHANGED: Updated airline filter logic to ensure lowest price is selected
-                    if (InUpdateFiltering) {
-                        const filteringSource = allFlightProposals;
+        //             // CHANGED: Updated airline filter logic to ensure lowest price is selected
+        //             if (InUpdateFiltering) {
+        //                 const filteringSource = allFlightProposals;
 
-                        // Merge dictionaries for carriers, currency, and locations
-                        const mergedCarriers = {};
-                        const mergedCurrency = {};
-                        const mergedLocation = {};
-                        dictionaries.forEach(item => {
-                            Object.assign(mergedCarriers, item.carriers || {});
-                            Object.assign(mergedCurrency, item.currency || {});
-                            Object.assign(mergedLocation, item.location || {});
-                        });
+        //                 // Merge dictionaries for carriers, currency, and locations
+        //                 const mergedCarriers = {};
+        //                 const mergedCurrency = {};
+        //                 const mergedLocation = {};
+        //                 dictionaries.forEach(item => {
+        //                     Object.assign(mergedCarriers, item.carriers || {});
+        //                     Object.assign(mergedCurrency, item.currency || {});
+        //                     Object.assign(mergedLocation, item.location || {});
+        //                 });
 
-                        // CHANGED: Reset airline lists to avoid old data
-                        let allAirlineItems = [];
-                        let allOutboundAirlineItems = [];
-                        let allInboundAirlineItems = [];
+        //                 // CHANGED: Reset airline lists to avoid old data
+        //                 let allAirlineItems = [];
+        //                 let allOutboundAirlineItems = [];
+        //                 let allInboundAirlineItems = [];
 
-                        // CHANGED: Collect all airline items with parsed prices
-                        filteringSource.forEach(item => {
-                            // Airline filter
-                            const airlineItems = (item.FlightGroup || []).flatMap(flight =>
-                                (flight.RoutesInfo || []).map(value => ({
-                                    Name: mergedCarriers[value.AirlineCode]?.name || '',
-                                    Logo: mergedCarriers[value.AirlineCode]?.image || '',
-                                    Code: value.AirlineCode || '',
-                                    NumberOfStops: flight.NumberOfStops || 0,
-                                    FlightId: item.FlightId || '',
-                                    // Parse price strings if formatted
-                                    Price: item.PriceInfo?.Total ? parseFloat(item.PriceInfo.Total.replace(/[,/]/g, '')) : Infinity,
-                                    Unit: mergedCurrency[item.PriceInfo?.Currency] || ''
-                                }))
-                            ).filter(item => item.Name && item.Code && item.Price !== Infinity);
+        //                 // CHANGED: Collect all airline items with parsed prices
+        //                 filteringSource.forEach(item => {
+        //                     // Airline filter
+        //                     const airlineItems = (item.FlightGroup || []).flatMap(flight =>
+        //                         (flight.RoutesInfo || []).map(value => ({
+        //                             Name: mergedCarriers[value.AirlineCode]?.name || '',
+        //                             Logo: mergedCarriers[value.AirlineCode]?.image || '',
+        //                             Code: value.AirlineCode || '',
+        //                             NumberOfStops: flight.NumberOfStops || 0,
+        //                             FlightId: item.FlightId || '',
+        //                             // Parse price strings if formatted
+        //                             Price: item.PriceInfo?.Total ? parseFloat(item.PriceInfo.Total.replace(/[,/]/g, '')) : Infinity,
+        //                             Unit: mergedCurrency[item.PriceInfo?.Currency] || ''
+        //                         }))
+        //                     ).filter(item => item.Name && item.Code && item.Price !== Infinity);
 
-                            allAirlineItems.push(...airlineItems);
+        //                     allAirlineItems.push(...airlineItems);
 
-                            if (schemaId === 290 || schemaId === 291) {
-                                // Outbound airline filter
-                                const outboundAirline = (item.FlightGroup?.[0]?.RoutesInfo || []).map(value => ({
-                                    Name: mergedCarriers[value.AirlineCode]?.name || '',
-                                    Logo: mergedCarriers[value.AirlineCode]?.image || '',
-                                    Code: value.AirlineCode || '',
-                                    NumberOfStops: item.FlightGroup[0]?.NumberOfStops || 0,
-                                    FlightId: item.FlightId || '',
-                                    // Parse price strings if formatted
-                                    Price: item.PriceInfo?.Total ? parseFloat(item.PriceInfo.Total.replace(/[,/]/g, '')) : Infinity,
-                                    Unit: mergedCurrency[item.PriceInfo?.Currency] || ''
-                                })).filter(item => item.Name && item.Code && item.Price !== Infinity);
+        //                     if (schemaId === 290 || schemaId === 291) {
+        //                         // Outbound airline filter
+        //                         const outboundAirline = (item.FlightGroup?.[0]?.RoutesInfo || []).map(value => ({
+        //                             Name: mergedCarriers[value.AirlineCode]?.name || '',
+        //                             Logo: mergedCarriers[value.AirlineCode]?.image || '',
+        //                             Code: value.AirlineCode || '',
+        //                             NumberOfStops: item.FlightGroup[0]?.NumberOfStops || 0,
+        //                             FlightId: item.FlightId || '',
+        //                             // Parse price strings if formatted
+        //                             Price: item.PriceInfo?.Total ? parseFloat(item.PriceInfo.Total.replace(/[,/]/g, '')) : Infinity,
+        //                             Unit: mergedCurrency[item.PriceInfo?.Currency] || ''
+        //                         })).filter(item => item.Name && item.Code && item.Price !== Infinity);
 
-                                allOutboundAirlineItems.push(...outboundAirline);
+        //                         allOutboundAirlineItems.push(...outboundAirline);
 
-                                // Inbound airline filter
-                                if (item.FlightGroup?.[1]) {
-                                    const inboundAirline = (item.FlightGroup[1].RoutesInfo || []).map(value => ({
-                                        Name: mergedCarriers[value.AirlineCode]?.name || '',
-                                        Logo: mergedCarriers[value.AirlineCode]?.image || '',
-                                        Code: value.AirlineCode || '',
-                                        NumberOfStops: item.FlightGroup[1]?.NumberOfStops || 0,
-                                        FlightId: item.FlightId || '',
-                                        // Parse price strings if formatted
-                                        Price: item.PriceInfo?.Total ? parseFloat(item.PriceInfo.Total.replace(/[,/]/g, '')) : Infinity,
-                                        Unit: mergedCurrency[item.PriceInfo?.Currency] || ''
-                                    })).filter(item => item.Name && item.Code && item.Price !== Infinity);
+        //                         // Inbound airline filter
+        //                         if (item.FlightGroup?.[1]) {
+        //                             const inboundAirline = (item.FlightGroup[1].RoutesInfo || []).map(value => ({
+        //                                 Name: mergedCarriers[value.AirlineCode]?.name || '',
+        //                                 Logo: mergedCarriers[value.AirlineCode]?.image || '',
+        //                                 Code: value.AirlineCode || '',
+        //                                 NumberOfStops: item.FlightGroup[1]?.NumberOfStops || 0,
+        //                                 FlightId: item.FlightId || '',
+        //                                 // Parse price strings if formatted
+        //                                 Price: item.PriceInfo?.Total ? parseFloat(item.PriceInfo.Total.replace(/[,/]/g, '')) : Infinity,
+        //                                 Unit: mergedCurrency[item.PriceInfo?.Currency] || ''
+        //                             })).filter(item => item.Name && item.Code && item.Price !== Infinity);
 
-                                    allInboundAirlineItems.push(...inboundAirline);
-                                }
-                            }
-                        });
+        //                             allInboundAirlineItems.push(...inboundAirline);
+        //                         }
+        //                     }
+        //                 });
 
 
 
-                        // CHANGED: Deduplicate airlines and select lowest price
-                        const nameToMinPrice = {};
-                        allAirlineItems.forEach(item => {
-                            if (!nameToMinPrice[item.Name] || nameToMinPrice[item.Name].Price > item.Price) {
-                                nameToMinPrice[item.Name] = item;
-                            }
-                        });
-                        const airlineListResult = Object.values(nameToMinPrice).sort((a, b) => a.Price - b.Price);
+        //                 // CHANGED: Deduplicate airlines and select lowest price
+        //                 const nameToMinPrice = {};
+        //                 allAirlineItems.forEach(item => {
+        //                     if (!nameToMinPrice[item.Name] || nameToMinPrice[item.Name].Price > item.Price) {
+        //                         nameToMinPrice[item.Name] = item;
+        //                     }
+        //                 });
+        //                 const airlineListResult = Object.values(nameToMinPrice).sort((a, b) => a.Price - b.Price);
 
-                        args.context.setAsSource("flight.slider", airlineListResult);
+        //                 args.context.setAsSource("flight.slider", airlineListResult);
 
-                        if (schemaId === 290 || schemaId === 291) {
-                            // Outbound airline: Deduplicate and select lowest price
-                            const nameToMinPriceOutbound = {};
-                            allOutboundAirlineItems.forEach(item => {
-                                if (!nameToMinPriceOutbound[item.Name] || nameToMinPriceOutbound[item.Name].Price > item.Price) {
-                                    nameToMinPriceOutbound[item.Name] = item;
-                                }
-                            });
-                            const outboundAirlineListResult = Object.values(nameToMinPriceOutbound).sort((a, b) => a.Price - b.Price);
+        //                 if (schemaId === 290 || schemaId === 291) {
+        //                     // Outbound airline: Deduplicate and select lowest price
+        //                     const nameToMinPriceOutbound = {};
+        //                     allOutboundAirlineItems.forEach(item => {
+        //                         if (!nameToMinPriceOutbound[item.Name] || nameToMinPriceOutbound[item.Name].Price > item.Price) {
+        //                             nameToMinPriceOutbound[item.Name] = item;
+        //                         }
+        //                     });
+        //                     const outboundAirlineListResult = Object.values(nameToMinPriceOutbound).sort((a, b) => a.Price - b.Price);
 
-                            args.context.setAsSource("flight.outboundairline", outboundAirlineListResult);
+        //                     args.context.setAsSource("flight.outboundairline", outboundAirlineListResult);
 
-                            // Inbound airline: Deduplicate and select lowest price
-                            const nameToMinPriceInbound = {};
-                            allInboundAirlineItems.forEach(item => {
-                                if (!nameToMinPriceInbound[item.Name] || nameToMinPriceInbound[item.Name].Price > item.Price) {
-                                    nameToMinPriceInbound[item.Name] = item;
-                                }
-                            });
-                            const inboundAirlineListResult = Object.values(nameToMinPriceInbound).sort((a, b) => a.Price - b.Price);
+        //                     // Inbound airline: Deduplicate and select lowest price
+        //                     const nameToMinPriceInbound = {};
+        //                     allInboundAirlineItems.forEach(item => {
+        //                         if (!nameToMinPriceInbound[item.Name] || nameToMinPriceInbound[item.Name].Price > item.Price) {
+        //                             nameToMinPriceInbound[item.Name] = item;
+        //                         }
+        //                     });
+        //                     const inboundAirlineListResult = Object.values(nameToMinPriceInbound).sort((a, b) => a.Price - b.Price);
 
-                            if (inboundAirlineListResult.length > 0) {
-                                args.context.setAsSource("flight.inboundairline", inboundAirlineListResult);
-                            }
+        //                     if (inboundAirlineListResult.length > 0) {
+        //                         args.context.setAsSource("flight.inboundairline", inboundAirlineListResult);
+        //                     }
 
-                            // Airport filters
-                            const outboundAirports = filteringSource.flatMap(item =>
-                                (item.FlightGroup?.[0]?.RoutesInfo || []).map(value => ({
-                                    Name: mergedLocation[value.DestinationAirport]?.airport || '',
-                                    Code: value.DestinationAirport || ''
-                                }))
-                            ).filter(item => item.Name && item.Code);
+        //                     // Airport filters
+        //                     const outboundAirports = filteringSource.flatMap(item =>
+        //                         (item.FlightGroup?.[0]?.RoutesInfo || []).map(value => ({
+        //                             Name: mergedLocation[value.DestinationAirport]?.airport || '',
+        //                             Code: value.DestinationAirport || ''
+        //                         }))
+        //                     ).filter(item => item.Name && item.Code);
 
-                            const inboundAirports = filteringSource.some(item => item.FlightGroup?.[1])
-                                ? filteringSource.flatMap(item =>
-                                    (item.FlightGroup?.[1]?.RoutesInfo || []).map(value => ({
-                                        Name: mergedLocation[value.DestinationAirport]?.airport || '',
-                                        Code: value.DestinationAirport || ''
-                                    }))
-                                ).filter(item => item.Name && item.Code)
-                                : [];
+        //                     const inboundAirports = filteringSource.some(item => item.FlightGroup?.[1])
+        //                         ? filteringSource.flatMap(item =>
+        //                             (item.FlightGroup?.[1]?.RoutesInfo || []).map(value => ({
+        //                                 Name: mergedLocation[value.DestinationAirport]?.airport || '',
+        //                                 Code: value.DestinationAirport || ''
+        //                             }))
+        //                         ).filter(item => item.Name && item.Code)
+        //                         : [];
 
-                            const outboundAirportListResult = outboundAirports.filter((item, index, self) =>
-                                index === self.findIndex(t => t.Name === item.Name)
-                            );
-                            const inboundAirportListResult = inboundAirports.filter((item, index, self) =>
-                                index === self.findIndex(t => t.Name === item.Name)
-                            );
+        //                     const outboundAirportListResult = outboundAirports.filter((item, index, self) =>
+        //                         index === self.findIndex(t => t.Name === item.Name)
+        //                     );
+        //                     const inboundAirportListResult = inboundAirports.filter((item, index, self) =>
+        //                         index === self.findIndex(t => t.Name === item.Name)
+        //                     );
 
-                            args.context.setAsSource("flight.outboundairport", outboundAirportListResult);
-                            if (inboundAirports.length > 0) {
-                                args.context.setAsSource("flight.inboundairport", inboundAirportListResult);
-                            }
+        //                     args.context.setAsSource("flight.outboundairport", outboundAirportListResult);
+        //                     if (inboundAirports.length > 0) {
+        //                         args.context.setAsSource("flight.inboundairport", inboundAirportListResult);
+        //                     }
 
-                            // Stop filters
-                            const outboundStopList = filteringSource
-                                .filter(item => item.FlightGroup?.[0]?.NumberOfStops != null)
-                                .map(item => ({ Name: item.FlightGroup[0].NumberOfStops }))
-                                .filter(item => item.Name != null);
+        //                     // Stop filters
+        //                     const outboundStopList = filteringSource
+        //                         .filter(item => item.FlightGroup?.[0]?.NumberOfStops != null)
+        //                         .map(item => ({ Name: item.FlightGroup[0].NumberOfStops }))
+        //                         .filter(item => item.Name != null);
 
-                            const inboundStopList = filteringSource.some(item => item.FlightGroup?.[1])
-                                ? filteringSource
-                                    .filter(item => item.FlightGroup?.[1]?.NumberOfStops != null)
-                                    .map(item => ({ Name: item.FlightGroup[1].NumberOfStops }))
-                                    .filter(item => item.Name != null)
-                                : [];
+        //                     const inboundStopList = filteringSource.some(item => item.FlightGroup?.[1])
+        //                         ? filteringSource
+        //                             .filter(item => item.FlightGroup?.[1]?.NumberOfStops != null)
+        //                             .map(item => ({ Name: item.FlightGroup[1].NumberOfStops }))
+        //                             .filter(item => item.Name != null)
+        //                         : [];
 
-                            const outboundStopListResult = outboundStopList.filter((item, index, self) =>
-                                index === self.findIndex(t => t.Name === item.Name)
-                            );
-                            const inboundStopListResult = inboundStopList.filter((item, index, self) =>
-                                index === self.findIndex(t => t.Name === item.Name)
-                            );
+        //                     const outboundStopListResult = outboundStopList.filter((item, index, self) =>
+        //                         index === self.findIndex(t => t.Name === item.Name)
+        //                     );
+        //                     const inboundStopListResult = inboundStopList.filter((item, index, self) =>
+        //                         index === self.findIndex(t => t.Name === item.Name)
+        //                     );
 
-                            args.context.setAsSource("flight.outboundstop", outboundStopListResult);
-                            if (inboundStopList.length > 0) {
-                                args.context.setAsSource("flight.inboundstop", inboundStopListResult);
-                            }
+        //                     args.context.setAsSource("flight.outboundstop", outboundStopListResult);
+        //                     if (inboundStopList.length > 0) {
+        //                         args.context.setAsSource("flight.inboundstop", inboundStopListResult);
+        //                     }
 
-                            // Baggage filters
-                            const outboundBaggages = filteringSource
-                                .map(item => ({ Name: item.Baggages?.[0]?.Baggage, Unit: item.Baggages?.[0]?.Unit }))
-                                .filter(item => item.Name != null && item.Unit != null);
+        //                     // Baggage filters
+        //                     const outboundBaggages = filteringSource
+        //                         .map(item => ({ Name: item.Baggages?.[0]?.Baggage, Unit: item.Baggages?.[0]?.Unit }))
+        //                         .filter(item => item.Name != null && item.Unit != null);
 
-                            const inboundBaggages = filteringSource.some(item => item.FlightGroup?.[1])
-                                ? filteringSource
-                                    .map(item => ({ Name: item.Baggages?.[1]?.Baggage, Unit: item.Baggages?.[1]?.Unit }))
-                                    .filter(item => item.Name != null && item.Unit != null)
-                                : [];
+        //                     const inboundBaggages = filteringSource.some(item => item.FlightGroup?.[1])
+        //                         ? filteringSource
+        //                             .map(item => ({ Name: item.Baggages?.[1]?.Baggage, Unit: item.Baggages?.[1]?.Unit }))
+        //                             .filter(item => item.Name != null && item.Unit != null)
+        //                         : [];
 
-                            const outboundBaggageListResult = outboundBaggages.filter((item, index, self) =>
-                                index === self.findIndex(t => t.Name === item.Name)
-                            );
-                            const inboundBaggageListResult = inboundBaggages.filter((item, index, self) =>
-                                index === self.findIndex(t => t.Name === item.Name)
-                            );
+        //                     const outboundBaggageListResult = outboundBaggages.filter((item, index, self) =>
+        //                         index === self.findIndex(t => t.Name === item.Name)
+        //                     );
+        //                     const inboundBaggageListResult = inboundBaggages.filter((item, index, self) =>
+        //                         index === self.findIndex(t => t.Name === item.Name)
+        //                     );
 
-                            args.context.setAsSource("flight.outboundbaggage", outboundBaggageListResult);
-                            if (inboundBaggages.length > 0) {
-                                args.context.setAsSource("flight.inboundbaggage", inboundBaggageListResult);
-                            }
+        //                     args.context.setAsSource("flight.outboundbaggage", outboundBaggageListResult);
+        //                     if (inboundBaggages.length > 0) {
+        //                         args.context.setAsSource("flight.inboundbaggage", inboundBaggageListResult);
+        //                     }
 
-                            // Update hour ranges
-                            const outboundHoursSource = allFlightProposals.map(item => item.FlightGroup?.[0]?.Duration).filter(Boolean);
-                            const inboundHoursSource = allFlightProposals.map(item => item.FlightGroup?.[1]?.Duration).filter(Boolean);
+        //                     // Update hour ranges
+        //                     const outboundHoursSource = allFlightProposals.map(item => item.FlightGroup?.[0]?.Duration).filter(Boolean);
+        //                     const inboundHoursSource = allFlightProposals.map(item => item.FlightGroup?.[1]?.Duration).filter(Boolean);
 
-                            const uniqueHoursSource = [...new Set(outboundHoursSource)];
-                            const timesInMinutes = uniqueHoursSource.map(convertToMinutes);
-                            outboundMinHour = timesInMinutes.length ? Math.min(...timesInMinutes) : 0;
-                            outboundMaxHour = timesInMinutes.length ? Math.max(...timesInMinutes) : 0;
-                            outboundHourMaxValueLabel.textContent = convertToTime(outboundMaxHour);
-                            outboundHourMinValueLabel.textContent = convertToTime(outboundMinHour);
+        //                     const uniqueHoursSource = [...new Set(outboundHoursSource)];
+        //                     const timesInMinutes = uniqueHoursSource.map(convertToMinutes);
+        //                     outboundMinHour = timesInMinutes.length ? Math.min(...timesInMinutes) : 0;
+        //                     outboundMaxHour = timesInMinutes.length ? Math.max(...timesInMinutes) : 0;
+        //                     outboundHourMaxValueLabel.textContent = convertToTime(outboundMaxHour);
+        //                     outboundHourMinValueLabel.textContent = convertToTime(outboundMinHour);
 
-                            if (inboundHoursSource.length > 0) {
-                                const uniqueInboundHours = [...new Set(inboundHoursSource)];
-                                const inboundTimesInMinutes = uniqueInboundHours.map(convertToMinutes);
-                                inboundMinHour = inboundTimesInMinutes.length ? Math.min(...inboundTimesInMinutes) : 0;
-                                inboundMaxHour = inboundTimesInMinutes.length ? Math.max(...inboundTimesInMinutes) : 0;
-                                inboundHourMaxValueLabel.textContent = convertToTime(inboundMaxHour);
-                                inboundHourMinValueLabel.textContent = convertToTime(inboundMinHour);
-                            }
+        //                     if (inboundHoursSource.length > 0) {
+        //                         const uniqueInboundHours = [...new Set(inboundHoursSource)];
+        //                         const inboundTimesInMinutes = uniqueInboundHours.map(convertToMinutes);
+        //                         inboundMinHour = inboundTimesInMinutes.length ? Math.min(...inboundTimesInMinutes) : 0;
+        //                         inboundMaxHour = inboundTimesInMinutes.length ? Math.max(...inboundTimesInMinutes) : 0;
+        //                         inboundHourMaxValueLabel.textContent = convertToTime(inboundMaxHour);
+        //                         inboundHourMinValueLabel.textContent = convertToTime(inboundMinHour);
+        //                     }
 
-                            // Update trip type visibility
-                            document.querySelectorAll(".book-multitrip__content").forEach(e => e.classList.add("book-hidden"));
-                            if (schemaId === 290) {
-                                document.querySelectorAll(".book-roundtrip__content").forEach(e => e.classList.remove("book-hidden"));
-                            }
-                        } else {
-                            // CHANGED: Simplified airline filter for non-roundtrip cases
-                            args.context.setAsSource("flight.airline", airlineListResult);
+        //                     // Update trip type visibility
+        //                     document.querySelectorAll(".book-multitrip__content").forEach(e => e.classList.add("book-hidden"));
+        //                     if (schemaId === 290) {
+        //                         document.querySelectorAll(".book-roundtrip__content").forEach(e => e.classList.remove("book-hidden"));
+        //                     }
+        //                 } else {
+        //                     // CHANGED: Simplified airline filter for non-roundtrip cases
+        //                     args.context.setAsSource("flight.airline", airlineListResult);
 
-                            // Airport filter
-                            const uniqueAirport = filteringSource.flatMap(item =>
-                                (item.FlightGroup || []).flatMap(flight =>
-                                    (flight.RoutesInfo || []).map(value => ({
-                                        Name: mergedLocation[value.DestinationAirport]?.airport || '',
-                                        Code: value.DestinationAirport || ''
-                                    }))
-                                )
-                            ).filter(item => item.Name && item.Code);
+        //                     // Airport filter
+        //                     const uniqueAirport = filteringSource.flatMap(item =>
+        //                         (item.FlightGroup || []).flatMap(flight =>
+        //                             (flight.RoutesInfo || []).map(value => ({
+        //                                 Name: mergedLocation[value.DestinationAirport]?.airport || '',
+        //                                 Code: value.DestinationAirport || ''
+        //                             }))
+        //                         )
+        //                     ).filter(item => item.Name && item.Code);
 
-                            const airportListResult = uniqueAirport.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
-                            args.context.setAsSource("flight.airport", airportListResult);
+        //                     const airportListResult = uniqueAirport.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
+        //                     args.context.setAsSource("flight.airport", airportListResult);
 
-                            // Stop filter
-                            const uniqueStop = filteringSource.flatMap(item =>
-                                (item.FlightGroup || []).map(flight => ({ Name: flight.NumberOfStops }))
-                            ).filter(item => item.Name != null);
+        //                     // Stop filter
+        //                     const uniqueStop = filteringSource.flatMap(item =>
+        //                         (item.FlightGroup || []).map(flight => ({ Name: flight.NumberOfStops }))
+        //                     ).filter(item => item.Name != null);
 
-                            const stopListResult = uniqueStop.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
-                            args.context.setAsSource("flight.stop", stopListResult);
+        //                     const stopListResult = uniqueStop.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
+        //                     args.context.setAsSource("flight.stop", stopListResult);
 
-                            // Baggage filter
-                            const uniqueBaggage = filteringSource.flatMap(item =>
-                                (item.Baggages || []).map(value => ({ Name: value.Baggage, Unit: value.Unit }))
-                            ).filter(item => item.Name != null && item.Unit != null);
+        //                     // Baggage filter
+        //                     const uniqueBaggage = filteringSource.flatMap(item =>
+        //                         (item.Baggages || []).map(value => ({ Name: value.Baggage, Unit: value.Unit }))
+        //                     ).filter(item => item.Name != null && item.Unit != null);
 
-                            const baggageListResult = uniqueBaggage.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
-                            args.context.setAsSource("flight.baggage", baggageListResult);
+        //                     const baggageListResult = uniqueBaggage.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
+        //                     args.context.setAsSource("flight.baggage", baggageListResult);
 
-                            // Update trip type visibility
-                            document.querySelectorAll(".book-multitrip__content").forEach(e => e.classList.remove("book-hidden"));
-                            document.querySelectorAll(".book-roundtrip__content").forEach(e => e.classList.add("book-hidden"));
-                            document.querySelectorAll(".book-onewaytrip__content").forEach(e => e.classList.add("book-hidden"));
-                        }
-                    }else{
-                        setTimeout(() => {
-                            setupBookCardButtons(); 
-                       }, 0);
-                    }
+        //                     // Update trip type visibility
+        //                     document.querySelectorAll(".book-multitrip__content").forEach(e => e.classList.remove("book-hidden"));
+        //                     document.querySelectorAll(".book-roundtrip__content").forEach(e => e.classList.add("book-hidden"));
+        //                     document.querySelectorAll(".book-onewaytrip__content").forEach(e => e.classList.add("book-hidden"));
+        //                 }
+        //             }else{
+        //                 setTimeout(() => {
+        //                     setupBookCardButtons(); 
+        //                }, 0);
+        //             }
 
-                    // Update flight list
-                    args.context.setAsSource("flight.updated", pagedSource, { keyFieldName: "FlightId" });
-                    InUpdateUIProcess = false;
+        //             // Update flight list
+        //             args.context.setAsSource("flight.updated", pagedSource, { keyFieldName: "FlightId" });
+        //             InUpdateUIProcess = false;
                 
-                } else {
-                    InUpdateUIProcess = false;
-                    document.querySelector(".book-list__cards__container").innerHTML = `
-                <div class="book-text-center">
-                    <div>هیچ پروازی مطابق با فیلترهای شما وجود ندارد.</div>
-                    <div class="book-text-zinc-900 book-text-xs book-mt-2">برای مشاهده نتایج، فیلترهای خود را پاک کنید.</div>
-                </div>`;
-                    const container = document.querySelector(".book-paging__cards__container");
-                    const buttons = container.querySelectorAll(".book-paging__container:not(.book-nextpage):not(.book-prevpage)");
-                    const nextPage = container.querySelector(".book-nextpage");
-                    const prevPage = container.querySelector(".book-prevpage");
-                    prevPage.classList.add("book-hidden");
-                    nextPage.classList.add("book-hidden");
-                    buttons.forEach(button => button.remove());
-                }
-            }
-        };
+        //         } else {
+        //             InUpdateUIProcess = false;
+        //             document.querySelector(".book-list__cards__container").innerHTML = `
+        //         <div class="book-text-center">
+        //             <div>هیچ پروازی مطابق با فیلترهای شما وجود ندارد.</div>
+        //             <div class="book-text-zinc-900 book-text-xs book-mt-2">برای مشاهده نتایج، فیلترهای خود را پاک کنید.</div>
+        //         </div>`;
+        //             const container = document.querySelector(".book-paging__cards__container");
+        //             const buttons = container.querySelectorAll(".book-paging__container:not(.book-nextpage):not(.book-prevpage)");
+        //             const nextPage = container.querySelector(".book-nextpage");
+        //             const prevPage = container.querySelector(".book-prevpage");
+        //             prevPage.classList.add("book-hidden");
+        //             nextPage.classList.add("book-hidden");
+        //             buttons.forEach(button => button.remove());
+        //         }
+        //     }
+        // };
 
 
         /**
