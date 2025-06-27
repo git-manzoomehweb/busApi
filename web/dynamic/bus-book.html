@@ -141,7 +141,7 @@
                             بروز رسانی
                             کنید</div>
                         <div class="book-flex book-justify-between book-mt-6">
-                            <button onclick="window.location='/flight/search'" type="button"
+                            <button onclick="window.location='/bus/search'" type="button"
                                 class="book-research__btn__container book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-white hover:book-text-primary-400">بروز
                                 رسانی جستجو</button>
                             <button onclick="window.location='/'" type="button"
@@ -221,7 +221,7 @@
                                     <div
                                         class="book-tab__navigation__container book-flex book-justify-around book-gap-2 book-mb-4">
                                         <button
-                                            onclick="{{return `scrollModalContainerItem(this,'','book-flight__details','')`}}"
+                                            onclick="{{return `scrollModalContainerItem(this,'','book-bus__details','')`}}"
                                             type="button"
                                             class="book-tab__navigation__content book-min-w-20 book-active__tab__navigation book-p-3 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                             <svg width="21" height="20">
@@ -234,7 +234,7 @@
                                         </button>
 
                                         <button
-                                            onclick="{{return `scrollModalContainerItem(this,'','book-flight__price','')`}}"
+                                            onclick="{{return `scrollModalContainerItem(this,'','book-bus__price','')`}}"
                                             type="button"
                                             class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                             <svg width="21" height="20">
@@ -247,12 +247,12 @@
                                                 قیمت</h6>
                                         </button>
                                         <button
-                                            onclick="{{return `scrollModalContainerItem(this,'AirRules','book-flight__rule','${$data.FlightId}')`}}"
+                                            onclick="{{return `scrollModalContainerItem(this,'AirRules','book-bus__rule','${$data.busId}')`}}"
                                             type="button"
                                             class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                             <svg width="21" height="20">
                                                 <use
-                                                    href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#flight-rule-icon">
+                                                    href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#bus-rule-icon">
                                                 </use>
                                             </svg>
                                             <h6 class="book-text-sm">قوانین
@@ -261,10 +261,10 @@
                                         </button>
                                     </div>
                                     <div
-                                        class="book-flight__details book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                        class="book-bus__details book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
                                         <div class="book-border-b book-border-zinc-300 book-pb-7 book-mb-7">
                                             <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-                                                onclick="{{return `toggleContentApi(this,'','book-flight__details','')`}}"
+                                                onclick="{{return `toggleContentApi(this,'','book-bus__details','')`}}"
                                                 data-run="1">
                                                 <h6 class="book-text-lg book-font-bold book-text-zinc-800">
                                                     جزئیات
@@ -283,10 +283,10 @@
 
                                     </div>
                                     <div
-                                        class="book-flight__price book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                        class="book-bus__price book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
                                         <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
                                             <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-                                                onclick="{{return `toggleContentApi(this,'','book-flight__price','')`}}"
+                                                onclick="{{return `toggleContentApi(this,'','book-bus__price','')`}}"
                                                 data-run="1">
                                                 <h6 class="book-text-lg book-font-bold book-text-zinc-800">
                                                     جزئیات قیمت</h6>
@@ -303,10 +303,10 @@
                                     </div>
 
                                     <div
-                                        class="book-flight__rule book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl">
+                                        class="book-bus__rule book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl">
                                         <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
                                             <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-                                                onclick="{{return `toggleContentApi(this,'AirRules','book-flight__rule','${$data.FlightId}')`}}"
+                                                onclick="{{return `toggleContentApi(this,'AirRules','book-bus__rule','${$data.busId}')`}}"
                                                 data-run="0">
                                                 <h6 class="book-text-lg book-font-bold book-text-zinc-800">
                                                     قوانین
@@ -2568,7 +2568,7 @@
                                 <basis core="call" run="atclient" file="/book/bank/list" triggers="cms.bankList"
                                     method="get" if="{##cms.bankList##}" OnRendered="renderBankList"></basis>
                                 <basis core="api" name="api.userCredit"
-                                    url="{##cms.url.value##}/Flight/UserCredit?supplier_dmnid=[##cms.cms.domainid##]&rkey={##cms.userCredit.rkey##}"
+                                    url="{##cms.url.value##}/bus/UserCredit?supplier_dmnid=[##cms.cms.domainid##]&rkey={##cms.userCredit.rkey##}"
                                     method="get" content-type="application/json" run="atclient"
                                     triggers="cms.userCredit" if="{##cms.userCredit##}"
                                     onprocessed='onProcessedUserCredit'>
@@ -2679,23 +2679,23 @@ function getBaseFare() {
 
 
         /**
-         * Global variables to store flight search and booking data from localStorage.
+         * Global variables to store bus search and booking data from localStorage.
          * Initialized as null to be populated on DOM load.
          */
         let queryUrl = "[##cms.query.url##]";
-        let flightSearchLocalStorage = null;
-        let flightReserveLocalStorage = null;
+        let busSearchLocalStorage = null;
+        let busReserveLocalStorage = null;
         let ExcessService = null;
         let SeatSelection = null;
         let dictionaries = [];
-        let schemaId; // Flight schema ID (e.g., 291: one-way, 290: round-trip, 292: multi-city)
+        let schemaId; // bus schema ID (e.g., 291: one-way, 290: round-trip, 292: multi-city)
         let originalFirstPay;
         let originalTotalCom;
         let originalTotal;
         let originalServiceTotalCost = 0;
 
         /**
-         * Event listener for DOM content loaded to initialize the flight booking process.
+         * Event listener for DOM content loaded to initialize the bus booking process.
          * Loads data from localStorage, sets up UI, and triggers initial actions.
          */
         document.addEventListener("DOMContentLoaded", function () {
@@ -2704,30 +2704,30 @@ function getBaseFare() {
             } else {
                 $bc.setSource("cms.url", "[##cms.host.live##]");
             }
-            // Parse flight search data from localStorage, default to empty string if not found
-            flightSearchLocalStorage = localStorage.getItem("flightSearch")
-                ? JSON.parse(localStorage.getItem("flightSearch"))
+            // Parse bus search data from localStorage, default to empty string if not found
+            busSearchLocalStorage = localStorage.getItem("busSearch")
+                ? JSON.parse(localStorage.getItem("busSearch"))
                 : "";
             // Check if booking data has a field 'type' with value 'api'
 
-            if (flightSearchLocalStorage?.Mode === "AI") {
+            if (busSearchLocalStorage?.Mode === "AI") {
                 // Set supplier credit check data source
-                $bc.setSource("cms.flightGroup", [{
-                    TokenId: flightSearchLocalStorage.TokenId,
-                    FlightId: flightSearchLocalStorage.FlightId,
+                $bc.setSource("cms.busGroup", [{
+                    TokenId: busSearchLocalStorage.TokenId,
+                    busId: busSearchLocalStorage.busId,
                     run: true
                 }]);
 
                 document.querySelector(".book-research__btn__container").setAttribute("onclick", "window.location='/book/ai'");
 
             } else {
-                // Parse flight booking data from localStorage, default to empty string if not found
-                flightReserveLocalStorage = localStorage.getItem("flightBook")
-                    ? JSON.parse(localStorage.getItem("flightBook"))
+                // Parse bus booking data from localStorage, default to empty string if not found
+                busReserveLocalStorage = localStorage.getItem("busBook")
+                    ? JSON.parse(localStorage.getItem("busBook"))
                     : "";
-                setFlightGroup();
-                ExcessService = flightReserveLocalStorage.FlightGroup[0].ExcessService
-                SeatSelection = flightReserveLocalStorage.FlightGroup[0].SeatSelection
+                setbusGroup();
+                ExcessService = busReserveLocalStorage.busGroup[0].ExcessService
+                SeatSelection = busReserveLocalStorage.busGroup[0].SeatSelection
             }
 
             // Add excess service or seat service UI if enabled
@@ -2835,7 +2835,7 @@ function getBaseFare() {
                 totalTime--;
                 setTimeout(startTimer, 1000);
             } else {
-                localStorage.removeItem("flightBook");
+                localStorage.removeItem("busBook");
                 document.querySelector(".book-expire__message__modal__container")
                     .classList.remove("book-hidden");
                 document.querySelector(".book-no__time")
@@ -2844,10 +2844,10 @@ function getBaseFare() {
                     .classList.add("book-hidden");
             }
         };
-        const setFlightGroup = async () => {
+        const setbusGroup = async () => {
             try {
-                if (localStorage.getItem("flightBook")) {
-                    const dict = flightReserveLocalStorage.dictionaries;
+                if (localStorage.getItem("busBook")) {
+                    const dict = busReserveLocalStorage.dictionaries;
                     if (Array.isArray(dict)) {
                         dictionaries = dict;
                     }
@@ -2856,20 +2856,20 @@ function getBaseFare() {
                     }
                 }
                 // Set booking data source if search data exists
-                $bc.setSource("flight.book", flightReserveLocalStorage);
+                $bc.setSource("bus.book", busReserveLocalStorage);
 
                 // Extract passenger counts from search data
-                const Adults = flightReserveLocalStorage.PriceInfo.PassengerFare[0].Count;
-                const Children = flightReserveLocalStorage.PriceInfo.PassengerFare[1].Count;
-                const Infants = flightReserveLocalStorage.PriceInfo.PassengerFare[2].Count;
+                const Adults = busReserveLocalStorage.PriceInfo.PassengerFare[0].Count;
+                const Children = busReserveLocalStorage.PriceInfo.PassengerFare[1].Count;
+                const Infants = busReserveLocalStorage.PriceInfo.PassengerFare[2].Count;
 
-                // Determine if the flight is internal (domestic) from dictionaries
+                // Determine if the bus is internal (domestic) from dictionaries
                 const internal = dictionaries[0] ? dictionaries[0].internal : "";
 
                 // Get provider ID from booking data
-                const Provider = flightReserveLocalStorage.Provider.Dmnid;
+                const Provider = busReserveLocalStorage.Provider.Dmnid;
 
-                // Show appropriate passenger container based on flight type (internal/external)
+                // Show appropriate passenger container based on bus type (internal/external)
                 if (internal === true) {
                     document.querySelector(".book-passengers__container__internal")
                         .classList.remove("book-hidden");
@@ -2883,23 +2883,23 @@ function getBaseFare() {
                 // Start the booking timer
                 startTimer();
 
-                // Set expiry check for flight search and booking data (20 minutes)
-                getWithExpiry("flightSearch", "flightBook");
+                // Set expiry check for bus search and booking data (20 minutes)
+                getWithExpiry("busSearch", "busBook");
                 let cookieValue = `; ${document.cookie}`;
                 let cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
                 // Set supplier credit check data source
                 $bc.setSource("cms.supplierCredit", [{
-                    SessionId: flightSearchLocalStorage.SessionId,
-                    FlightId: flightReserveLocalStorage.FlightId,
-                    FlightGroup: JSON.stringify(flightReserveLocalStorage.FlightGroup),
+                    SessionId: busSearchLocalStorage.SessionId,
+                    busId: busReserveLocalStorage.busId,
+                    busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
                     rkey: cookieParts[1],
                     run: true
                 }]);
-                originalFirstPay = flightReserveLocalStorage.PriceInfo.TotalCommission;
-                originalTotalCom = flightReserveLocalStorage.PriceInfo.TotalCommission;
-                originalTotal = flightReserveLocalStorage.PriceInfo.Total;
+                originalFirstPay = busReserveLocalStorage.PriceInfo.TotalCommission;
+                originalTotalCom = busReserveLocalStorage.PriceInfo.TotalCommission;
+                originalTotal = busReserveLocalStorage.PriceInfo.Total;
             } catch (err) {
-                console.error(`setFlightGroup: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+                console.error(`setbusGroup: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
             }
         };
 
@@ -2927,8 +2927,8 @@ function getBaseFare() {
 
 
         /**
-         * Renders detailed route information for flight groups.
-         * @param {Object} element - Flight group data.
+         * Renders detailed route information for bus groups.
+         * @param {Object} element - bus group data.
          * @returns {string} HTML string of route details or empty string on error.
          */
         //  const renderRoutesInfo = async (element) => {
@@ -2955,7 +2955,7 @@ function getBaseFare() {
         // <div class="book-route__info">
         //     <div class="book-flex book-mb-4">
         //         <div class="book-flex">
-        //             <div class="book-flight__details__progress__line book-ml-3 book-mr-3 book-relative">
+        //             <div class="book-bus__details__progress__line book-ml-3 book-mr-3 book-relative">
         //                 <svg width="26" height="40" class="book-absolute book--right-3 book-z-10">
         //                     <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#path-icon"></use>
         //                 </svg>
@@ -2991,7 +2991,7 @@ function getBaseFare() {
         //                             ${await renderAirlineLogo(item.AirlineCode, '5', '50', '20')}
         //                         </div>
         //                         <span class="book-text-zinc-900 book-text-sm">
-        //                             ${await renderAirlineName(item.AirlineCode)} ${item.FlightNumber}
+        //                             ${await renderAirlineName(item.AirlineCode)} ${item.busNumber}
         //                         </span>
         //                     </div>
         //                     ${await renderOperatingAirlineCode(item)}
@@ -2999,7 +2999,7 @@ function getBaseFare() {
         //                 <div class="book-text-sm book-my-5">
         //                     <div class="book-grid book-grid-cols-2 book-gap-2">
 
-        //                             ${renderAirlineInfo("class-details-icon", "کلاس بلیط", `${await renderFlightClass(item.Class)}`)}
+        //                             ${renderAirlineInfo("class-details-icon", "کلاس بلیط", `${await renderbusClass(item.Class)}`)}
         //                             ${renderAirlineInfo("wheel-bag-details-icon", "بار مجاز", await renderBaggages(baggage))}
 
         //                             ${renderAirlineInfo("ticket-details-icon", "کلاس نرخی", item.ClassCode)}
@@ -3020,9 +3020,9 @@ function getBaseFare() {
         // </div>`;
 
         //         let output = "";
-        //         for (const flightGroup of element.FlightGroup || []) {
+        //         for (const busGroup of element.busGroup || []) {
         //             const routeHtmls = await Promise.all(
-        //                 (flightGroup.RoutesInfo || []).map((item, i) => routeHtml(item, element.Baggages?.[i], i))
+        //                 (busGroup.RoutesInfo || []).map((item, i) => routeHtml(item, element.Baggages?.[i], i))
         //             );
         //             output += routeHtmls.join('');
         //         }
@@ -3075,7 +3075,7 @@ function getBaseFare() {
             <div class="book-route__info">
                 <div class="book-flex book-mb-4">
                     <div class="book-flex">
-                        <div class="book-flight__details__progress__line book-ml-3 book-mr-3 book-relative">
+                        <div class="book-bus__details__progress__line book-ml-3 book-mr-3 book-relative">
                             <svg width="26" height="40" class="book-absolute book--right-3 book-z-10">
                                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#path-icon"></use>
                             </svg>
@@ -3233,10 +3233,10 @@ function getBaseFare() {
             }
         };
         /**
-* Renders the flight class in Persian.
+* Renders the bus class in Persian.
  
 */
-        const renderFlightClass = async (element) => {
+        const renderbusClass = async (element) => {
             try {
                 const classMap = {
                     economy: "اکونومی",
@@ -3245,7 +3245,7 @@ function getBaseFare() {
                 };
                 return classMap[element.toLowerCase()] || "فرست";
             } catch (error) {
-                console.error("renderFlightClass: " + error.message);
+                console.error("renderbusClass: " + error.message);
                 return "";
             }
         };
@@ -3543,9 +3543,9 @@ function getBaseFare() {
                 let cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
                 // Trigger API call to check coupon
                 $bc.setSource("cms.checkCoupon", [{
-                    SessionId: flightSearchLocalStorage.SessionId,
-                    FlightGroup: JSON.stringify(flightReserveLocalStorage.FlightGroup),
-                    FlightId: flightReserveLocalStorage.FlightId,
+                    SessionId: busSearchLocalStorage.SessionId,
+                    busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
+                    busId: busReserveLocalStorage.busId,
                     accountType,
                     price,
                     firstPay,
@@ -3617,7 +3617,7 @@ function getBaseFare() {
          * Toggles API content visibility, clears radio inputs, and triggers data fetch if needed.
          * @param {HTMLElement} element - Trigger element (e.g., checkbox or button).
          * @param {string} type - API type for the data fetch.
-         * @param {string} idToFind - Flight ID for the API call.
+         * @param {string} idToFind - bus ID for the API call.
          * @param {string} renderingClass - Class to add/remove for rendering state.
          */
         const toggleContentApi = (element, type, parent) => {
@@ -3654,9 +3654,9 @@ function getBaseFare() {
                         let cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
                         $bc.setSource("cms.rule", {
                             type,
-                            SessionId: flightSearchLocalStorage.SessionId,
-                            FlightId: flightReserveLocalStorage.FlightId,
-                            FlightGroup: JSON.stringify(flightReserveLocalStorage.FlightGroup),
+                            SessionId: busSearchLocalStorage.SessionId,
+                            busId: busReserveLocalStorage.busId,
+                            busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
                             rkey: cookieParts[1],
                             run: true
                         });
@@ -3893,10 +3893,10 @@ function getBaseFare() {
 
 
         /**
-         * Processes flight group API response, updates localStorage, and displays a warning modal if needed.
+         * Processes bus group API response, updates localStorage, and displays a warning modal if needed.
          * @param {Object} args - API response object containing the response data.
          */
-        const onProcessedFlightGroup = async (args) => {
+        const onProcessedbusGroup = async (args) => {
             try {
                 // Trigger research API call
                 $bc.setSource("cms.research", true);
@@ -3912,19 +3912,19 @@ function getBaseFare() {
                 }
 
                 // Update session ID in localStorage
-                flightSearchLocalStorage.SessionId = responseJson.SessionId;
-                localStorage.setItem("flightSearch", JSON.stringify(flightSearchLocalStorage));
-                localStorage.setItem("flightBook", JSON.stringify(responseJson));
-                // Update flightReserveLocalStorage
-                flightReserveLocalStorage = localStorage.getItem("flightBook")
-                    ? JSON.parse(localStorage.getItem("flightBook"))
+                busSearchLocalStorage.SessionId = responseJson.SessionId;
+                localStorage.setItem("busSearch", JSON.stringify(busSearchLocalStorage));
+                localStorage.setItem("busBook", JSON.stringify(responseJson));
+                // Update busReserveLocalStorage
+                busReserveLocalStorage = localStorage.getItem("busBook")
+                    ? JSON.parse(localStorage.getItem("busBook"))
                     : "";
-                if (!flightReserveLocalStorage) {
-                    throw new Error("Failed to parse flightBook from localStorage");
+                if (!busReserveLocalStorage) {
+                    throw new Error("Failed to parse busBook from localStorage");
                 }
 
-                // Set flight group (assumed to be defined elsewhere)
-                setFlightGroup();
+                // Set bus group (assumed to be defined elsewhere)
+                setbusGroup();
 
                 // Display warning modal if message exists
                 if (responseJson.message && responseJson.message.description) {
@@ -3953,7 +3953,7 @@ function getBaseFare() {
                     document.body.insertAdjacentHTML("beforeend", modalHtml);
                 }
             } catch (err) {
-                console.error(`onProcessedFlightGroup: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+                console.error(`onProcessedbusGroup: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
             }
         };
 
@@ -3986,19 +3986,19 @@ function getBaseFare() {
         };
 
         /**
-         * Renders the flight search UI based on stored flight group data.
+         * Renders the bus search UI based on stored bus group data.
          */
         const renderResearch = async () => {
             try {
                 // Validate localStorage data
-                if (!flightSearchLocalStorage || !flightSearchLocalStorage.Schemaid) {
-                    throw new Error("Missing Schemaid in flightSearchLocalStorage");
+                if (!busSearchLocalStorage || !busSearchLocalStorage.Schemaid) {
+                    throw new Error("Missing Schemaid in busSearchLocalStorage");
                 }
-                if (!flightReserveLocalStorage || !flightReserveLocalStorage.FlightGroup || !flightReserveLocalStorage.PriceInfo) {
-                    throw new Error("Invalid or missing data in flightReserveLocalStorage");
+                if (!busReserveLocalStorage || !busReserveLocalStorage.busGroup || !busReserveLocalStorage.PriceInfo) {
+                    throw new Error("Invalid or missing data in busReserveLocalStorage");
                 }
 
-                schemaId = flightSearchLocalStorage.Schemaid;
+                schemaId = busSearchLocalStorage.Schemaid;
 
                 // Update cabin class display
                 const cabinClass = document.querySelector(".book-cabinClass__searched__content");
@@ -4011,23 +4011,23 @@ function getBaseFare() {
                     BusinessClass: { text: "بیزینس", class: "BusinessClass" },
                     FirstClass: { text: "فرست", class: "FirstClass" }
                 };
-                const flightClass = flightReserveLocalStorage.FlightGroup[0].Class;
-                const cabin = cabinMap[flightClass] || { text: "اکونومی", class: "Economy" }; // Fallback to Economy
+                const busClass = busReserveLocalStorage.busGroup[0].Class;
+                const cabin = cabinMap[busClass] || { text: "اکونومی", class: "Economy" }; // Fallback to Economy
                 cabinClass.textContent = cabin.text;
                 cabinClass.dataset.class = cabin.class;
 
-                // Update flight type selection
-                const flightTypes = document.querySelectorAll('.book-module__flight__type li');
-                if (flightTypes.length < 3) {
-                    throw new Error("Flight type elements not found or insufficient");
+                // Update bus type selection
+                const busTypes = document.querySelectorAll('.book-module__bus__type li');
+                if (busTypes.length < 3) {
+                    throw new Error("bus type elements not found or insufficient");
                 }
-                flightTypes.forEach(item => item.classList.remove('book-active__module__flight__type'));
+                busTypes.forEach(item => item.classList.remove('book-active__module__bus__type'));
                 const typeIndex = { 291: 0, 290: 1, 292: 2 }[schemaId];
-                if (flightTypes[typeIndex]) {
-                    flightTypes[typeIndex].classList.add('book-active__module__flight__type');
+                if (busTypes[typeIndex]) {
+                    busTypes[typeIndex].classList.add('book-active__module__bus__type');
                 } else {
-                    console.warn(`Invalid schemaId: ${schemaId}, defaulting to first flight type`);
-                    flightTypes[0].classList.add('book-active__module__flight__type');
+                    console.warn(`Invalid schemaId: ${schemaId}, defaulting to first bus type`);
+                    busTypes[0].classList.add('book-active__module__bus__type');
                 }
 
                 // Update passenger summary
@@ -4037,7 +4037,7 @@ function getBaseFare() {
                     throw new Error("Passenger items or count input not found");
                 }
 
-                const passengerFare = flightReserveLocalStorage.PriceInfo.PassengerFare;
+                const passengerFare = busReserveLocalStorage.PriceInfo.PassengerFare;
                 const passengerParts = [];
                 if (passengerFare[0].Count > 0) passengerParts.push(`${passengerFare[0].Count} بزرگسال`);
                 if (passengerFare[1].Count > 0) passengerParts.push(`${passengerFare[1].Count} کودک`);
@@ -4055,8 +4055,8 @@ function getBaseFare() {
                 }
 
                 // Update trip details
-                if (flightReserveLocalStorage.FlightGroup.length === 0) {
-                    throw new Error("No flight group data available");
+                if (busReserveLocalStorage.busGroup.length === 0) {
+                    throw new Error("No bus group data available");
                 }
 
                 const departureLocationName = document.querySelector(".departure__location__name");
@@ -4068,27 +4068,27 @@ function getBaseFare() {
                     throw new Error("Trip detail elements not found");
                 }
 
-                const flightGroup = flightReserveLocalStorage.FlightGroup;
-                const lastIndex = flightGroup.length - 1;
+                const busGroup = busReserveLocalStorage.busGroup;
+                const lastIndex = busGroup.length - 1;
 
                 if (schemaId === 291) {
                     // One-way trip
-                    departureLocationName.value = await renderCity(flightGroup[0].Origin) || "";
-                    arrivalLocationName.value = await renderCity(flightGroup[lastIndex].Destination) || "";
-                    departureLocationName.dataset.id = flightGroup[0].Origin;
-                    arrivalLocationName.dataset.id = flightGroup[lastIndex].Destination;
-                    departureDate.value = convertToPersianDate(flightGroup[0].DepartureDate) || "";
-                    departureDate.dataset.date = flightGroup[0].DepartureDate || "";
+                    departureLocationName.value = await renderCity(busGroup[0].Origin) || "";
+                    arrivalLocationName.value = await renderCity(busGroup[lastIndex].Destination) || "";
+                    departureLocationName.dataset.id = busGroup[0].Origin;
+                    arrivalLocationName.dataset.id = busGroup[lastIndex].Destination;
+                    departureDate.value = convertToPersianDate(busGroup[0].DepartureDate) || "";
+                    departureDate.dataset.date = busGroup[0].DepartureDate || "";
                 } else if (schemaId === 290) {
                     // Round-trip
-                    departureLocationName.value = await renderCity(flightGroup[0].Origin) || "";
-                    arrivalLocationName.value = await renderCity(flightGroup[lastIndex].Destination) || "";
-                    departureLocationName.dataset.id = flightGroup[0].Origin;
-                    arrivalLocationName.dataset.id = flightGroup[lastIndex].Destination;
-                    departureDate.value = convertToPersianDate(flightGroup[0].DepartureDate) || "";
-                    departureDate.dataset.date = flightGroup[0].DepartureDate || "";
-                    arrivalDate.value = convertToPersianDate(flightGroup[lastIndex].ArrivalDate) || "";
-                    arrivalDate.dataset.date = flightGroup[lastIndex].ArrivalDate || "";
+                    departureLocationName.value = await renderCity(busGroup[0].Origin) || "";
+                    arrivalLocationName.value = await renderCity(busGroup[lastIndex].Destination) || "";
+                    departureLocationName.dataset.id = busGroup[0].Origin;
+                    arrivalLocationName.dataset.id = busGroup[lastIndex].Destination;
+                    departureDate.value = convertToPersianDate(busGroup[0].DepartureDate) || "";
+                    departureDate.dataset.date = busGroup[0].DepartureDate || "";
+                    arrivalDate.value = convertToPersianDate(busGroup[lastIndex].ArrivalDate) || "";
+                    arrivalDate.dataset.date = busGroup[lastIndex].ArrivalDate || "";
                     arrivalDateContainer.classList.remove("disabled__date__container");
                 } else {
                     // Multi-city trip
@@ -4099,8 +4099,8 @@ function getBaseFare() {
                     const templateHTML = container.innerHTML;
                     container.innerHTML = "";
 
-                    for (let index = 0; index < flightGroup.length; index++) {
-                        const trip = flightGroup[index];
+                    for (let index = 0; index < busGroup.length; index++) {
+                        const trip = busGroup[index];
                         const tripClone = document.createElement("div");
                         tripClone.innerHTML = templateHTML.trim();
                         const tripElement = tripClone.firstElementChild;
@@ -4156,7 +4156,7 @@ function getBaseFare() {
             }
         };
         /**
-         * Processes flight API rule response and renders flight rules, baggage, or services.
+         * Processes bus API rule response and renders bus rules, baggage, or services.
          * @param {Object} args - API response object containing status and data.
          */
         // Handle tab navigation click events for service selection
@@ -4205,16 +4205,16 @@ function getBaseFare() {
                 let cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
                 $bc.setSource("cms.rule", {
                     type: `${serviceType}`,
-                    SessionId: flightSearchLocalStorage.SessionId,
-                    FlightId: flightReserveLocalStorage.FlightId,
-                    FlightGroup: JSON.stringify(flightReserveLocalStorage.FlightGroup),
+                    SessionId: busSearchLocalStorage.SessionId,
+                    busId: busReserveLocalStorage.busId,
+                    busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
                     rkey: cookieParts[1],
                     run: true
                 });
             }
         };
-        // Process flight API rules for rendering flight rules, baggage, and services
-        const onProcessedFlightApiRule = async (args) => {
+        // Process bus API rules for rendering bus rules, baggage, and services
+        const onProcessedbusApiRule = async (args) => {
             try {
                 // Validate response
                 const { response } = args;
@@ -4248,7 +4248,7 @@ function getBaseFare() {
                     const typeCounters = { Adult: 0, Child: 0, Infant: 0 };
                     const typeMap = { Adult: "بزرگسال", Child: "کودک", Infant: "نوزاد" };
 
-                    const passengers = flightReserveLocalStorage?.PriceInfo?.PassengerFare || [];
+                    const passengers = busReserveLocalStorage?.PriceInfo?.PassengerFare || [];
                     const passengersData = document.querySelector('.book-passengers__content:not(.book-hidden)');
                     const passengerContainers = passengersData?.querySelectorAll('.book-passenger__container') || [];
 
@@ -4341,11 +4341,11 @@ onclick="toggleServiceTable(this,'book-route__service-${type}-${index}')">
 </div>`;
                 };
 
-                // Render flight rules if available
-                if (responseJson.FlightRules) {
-                    if (responseJson.FlightRules.length > 0) {
+                // Render bus rules if available
+                if (responseJson.busRules) {
+                    if (responseJson.busRules.length > 0) {
                         let output = "";
-                        for (const item of responseJson.FlightRules) {
+                        for (const item of responseJson.busRules) {
                             if (item.Rule?.length > 0) {
                                 output += `<div class="book-text-zinc-900 book-text-sm book-text-justify book-ltr">
                         <div class="book-mb-2 book-flex book-gap-1">
@@ -4389,7 +4389,7 @@ onclick="toggleServiceTable(this,'book-route__service-${type}-${index}')">
                     } else {
                         renderingContainer.innerHTML = "قوانینی در دسترس نیست";
                     }
-                } else if (responseJson.FlightServices) {
+                } else if (responseJson.busServices) {
                     // Create or get service containers dynamically
                     renderingContainer.querySelector(".book-api__container__loader").remove();
                     const renderingServiceContainer = ensureContainer(renderingContainer, "book-api__container__rendering__baggageService");
@@ -4401,7 +4401,7 @@ onclick="toggleServiceTable(this,'book-route__service-${type}-${index}')">
                     let baggageOutput = `<div>`;
                     let hasAnyBaggageService = false;
 
-                    for (const [index, item] of responseJson.FlightServices.entries()) {
+                    for (const [index, item] of responseJson.busServices.entries()) {
                         const baggageServices = item.Services?.filter(s => s.ServiceType === "Excess Baggage") || [];
                         if (baggageServices.length === 0) continue;
 
@@ -4431,7 +4431,7 @@ onclick="toggleServiceTable(this,'book-route__service-${type}-${index}')">
                     // Meal Services
                     let mealOutput = `<div>`;
                     let hasAnyMealService = false;
-                    const routesInfo = flightReserveLocalStorage?.FlightGroup?.flatMap(group => group.RoutesInfo) || [];
+                    const routesInfo = busReserveLocalStorage?.busGroup?.flatMap(group => group.RoutesInfo) || [];
                     const routeIds = [1, 2, 3, 4];
 
                     for (const routeId of routeIds) {
@@ -4444,7 +4444,7 @@ onclick="toggleServiceTable(this,'book-route__service-${type}-${index}')">
                         const fromAirport = routeInfo.OriginAirport;
                         const toAirport = routeInfo.DestinationAirport;
 
-                        const mealServices = responseJson.FlightServices.flatMap(item =>
+                        const mealServices = responseJson.busServices.flatMap(item =>
                             item.Services.filter(s => s.ServiceType === "Meal" && s.routeID === routeId)
                         );
 
@@ -4493,7 +4493,7 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
                     mealOutput += `</div>`;
                     renderingMealContainer.innerHTML = hasAnyMealService ? mealOutput : "غذایی در دسترس نیست";
                 }// Render seats services
-                else if (responseJson[0].FlightSegmentRefID) {
+                else if (responseJson[0].busSegmentRefID) {
                     renderingContainer.querySelector(".book-api__container__loader")?.remove();
                     const renderingServiceContainer = ensureContainer(renderingContainer, "book-api__container__rendering__seatService");
                     renderingServiceContainer.classList.add("book-services__content");
@@ -4667,7 +4667,7 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
 
             } catch (err) {
                 // Log error and show fallback message
-                console.error(`onProcessedFlightApiRule: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+                console.error(`onProcessedbusApiRule: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
             }
         };
 
@@ -4874,15 +4874,15 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
                         // Handle case where supplier credit is invalid
                         const messageBox = document.querySelector(".book-nodata__container");
                         const mainContainer = document.querySelector(".book-main__container");
-                        localStorage.removeItem("flightSearch");
-                        localStorage.removeItem("flightBook");
+                        localStorage.removeItem("busSearch");
+                        localStorage.removeItem("busBook");
                         // Show message box and hide main container
                         if (messageBox) messageBox.classList.remove("book-hidden");
                         if (mainContainer) mainContainer.classList.add("book-hidden"); // Fixed: Replaced passengersInfo with mainContainer
                     }
                 } else {
-                    // Handle non-200 response by clearing flight book and showing expiry message
-                    localStorage.removeItem("flightBook");
+                    // Handle non-200 response by clearing bus book and showing expiry message
+                    localStorage.removeItem("busBook");
                     document.querySelector(".book-expire__message__modal__container").classList.remove("book-hidden");
                     document.querySelector(".book-no__time").classList.remove("book-hidden");
                 }
@@ -5034,8 +5034,8 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
 
         /**
          * Checks localStorage item expiry and updates UI if expired.
-         * @param {string} key - Primary key for localStorage (e.g., 'flightSearch').
-         * @param {string} key2 - Secondary key for localStorage (e.g., 'flightBook').
+         * @param {string} key - Primary key for localStorage (e.g., 'busSearch').
+         * @param {string} key2 - Secondary key for localStorage (e.g., 'busBook').
          * @returns {null} If the item is missing or expired.
          */
         const getWithExpiry = (key, key2) => {
@@ -5077,7 +5077,7 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
         const addPassenger = (parentSelector, adults, children, infants) => {
             try {
 
-                const FlightId = flightReserveLocalStorage.FlightId;
+                const busId = busReserveLocalStorage.busId;
                 const parent = document.querySelector(parentSelector);
                 const templateElement = parent.querySelector('.book-passenger__container');
                 parent.innerHTML = ''; // Clear existing content
@@ -6413,10 +6413,10 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
 
                 // Create form data
                 const formData = {
-                    SessionId: flightSearchLocalStorage.SessionId,
-                    FlightId: flightReserveLocalStorage.FlightId,
-                    FlightGroup: flightReserveLocalStorage.FlightGroup,
-                    Schemaid: flightSearchLocalStorage.Schemaid,
+                    SessionId: busSearchLocalStorage.SessionId,
+                    busId: busReserveLocalStorage.busId,
+                    busGroup: busReserveLocalStorage.busGroup,
+                    Schemaid: busSearchLocalStorage.Schemaid,
                     Travelers: passengerList,
                     account: buyerData,
                     agencycountername: document.querySelector(".book-counter__container").querySelector(".book-name").value,
@@ -6434,7 +6434,7 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
                 // Create and submit form
                 const form = document.createElement("form");
                 form.method = "POST";
-                form.action = `/book/final?url=${queryUrl}`;
+                form.action = `bus/book/final?url=${queryUrl}`;
                 for (const key in formData) {
                     const input = document.createElement("input");
                     input.type = "hidden";
@@ -6933,7 +6933,7 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
                     // Handle invoice rendering based on account type
                     const accountType = document.querySelector(".book-buyers__container").dataset.accounttype;
                     // Commented out as per original code
-                    const share = flightSearchLocalStorage.share;
+                    const share = busSearchLocalStorage.share;
                     if (share == 1) {
                         invoiceContainer.innerHTML =
                             `<div class="book-invoice__content book-pre__Invoice" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">جهت ثبت قرارداد کلیک کنید</div>`;
