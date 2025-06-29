@@ -110,7 +110,7 @@
     	{
         	"origin": "THR",
         	"destination": "MHD",
-        	"departureDate": "2025-05-30"
+        	"departureDate": "2025-07-11"
     	}
 	],
 	"rKey": "3E6CE099-B76A-4246-B1B0-8E26B015E061",
@@ -246,8 +246,9 @@
                                             <h6 class="book-text-sm">جزئیات
                                                 قیمت</h6>
                                         </button>
+                                        <!-- onclick="{{return `scrollModalContainerItem(this,'AirRules','book-bus__rule','${$data.busId}')`}}" -->
                                         <button
-                                            onclick="{{return `scrollModalContainerItem(this,'AirRules','book-bus__rule','${$data.busId}')`}}"
+                                            onclick="{{return `scrollModalContainerItem(this,'AirRules','book-bus__rule','')`}}"
                                             type="button"
                                             class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                             <svg width="21" height="20">
@@ -302,11 +303,12 @@
                                         </div>
                                     </div>
 
+                                    <!-- onclick="{{return `toggleContentApi(this,'AirRules','book-bus__rule','${$data.busId}')`}}" -->
                                     <div
                                         class="book-bus__rule book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl">
                                         <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
                                             <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-                                                onclick="{{return `toggleContentApi(this,'AirRules','book-bus__rule','${$data.busId}')`}}"
+                                                onclick="{{return `toggleContentApi(this,'AirRules','book-bus__rule','')`}}"
                                                 data-run="0">
                                                 <h6 class="book-text-lg book-font-bold book-text-zinc-800">
                                                     قوانین
@@ -2633,7 +2635,7 @@
 
         function getTotalPrice() {
     try {
-        const data = JSON.parse(localStorage.getItem('busData'));
+        const data = JSON.parse(localStorage.getItem('busBook'));
         console.log("totalllllllllllllll price" , data)
         console.log("totalllllllllllllll price" , data.priceInfo)
         console.log("totalllllllllllllll price" , data.priceInfo.total)
@@ -2649,7 +2651,7 @@
 
 function getTotalCommission() {
     try {
-        const data = JSON.parse(localStorage.getItem('busData'));
+        const data = JSON.parse(localStorage.getItem('busBook'));
         if (data && data.priceInfo && data.priceInfo.totalCommission) {
             return parseInt(data.priceInfo.totalCommission);
         }
@@ -2662,7 +2664,7 @@ function getTotalCommission() {
 
 function getBaseFare() {
     try {
-        const data = JSON.parse(localStorage.getItem('busData'));
+        const data = JSON.parse(localStorage.getItem('busBook'));
         if (data && data.priceInfo && data.priceInfo.baseFare) {
             return parseInt(data.priceInfo.baseFare);
         }
@@ -2725,71 +2727,71 @@ function getBaseFare() {
                 busReserveLocalStorage = localStorage.getItem("busBook")
                     ? JSON.parse(localStorage.getItem("busBook"))
                     : "";
-                setbusGroup();
+                // setbusGroup();
                 ExcessService = busReserveLocalStorage.busGroup[0].ExcessService
                 SeatSelection = busReserveLocalStorage.busGroup[0].SeatSelection
             }
 
             // Add excess service or seat service UI if enabled
-            if (ExcessService || SeatSelection) {
-                const container = document.querySelector(".book-passengers__container");
-                const div = document.createElement("div");
-                div.innerHTML = `<div class="book-services__container book-api__container book-bg-white book-shadow-md book-border-slate-600 book-rounded-2xl book-border-b-3 book-p-5 book-mb-10">
-    <div class="book-text-base book-flex book-justify-between book-items-center book-cursor-pointer" onclick="toggleContentApi(this,'','book-services__container')" data-run="0">
-        <div> گزینه‌های اضافی
-        <div class="book-text-zinc-500  book-text-xs book-mt-2 book-mb-5">با رزرو صندلی دلخواه، انتخاب
-            پیشاپیش وعده غذایی مورد علاقه‌تان، یا خرید ظرفیت بار
-            اضافی، با راحتی
-            پرواز کنید.</div></div>
+//             if (ExcessService || SeatSelection) {
+//                 const container = document.querySelector(".book-passengers__container");
+//                 const div = document.createElement("div");
+//                 div.innerHTML = `<div class="book-services__container book-api__container book-bg-white book-shadow-md book-border-slate-600 book-rounded-2xl book-border-b-3 book-p-5 book-mb-10">
+//     <div class="book-text-base book-flex book-justify-between book-items-center book-cursor-pointer" onclick="toggleContentApi(this,'','book-services__container')" data-run="0">
+//         <div> گزینه‌های اضافی
+//         <div class="book-text-zinc-500  book-text-xs book-mt-2 book-mb-5">با رزرو صندلی دلخواه، انتخاب
+//             پیشاپیش وعده غذایی مورد علاقه‌تان، یا خرید ظرفیت بار
+//             اضافی، با راحتی
+//             پرواز کنید.</div></div>
     
-     <svg class="book-api__container__arrow" width="24" height="24">
-                                                                        <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                                                                        </use>
-                                                                    </svg>
-    </div>
-    <div class="book-api__content book-hidden">
-            <div
-        class="book-tab__navigation__container book-flex book-justify-around book-space-x-2 book-space-x-reverse book-mb-10">
-        <button onclick="selectServiceTab(this,'baggageService','ExcessService')" data-run="0" type="button"
-            class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-            <svg width="51" height="50">
-                <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#wheel-bag-icon">
-                </use>
-            </svg>
-            <h6 class="book-text-sm">بار
-                اضافه</h6>
-        </button>
-        <button onclick="selectServiceTab(this,'mealService','ExcessService')" data-run="0" type="button"
-            class="book-tab__navigation__content book-min-w-52  book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-            <svg width="41" height="50">
-                <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#meal-icon">
-                </use>
-            </svg>
-            <h6 class="book-text-sm">وعده
-                غذایی</h6>
-        </button>
-        <button onclick="selectServiceTab(this,'seatService','SeatAvailability')" data-run="0" type="button"
-            class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-            <svg width="41" height="50">
-                <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#seat-icon">
+//      <svg class="book-api__container__arrow" width="24" height="24">
+//                                                                         <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+//                                                                         </use>
+//                                                                     </svg>
+//     </div>
+//     <div class="book-api__content book-hidden">
+//             <div
+//         class="book-tab__navigation__container book-flex book-justify-around book-space-x-2 book-space-x-reverse book-mb-10">
+//         <button onclick="selectServiceTab(this,'baggageService','ExcessService')" data-run="0" type="button"
+//             class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+//             <svg width="51" height="50">
+//                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#wheel-bag-icon">
+//                 </use>
+//             </svg>
+//             <h6 class="book-text-sm">بار
+//                 اضافه</h6>
+//         </button>
+//         <button onclick="selectServiceTab(this,'mealService','ExcessService')" data-run="0" type="button"
+//             class="book-tab__navigation__content book-min-w-52  book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+//             <svg width="41" height="50">
+//                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#meal-icon">
+//                 </use>
+//             </svg>
+//             <h6 class="book-text-sm">وعده
+//                 غذایی</h6>
+//         </button>
+//         <button onclick="selectServiceTab(this,'seatService','SeatAvailability')" data-run="0" type="button"
+//             class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+//             <svg width="41" height="50">
+//                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#seat-icon">
 
-                </use>
-            </svg>
-            <h6 class="book-text-sm">انتخاب
-                صندلی</h6>
-        </button>
-    </div>
-    <div class="book-api__container__content book-mt-4 book-hidden">
-        <span
-            class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
-    </div>
+//                 </use>
+//             </svg>
+//             <h6 class="book-text-sm">انتخاب
+//                 صندلی</h6>
+//         </button>
+//     </div>
+//     <div class="book-api__container__content book-mt-4 book-hidden">
+//         <span
+//             class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+//     </div>
 
-    </div>
+//     </div>
 
-</div>`;
-                container.appendChild(div.firstChild);
+// </div>`;
+//                 container.appendChild(div.firstChild);
 
-            }
+//             }
 
         });
 
@@ -3924,7 +3926,7 @@ function getBaseFare() {
                 }
 
                 // Set bus group (assumed to be defined elsewhere)
-                setbusGroup();
+                // setbusGroup();
 
                 // Display warning modal if message exists
                 if (responseJson.message && responseJson.message.description) {
@@ -6428,7 +6430,8 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
                     mid: document.querySelector(".book-buyers__container").dataset.mid,
                     code: document.querySelector(".book-coupon__code").value,
                     club_discount: "",
-                    invoicedesc: document.querySelector(".book-invoicedesc").textContent
+                    invoicedesc: document.querySelector(".book-invoicedesc").textContent,
+                    moduleType: "Bus"
                 };
 
                 // Create and submit form
