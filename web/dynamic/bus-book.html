@@ -4,26 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="[##cms.seo.description##]">
     <meta name="robots" content="index, nofollow" />
-    <basis core="dbsource" source="hosting" name="tag" urlid="[##cms.seo.urlid##]">
-        <member type="list" name="list" request="taglist" preview=""></member>
-    </basis>
-    <basis core="print" datamembername="tag.list">
-        <face filter="key='canonical'">
-            <link rel="canonical" href="@value" />
-        </face>
-        <face>
-            <meta property="@key" content="@value" />
-        </face>
-    </basis>
     <title>[##cms.seo.title##]</title>
+    <link href="[##cms.cms.cdn##]/booking/css/bus-search.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
     <link href="[##cms.cms.cdn##]/booking/css/book.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
+
     <style>
         .book-aisle {
             background: #f0f0f0;
             height: 40px;
             /* Match seat height */
+        }
+
+        .book-seat-selected {
+            background-image: url("../images/seat-selected.svg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: white !important;
         }
 
         .seat-item {
@@ -85,7 +82,23 @@
 
 
 
-                <basis core="api" name="api.country" url="/json/country" method="get" content-type="application/json"
+        <!-- available-seat -->
+        <basis core="api" name="bus.available-seat" url="http://185.44.36.51:1550/api/bus/available-seat" method="post"
+            if="{##cms.seat.run|(false)##} " triggers="cms.seat" content-type="application/json" run="atclient" body='{
+                "busId": "{##cms.seat.busId##}",
+                "busGroup": {##cms.seat.busGroup##},
+                "rKey": "[##cms.cookie.rkey##]", 
+                "dmnid":  {##cms.seat.dmnid##},
+                "sessionId": "{##cms.seat.SessionId##}",
+                "lid": "{##cms.seat.lid##}"
+            }' onprocessed='onProcessedRenderSeatMapSelection'>
+        </basis>
+
+
+
+
+
+        <basis core="api" name="api.country" url="/json/country" method="get" content-type="application/json"
             run="atclient" triggers="cms.country" if="{##cms.country##}" onprocessed='onProcessedJsonCountryId'>
         </basis>
         <basis core="api" name="api.countryCode" url="/json/country" method="get" content-type="application/json"
@@ -102,24 +115,6 @@
             ]
         }' content-type="application/json" run="atclient" if="{##cms.previousPassengers##}"
             triggers="cms.previousPassengers" onProcessed="onProcessedPreviousPassengers"></basis>
-
-
-        <basis core="api" name="bus.reserve" url="http://185.44.36.51:1550/api/bus/reserve" method="post" if=""
-            triggers="" content-type="application/json" run="atclient" body='{
-	"tripGroup": [
-    	{
-        	"origin": "THR",
-        	"destination": "MHD",
-        	"departureDate": "2025-07-11"
-    	}
-	],
-	"rKey": "3E6CE099-B76A-4246-B1B0-8E26B015E061",
-    "dmnid": 2475,
-	"sessionId": "684ea2a961391d79aa28be54",
-	"lid": 2
-
-}' onprocessed=''>
-        </basis>
 
 
         <!-- Layout Section -->
@@ -152,7 +147,7 @@
                     <div class="book-some__time book-hidden">
                         <div class="book-text-2xl book-font-bold book-mt-6">نتایج جستجو تا 6 دقیقه دیگر معتبر می باشد.
                         </div>
-                        <div class="book-text-zinc-500 book-mt-3">بعد از به پایان رسیدن مدت اعتبار، پرواز دیگر در دسترس
+                        <div class="book-text-zinc-500 book-mt-3">بعد از به پایان رسیدن مدت اعتبار، اتوبوس دیگر در دسترس
                             نمی‌باشد.</div>
                         <div class="book-mt-6">
                             <button
@@ -212,59 +207,77 @@
 
 
                     <div class="book-main__container book-flex">
+
                         <aside class="book-aside__container book-w-2/5">
-
-                            <div
-                                class="book-overflow-hidden book-w-11/12 book-bg-white book-shadow-md book-rounded-2xl book-mb-10">
-                                <div
-                                    class="book-aside__content book-overflow-auto book-max-h-[800px] book-px-5 book-pt-5">
-                                    <div
-                                        class="book-tab__navigation__container book-flex book-justify-around book-gap-2 book-mb-4">
-                                        <button
-                                            onclick="{{return `scrollModalContainerItem(this,'','book-bus__details','')`}}"
-                                            type="button"
-                                            class="book-tab__navigation__content book-min-w-20 book-active__tab__navigation book-p-3 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-                                            <svg width="21" height="20">
-                                                <use
-                                                    href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#plane-rotate-icon">
-                                                </use>
-                                            </svg>
-                                            <h6 class="book-text-sm">جزئیات
-                                                اتوبوس</h6>
-                                        </button>
-
-                                        <button
-                                            onclick="{{return `scrollModalContainerItem(this,'','book-bus__price','')`}}"
-                                            type="button"
-                                            class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-                                            <svg width="21" height="20">
-                                                <use
-                                                    href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#class-icon">
-
-                                                </use>
-                                            </svg>
-                                            <h6 class="book-text-sm">جزئیات
-                                                قیمت</h6>
-                                        </button>
-                                        <!-- onclick="{{return `scrollModalContainerItem(this,'AirRules','book-bus__rule','${$data.busId}')`}}" -->
-                                        <button
-                                            onclick="{{return `scrollModalContainerItem(this,'AirRules','book-bus__rule','')`}}"
-                                            type="button"
-                                            class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-                                            <svg width="21" height="20">
-                                                <use
-                                                    href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#bus-rule-icon">
-                                                </use>
-                                            </svg>
-                                            <h6 class="book-text-sm">قوانین
-                                                و
-                                                مقررات</h6>
-                                        </button>
-                                    </div>
-                                    <div
+                            <basis core="print" datamembername="bus.book" run="atclient">
+                                <layout>
+                                    <script type="text/template">
+                                        <div class="book-overflow-hidden book-w-11/12 book-bg-white book-shadow-md book-rounded-2xl book-mb-10">
+                                            @child
+                                        </div>
+                                    </script>
+                                </layout>
+                                <face>
+                                    <script type="text/template">
+                                        <div class="book-aside__content book-overflow-auto book-max-h-[800px] book-px-5 book-pt-5">
+                                            <div
+                                            class="book-tab__navigation__container book-flex book-justify-around book-gap-2 book-mb-4">
+                                            <button
+                                                onclick="{{return `scrollModalContainerItem(this,'','book-bus__details','')`}}"
+                                                type="button"
+                                                class="book-tab__navigation__content book-min-w-20 book-active__tab__navigation book-p-3 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+                                                <svg width="21" height="20">
+                                                    <use
+                                                        href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#plane-rotate-icon">
+                                                    </use>
+                                                </svg>
+                                                <h6 class="book-text-sm">جزئیات
+                                                    اتوبوس</h6>
+                                            </button>
+                                            <button
+                                                onclick="{{return `scrollModalContainerItem(this,'AirBaggage','book-bus__baggage','${$data.BusId}')`}}"
+                                                type="button"
+                                                class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+                                                <svg width="21" height="20">
+                                                    <use
+                                                        href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#wheel-bag-icon">
+                                                    </use>
+                                                </svg>
+                                                <h6 class="book-text-sm">بار
+                                                    مجاز</h6>
+                                            </button>
+                                            <button
+                                                onclick="{{return `scrollModalContainerItem(this,'','book-bus__price','')`}}"
+                                                type="button"
+                                                class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+                                                <svg width="21" height="20">
+                                                    <use
+                                                        href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#class-icon">
+                                    
+                                                    </use>
+                                                </svg>
+                                                <h6 class="book-text-sm">جزئیات
+                                                    قیمت</h6>
+                                            </button>
+                                            <button
+                                                onclick="{{return `scrollModalContainerItem(this,'AirRules','book-bus__rule','${$data.BusId}')`}}"
+                                                type="button"
+                                                class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+                                                <svg width="21" height="20">
+                                                    <use
+                                                        href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#flight-rule-icon">
+                                                    </use>
+                                                </svg>
+                                                <h6 class="book-text-sm">قوانین
+                                                    و
+                                                    مقررات</h6>
+                                            </button>
+                                        </div>
+                                        <div
                                         class="book-bus__details book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
                                         <div class="book-border-b book-border-zinc-300 book-pb-7 book-mb-7">
-                                            <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
+                                            <div
+                                                class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
                                                 onclick="{{return `toggleContentApi(this,'','book-bus__details','')`}}"
                                                 data-run="1">
                                                 <h6 class="book-text-lg book-font-bold book-text-zinc-800">
@@ -279,100 +292,132 @@
                                             </div>
                                         </div>
                                         <div class="book-api__container__content">
-                                            {{ return await renderRoutesInfo()}}
+                                            {{ return await renderRoutesInfo($data)}}
                                         </div>
-
+                                
                                     </div>
                                     <div
-                                        class="book-bus__price book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
-                                        <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
-                                            <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-                                                onclick="{{return `toggleContentApi(this,'','book-bus__price','')`}}"
-                                                data-run="1">
-                                                <h6 class="book-text-lg book-font-bold book-text-zinc-800">
-                                                    جزئیات قیمت</h6>
-                                                <svg class="book-api__container__arrow" width="24" height="24">
-                                                    <use
-                                                        href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                                                    </use>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="book-api__container__content book-mt-4 book-hidden">
-                                            {{ return await renderPassengerFare()}}
-                                        </div>
-                                    </div>
-
-                                    <!-- onclick="{{return `toggleContentApi(this,'AirRules','book-bus__rule','${$data.busId}')`}}" -->
-                                    <div
-                                        class="book-bus__rule book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl">
-                                        <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
-                                            <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-                                                onclick="{{return `toggleContentApi(this,'AirRules','book-bus__rule','')`}}"
-                                                data-run="0">
-                                                <h6 class="book-text-lg book-font-bold book-text-zinc-800">
-                                                    قوانین
-                                                    کلی
-                                                </h6>
-                                                <svg class="book-api__container__arrow" width="24" height="24">
-                                                    <use
-                                                        href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                                                    </use>
-                                                </svg>
-                                            </div>
-                                        </div>
+                                    class="book-bus__baggage book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                    <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
                                         <div
-                                            class="book-api__container__content book-max-h-40 book-pl-2 book-overflow-y-auto book-mt-4 book-hidden">
-                                            <span
-                                                class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
-                                        </div>
-                                        <div>
+                                            class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
+                                            onclick="{{return `toggleContentApi(this,'AirBaggage','book-bus__baggage','${$data.BusId}')`}}"
+                                            data-run="0">
+                                            <h6 class="book-text-lg book-font-bold book-text-zinc-800">
+                                                بار
+                                                مجاز</h6>
+                                            <svg class="book-api__container__arrow" width="24" height="24">
+                                                <use
+                                                    href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                </use>
+                                            </svg>
                                         </div>
                                     </div>
-                                    <div class="book-sticky book-bottom-0 book-bg-white book-p-4 book-z-10">
-                                        <div class="book-flex book-justify-between book-items-center">
-                                            <div class="book-mb-2">
-
-                                                <div class="book-totalcom__container"></div>
-                                                <div class="book-firstpay__container">
-                                                    <h6 class="book-text-zinc-500 book-mb-2">
-                                                        مبلغ:                                                    </h6>
-                                                    <div class="book-text-2xl book-font-bold book-text-zinc-900"><span
-                                                            class="book-firstpay__cost">{{ return await getBaseFare()
-                                                            }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="book-totalcom__container"></div>
-                                                <div class="book-firstpay__container">
-                                                    <h6 class="book-text-zinc-500 book-mb-2">مبلغ
-                                                        کمیسیون:
-                                                    </h6>
-                                                    <div class="book-text-2xl book-font-bold book-text-zinc-900"><span
-                                                            class="book-firstpay__cost">{{ return await getTotalCommission()
-                                                            }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="book-totalcom__container"></div>
-                                                <div class="book-firstpay__container">
-                                                    <h6 class="book-text-zinc-500 book-mb-2">مبلغ
-                                                        قابل
-                                                        پرداخت:
-                                                    </h6>
-                                                    <div class="book-text-2xl book-font-bold book-text-zinc-900"><span
-                                                            class="book-firstpay__cost">{{ return await getTotalPrice()
-                                                            }}</span>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
+                                    <div class="book-api__container__content book-mt-4 book-hidden">
+                                        <span
+                                            class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+                                    </div>
+                            
+                                </div>
+                                <div
+                                    class="book-bus__price book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                    <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
+                                        <div
+                                            class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
+                                            onclick="{{return `toggleContentApi(this,'','book-bus__price','')`}}"
+                                            data-run="1">
+                                            <h6 class="book-text-lg book-font-bold book-text-zinc-800">
+                                                گروه
+                                                نرخی</h6>
+                                            <svg class="book-api__container__arrow" width="24" height="24">
+                                                <use
+                                                    href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                </use>
+                                            </svg>
                                         </div>
-
+                                    </div>
+                                    <div class="book-api__container__content book-mt-4 book-hidden">
+                                        {{ return await renderPassengerFare($data)}}
                                     </div>
                                 </div>
+                                
+    <div
+    class="book-bus__rule book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl">
+    <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
+        <div
+            class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
+            onclick="{{return `toggleContentApi(this,'AirRules','book-bus__rule','${$data.BusId}')`}}"
+            data-run="0">
+            <h6 class="book-text-lg book-font-bold book-text-zinc-800">
+                قوانین
+                کلی
+            </h6>
+            <svg class="book-api__container__arrow" width="24" height="24">
+                <use
+                    href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                </use>
+            </svg>
+        </div>
+    </div>
+    <div
+        class="book-api__container__content book-max-h-40 book-pl-2 book-overflow-y-auto book-mt-4 book-hidden">
+        <span
+            class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+    </div>
+    <div>
+    </div>
+</div>
+<div class="book-sticky book-bottom-0 book-bg-white book-p-4 book-z-10">
+    <div class="book-flex book-justify-between book-items-center">
+        <div class="book-mb-2">
+            {{
+            if($data.priceInfo.totalCommission !== '0'){
+            return `<div class="book-commission__container"><h6
+                    class="book-text-zinc-500 book-mb-2">کمیسیون : </h6>
+                <div
+                    class="book-text-2xl book-font-bold book-text-zinc-900">
+                    <span class="book-commission__cost">${new
+                        Intl.NumberFormat().format($data.priceInfo.totalCommission)}</span>${await
+                    renderCurrency($data.priceInfo.currency)}</div></div>
+            <div class="book-total__container"><h6
+                    class="book-text-zinc-500 book-mb-2">مبلغ : </h6>
+                <div
+                    class="book-text-2xl book-font-bold book-text-zinc-900">
+                    <span class="book-total__cost">${new
+                        Intl.NumberFormat().format($data.priceInfo.total)}</span>${await
+                    renderCurrency($data.priceInfo.currency)}</div></div>`
+            }
+            }}
+            <div class="book-totalcom__container"></div>
+            <div class="book-firstpay__container"><h6
+                    class="book-text-zinc-500 book-mb-2">مبلغ
+                    قابل
+                    پرداخت:
+                </h6>
+                {{
+                return `<div
+                class="book-text-2xl book-font-bold book-text-zinc-900"><span
+                    class="book-firstpay__cost">${new
+                    Intl.NumberFormat().format($data.priceInfo.totalCommission).replace(/,/g,
+                    '/')}</span>
+                <span
+                    class="book-unit__content">${await renderCurrency($data.priceInfo.currency)}</span></div>`
+            }}
+        </div>
+        </div>
 
+    </div>
 
+</div>
+                                        
+                                        </div>
+                                    </script>
+                                </face>
+                            </basis>
                         </aside>
+
+
+
                         <section class="book-main__content book-w-3/5">
                             <div
                                 class="book-bg-white book-shadow-md book-rounded-2xl book-p-5 book-mb-5 book-brief__container__title">
@@ -394,7 +439,18 @@
                             <input type="hidden" value="-" class="book-bankIdentifier" />
                             <input type="hidden" value="" class="book-payType" />
                             <input type="hidden" value="" class="book-clear" />
-                            <div class="book-passengers__container">
+
+                        <div class="book-seat_selection__container">
+
+                            <div id="seat-count" class="mb-4 text-sm font-bold text-gray-700">تعداد صندلی‌های انتخاب
+                                شده: 0</div>
+                            <div dir="ltr" class="seat-selection-container  book-flex book-dir-ltr">
+                                <!-- seat  -->
+
+                            </div>
+
+                        </div>
+                            <div class="book-passengers__container book-hidden">
                                 <div class="book-passengers__container__internal book-passengers__content book-hidden">
                                     <div class="book-passenger__container book-bg-white book-shadow-md book-border-slate-600 book-rounded-2xl book-border-b-3 book-p-5 book-mb-10"
                                         data-index="1">
@@ -2588,7 +2644,7 @@
                         </use>
                     </svg>
                 </div>
-                <div class="book-text-2xl book-font-bold book-mt-6">پرواز انتخاب شده شما قابل رزرو نیست.(کد
+                <div class="book-text-2xl book-font-bold book-mt-6">اتوبوس انتخاب شده شما قابل رزرو نیست.(کد
                     خطا
                     105)</div>
                 <div class="book-text-zinc-500 book-mt-3">لطفا با تیم پشتیبانی سایت تماس
@@ -2634,46 +2690,46 @@
 
 
         function getTotalPrice() {
-    try {
-        const data = JSON.parse(localStorage.getItem('busBook'));
-        console.log("totalllllllllllllll price" , data)
-        console.log("totalllllllllllllll price" , data.priceInfo)
-        console.log("totalllllllllllllll price" , data.priceInfo.total)
-        if (data && data.priceInfo && data.priceInfo.total) {
-            return parseInt(data.priceInfo.total);
+            try {
+                const data = JSON.parse(localStorage.getItem('busBook'));
+                console.log("totalllllllllllllll price", data)
+                console.log("totalllllllllllllll price", data.priceInfo)
+                console.log("totalllllllllllllll price", data.priceInfo.total)
+                if (data && data.priceInfo && data.priceInfo.total) {
+                    return parseInt(data.priceInfo.total);
+                }
+                return 0;
+            } catch (error) {
+                console.error('خطا در خواندن مبلغ کل:', error);
+                return 0;
+            }
         }
-        return 0;
-    } catch (error) {
-        console.error('خطا در خواندن مبلغ کل:', error);
-        return 0;
-    }
-}
 
-function getTotalCommission() {
-    try {
-        const data = JSON.parse(localStorage.getItem('busBook'));
-        if (data && data.priceInfo && data.priceInfo.totalCommission) {
-            return parseInt(data.priceInfo.totalCommission);
+        function getTotalCommission() {
+            try {
+                const data = JSON.parse(localStorage.getItem('busBook'));
+                if (data && data.priceInfo && data.priceInfo.totalCommission) {
+                    return parseInt(data.priceInfo.totalCommission);
+                }
+                return 0;
+            } catch (error) {
+                console.error('خطا در خواندن مبلغ کمیسیون:', error);
+                return 0;
+            }
         }
-        return 0;
-    } catch (error) {
-        console.error('خطا در خواندن مبلغ کمیسیون:', error);
-        return 0;
-    }
-}
 
-function getBaseFare() {
-    try {
-        const data = JSON.parse(localStorage.getItem('busBook'));
-        if (data && data.priceInfo && data.priceInfo.baseFare) {
-            return parseInt(data.priceInfo.baseFare);
+        function getBaseFare() {
+            try {
+                const data = JSON.parse(localStorage.getItem('busBook'));
+                if (data && data.priceInfo && data.priceInfo.baseFare) {
+                    return parseInt(data.priceInfo.baseFare);
+                }
+                return 0;
+            } catch (error) {
+                console.error('خطا در خواندن مبلغ پایه:', error);
+                return 0;
+            }
         }
-        return 0;
-    } catch (error) {
-        console.error('خطا در خواندن مبلغ پایه:', error);
-        return 0;
-    }
-}
 
 
 
@@ -2695,6 +2751,8 @@ function getBaseFare() {
         let originalTotalCom;
         let originalTotal;
         let originalServiceTotalCost = 0;
+        const selectedSeats = []; // آرایه‌ی صندلی‌های انتخاب‌شده
+        let maxSelectableSeats = 4; // حداکثر تعداد قابل انتخاب
 
         /**
          * Event listener for DOM content loaded to initialize the bus booking process.
@@ -2727,77 +2785,235 @@ function getBaseFare() {
                 busReserveLocalStorage = localStorage.getItem("busBook")
                     ? JSON.parse(localStorage.getItem("busBook"))
                     : "";
-                // setbusGroup();
+                setbusGroup();
                 ExcessService = busReserveLocalStorage.busGroup[0].ExcessService
                 SeatSelection = busReserveLocalStorage.busGroup[0].SeatSelection
             }
 
             // Add excess service or seat service UI if enabled
-//             if (ExcessService || SeatSelection) {
-//                 const container = document.querySelector(".book-passengers__container");
-//                 const div = document.createElement("div");
-//                 div.innerHTML = `<div class="book-services__container book-api__container book-bg-white book-shadow-md book-border-slate-600 book-rounded-2xl book-border-b-3 book-p-5 book-mb-10">
-//     <div class="book-text-base book-flex book-justify-between book-items-center book-cursor-pointer" onclick="toggleContentApi(this,'','book-services__container')" data-run="0">
-//         <div> گزینه‌های اضافی
-//         <div class="book-text-zinc-500  book-text-xs book-mt-2 book-mb-5">با رزرو صندلی دلخواه، انتخاب
-//             پیشاپیش وعده غذایی مورد علاقه‌تان، یا خرید ظرفیت بار
-//             اضافی، با راحتی
-//             پرواز کنید.</div></div>
-    
-//      <svg class="book-api__container__arrow" width="24" height="24">
-//                                                                         <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-//                                                                         </use>
-//                                                                     </svg>
-//     </div>
-//     <div class="book-api__content book-hidden">
-//             <div
-//         class="book-tab__navigation__container book-flex book-justify-around book-space-x-2 book-space-x-reverse book-mb-10">
-//         <button onclick="selectServiceTab(this,'baggageService','ExcessService')" data-run="0" type="button"
-//             class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-//             <svg width="51" height="50">
-//                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#wheel-bag-icon">
-//                 </use>
-//             </svg>
-//             <h6 class="book-text-sm">بار
-//                 اضافه</h6>
-//         </button>
-//         <button onclick="selectServiceTab(this,'mealService','ExcessService')" data-run="0" type="button"
-//             class="book-tab__navigation__content book-min-w-52  book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-//             <svg width="41" height="50">
-//                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#meal-icon">
-//                 </use>
-//             </svg>
-//             <h6 class="book-text-sm">وعده
-//                 غذایی</h6>
-//         </button>
-//         <button onclick="selectServiceTab(this,'seatService','SeatAvailability')" data-run="0" type="button"
-//             class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-//             <svg width="41" height="50">
-//                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#seat-icon">
+            //             if (ExcessService || SeatSelection) {
+            //                 const container = document.querySelector(".book-passengers__container");
+            //                 const div = document.createElement("div");
+            //                 div.innerHTML = `<div class="book-services__container book-api__container book-bg-white book-shadow-md book-border-slate-600 book-rounded-2xl book-border-b-3 book-p-5 book-mb-10">
+            //     <div class="book-text-base book-flex book-justify-between book-items-center book-cursor-pointer" onclick="toggleContentApi(this,'','book-services__container')" data-run="0">
+            //         <div> گزینه‌های اضافی
+            //         <div class="book-text-zinc-500  book-text-xs book-mt-2 book-mb-5">با رزرو صندلی دلخواه، انتخاب
+            //             پیشاپیش وعده غذایی مورد علاقه‌تان، یا خرید ظرفیت بار
+            //             اضافی، با راحتی
+            //             اتوبوس کنید.</div></div>
 
-//                 </use>
-//             </svg>
-//             <h6 class="book-text-sm">انتخاب
-//                 صندلی</h6>
-//         </button>
-//     </div>
-//     <div class="book-api__container__content book-mt-4 book-hidden">
-//         <span
-//             class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
-//     </div>
+            //      <svg class="book-api__container__arrow" width="24" height="24">
+            //                                                                         <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+            //                                                                         </use>
+            //                                                                     </svg>
+            //     </div>
+            //     <div class="book-api__content book-hidden">
+            //             <div
+            //         class="book-tab__navigation__container book-flex book-justify-around book-space-x-2 book-space-x-reverse book-mb-10">
+            //         <button onclick="selectServiceTab(this,'baggageService','ExcessService')" data-run="0" type="button"
+            //             class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+            //             <svg width="51" height="50">
+            //                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#wheel-bag-icon">
+            //                 </use>
+            //             </svg>
+            //             <h6 class="book-text-sm">بار
+            //                 اضافه</h6>
+            //         </button>
+            //         <button onclick="selectServiceTab(this,'mealService','ExcessService')" data-run="0" type="button"
+            //             class="book-tab__navigation__content book-min-w-52  book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+            //             <svg width="41" height="50">
+            //                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#meal-icon">
+            //                 </use>
+            //             </svg>
+            //             <h6 class="book-text-sm">وعده
+            //                 غذایی</h6>
+            //         </button>
+            //         <button onclick="selectServiceTab(this,'seatService','SeatAvailability')" data-run="0" type="button"
+            //             class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+            //             <svg width="41" height="50">
+            //                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#seat-icon">
 
-//     </div>
+            //                 </use>
+            //             </svg>
+            //             <h6 class="book-text-sm">انتخاب
+            //                 صندلی</h6>
+            //         </button>
+            //     </div>
+            //     <div class="book-api__container__content book-mt-4 book-hidden">
+            //         <span
+            //             class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+            //     </div>
 
-// </div>`;
-//                 container.appendChild(div.firstChild);
+            //     </div>
 
-//             }
+            // </div>`;
+            //                 container.appendChild(div.firstChild);
+
+            //             }
 
         });
 
         /**
         * Toggles the arrow icon between up and down states.
         */
+
+
+
+        function handleSeatSelection(seat) {
+            console.log("Seat info:", seat);
+        }
+
+        const onProcessedRenderSeatMapSelection = async (args) => {
+            try {
+                const { response } = args;
+                if (response.status !== 200) return;
+
+                console.log(response);
+                const responseJson = await response.json();
+                const renderingContainer = document.querySelector(".seat-selection-container");
+                if (!renderingContainer) return;
+
+                const { layout, col, row } = responseJson;
+                const columns = parseInt(col, 10); // Number of seats/gaps per row
+                const rows = parseInt(row, 10); // Number of rows
+
+                const createSeatButton = (seat, indexInRow) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.textContent = seat.number;
+
+                    btn.className = `book-bg-center book-bg-cover book-w-[30px] book-h-[34px] book-flex book-justify-center book-items-center`;
+
+                    // Add margin to the second seat (index 1) in each row
+                    if (indexInRow === 1) {
+                        btn.classList.add('book-mb-[50px]'); // Add right margin for spacing
+                    }
+
+                    if (seat.status === 'reserved') {
+                        if (seat.gender === 'Female') {
+                            btn.classList.add('book-seat-ladies', 'book-text-[#c60055]');
+                            btn.title = 'Ladies';
+                        } else {
+                            btn.classList.add('book-seat-by-for-gentlemans', 'book-text-primary-900');
+                            btn.title = 'Gentleman';
+                        }
+                        btn.disabled = true;
+                    } else if (seat.status === 'available') {
+                        btn.classList.add('book-seat-available', 'book-text-zinc-900');
+                        btn.title = 'Available';
+
+                        btn.addEventListener('click', () => {
+                            const seatIndex = selectedSeats.findIndex(s => s.number === seat.number);
+
+                            if (seatIndex === -1) {
+                                // هنوز انتخاب نشده، بررسی کنیم که محدودیت رعایت شده
+                                if (selectedSeats.length >= maxSelectableSeats) {
+                                    alert(`شما فقط مجاز به انتخاب ${maxSelectableSeats} صندلی هستید.`);
+                                    return;
+                                }
+                                // انتخاب جدید
+                                selectedSeats.push(seat);
+                                btn.classList.add('book-seat-selected');
+                            } else {
+                                // اگر از قبل انتخاب شده، حذفش کن
+                                selectedSeats.splice(seatIndex, 1);
+                                btn.classList.remove('book-seat-selected');
+                            }
+
+                            // نمایش تعداد انتخاب‌شده‌ها در کنسول
+                            console.log("Selected Seats Count:", selectedSeats.length);
+                            console.log("Selected Seats:", selectedSeats);
+                            console.log(selectedSeats); // یا ارسال به سرور، یا استفاده در فرم، یا ...
+                            const seatCountElement = document.getElementById('seat-count');
+                            if (seatCountElement) {
+                                seatCountElement.textContent = `تعداد صندلی‌های انتخاب شده: ${selectedSeats.length}`;
+                            }
+
+                        });
+
+
+                    }
+
+                    return btn;
+                };
+
+                const createGap = (indexInRow) => {
+                    const span = document.createElement('span');
+                    span.className = `book-w-[30px] book-h-[34px]`;
+                    // Add margin to the gap if it's at index 1
+                    if (indexInRow === 1) {
+                        span.classList.add('book-mb-[50px]');
+                    }
+                    return span;
+                };
+
+                renderingContainer.innerHTML = '';
+                let currentRow = null;
+                let seatCountInRow = 0;
+                let rowCount = 0;
+
+                for (let i = 0; i < layout.length; i++) {
+                    if (seatCountInRow === 0) {
+                        // Start a new row
+                        currentRow = document.createElement('div');
+                        currentRow.className = 'book-w-full book-flex book-items-center book-gap-2 book-justify-between book-flex-col';
+                        currentRow.setAttribute('dir', 'ltr');
+                    }
+
+                    const item = layout[i];
+
+                    if (item.type === 'seat') {
+                        const btn = createSeatButton(item, seatCountInRow);
+                        currentRow.appendChild(btn);
+                        seatCountInRow++;
+                    } else if (item.type === 'gap') {
+                        const gap = createGap(seatCountInRow);
+                        currentRow.appendChild(gap);
+                        seatCountInRow++;
+                    }
+
+                    // Complete the row when it reaches the column limit
+                    if (seatCountInRow === columns) {
+                        renderingContainer.appendChild(currentRow);
+                        seatCountInRow = 0;
+                        rowCount++;
+                    }
+                }
+
+                // Append the last row if it contains items and hasn't been appended
+                if (seatCountInRow > 0 && currentRow) {
+                    // Fill remaining spaces in the last row with gaps if needed
+                    while (seatCountInRow < columns) {
+                        const gap = createGap(seatCountInRow);
+                        currentRow.appendChild(gap);
+                        seatCountInRow++;
+                    }
+                    renderingContainer.appendChild(currentRow);
+                }
+
+                // Ensure the total number of rows matches the specified 'row' count
+                while (rowCount < rows) {
+                    const emptyRow = document.createElement('div');
+                    emptyRow.className = 'book-w-full book-flex book-items-center book-gap-2 book-justify-between book-flex-col';
+                    emptyRow.setAttribute('dir', 'ltr');
+                    for (let i = 0; i < columns; i++) {
+                        const gap = createGap(i);
+                        emptyRow.appendChild(gap);
+                    }
+                    renderingContainer.appendChild(emptyRow);
+                    rowCount++;
+                }
+
+            } catch (error) {
+                console.error("onProcessedRenderSeatMapSelection: " + error.message);
+            }
+        };
+
+
+
+
+
+
         const toggleReserveArrowIcon = (element) => {
             try {
                 if (!element) return;
@@ -2857,17 +3073,34 @@ function getBaseFare() {
                         dictionaries = [dict];
                     }
                 }
+                console.log(busReserveLocalStorage);
+
+
                 // Set booking data source if search data exists
                 $bc.setSource("bus.book", busReserveLocalStorage);
 
+                $bc.setSource("cms.seat", {
+                    type: "upselling",
+                    busId: busReserveLocalStorage.busId,
+                    busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
+                    dmnid: busSearchLocalStorage.dmnid || 0,
+                    Type: busSearchLocalStorage.Type || "",
+                    lid: busSearchLocalStorage.lid || 1,
+                    SessionId: busSearchLocalStorage.SessionId || "",
+                    run: true
+                });
+
+
+
                 // Extract passenger counts from search data
-                const Adults = busReserveLocalStorage.PriceInfo.PassengerFare[0].Count;
-                const Children = busReserveLocalStorage.PriceInfo.PassengerFare[1].Count;
-                const Infants = busReserveLocalStorage.PriceInfo.PassengerFare[2].Count;
+                const Adults = busReserveLocalStorage.priceInfo.passengerFare[0].count;
+                const Children = busReserveLocalStorage.priceInfo.passengerFare[1].count;
+                const Infants = busReserveLocalStorage.priceInfo.passengerFare[2].count;
 
                 // Determine if the bus is internal (domestic) from dictionaries
                 const internal = dictionaries[0] ? dictionaries[0].internal : "";
-
+                console.log("internal");
+                console.log(internal);
                 // Get provider ID from booking data
                 const Provider = busReserveLocalStorage.Provider.Dmnid;
 
@@ -2897,9 +3130,9 @@ function getBaseFare() {
                     rkey: cookieParts[1],
                     run: true
                 }]);
-                originalFirstPay = busReserveLocalStorage.PriceInfo.TotalCommission;
-                originalTotalCom = busReserveLocalStorage.PriceInfo.TotalCommission;
-                originalTotal = busReserveLocalStorage.PriceInfo.Total;
+                originalFirstPay = busReserveLocalStorage.priceInfo.totalCommission;
+                originalTotalCom = busReserveLocalStorage.priceInfo.totalCommission;
+                originalTotal = busReserveLocalStorage.priceInfo.total;
             } catch (err) {
                 console.error(`setbusGroup: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
             }
@@ -2972,7 +3205,7 @@ function getBaseFare() {
         //                     <p class="book-text-zinc-500 book-text-sm">${await renderFormatterDate(item.DepartureDate)}</p>
         //                 </div>
         //                 <div class="book-text-sm book-text-primary-400 book-my-10 book-w-40">
-        //                     <span class="book-ml-1">${await renderFormatterDuration(item.Duration)}</span>مدت پرواز
+        //                     <span class="book-ml-1">${await renderFormatterDuration(item.Duration)}</span>مدت اتوبوس
         //                 </div>
         //                 <div>
         //                     <h5 class="book-text-xl book-font-bold book-text-zinc-900">${item.DestinationAirport}</h5>
@@ -3926,7 +4159,7 @@ function getBaseFare() {
                 }
 
                 // Set bus group (assumed to be defined elsewhere)
-                // setbusGroup();
+                setbusGroup();
 
                 // Display warning modal if message exists
                 if (responseJson.message && responseJson.message.description) {
@@ -3996,7 +4229,7 @@ function getBaseFare() {
                 if (!busSearchLocalStorage || !busSearchLocalStorage.Schemaid) {
                     throw new Error("Missing Schemaid in busSearchLocalStorage");
                 }
-                if (!busReserveLocalStorage || !busReserveLocalStorage.busGroup || !busReserveLocalStorage.PriceInfo) {
+                if (!busReserveLocalStorage || !busReserveLocalStorage.busGroup || !busReserveLocalStorage.priceInfo) {
                     throw new Error("Invalid or missing data in busReserveLocalStorage");
                 }
 
@@ -4039,20 +4272,20 @@ function getBaseFare() {
                     throw new Error("Passenger items or count input not found");
                 }
 
-                const passengerFare = busReserveLocalStorage.PriceInfo.PassengerFare;
+                const passengerFare = busReserveLocalStorage.priceInfo.passengerFare;
                 const passengerParts = [];
-                if (passengerFare[0].Count > 0) passengerParts.push(`${passengerFare[0].Count} بزرگسال`);
-                if (passengerFare[1].Count > 0) passengerParts.push(`${passengerFare[1].Count} کودک`);
-                if (passengerFare[2].Count > 0) passengerParts.push(`${passengerFare[2].Count} نوزاد`);
+                if (passengerFare[0].count > 0) passengerParts.push(`${passengerFare[0].count} بزرگسال`);
+                if (passengerFare[1].count > 0) passengerParts.push(`${passengerFare[1].count} کودک`);
+                if (passengerFare[2].count > 0) passengerParts.push(`${passengerFare[2].count} نوزاد`);
                 const passengerSummary = passengerParts.join(' / ') || "1 بزرگسال"; // Fallback
                 passengerCountInput.value = passengerSummary;
 
-                passengerItems[0].querySelector(".book-passenger__count__value").innerHTML = passengerFare[0].Count || 0;
-                passengerItems[1].querySelector(".book-passenger__count__value").innerHTML = passengerFare[1].Count || 0;
-                passengerItems[2].querySelector(".book-passenger__count__value").innerHTML = passengerFare[2].Count || 0;
+                passengerItems[0].querySelector(".book-passenger__count__value").innerHTML = passengerFare[0].count || 0;
+                passengerItems[1].querySelector(".book-passenger__count__value").innerHTML = passengerFare[1].count || 0;
+                passengerItems[2].querySelector(".book-passenger__count__value").innerHTML = passengerFare[2].count || 0;
 
                 // Update passenger UI for single adult case
-                if (passengerFare[0].Count === 1 && passengerFare[1].Count === 0 && passengerFare[2].Count === 0) {
+                if (passengerFare[0].count === 1 && passengerFare[1].count === 0 && passengerFare[2].count === 0) {
                     updatePassengerUI(); // Assumed to be defined elsewhere
                 }
 
@@ -4250,7 +4483,7 @@ function getBaseFare() {
                     const typeCounters = { Adult: 0, Child: 0, Infant: 0 };
                     const typeMap = { Adult: "بزرگسال", Child: "کودک", Infant: "نوزاد" };
 
-                    const passengers = busReserveLocalStorage?.PriceInfo?.PassengerFare || [];
+                    const passengers = busReserveLocalStorage?.priceInfo?.passengerFare || [];
                     const passengersData = document.querySelector('.book-passengers__content:not(.book-hidden)');
                     const passengerContainers = passengersData?.querySelectorAll('.book-passenger__container') || [];
 
@@ -7108,8 +7341,6 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
                 refresh: true
             };
         }
-
-
 
 
 
