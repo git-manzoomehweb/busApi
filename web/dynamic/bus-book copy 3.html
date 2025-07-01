@@ -17,7 +17,7 @@
         }
 
         .book-seat-selected {
-            background-image: url("http://basisflydemo.ir/booking/images/seat-selected.svg");
+            background-image: url("../images/seat-selected.svg");
             background-size: cover;
             background-repeat: no-repeat;
             color: white !important;
@@ -267,8 +267,10 @@
                                                     <use
                                                         href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#flight-rule-icon">
                                                     </use>
-                                          </svg>
-                                          <h6 class="book-text-sm">قوانین و مقررات</h6>
+                                                </svg>
+                                                <h6 class="book-text-sm">قوانین
+                                                    و
+                                                    مقررات</h6>
                                             </button>
                                         </div>
                                         <div
@@ -369,13 +371,13 @@
     <div class="book-flex book-justify-between book-items-center">
         <div class="book-mb-2">
             {{
-            if(($data.priceInfo.total - $data.priceInfo.totalCommission) !== 0){
+            if($data.priceInfo.totalCommission !== '0'){
             return `<div class="book-commission__container"><h6
                     class="book-text-zinc-500 book-mb-2">کمیسیون : </h6>
                 <div
                     class="book-text-2xl book-font-bold book-text-zinc-900">
                     <span class="book-commission__cost">${new
-                        Intl.NumberFormat().format($data.priceInfo.total - $data.priceInfo.totalCommission)}</span>${await
+                        Intl.NumberFormat().format($data.priceInfo.totalCommission)}</span>${await
                     renderCurrency($data.priceInfo.currency)}</div></div>
             <div class="book-total__container"><h6
                     class="book-text-zinc-500 book-mb-2">مبلغ : </h6>
@@ -2608,10 +2610,8 @@
                                 </div>
                             </div>
                             <div class="book-flex book-justify-between book-my-5">
-                                <!-- book-bg-zinc-400 -->
                                 <button
-                                    class="book-btn__content book-min-w-40 book-text-white book-rounded-2xl book-p-3 book-cursor-pointer book-text-center book-prev__btn 
-                                     hover:book-bg-zinc-600 book-invisible book-bg-red-500"
+                                    class="book-btn__content book-min-w-40 book-text-white book-rounded-2xl book-p-3 book-cursor-pointer book-text-center book-prev__btn book-bg-zinc-400 hover:book-bg-zinc-600 book-invisible"
                                     data-step="seat" onclick="prevStep(this)">
                                     بازگشت به مرحله قبل
                                 </button>
@@ -2754,9 +2754,6 @@
         const selectedSeats = []; // آرایه‌ی صندلی‌های انتخاب‌شده
         let maxSelectableSeats = 4; // حداکثر تعداد قابل انتخاب
 
-        // let maxSelectableSeats = parseInt(document.querySelector(".book-layout__main").dataset.passengercount, 10);
-
-
         /**
          * Event listener for DOM content loaded to initialize the bus booking process.
          * Loads data from localStorage, sets up UI, and triggers initial actions.
@@ -2863,6 +2860,9 @@
 
 
 
+
+
+
         const toggleReserveArrowIcon = (element) => {
             try {
                 if (!element) return;
@@ -2941,7 +2941,28 @@
 
 
 
+                // Extract passenger counts from search data
+                const Adults = busReserveLocalStorage.priceInfo.passengerFare[0].count;
+                const Children = busReserveLocalStorage.priceInfo.passengerFare[1].count;
+                const Infants = busReserveLocalStorage.priceInfo.passengerFare[2].count;
 
+                // Determine if the bus is internal (domestic) from dictionaries
+                const internal = dictionaries[0] ? dictionaries[0].internal : "";
+                console.log("internal");
+                console.log(internal);
+                // Get provider ID from booking data
+                const Provider = busReserveLocalStorage.Provider.Dmnid;
+
+                // Show appropriate passenger container based on bus type (internal/external)
+                if (internal === true) {
+                    document.querySelector(".book-passengers__container__internal")
+                        .classList.remove("book-hidden");
+                    addPassenger(".book-passengers__container__internal", Adults, Children, Infants);
+                } else {
+                    document.querySelector(".book-passengers__container__external")
+                        .classList.remove("book-hidden");
+                    addPassenger(".book-passengers__container__external", Adults, Children, Infants);
+                }
 
                 // Start the booking timer
                 startTimer();
@@ -5139,7 +5160,7 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
          */
         const addPassenger = (parentSelector, adults, children, infants) => {
             try {
-                console.log(parentSelector, adults, children, infants)
+
                 const busId = busReserveLocalStorage.busId;
                 const parent = document.querySelector(parentSelector);
                 const templateElement = parent.querySelector('.book-passenger__container');
@@ -5322,86 +5343,25 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
          * @param {string} stepName - Name of the current step (e.g., 'مشخصات مسافران', 'مشخصات خریدار').
          * @param {HTMLElement} element - The element triggering the step update.
          */
-        // const updateStep = (stepName, element) => {
-        //     try {
-        //         // Update the current step display
-        //         const routeMap = document.querySelector(".book-current__route__map");
-        //         if (routeMap) {
-        //             routeMap.innerText = stepName;
-        //         }
-        //         // Set data-step attributes based on step name
-        //         element.setAttribute("data-step", stepName === "مشخصات مسافران" ? "" : "buyer");
-        //         const nextElement = element.nextElementSibling;
-        //         if (nextElement) {
-        //             nextElement.setAttribute("data-step", stepName === "مشخصات مسافران" ? "passenger" : "buyer");
-        //         }
-        //         // Update step items UI
-        //         updateStepItems(stepName === "مشخصات مسافران" ? "passenger" : "buyer");
-        //     } catch (err) {
-        //         console.error(`updateStep: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-        //     }
-        // }
-
-
-        // const updateStep = (stepName, element) => {
-        //     try {
-        //         // Update the current step display
-        //         const routeMap = document.querySelector(".book-current__route__map");
-        //         if (routeMap) {
-        //             routeMap.innerText = stepName;
-        //         }
-        //         // Set data-step attributes based on step name
-        //         element.setAttribute("data-step", stepName === "مشخصات مسافران" ? "" : "buyer");
-        //         const nextElement = element.nextElementSibling;
-        //         if (nextElement) {
-        //             nextElement.setAttribute("data-step", stepName === "مشخصات مسافران" ? "passenger" : "buyer");
-        //         }
-        //         // Update step items UI
-        //         updateStepItems(stepName === "مشخصات مسافران" ? "passenger" : "buyer");
-        //     } catch (err) {
-        //         console.error(`updateStep: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-        //     }
-        // }
-
-
-        // Updates the UI and data-step attributes for the given step
-const updateStep = (stepName, element) => {
-    try {
-        // Update the current step display
-        const routeMap = document.querySelector(".book-current__route__map");
-        if (routeMap) {
-            routeMap.innerText = stepName;
+        const updateStep = (stepName, element) => {
+            try {
+                // Update the current step display
+                const routeMap = document.querySelector(".book-current__route__map");
+                if (routeMap) {
+                    routeMap.innerText = stepName;
+                }
+                // Set data-step attributes based on step name
+                element.setAttribute("data-step", stepName === "مشخصات مسافران" ? "" : "buyer");
+                const nextElement = element.nextElementSibling;
+                if (nextElement) {
+                    nextElement.setAttribute("data-step", stepName === "مشخصات مسافران" ? "passenger" : "buyer");
+                }
+                // Update step items UI
+                updateStepItems(stepName === "مشخصات مسافران" ? "passenger" : "buyer");
+            } catch (err) {
+                console.error(`updateStep: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+            }
         }
-
-        // Define step progression
-        const stepOrder = [
-            { name: "انتخاب صندلی", current: "seat", next: "passengers" },
-            { name: "مشخصات مسافران", current: "passengers", next: "buyer" },
-            { name: "مشخصات خریدار", current: "buyer", next: "summary" },
-            { name: "خلاصه", current: "summary", next: null }
-        ];
-
-        // Find the current step configuration
-        const currentStep = stepOrder.find(step => step.name === stepName);
-        if (!currentStep) {
-            throw new Error(`Invalid step name: ${stepName}`);
-        }
-
-        // Set data-step for the current element
-        element.setAttribute("data-step", currentStep.current);
-
-        // Set data-step for the next sibling (if it exists)
-        const nextElement = element.nextElementSibling;
-        if (nextElement && currentStep.next) {
-            nextElement.setAttribute("data-step", currentStep.next);
-        }
-
-        // Update step items UI
-        updateStepItems(currentStep.current);
-    } catch (err) {
-        console.error(`updateStep: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-    }
-};
 
         /**
          * Updates the active state of step navigation items.
@@ -6602,8 +6562,7 @@ const updateStep = (stepName, element) => {
 
 
 
-
-/**
+        /**
  * Navigates to the next booking step (seat, passenger, buyer, or summary) with validation.
  * @param {HTMLElement} element - The element triggering the step transition (e.g., next button).
  */
@@ -6611,7 +6570,7 @@ const nextStep = (element) => {
     try {
         const step = element.getAttribute("data-step");
 
-        if (step === "passengers") {
+        if (step === "seat") {
             // Validate seat selection
             let isValid = true;
             const seatContainer = document.querySelector(".seat-selection-container");
@@ -6647,16 +6606,15 @@ const nextStep = (element) => {
             // Validate passenger information
             let isExist = true;
             let isValid = true;
-            const passengerInfoContents = document.querySelectorAll(".book-passengers__container__internal .book-passengers__content");
+            const passengerInfoContents = document.querySelectorAll(".book-passenger__container");
 
             // Check if passenger count matches selected seats
-            // console.log(passengerInfoContents.length , selectedSeats.length )
-            // if (passengerInfoContents.length !== selectedSeats.length) {
-            //     const passengerContainer = document.querySelector(".book-passengers__container");
-            //     passengerContainer.insertAdjacentHTML('beforeend',
-            //         `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right">تعداد مسافران باید با تعداد صندلی‌های انتخاب‌شده (${selectedSeats.length}) مطابقت داشته باشد.</div>`);
-            //     isValid = false;
-            // }
+            if (passengerInfoContents.length !== selectedSeats.length) {
+                const passengerContainer = document.querySelector(".book-passengers__container");
+                passengerContainer.insertAdjacentHTML('beforeend',
+                    `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right">تعداد مسافران باید با تعداد صندلی‌های انتخاب‌شده (${selectedSeats.length}) مطابقت داشته باشد.</div>`);
+                isValid = false;
+            }
 
             // Check required fields and dates for each passenger
             passengerInfoContents.forEach(passengerContent => {
@@ -7288,50 +7246,10 @@ const onProcessedRenderSeatMapSelection = async (args) => {
  * @param {Object} seat - The seat object being selected or deselected.
  */
 function handleSeatSelection(seat) {
-
-                   if(selectedSeats.length > 0){
-                    // Extract passenger counts from search data
-                    const Adults = busReserveLocalStorage.priceInfo.passengerFare[0].count;
-                    const Children = busReserveLocalStorage.priceInfo.passengerFare[1].count;
-                    const Infants = busReserveLocalStorage.priceInfo.passengerFare[2].count;
-    
-                    const Adults2 = selectedSeats.length;
-                    const Children2 = 0;
-                    const Infants2 = 0;
-    
-    
-    
-                    console.log(Adults , Children , Infants);
-                    console.log(Adults2 , Children2 , Infants2);
-                    // Determine if the bus is internal (domestic) from dictionaries
-                    const internal = dictionaries[0] ? dictionaries[0].internal : "";
-                    console.log("internal");
-                    console.log(internal);
-                    // Get provider ID from booking data
-                    const Provider = busReserveLocalStorage.Provider.Dmnid;
-    
-                    // Show appropriate passenger container based on bus type (internal/external)
-                    if (internal === true) {
-                        document.querySelector(".book-passengers__container__internal")
-                            .classList.remove("book-hidden");
-                        addPassenger(".book-passengers__container__internal",Adults2 , Children2 , Infants2);
-                    } else {
-                        document.querySelector(".book-passengers__container__external")
-                            .classList.remove("book-hidden");
-                        addPassenger(".book-passengers__container__external",Adults2 , Children2 , Infants2);
-                    }
-                }
-
+    console.log("Seat info:", seat);
 }
 
 
-
-
-
-        
-        /**
-         * Handles click events to close dropdowns and hide select item content when clicking outside specific elements.
-         */
         const handleClickOutside = (event) => {
             try {
                 // Close all dropdowns if click is outside input or dropdown content
