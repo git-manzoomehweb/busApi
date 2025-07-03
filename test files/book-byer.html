@@ -1,0 +1,769 @@
+<!-- Get Buyer Schema-->
+<basis core="api" name="api.schema" run="atclient" url="https://basisfly.com/panel/main/view/[##cms.cookie.rkey##]"
+    method="post" body='{
+        "member": [
+                {
+                        "type": "list",
+                        "name": "buyer_info",
+                        "request": "buyer_info",
+                        "lid": "1",
+                        "rkey": "[##cms.cookie.rkey##]"
+                }
+        ]
+}' onprocessed="onProcessedBuyerSchema"></basis>
+<!-- Get Buyer Schema (Mobile-Email)-->
+<basis core="api" name="api.useridentityinfo" run="atclient"
+    url="https://api.trust-login.com/[##cms.cookie.rkey##]/useridentityinfo" method="get"
+    onprocessed="onProcessedBuyerIdentityInfo">
+</basis>
+<!-- Save Buyer Schema-->
+<basis core="api" name="api.edituser" if="{##cms.editUser.run|(false)##}" run="atclient"
+    url="https://api.trust-login.com/schema/{##cms.editUser.rkey##}/editobject" method="post"
+    body='{##cms.editUser.objEditUser##}' triggers="cms.editUser">
+</basis>
+<!-- Get Commission-->
+<basis core="api" name="api.commission" url="https://api.basisfly.com/v2/api/{##cms.commission.type##}/Commission" method="post"
+    content-type="application/json" run="atclient" triggers="cms.commission"
+    if="{##cms.commission.run|(false)##}" body='{
+        "rkey": "[##cms.cookie.rkey##]",
+        "dmnid": "[##cms.cms.domainid##]",
+        "schemaid": "{##cms.commission.schemaid##}",
+        "SessionId": "{##cms.commission.SessionId##}",
+        "FlightId": "{##cms.commission.Id##}"
+    }' onprocessed="onProcessedCommission">
+</basis>
+<!-- Get Payment Price-->
+<basis core="api" name="api.paymentStep" url="https://api.basisfly.com/v2/api/{##cms.paymentStep.type##}/PaymentStep" method="post"
+    content-type="application/json" run="atclient" triggers="cms.paymentStep"
+    if="{##cms.paymentStep.run|(false)##}" body='{
+        "rkey": "[##cms.cookie.rkey##]",
+        "dmnid": "[##cms.cms.domainid##]",
+        "SessionId": "{##cms.paymentStep.SessionId##}",
+        "providerId": "{##cms.paymentStep.providerId##}",
+        "productType": "{##cms.paymentStep.productType##}"
+    }' onprocessed='onProcessedPaymentStep'>
+</basis>
+<div class="book-buyer__type__content">
+    <div
+        class="book-buyer__info__content book-p-5 book-mb-5 book-border-slate-600 book-border-b-3 book-bg-white book-shadow-md book-rounded-2xl book-hidden book-buyer__type__content-1">
+        <div class="book-mb-4">
+            <ul class="book-flex">
+                <li class="book-p-3 book-ml-1 book-rounded-2xl book-cursor-pointer book-border book-border-secondary hover:book-bg-secondary hover:book-text-white book-buyer-type-passenger book-buyer__type__active"
+                    onclick="selectBuyerType(this,'passenger')">خرید برای مسافر</li>
+                <li class="book-p-3 book-ml-1 book-rounded-2xl book-cursor-pointer book-border book-border-secondary hover:book-bg-secondary hover:book-text-white book-buyer-type-agency"
+                    onclick="selectBuyerType(this,'agency')">خرید برای آژانس</li>
+            </ul>
+        </div>
+        <div class="book-buyer__passenger__content book-grid book-grid-cols-3 book-gap-1">
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">نام</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" class="book-Required book-name book-firstname"
+                        onkeyup="removeAlertContent(this)" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">نام خانوادگی</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" class="book-Required book-name book-lastname"
+                        onkeyup="removeAlertContent(this)" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">آدرس ایمیل</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" class="book-Required book-email" onkeyup="removeAlertContent(this)" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">تلفن ثابت</label>
+                <div class="book-number__item__container book-w-11/12">
+                    <div class="book-number__item__content book-w-8/12 book-float-right">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" class="book-has-dash book-tel"
+                                onkeyup="this.value=this.value.replace(/[^0-9.]/g, '');" />
+                        </div>
+                    </div>
+                    <div
+                        class="book-code__item__container book-relative book-w-1/3 book-float-left book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" value="+98"
+                                onclick="toggleDropItem(this,'book-info__item__container','countryCode')"
+                                class="book-has-dash book-code book-ltr book-cursor-pointer book-text-right"
+                                oninput="autoCompleteSearch(this,'book-info__item__container','code')" />
+                        </div>
+                        <ul class="book-drop__item__content book-country__code_buyer book-w-48 book-text-right"></ul>
+                    </div>
+                    <input type="hidden" class="book-tel__number" />
+                    <input type="hidden" class="book-code__number" value="+98" />
+                    <div class="clr"></div>
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">تلفن همراه</label>
+                <div class="book-number__item__container book-w-11/12">
+                    <div class="book-number__item__content book-w-8/12 book-float-right">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" class="book-Required book-mobile"
+                                onkeyup="this.value=this.value.replace(/[^0-9.]/g, ''),removeAlertContent(this)" />
+                        </div>
+                    </div>
+                    <div
+                        class="book-code__item__container book-relative book-w-1/3 book-float-left book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" value="+98"
+                                onclick="toggleDropItem(this,'book-info__item__container','countryCode')"
+                                class="book-Required book-code book-ltr book-cursor-pointer book-text-right"
+                                oninput="autoCompleteSearch(this,'book-info__item__container','code')" />
+                        </div>
+                        <ul class="book-drop__item__content book-country__code_buyer book-w-48 book-text-right"></ul>
+                    </div>
+                    <input type="hidden" class="book-mobile__number" />
+                    <input type="hidden" class="book-code__number" value="+98" />
+                    <div class="clr"></div>
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">آدرس</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" class="book-has-dash book-address" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative book-has__drop__item">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">جنسیت</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" class="book-gender book-cursor-pointer" value="آقا"
+                        onclick="toggleDropItem(this,'book-info__item__container')" readonly="true" />
+                    <input class="book-data-id" value="1" type="hidden" />
+                </div>
+                <ul class="book-drop__item__content book-w-11/12 book-text-right">
+                    <li onclick="selectDropItem(this,'book-info__item__container')"
+                        class="book-li-item book-cursor-pointer book-p-2" data-id="0" data-value="خانم">خانم</li>
+                    <li onclick="selectDropItem(this,'book-info__item__container')"
+                        class="book-li-item book-cursor-pointer book-p-2" data-id="1" data-value="آقا">آقا</li>
+                </ul>
+            </div>
+        </div>
+        <div class="book-api__container book-buyer__agency__content book-hidden">
+            <div class="book-grid book-grid-cols-3 book-gap-1">
+                <div class="book-info__item__container book-mb-3 book-relative book-has__drop__item">
+                    <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">آژانس مورد نظر را انتخاب
+                        کنید</label>
+                    <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                        <input type="text" name=""
+                            class="book-name book-selected__agency book-api__load book-cursor-pointer"
+                            onclick="toggleDropItem(this,'book-info__item__container','agencyList')"
+                            oninput="autoCompleteSearch(this,'book-info__item__container','agencyList')" />
+                        <ul class="book-drop__item__content book-w-11/12 book-text-right">
+                            <basis core="call" run="atclient" file="/book/agency/list" triggers="cms.agencyList"
+                                if="{##cms.agencyList##}" method="get" OnRendered="renderListApi"></basis>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clr"></div>
+            <div class="book-agency__information__container">
+                <div class="book-api__container__loader book-hidden">
+                    <div id="ballsWaveG">
+                        <div id="ballsWaveG_1" class="ballsWaveG"></div>
+                        <div id="ballsWaveG_2" class="ballsWaveG"></div>
+                        <div id="ballsWaveG_3" class="ballsWaveG"></div>
+                        <div id="ballsWaveG_4" class="ballsWaveG"></div>
+                        <div id="ballsWaveG_5" class="ballsWaveG"></div>
+                        <div id="ballsWaveG_6" class="ballsWaveG"></div>
+                        <div id="ballsWaveG_7" class="ballsWaveG"></div>
+                        <div id="ballsWaveG_8" class="ballsWaveG"></div>
+                    </div>
+                </div>
+                <basis core="call" run="atclient" file="/book/agency/information" triggers="cms.agencyInformation"
+                    if="{##cms.agencyInformation.run|(false)##}" id="{##cms.agencyInformation.id##}" method="post"
+                    OnRendered="renderInfoApi"></basis>
+            </div>
+            <div class="clr"></div>
+        </div>
+        <div class="clr"></div>
+    </div>
+    <div
+        class="book-buyer__info__content book-p-5 book-mb-5 book-border-slate-600 book-border-b-3 book-bg-white book-shadow-md book-rounded-2xl book-buyer__type__content-2 book-hidden">
+        <input type="hidden" class="book-agencyid" value="" />
+        <div class="book-grid book-grid-cols-3 book-gap-1">
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">نام آژانس</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" value="" class="book-name book-Agencyname" readonly />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">مدیر عامل</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" value="" class="book-name book-Agencymanegername" readonly />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">آدرس ایمیل</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" value="" class="book-email" readonly />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">تلفن ثابت</label>
+                <div class="book-number__item__container book-w-11/12">
+                    <div class="book-number__item__content book-w-8/12 book-float-right">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" value="" class="book-has-dash book-tel" readonly />
+                        </div>
+                    </div>
+                    <div class="book-code__item__container book-relative book-w-1/3 book-float-left">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" value="+98" class="book-has-dash book-code book-ltr book-text-right"
+                                readonly />
+                        </div>
+                    </div>
+                    <input type="hidden" class="book-tel__number" />
+                    <div class="clr"></div>
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">تلفن همراه</label>
+                <div class="book-number__item__container book-w-11/12">
+                    <div class="book-number__item__content book-w-8/12 book-float-right">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" value="" class="book-Required book-mobile"
+                                onkeyup="this.value=this.value.replace(/[^0-9.]/g, ''),removeAlertContent(this)" />
+                        </div>
+                    </div>
+                    <div
+                        class="book-code__item__container book-relative book-w-1/3 book-float-left book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" value="+98"
+                                onclick="toggleDropItem(this,'book-info__item__container','countryCode')"
+                                class="book-Required book-code book-ltr book-cursor-pointer book-text-right"
+                                oninput="autoCompleteSearch(this,'book-info__item__container','code')" />
+                        </div>
+                        <ul class="book-drop__item__content book-country__code_buyer book-w-48 book-text-right"></ul>
+                    </div>
+                    <input type="hidden" class="book-mobile__number" />
+                    <input type="hidden" class="book-code__number" value="+98" />
+                    <div class="clr"></div>
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">آدرس</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" value="" class="book-has-dash book-address" readonly />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">وب سایت</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" value="" class="book-web" readonly />
+                </div>
+            </div>
+        </div>
+        <div class="clr"></div>
+    </div>
+    <div
+        class="book-buyer__info__content book-p-5 book-mb-5 book-border-slate-600 book-border-b-3 book-bg-white book-shadow-md book-rounded-2xl book-check__has__data">
+        <div class="book-grid book-grid-cols-3 book-gap-1">
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">نام</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" data-changed="0" oninput="checkIsChanged(this)" value=""
+                        data-counter="namecounter" class="book-Required book-name book-firstname" data-prpId="1" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">نام خانوادگی</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" data-changed="0" oninput="checkIsChanged(this)" value=""
+                        data-counter="familycounter" class="book-Required book-name book-lastname" data-prpId="2" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">آدرس ایمیل</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" value="" data-counter="emailcounter" class="book-Required book-email" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">تلفن ثابت</label>
+                <div class="book-number__item__container book-w-11/12">
+                    <div class="book-number__item__content book-w-8/12 book-float-right">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" data-changed="0" oninput="checkIsChanged(this)" value=""
+                                class="book-has-dash book-tel" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '');"
+                                data-prpId="4" />
+                        </div>
+                    </div>
+                    <div
+                        class="book-code__item__container book-relative book-w-1/3 book-float-left book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" value="+98"
+                                onclick="toggleDropItem(this,'book-info__item__container','countryCode')"
+                                class="book-has-dash book-code book-ltr book-cursor-pointer book-text-right"
+                                oninput="autoCompleteSearch(this,'book-info__item__container','code')" />
+                        </div>
+                        <ul class="book-drop__item__content book-country__code_buyer book-w-48 book-text-right"></ul>
+                    </div>
+                    <input type="hidden" class="book-tel__number" />
+                    <input type="hidden" class="book-code__number" value="+98" />
+                    <div class="clr"></div>
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 block book-text-zinc-500 book-text-xs">تلفن همراه</label>
+                <div class="book-number__item__container book-w-11/12">
+                    <div class="book-number__item__content book-w-8/12 book-float-right">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" value="" class="book-Required book-mobile"
+                                onkeyup="this.value=this.value.replace(/[^0-9.]/g, ''),removeAlertContent(this)" />
+                        </div>
+                    </div>
+                    <div
+                        class="book-code__item__container book-relative book-w-1/3 book-float-left book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                            <input type="text" value="+98"
+                                onclick="toggleDropItem(this,'book-info__item__container','countryCode')"
+                                class="book-Required book-code book-ltr book-cursor-pointer book-text-right"
+                                oninput="autoCompleteSearch(this,'book-info__item__container','code')" />
+                        </div>
+                        <ul class="book-drop__item__content book-country__code_buyer book-w-48 book-text-right"></ul>
+                    </div>
+                    <input type="hidden" class="book-mobile__number" />
+                    <input type="hidden" class="book-code__number" value="+98" />
+                    <div class="clr"></div>
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">آدرس</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" data-changed="0" oninput="checkIsChanged(this)" value=""
+                        class="book-has-dash book-address" data-prpId="6" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative book-has__drop__item">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">جنسیت</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                    <input type="text" class="book-gender book-cursor-pointer" value="آقا"
+                        onclick="toggleDropItem(this,'book-info__item__container')" readonly="true" />
+                    <input class="book-data-id" value="1" type="hidden" />
+                    <input class="book-gender-id-trust" value="668" type="hidden" data-prpId="7" data-changed="0" />
+                </div>
+                <ul class="book-drop__item__content book-w-11/12 book-text-right">
+                    <li onclick="selectDropItem(this,'book-info__item__container')"
+                        class="book-li-item book-cursor-pointer book-p-2" data-id="0" data-value="خانم"
+                        data-trust="666">خانم</li>
+                    <li onclick="selectDropItem(this,'book-info__item__container')"
+                        class="book-li-item book-cursor-pointer book-p-2" data-id="1" data-value="آقا" data-trust="668">
+                        آقا</li>
+                </ul>
+            </div>
+        </div>
+        <div class="clr"></div>
+        <div class="book-more__buyer__info__container book-mt-3 book-text-sm">
+            <button type="button" class="book-cursor-pointer" onclick="toggleMoreBuyerInfo(this)">اطلاعات بیشتر</button>
+            <div class="book-more__buyer__info__content book-mt-3 book-grid book-grid-cols-3 book-gap-1 book-hidden">
+                <div class="book-info__item__container book-mb-3 book-relative">
+                    <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">تاریخ تولد</label>
+                    <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                        <input type="text" readonly value="" class="book-has-dash book-birthdate" data-prpId="8" />
+                    </div>
+                </div>
+                <div class="book-info__item__container book-mb-3 book-relative">
+                    <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">کد پستی</label>
+                    <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                        <input type="text" value="" class="book-has-dash book-codepost" />
+                    </div>
+                </div>
+                <div class="book-info__item__container book-mb-3 book-relative">
+                    <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">کشور</label>
+                    <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                        <input type="text" value="ایران" readonly />
+                        <input type="hidden" value="1002236" class="book-countryid" />
+                    </div>
+                </div>
+                <div class="book-info__item__container book-mb-3 book-relative">
+                    <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs">شهر</label>
+                    <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-11/12 book-transition">
+                        <input type="text" value="تهران" readonly />
+                        <input type="hidden" value="1203548" class="book-cityid" />
+                    </div>
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+        <div class="clr"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    /**
+     * Switches between passenger and agency buyer types, updating UI and required fields.
+     * @param {HTMLElement} e - The element triggering the buyer type switch.
+     * @param {string} t - The buyer type ('passenger' or 'agency').
+     */
+    const selectBuyerType = (e, t) => {
+        try {
+            const buyerInfoContent = e.closest(".book-buyer__info__content");
+            const passengerContent = buyerInfoContent.querySelector(".book-buyer__passenger__content");
+            const agencyContent = buyerInfoContent.querySelector(".book-buyer__agency__content");
+            const typeContent = buyerInfoContent.closest(".book-buyers__container");
+
+            if (t === "passenger") {
+                // Activate passenger type
+                e.classList.add("book-buyer__type__active");
+                if (e.nextElementSibling) {
+                    e.nextElementSibling.classList.remove("book-buyer__type__active");
+                }
+                agencyContent.classList.add("book-hidden");
+                passengerContent.classList.remove("book-hidden");
+                passengerContent.querySelectorAll(".book-info__item__container").forEach(e => e.classList.remove("book-hidden"));
+
+                // Update required fields for passenger inputs
+                const inputs = passengerContent.getElementsByTagName("input");
+                for (let n = 0; n < inputs.length; n++) {
+                    const input = inputs[n];
+                    if (input.getAttribute("type") !== "hidden") {
+                        input.classList.add("book-Required");
+                        if (input.classList.contains("book-has-dash")) {
+                            input.classList.remove("book-Required");
+                        }
+                    }
+                }
+
+                // Reset agency fields
+                const agencyName = agencyContent.querySelector(".book-name");
+                agencyName.classList.remove("book-Required");
+                agencyName.value = "";
+                const agencyInfo = agencyContent.querySelector(".book-agency__information__content");
+                if (agencyInfo) {
+                    agencyInfo.innerHTML = '';
+                }
+
+                // Set mid attribute for passenger type
+                typeContent.setAttribute("data-mid", 24);
+            } else {
+                // Activate agency type
+                e.classList.add("book-buyer__type__active");
+                if (e.previousElementSibling) {
+                    e.previousElementSibling.classList.remove("book-buyer__type__active");
+                }
+                agencyContent.classList.remove("book-hidden");
+                passengerContent.classList.add("book-hidden");
+                passengerContent.querySelectorAll(".book-info__item__container").forEach(e => e.classList.add("book-hidden"));
+
+                // Update required fields for agency inputs
+                const inputs = passengerContent.getElementsByTagName("input");
+                for (let n = 0; n < inputs.length; n++) {
+                    const input = inputs[n];
+                    if (input.getAttribute("type") !== "hidden" || !input.classList.contains("book-has-dash")) {
+                        input.classList.remove("book-Required");
+                        input.setAttribute("name", "");
+                    }
+                }
+
+                // Set agency name as required
+                agencyContent.querySelector(".book-name").classList.add("book-Required");
+                typeContent.setAttribute("data-mid", 18);
+            }
+        } catch (err) {
+            console.error(`selectBuyerType: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        }
+    };
+
+    /**
+     * Toggles visibility of additional buyer information content.
+     * @param {HTMLElement} e - The element triggering the toggle.
+     */
+    const toggleMoreBuyerInfo = (e) => {
+        try {
+            e.closest(".book-buyer__info__content").querySelector(".book-more__buyer__info__content").classList.toggle("book-hidden");
+        } catch (err) {
+            console.error(`toggleMoreBuyerInfo: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        }
+    };
+
+    /**
+     * Marks an input element as changed by setting its data-changed attribute.
+     * @param {HTMLElement} element - The input element.
+     */
+    const checkIsChanged = (element) => {
+        try {
+            element.dataset.changed = 1;
+        } catch (err) {
+            console.error(`checkIsChanged: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        }
+    };
+
+    /**
+     * Processes buyer identity information API response and updates email/mobile fields.
+     * @param {Object} args - API response object containing status and data.
+     */
+    const onProcessedBuyerIdentityInfo = async (args) => {
+        try {
+            const response = args.response;
+            if (response.status === 200) {
+                const responseJson = await response.json();
+                if (responseJson && !responseJson.errorMessage) {
+                    if (responseJson.errorid === 1) {
+                        console.log('useridentityinfo: ' + responseJson.message);
+                    } else {
+                        // Update email and mobile fields
+                        document.querySelectorAll(".book-check__has__data").forEach(ie => {
+                            ie.querySelector(".book-email").value = responseJson.emailInfo.email;
+                            ie.querySelector(".book-mobile").value = responseJson.mobileInfo.mobile;
+                        });
+                    }
+                }
+            }
+        } catch (err) {
+            console.error(`onProcessedBuyerIdentityInfo: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        }
+    };
+
+    /**
+     * Processes buyer schema API response and updates buyer UI based on account type.
+     * @param {Object} args - API response object containing status and data.
+     */
+    const onProcessedBuyerSchema = async (args) => {
+        try {
+            const response = args.response;
+            if (response.status === 200) {
+                const responseJson = await response.json();
+                if (responseJson && !responseJson.errorMessage) {
+                    const buyersContainer = document.querySelector(".book-buyers__container");
+                    // Remove loader
+                    const loader = buyersContainer.querySelector("#ballsWaveG");
+                    if (loader) loader.remove();
+                    buyersContainer.setAttribute("data-load", 1);
+
+                    // Extract account type and properties
+                    const accounttype = responseJson.sources[0].data[0].accounttype;
+                    const properties = responseJson.sources[0].data[0].user_info.sources[0].data[0].properties;
+                    const typeContent = buyersContainer.querySelector(".book-buyer__type__content");
+                    typeContent.classList.add(`book-buyer-${accounttype}`);
+                    buyersContainer.setAttribute("data-accounttype", accounttype);
+
+                    // Set mid based on account type
+                    let mid = 24;
+                    switch (accounttype) {
+                        case 1:
+                        case 2:
+                        case 3:
+                            mid = 24;
+                            break;
+                    }
+                    buyersContainer.setAttribute("data-mid", mid);
+
+                    // Update UI based on account type
+                    if (accounttype === 3) {
+                        // Remove type content for individual buyers
+                        const typeContent1 = buyersContainer.querySelector(".book-buyer__type__content-1");
+                        const typeContent2 = buyersContainer.querySelector(".book-buyer__type__content-2");
+                        if (typeContent1) typeContent1.remove();
+                        if (typeContent2) typeContent2.remove();
+                    } else {
+                        // Add counter info header
+                        const checkHasData = buyersContainer.querySelector(".book-check__has__data");
+                        checkHasData.classList.add("book-counter__info__content");
+                        checkHasData.insertAdjacentHTML('afterbegin',
+                            `<div class="book-buyer__info__content book-border-slate-600 book-text-sm book-mb-3">اطلاعات کانتر</div>`);
+
+                        if (accounttype === 2) {
+                            // Configure agency type
+                            const typeContent1 = buyersContainer.querySelector(".book-buyer__type__content-1");
+                            if (typeContent1) typeContent1.remove();
+                            const typeContent2 = buyersContainer.querySelector(".book-buyer__type__content-2");
+                            typeContent2.classList.remove("book-hidden");
+
+                            // Populate agency fields
+                            const buyerInformation = responseJson.sources[0].data[0].buyer_information;
+                            typeContent2.querySelector(".book-agencyid").value = buyerInformation.id;
+                            typeContent2.querySelector(".book-Agencyname").value = buyerInformation.name;
+                            typeContent2.querySelector(".book-Agencymanegername").value = buyerInformation.manager;
+                            typeContent2.querySelector(".book-email").value = buyerInformation.email;
+                            typeContent2.querySelector(".book-tel").value = buyerInformation.phones[0].phone;
+                            typeContent2.querySelector(".book-mobile").value = buyerInformation.mobile;
+                            typeContent2.querySelector(".book-address").value = buyerInformation.address;
+                            typeContent2.querySelector(".book-web").value = buyerInformation.website;
+                        } else {
+                            // Configure passenger type
+                            const typeContent2 = buyersContainer.querySelector(".book-buyer__type__content-2");
+                            if (typeContent2) typeContent2.remove();
+                            buyersContainer.querySelector(".book-buyer__type__content-1").classList.remove("book-hidden");
+                        }
+                    }
+
+                    // Update user properties
+                    const checkHasData = buyersContainer.querySelector(".book-check__has__data");
+                    checkHasData.setAttribute("data-hashId", responseJson.sources[0].data[0].user_info.sources[0].data[0].schemaId);
+                    properties?.forEach(e => {
+                        const setField = (selector, value, id, valueId) => {
+                            const field = checkHasData.querySelector(selector);
+                            field.value = value;
+                            field.setAttribute("data-id", id || '');
+                            field.setAttribute("data-valueId", valueId || id || '');
+                        };
+
+                        if (e.prpId === 1) {
+                            setField(".book-firstname", e.answers[0].parts[0].values[0].value, e.answers[0].id, e.answers[0].parts[0].values[0].id);
+                        } else if (e.prpId === 2) {
+                            setField(".book-lastname", e.answers[0].parts[0].values[0].value, e.answers[0].id, e.answers[0].parts[0].values[0].id);
+                        } else if (e.prpId === 4) {
+                            setField(".book-tel", e.answers[0].parts[0].values[0].value, e.answers[0].id, e.answers[0].parts[0].values[0].id);
+                        } else if (e.prpId === 6) {
+                            setField(".book-address", e.answers[0].parts[0].values[0].value, e.answers[0].id, e.answers[0].parts[0].values[0].id);
+                        } else if (e.prpId === 7) {
+                            const genderField = checkHasData.querySelector(".book-gender");
+                            const genderDataId = genderField.closest(".book-info__item__container").querySelector(".book-data-id");
+                            const genderTrust = checkHasData.querySelector(".book-gender-id-trust");
+                            if (e.answers[0].parts[0].values[0].value === 666) {
+                                genderTrust.value = 666;
+                                genderDataId.value = 0;
+                                genderField.value = "خانم";
+                            } else {
+                                genderTrust.value = 668;
+                                genderDataId.value = 1;
+                                genderField.value = "آقا";
+                            }
+                            genderTrust.setAttribute("data-id", e.answers[0].id || '');
+                            genderTrust.setAttribute("data-valueId", e.answers[0].parts[0].values[0].id || '');
+                        } else if (e.prpId === 8) {
+                            setField(".book-birthdate", e.answers[0].parts[0].values[0].value, e.answers[0].id, e.answers[0].parts[0].values[0].id);
+                        } else if (e.prpId === 9) {
+                            setField(".book-codepost", e.answers[0].parts[0].values[0].value, e.answers[0].id, e.answers[0].parts[0].values[0].id);
+                        }
+                    });
+
+                    // Set readonly for non-accounttype-3 fields with values
+                    if (accounttype !== 3) {
+                        checkHasData.querySelectorAll("input").forEach(e => {
+                            if (e.value.length > 1 && e.getAttribute("data-changed")) {
+                                e.readOnly = true;
+                            }
+                        });
+                    }
+                }
+            }
+        } catch (err) {
+            console.error(`onProcessedBuyerSchema: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        }
+    };
+
+    /**
+     * Initializes commission and payment step API calls if commission is zero.
+     */
+    if (Number(flightReserveLocalStorage.PriceInfo.Commission) === 0) {
+        try {
+            const mainUserId = document.querySelector(".main-userid").value;
+            $bc.setSource("cms.commission", [{
+                schemaid: flightSearchLocalStorage.Schemaid,
+                type: flightSearchLocalStorage.Type,
+                SessionId: flightSearchLocalStorage.SessionId,
+                Id: flightReserveLocalStorage.FlightId,
+                run: true
+            }]);
+            $bc.setSource("cms.paymentStep", [{
+                SessionId: flightSearchLocalStorage.SessionId,
+                type: flightSearchLocalStorage.Type,
+                providerId: flightReserveLocalStorage.Provider.ProviderId,
+                productType: 1,
+                run: true
+            }]);
+        } catch (err) {
+            console.error(`commissionAndPaymentStepInit: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        }
+    }
+
+    /**
+     * Processes commission API response and updates total costs with commission deduction.
+     * @param {Object} args - API response object containing status and data.
+     */
+    const onProcessedCommission = async (args) => {
+        try {
+            const response = args.response;
+            if (response.status === 200) {
+                const responseJson = await response.json();
+                if (responseJson && responseJson.CommissionCost !== 0) {
+                    // Add commission display
+                    document.querySelector(".book-totalcom__container").insertAdjacentHTML('beforebegin',
+                        `<div class="book-mb-2 book-flex book-justify-between book-commission__container">
+                        <div class="book-text-sm book-text-zinc-500">کمیسیون</div>
+                        <div>
+                            <span class="book-font-bold book-text-lg book-commission__cost">${new Intl.NumberFormat().format(responseJson.CommissionCost)}</span>
+                            <span class="book-text-xs book-mr-2">${await renderCurrency(flightReserveLocalStorage.PriceInfo.Currency)}</span>
+                        </div>
+                    </div>`);
+
+                    // Update total commercial cost
+                    const totalComElement = document.querySelector(".book-totalcom__cost");
+                    if (totalComElement) {
+                        let currentTotalCom = parseFloat(totalComElement.textContent) || 0;
+                        let newTotalCom = currentTotalCom - responseJson.CommissionCost;
+                        totalComElement.textContent = new Intl.NumberFormat().format(newTotalCom);
+                    }
+
+                    // Update first pay cost
+                    const firstPayElement = document.querySelector(".book-firstpay__cost");
+                    let currentFirstPay = parseFloat(firstPayElement.textContent) || 0;
+                    let newFirstPay = currentFirstPay - responseJson.CommissionCost;
+                    firstPayElement.textContent = new Intl.NumberFormat().format(newFirstPay);
+                }
+            }
+        } catch (err) {
+            console.error(`onProcessedCommission: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        }
+    };
+
+    /**
+     * Processes payment step API response and updates first pay and total costs.
+     * @param {Object} args - API response object containing status and data.
+     */
+    const onProcessedPaymentStep = async (args) => {
+        try {
+            const response = args.response;
+            if (response.status === 200) {
+                const responseJson = await response.json();
+                if (responseJson) {
+                    // Set global cost variables
+                    originalTotalCom = flightReserveLocalStorage.PriceInfo.TotalCommission;
+                    originalTotal = flightReserveLocalStorage.PriceInfo.Total;
+
+                    const firstPayElement = document.querySelector(".book-firstpay__cost");
+                    const firstPayContainer = document.querySelector(".book-firstpay__container");
+                    const totalComContainer = document.querySelector(".book-totalcom__container");
+
+                    if (responseJson.firstpay === 1) {
+                        // Full payment case
+                        firstPayElement.textContent = new Intl.NumberFormat().format(flightReserveLocalStorage.PriceInfo.TotalCommission);
+                        originalFirstPay = flightReserveLocalStorage.PriceInfo.TotalCommission;
+                    } else {
+                        // Partial payment case
+                        firstPayElement.textContent = new Intl.NumberFormat().format(flightReserveLocalStorage.PriceInfo.TotalCommission * responseJson.firstpay);
+                        firstPayContainer.querySelector(".book-title").textContent = 'پرداخت مرحله اول';
+                        totalComContainer.insertAdjacentHTML('beforeend',
+                            `<div class="book-text-sm book-title">مبلغ قابل پرداخت</div>
+                         <div>
+                             <span class="book-font-bold book-text-sm book-totalcom__cost">${new Intl.NumberFormat().format(flightReserveLocalStorage.PriceInfo.TotalCommission)}</span> 
+                             <span class="book-text-xs book-mx-1">${await renderCurrency(flightReserveLocalStorage.PriceInfo.Currency)}</span>
+                         </div>`);
+                        originalFirstPay = flightReserveLocalStorage.PriceInfo.TotalCommission * responseJson.firstpay;
+                    }
+                }
+            }
+        } catch (err) {
+            console.error(`onProcessedPaymentStep: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        }
+    };
+</script>

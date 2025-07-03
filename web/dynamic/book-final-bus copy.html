@@ -31,16 +31,25 @@
 
 
 
-        <basis core="api" name="api.reserve" url="http://185.44.36.51:1550/api/bus/reserve" method="post"
-            content-type="application/json" run="atclient" body='{
-                "rkey": "[##cms.cookie.rkey##]",
-                "sessionId": "[##cms.form.SessionId##]",
-                "busId": "[##cms.form.busId##]",
-                "busGroup": [##cms.form.busGroup##],
-                "travelers": [##cms.form.Travelers##]
-            }'>
-        </basis>
-
+        <basis core="api" name="api.reserve"
+    url="http://185.44.36.51:1550/api/bus/reserve"
+    method="post" content-type="application/json" 
+    run="atclient" if="{##cms.url##}" triggers="cms.url" body='{
+    "sessionId": "[##cms.form.SessionId##]",
+    "busId": "[##cms.form.busId##]",
+    "busGroup": [##cms.form.busGroup##],
+    "travelers": [##cms.form.Travelers##],
+    "account": [##cms.form.account##],
+    "agencycountername": "[##cms.form.agencycountername##]",
+    "agencycounter": "[##cms.form.agencycounter##]",
+    "rkey": "[##cms.cookie.rkey##]",
+    "clear": "[##cms.form.clear##]",
+    "accounttype": "[##cms.form.accounttype##]",
+    "lid": "[##cms.query.lid|(1)##]",
+    "mid": "[##cms.form.mid##]"
+    "share": "0",
+}'>
+</basis>
 
 
 
@@ -52,18 +61,28 @@
 
 
         <basis core="api" name="api.issue-ticket" url="http://185.44.36.51:1550/api/bus/issue-ticket" method="post"
-            content-type="application/json" run="atclient" triggers="cms.issueTicket"
-            if="{##cms.issueTicket.run|(false)##}" body='{
+    content-type="application/json" run="atclient" triggers="cms.issueTicket cms.url"  if="{##cms.issueTicket.run|(false)##}" 
+    body='{
                 "SessionId": "[##cms.form.SessionId##]",
                 "BasisFlyBookId": "{##cms.issueTicket.bookId##}",
                 "dmnid": "[##cms.cms.domainid##]",
                 "rkey": "[##cms.cookie.rkey##]"
 }'>
-        </basis>
+</basis>
 
         <basis core="callback" run="atclient" triggers="api.issue-ticket" method="setIssueTicket">
         </basis>
-
+        <basis core="api" name="api.safarmarket"
+            url="https://safarmarket.com/api/v1/trace/pixel/{provider_name}/3/?smId=" [##cms.cookie.safarmarketId##]"&pn
+            r="{##cms.safarmarket.pnr##}" &fliNo="{##cms.safarmarket.fliNo##}" &typ="{##cms.safarmarket.typ##}"
+            &pri="{##cms.safarmarket.pri##}" &pax="{##cms.safarmarket.pax##}" &adu=" {##cms.safarmarket.adu##}"
+            &chi="{##cms.safarmarket.chi##}" &inf="{##cms.safarmarket.inf##}" &from="{##cms.safarmarket.from##}"
+            &to="{##cms.safarmarket.to##}" &dep="{##cms.safarmarket.dep##}" &ret="{##cms.safarmarket.ret##}"
+            &nam="{##cms.safarmarket.nam##}" &pho="{##cms.safarmarket.pho##}" &ema="{##cms.safarmarket.ema##}"
+            &rFTyp="{##cms.safarmarket.rFTyp##}" &rPnr=" {##cms.safarmarket.rPnr##}"
+            &rFliNo="{##cms.safarmarket.rFliNo##}" &bck=false" method="get" content-type="application/json"
+            run="atclient" triggers="cms.safarmarket" if="{##cms.safarmarket.run|(false)##}">
+        </basis>
         <div class="book-layout__main book-max-w-7xl book-mx-auto" data-id="{##cms.token.bookId##}">
             <div class="book-message__booking__container book-w-full book-text-center book-my-10 book-py-10">
                 <div class="book__first__message__content">
@@ -175,92 +194,90 @@
        * @param {Object} args - API response object containing source data with status, price change, and book ID.
        */
         const setReserve = async (args) => {
+            try {
+                // Validate API response
+                const response = args.source?.rows?.[0];
+                if (!response || response.Status === undefined) {
+                    throw new Error("Invalid or missing API response data");
+                }
 
-            console.log(args);
-            // try {
-            //     // Validate API response
-            //     const response = args.source?.rows?.[0];
-            //     if (!response || response.Status === undefined) {
-            //         throw new Error("Invalid or missing API response data");
-            //     }
+                const responseStatus = response.Status;
+                const responseErrorMessage = response.ErrorMessage || "خطایی رخ داده است";
+                const responseContainer = document.querySelector(".book-message__booking__container");
+                if (!responseContainer) {
+                    throw new Error("Response container not found");
+                }
 
-            //     const responseStatus = response.Status;
-            //     const responseErrorMessage = response.ErrorMessage || "خطایی رخ داده است";
-            //     const responseContainer = document.querySelector(".book-message__booking__container");
-            //     if (!responseContainer) {
-            //         throw new Error("Response container not found");
-            //     }
+                const responseFirst = responseContainer.querySelector(".book__first__message__content");
+                const responseLast = responseContainer.querySelector(".book__last__message__content");
+                if (!responseLast) {
+                    throw new Error("Last message content element not found");
+                }
+                const lastMessage = responseLast.querySelector(".book__last__message");
+                if (!lastMessage) {
+                    throw new Error("Last message element not found");
+                }
 
-            //     const responseFirst = responseContainer.querySelector(".book__first__message__content");
-            //     const responseLast = responseContainer.querySelector(".book__last__message__content");
-            //     if (!responseLast) {
-            //         throw new Error("Last message content element not found");
-            //     }
-            //     const lastMessage = responseLast.querySelector(".book__last__message");
-            //     if (!lastMessage) {
-            //         throw new Error("Last message element not found");
-            //     }
+                if (responseStatus === true) {
 
-            //     if (responseStatus === true) {
-
-            //         const priceChange = response.PriceChange;
-            //         const bookId = response.AirReservation?.BasisFlyBookId;
-            //         if (!bookId) {
-            //             throw new Error("Book ID not found in response");
-            //         }
-            //         // Chack safarmarket api
-            //         if (bankIdentifier == '') {
-            //             $bc.setSource("cms.safarmarket", [{
-            //                 pnr: bookId,
-            //                 fliNo: busGroup[0].RoutesInfo[0].busNumber,
-            //                 typ: busGroup[0].isSystembus === "true" || busGroup[0].isSystembus === true ? "SYSTEM" : "CHARTER",
-            //                 pri: PriceInfo.PassengerFare[0].Unit,
-            //                 pax: PriceInfo.TotalCommission,
-            //                 adu: PriceInfo.PassengerFare.find(p => p.passengerType === "Adult")?.Count || 0,
-            //                 chi: PriceInfo.PassengerFare.find(p => p.passengerType === "Child")?.Count || 0,
-            //                 inf: PriceInfo.PassengerFare.find(p => p.passengerType === "Infant")?.Count || 0,
-            //                 from: busGroup[0].RoutesInfo[0].OriginAirport,
-            //                 to: busGroup[0].RoutesInfo[0].DestinationAirport,
-            //                 dep: `${busGroup[0].RoutesInfo[0].DepartureDate} ${busGroup[0].RoutesInfo[0].DepartureTime}`,
-            //                 ret: busGroup.length > 1 ? `${busGroup[1].RoutesInfo[0].DepartureDate} ${busGroup[1].RoutesInfo[0].DepartureTime}` : "",
-            //                 nam: fullname,
-            //                 pho: mobile,
-            //                 ema: email,
-            //                 rFTyp: busGroup[1] ? (busGroup[1].isSystembus === "true" || busGroup[1].isSystembus === true ? "SYSTEM" : "CHARTER") : "",
-            //                 rPnr: bookId,
-            //                 rFliNo: busGroup[1] && busGroup[1].RoutesInfo && busGroup[1].RoutesInfo[0] ? busGroup[1].RoutesInfo[0].busNumber : "",
-            //                 run: true
-            //             }]);
+                    const priceChange = response.PriceChange;
+                    const bookId = response.AirReservation?.BasisFlyBookId;
+                    if (!bookId) {
+                        throw new Error("Book ID not found in response");
+                    }
+                    // Chack safarmarket api
+                    if (bankIdentifier == '') {
+                        $bc.setSource("cms.safarmarket", [{
+                            pnr: bookId,
+                            fliNo: busGroup[0].RoutesInfo[0].busNumber,
+                            typ: busGroup[0].isSystembus === "true" || busGroup[0].isSystembus === true ? "SYSTEM" : "CHARTER",
+                            pri: PriceInfo.PassengerFare[0].Unit,
+                            pax: PriceInfo.TotalCommission,
+                            adu: PriceInfo.PassengerFare.find(p => p.passengerType === "Adult")?.Count || 0,
+                            chi: PriceInfo.PassengerFare.find(p => p.passengerType === "Child")?.Count || 0,
+                            inf: PriceInfo.PassengerFare.find(p => p.passengerType === "Infant")?.Count || 0,
+                            from: busGroup[0].RoutesInfo[0].OriginAirport,
+                            to: busGroup[0].RoutesInfo[0].DestinationAirport,
+                            dep: `${busGroup[0].RoutesInfo[0].DepartureDate} ${busGroup[0].RoutesInfo[0].DepartureTime}`,
+                            ret: busGroup.length > 1 ? `${busGroup[1].RoutesInfo[0].DepartureDate} ${busGroup[1].RoutesInfo[0].DepartureTime}` : "",
+                            nam: fullname,
+                            pho: mobile,
+                            ema: email,
+                            rFTyp: busGroup[1] ? (busGroup[1].isSystembus === "true" || busGroup[1].isSystembus === true ? "SYSTEM" : "CHARTER") : "",
+                            rPnr: bookId,
+                            rFliNo: busGroup[1] && busGroup[1].RoutesInfo && busGroup[1].RoutesInfo[0] ? busGroup[1].RoutesInfo[0].busNumber : "",
+                            run: true
+                        }]);
 
 
 
-            //         };
-            //         if (priceChange === null) {
-            //             // No price change, proceed with booking
-            //             confirmBookingProcesse(bookId, `${responseErrorMessage}`);
-            //         } else {
-            //             // Display price change confirmation UI
-            //             if (responseFirst) {
-            //                 responseFirst.classList.add("book-hidden");
-            //             }
-            //             responseLast.classList.remove("book-hidden");
-            //             lastMessage.innerHTML = `
-            //         <div class="book-price__changed">تغییر قیمت اتفاق افتاده ,مایل به ادامه فرآیند رزرو با مبلغ 
-            //         ${new Intl.NumberFormat().format(priceChange)} هستید؟</div>
-            //         <button class="book-mx-2 book-bg-green-600 book-mt-4 book-text-white  book-rounded-lg book-p-2 book-min-w-28" onclick="confirmBookingProcesse('${bookId}','${responseErrorMessage}')">بله, ادامه میدم</button>
-            //         <button class="book-mx-2 book-bg-red-500 book-mt-4 book-text-white  book-rounded-lg book-p-2 book-min-w-28" onclick="rejectBookingProcesse()">خیر, منصرف شدم</button>`;
-            //         }
-            //     } else {
-            //         // Display error message
-            //         if (responseFirst) {
-            //             responseFirst.classList.add("book-hidden");
-            //         }
-            //         responseLast.classList.remove("book-hidden");
-            //         lastMessage.textContent = responseErrorMessage;
-            //     }
-            // } catch (err) {
-            //     console.error(`setReserve: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            // }
+                    };
+                    if (priceChange === null) {
+                        // No price change, proceed with booking
+                        confirmBookingProcesse(bookId, `${responseErrorMessage}`);
+                    } else {
+                        // Display price change confirmation UI
+                        if (responseFirst) {
+                            responseFirst.classList.add("book-hidden");
+                        }
+                        responseLast.classList.remove("book-hidden");
+                        lastMessage.innerHTML = `
+                    <div class="book-price__changed">تغییر قیمت اتفاق افتاده ,مایل به ادامه فرآیند رزرو با مبلغ 
+                    ${new Intl.NumberFormat().format(priceChange)} هستید؟</div>
+                    <button class="book-mx-2 book-bg-green-600 book-mt-4 book-text-white  book-rounded-lg book-p-2 book-min-w-28" onclick="confirmBookingProcesse('${bookId}','${responseErrorMessage}')">بله, ادامه میدم</button>
+                    <button class="book-mx-2 book-bg-red-500 book-mt-4 book-text-white  book-rounded-lg book-p-2 book-min-w-28" onclick="rejectBookingProcesse()">خیر, منصرف شدم</button>`;
+                    }
+                } else {
+                    // Display error message
+                    if (responseFirst) {
+                        responseFirst.classList.add("book-hidden");
+                    }
+                    responseLast.classList.remove("book-hidden");
+                    lastMessage.textContent = responseErrorMessage;
+                }
+            } catch (err) {
+                console.error(`setReserve: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+            }
         };
 
         /**

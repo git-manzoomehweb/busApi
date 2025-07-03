@@ -2524,7 +2524,8 @@
                                         <div
                                             class="book-info__item__content book-w-1/3 book-flex book-justify-between book-bg-zinc-100 book-rounded-lg book-overflow-hidden book-transition">
                                             <input type="text" class="book-coupon__code" autocomplete="off" />
-                                            <button onclick="renderCheckCoupon(this)" type="button"
+                                            <button onclick="render
+                                            (this)" type="button"
                                                 class="book-cursor-pointer book-text-white book-bg-primary-400 book-px-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     strokeWidth={1.5} stroke="currentColor" class="book-size-6">
@@ -2742,7 +2743,7 @@
          */
         let queryUrl = "[##cms.query.url##]";
         let busSearchLocalStorage = null;
-        let busReserveLocalStorage = null;
+        let flightReserveLocalStorage = null;
         let ExcessService = null;
         let SeatSelection = null;
         let dictionaries = [];
@@ -2785,12 +2786,12 @@
 
             } else {
                 // Parse bus booking data from localStorage, default to empty string if not found
-                busReserveLocalStorage = localStorage.getItem("busBook")
+                flightReserveLocalStorage = localStorage.getItem("busBook")
                     ? JSON.parse(localStorage.getItem("busBook"))
                     : "";
                 setbusGroup();
-                ExcessService = busReserveLocalStorage.busGroup[0].ExcessService
-                SeatSelection = busReserveLocalStorage.busGroup[0].SeatSelection
+                ExcessService = flightReserveLocalStorage.busGroup[0].ExcessService
+                SeatSelection = flightReserveLocalStorage.busGroup[0].SeatSelection
             }
 
             // Add excess service or seat service UI if enabled
@@ -2914,7 +2915,7 @@
         const setbusGroup = async () => {
             try {
                 if (localStorage.getItem("busBook")) {
-                    const dict = busReserveLocalStorage.dictionaries;
+                    const dict = flightReserveLocalStorage.dictionaries;
                     if (Array.isArray(dict)) {
                         dictionaries = dict;
                     }
@@ -2922,16 +2923,16 @@
                         dictionaries = [dict];
                     }
                 }
-                console.log(busReserveLocalStorage);
+                console.log(flightReserveLocalStorage);
 
 
                 // Set booking data source if search data exists
-                $bc.setSource("bus.book", busReserveLocalStorage);
+                $bc.setSource("bus.book", flightReserveLocalStorage);
 
                 $bc.setSource("cms.seat", {
                     type: "upselling",
-                    busId: busReserveLocalStorage.busId,
-                    busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
+                    busId: flightReserveLocalStorage.busId,
+                    busGroup: JSON.stringify(flightReserveLocalStorage.busGroup),
                     dmnid: busSearchLocalStorage.dmnid || 0,
                     Type: busSearchLocalStorage.Type || "",
                     lid: busSearchLocalStorage.lid || 1,
@@ -2953,14 +2954,14 @@
                 // Set supplier credit check data source
                 $bc.setSource("cms.supplierCredit", [{
                     SessionId: busSearchLocalStorage.SessionId,
-                    busId: busReserveLocalStorage.busId,
-                    busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
+                    busId: flightReserveLocalStorage.busId,
+                    busGroup: JSON.stringify(flightReserveLocalStorage.busGroup),
                     rkey: cookieParts[1],
                     run: true
                 }]);
-                originalFirstPay = busReserveLocalStorage.priceInfo.totalCommission;
-                originalTotalCom = busReserveLocalStorage.priceInfo.totalCommission;
-                originalTotal = busReserveLocalStorage.priceInfo.total;
+                originalFirstPay = flightReserveLocalStorage.priceInfo.totalCommission;
+                originalTotalCom = flightReserveLocalStorage.priceInfo.totalCommission;
+                originalTotal = flightReserveLocalStorage.priceInfo.total;
             } catch (err) {
                 console.error(`setbusGroup: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
             }
@@ -3607,8 +3608,8 @@
                 // Trigger API call to check coupon
                 $bc.setSource("cms.checkCoupon", [{
                     SessionId: busSearchLocalStorage.SessionId,
-                    busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
-                    busId: busReserveLocalStorage.busId,
+                    busGroup: JSON.stringify(flightReserveLocalStorage.busGroup),
+                    busId: flightReserveLocalStorage.busId,
                     accountType,
                     price,
                     firstPay,
@@ -3718,8 +3719,8 @@
                         $bc.setSource("cms.rule", {
                             type,
                             SessionId: busSearchLocalStorage.SessionId,
-                            busId: busReserveLocalStorage.busId,
-                            busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
+                            busId: flightReserveLocalStorage.busId,
+                            busGroup: JSON.stringify(flightReserveLocalStorage.busGroup),
                             rkey: cookieParts[1],
                             run: true
                         });
@@ -3788,17 +3789,28 @@
          * @param {string} showClass - CSS class of the element to show.
          * @param {string} hideClass - CSS class of the element to hide.
          */
-        const toggleVisibility = (showClass, hideClass) => {
-            try {
-                // Show the specified element
-                document.querySelector(showClass).classList.remove("book-hidden");
-                // Hide the specified element
-                document.querySelector(hideClass).classList.add("book-hidden");
-            } catch (err) {
-                console.error(`toggleVisibility: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
+        // const toggleVisibility = (showClass, hideClass) => {
+        //     try {
+        //         // Show the specified element
+        //         document.querySelector(showClass).classList.remove("book-hidden");
+        //         // Hide the specified element
+        //         document.querySelector(hideClass).classList.add("book-hidden");
+        //     } catch (err) {
+        //         console.error(`toggleVisibility: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        //     }
+        // };
 
+        const toggleVisibility = (showSelector, hideSelector) => {
+    try {
+        const showElement = document.querySelector(showSelector);
+        const hideElement = document.querySelector(hideSelector);
+        
+        if (hideElement) hideElement.classList.add("book-hidden");
+        if (showElement) showElement.classList.remove("book-hidden");
+    } catch (err) {
+        console.error(`toggleVisibility: ${err.message}`);
+    }
+};
 
 
         /**
@@ -3978,11 +3990,11 @@
                 busSearchLocalStorage.SessionId = responseJson.SessionId;
                 localStorage.setItem("busSearch", JSON.stringify(busSearchLocalStorage));
                 localStorage.setItem("busBook", JSON.stringify(responseJson));
-                // Update busReserveLocalStorage
-                busReserveLocalStorage = localStorage.getItem("busBook")
+                // Update flightReserveLocalStorage
+                flightReserveLocalStorage = localStorage.getItem("busBook")
                     ? JSON.parse(localStorage.getItem("busBook"))
                     : "";
-                if (!busReserveLocalStorage) {
+                if (!flightReserveLocalStorage) {
                     throw new Error("Failed to parse busBook from localStorage");
                 }
 
@@ -4057,8 +4069,8 @@
                 if (!busSearchLocalStorage || !busSearchLocalStorage.Schemaid) {
                     throw new Error("Missing Schemaid in busSearchLocalStorage");
                 }
-                if (!busReserveLocalStorage || !busReserveLocalStorage.busGroup || !busReserveLocalStorage.priceInfo) {
-                    throw new Error("Invalid or missing data in busReserveLocalStorage");
+                if (!flightReserveLocalStorage || !flightReserveLocalStorage.busGroup || !flightReserveLocalStorage.priceInfo) {
+                    throw new Error("Invalid or missing data in flightReserveLocalStorage");
                 }
 
                 schemaId = busSearchLocalStorage.Schemaid;
@@ -4074,7 +4086,7 @@
                     BusinessClass: { text: "بیزینس", class: "BusinessClass" },
                     FirstClass: { text: "فرست", class: "FirstClass" }
                 };
-                const busClass = busReserveLocalStorage.busGroup[0].Class;
+                const busClass = flightReserveLocalStorage.busGroup[0].Class;
                 const cabin = cabinMap[busClass] || { text: "اکونومی", class: "Economy" }; // Fallback to Economy
                 cabinClass.textContent = cabin.text;
                 cabinClass.dataset.class = cabin.class;
@@ -4100,7 +4112,7 @@
                     throw new Error("Passenger items or count input not found");
                 }
 
-                const passengerFare = busReserveLocalStorage.priceInfo.passengerFare;
+                const passengerFare = flightReserveLocalStorage.priceInfo.passengerFare;
                 const passengerParts = [];
                 if (passengerFare[0].count > 0) passengerParts.push(`${passengerFare[0].count} بزرگسال`);
                 if (passengerFare[1].count > 0) passengerParts.push(`${passengerFare[1].count} کودک`);
@@ -4118,7 +4130,7 @@
                 }
 
                 // Update trip details
-                if (busReserveLocalStorage.busGroup.length === 0) {
+                if (flightReserveLocalStorage.busGroup.length === 0) {
                     throw new Error("No bus group data available");
                 }
 
@@ -4131,7 +4143,7 @@
                     throw new Error("Trip detail elements not found");
                 }
 
-                const busGroup = busReserveLocalStorage.busGroup;
+                const busGroup = flightReserveLocalStorage.busGroup;
                 const lastIndex = busGroup.length - 1;
 
                 if (schemaId === 291) {
@@ -4269,8 +4281,8 @@
                 $bc.setSource("cms.rule", {
                     type: `${serviceType}`,
                     SessionId: busSearchLocalStorage.SessionId,
-                    busId: busReserveLocalStorage.busId,
-                    busGroup: JSON.stringify(busReserveLocalStorage.busGroup),
+                    busId: flightReserveLocalStorage.busId,
+                    busGroup: JSON.stringify(flightReserveLocalStorage.busGroup),
                     rkey: cookieParts[1],
                     run: true
                 });
@@ -4311,7 +4323,7 @@
                     const typeCounters = { Adult: 0, Child: 0, Infant: 0 };
                     const typeMap = { Adult: "بزرگسال", Child: "کودک", Infant: "نوزاد" };
 
-                    const passengers = busReserveLocalStorage?.priceInfo?.passengerFare || [];
+                    const passengers = flightReserveLocalStorage?.priceInfo?.passengerFare || [];
                     const passengersData = document.querySelector('.book-passengers__content:not(.book-hidden)');
                     const passengerContainers = passengersData?.querySelectorAll('.book-passenger__container') || [];
 
@@ -4494,7 +4506,7 @@ onclick="toggleServiceTable(this,'book-route__service-${type}-${index}')">
                     // Meal Services
                     let mealOutput = `<div>`;
                     let hasAnyMealService = false;
-                    const routesInfo = busReserveLocalStorage?.busGroup?.flatMap(group => group.RoutesInfo) || [];
+                    const routesInfo = flightReserveLocalStorage?.busGroup?.flatMap(group => group.RoutesInfo) || [];
                     const routeIds = [1, 2, 3, 4];
 
                     for (const routeId of routeIds) {
@@ -5140,7 +5152,7 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
         const addPassenger = (parentSelector, adults, children, infants) => {
             try {
                 console.log(parentSelector, adults, children, infants)
-                const busId = busReserveLocalStorage.busId;
+                const busId = flightReserveLocalStorage.busId;
                 const parent = document.querySelector(parentSelector);
                 const templateElement = parent.querySelector('.book-passenger__container');
                 parent.innerHTML = ''; // Clear existing content
@@ -5365,43 +5377,65 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
 
 
         // Updates the UI and data-step attributes for the given step
-const updateStep = (stepName, element) => {
+// const updateStep = (stepName, element) => {
+//     try {
+//         // Update the current step display
+//         const routeMap = document.querySelector(".book-current__route__map");
+//         if (routeMap) {
+//             routeMap.innerText = stepName;
+//         }
+
+//         // Define step progression
+//         const stepOrder = [
+//             { name: "انتخاب صندلی", current: "seat", next: "passengers" },
+//             { name: "مشخصات مسافران", current: "passengers", next: "buyer" },
+//             { name: "مشخصات خریدار", current: "buyer", next: "summary" },
+//             { name: "خلاصه", current: "summary", next: null }
+//         ];
+
+//         // Find the current step configuration
+//         const currentStep = stepOrder.find(step => step.name === stepName);
+//         if (!currentStep) {
+//             throw new Error(`Invalid step name: ${stepName}`);
+//         }
+
+//         // Set data-step for the current element
+//         element.setAttribute("data-step", currentStep.current);
+
+//         // Set data-step for the next sibling (if it exists)
+//         const nextElement = element.nextElementSibling;
+//         if (nextElement && currentStep.next) {
+//             nextElement.setAttribute("data-step", currentStep.next);
+//         }
+
+//         // Update step items UI
+//         updateStepItems(currentStep.current);
+//     } catch (err) {
+//         console.error(`updateStep: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+//     }
+// };
+
+
+
+const updateStep = (stepText, element) => {
     try {
-        // Update the current step display
-        const routeMap = document.querySelector(".book-current__route__map");
-        if (routeMap) {
-            routeMap.innerText = stepName;
+        document.querySelector(".book-current__route__map").innerText = stepText;
+        if (typeof updateStepItems === 'function') {
+            // Extract step name from text for updateStepItems function
+            const stepMap = {
+                'انتخاب صندلی': 'seat',
+                'مشخصات مسافران': 'passenger', 
+                'مشخصات خریدار': 'buyer',
+                'خلاصه رزرو': 'summary'
+            };
+            const stepKey = stepMap[stepText] || stepText;
+            updateStepItems(stepKey);
         }
-
-        // Define step progression
-        const stepOrder = [
-            { name: "انتخاب صندلی", current: "seat", next: "passengers" },
-            { name: "مشخصات مسافران", current: "passengers", next: "buyer" },
-            { name: "مشخصات خریدار", current: "buyer", next: "summary" },
-            { name: "خلاصه", current: "summary", next: null }
-        ];
-
-        // Find the current step configuration
-        const currentStep = stepOrder.find(step => step.name === stepName);
-        if (!currentStep) {
-            throw new Error(`Invalid step name: ${stepName}`);
-        }
-
-        // Set data-step for the current element
-        element.setAttribute("data-step", currentStep.current);
-
-        // Set data-step for the next sibling (if it exists)
-        const nextElement = element.nextElementSibling;
-        if (nextElement && currentStep.next) {
-            nextElement.setAttribute("data-step", currentStep.next);
-        }
-
-        // Update step items UI
-        updateStepItems(currentStep.current);
     } catch (err) {
-        console.error(`updateStep: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        console.error(`updateStep: ${err.message}`);
     }
 };
+
 
         /**
          * Updates the active state of step navigation items.
@@ -6538,8 +6572,8 @@ const updateStep = (stepName, element) => {
                 // Create form data
                 const formData = {
                     SessionId: busSearchLocalStorage.SessionId,
-                    busId: busReserveLocalStorage.busId,
-                    busGroup: busReserveLocalStorage.busGroup,
+                    busId: flightReserveLocalStorage.busId,
+                    busGroup: flightReserveLocalStorage.busGroup,
                     Schemaid: busSearchLocalStorage.Schemaid,
                     Travelers: passengerList,
                     account: buyerData,
@@ -6559,7 +6593,7 @@ const updateStep = (stepName, element) => {
                 // Create and submit form
                 const form = document.createElement("form");
                 form.method = "POST";
-                form.action = `bus/book/final?url=${queryUrl}`;
+                form.action = `/bus/book/final?url=${queryUrl}`;
                 for (const key in formData) {
                     const input = document.createElement("input");
                     input.type = "hidden";
@@ -6631,7 +6665,7 @@ const nextStep = (element) => {
 
             if (isValid) {
                 // Transition to passenger step
-                seatContainer.classList.add("book-hidden");
+                document.querySelector(".seat-selection-container").classList.add("book-hidden");
                 const passengerContainer = document.querySelector(".book-passengers__container");
                 passengerContainer.classList.remove("book-hidden");
                 document.querySelector(".book-current__route__map").innerText = 'مشخصات مسافران';
@@ -6647,25 +6681,18 @@ const nextStep = (element) => {
             // Validate passenger information
             let isExist = true;
             let isValid = true;
-            const passengerInfoContents = document.querySelectorAll(".book-passengers__container__internal .book-passengers__content");
-
-            // Check if passenger count matches selected seats
-            // console.log(passengerInfoContents.length , selectedSeats.length )
-            // if (passengerInfoContents.length !== selectedSeats.length) {
-            //     const passengerContainer = document.querySelector(".book-passengers__container");
-            //     passengerContainer.insertAdjacentHTML('beforeend',
-            //         `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right">تعداد مسافران باید با تعداد صندلی‌های انتخاب‌شده (${selectedSeats.length}) مطابقت داشته باشد.</div>`);
-            //     isValid = false;
-            // }
+            const passengerInfoContents = document.querySelectorAll(".book-passenger__container");
 
             // Check required fields and dates for each passenger
             passengerInfoContents.forEach(passengerContent => {
                 if (!passengerContent.closest(".book-passengers__content").classList.contains("book-hidden")) {
                     const numberItems = passengerContent.querySelectorAll(".book-info__item__container");
                     numberItems.forEach(e => {
+                        // Remove existing error messages
                         const description = e.querySelector(".book-alert__content");
                         if (description) description.remove();
 
+                        // Validate required fields
                         const necessaryField = e.querySelector(".book-Required");
                         if (necessaryField) {
                             const innerItem = necessaryField.closest(".book-info__item__content");
@@ -6677,6 +6704,7 @@ const nextStep = (element) => {
                             }
                         }
 
+                        // Validate date fields
                         const dateItems = e.querySelectorAll(".book-date__item__content");
                         dateItems.forEach(dateItem => {
                             const dateNecessaryField = dateItem.querySelector(".book-Required");
@@ -6697,7 +6725,8 @@ const nextStep = (element) => {
                 }
             });
 
-            if (isExist && isValid) {
+            if (isExist) {
+                // Validate dates and passenger types
                 const exitDateMs = document.querySelector(".book-DepartureDate").value;
                 const exitDateMsDate = new Date(exitDateMs);
                 const passengerContents = document.querySelectorAll(".book-passenger__container");
@@ -6709,6 +6738,7 @@ const nextStep = (element) => {
                         birthdayField.value = checkDate(birthdayField.value);
                         let birthday = birthdayField.value;
                         const birthParts = birthday.split('-');
+                        // Validate birth date
                         const [checkYear, checkMonth, checkDay] = birthParts.map(part => parseInt(part, 10));
                         const birthdayDate = new Date(birthday);
                         if (isNaN(checkYear) || isNaN(checkMonth) || isNaN(checkDay) ||
@@ -6720,6 +6750,7 @@ const nextStep = (element) => {
                         } else {
                             removeDateError(birthdayField);
 
+                            // Calculate age
                             const cmsDate = document.querySelector(".book-layout__main").dataset.cmsdate;
                             const formattedDate = cmsDate
                                 .split("/")
@@ -6731,6 +6762,7 @@ const nextStep = (element) => {
                             const daysDiff = Math.ceil((currentDate - birthdayDate) / (1000 * 3600 * 24));
                             const age = Math.floor(daysDiff / 365);
 
+                            // Validate age based on passenger type
                             if (passengerType === "ADT" && (age < 12 || age > 98)) {
                                 addDateError("برای بزرگسال تاریخ تولد معتبر وارد کنید", birthdayField);
                                 isValid = false;
@@ -6745,23 +6777,27 @@ const nextStep = (element) => {
                             }
                         }
 
+                        // Validate passport expiration
                         const passExpireField = passengerContent.querySelector(".book-PassportExpiration");
                         if (passExpireField && passExpireField.closest(".book-info__item__container").querySelector(".book-day").classList.contains("book-Required")) {
                             passExpireField.value = checkDate(passExpireField.value);
                             let passExpireDate = passExpireField.value;
                             const passExpireParts = passExpireDate.split('-');
+                            // Convert Jalali to Gregorian if needed
                             const year = parseInt(passExpireParts[0], 10);
                             const month = parseInt(passExpireParts[1], 10);
                             const day = parseInt(passExpireParts[2], 10);
                             const passExpireDateObject = new Date(passExpireDate);
+                            // Validate passport date
                             if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(passExpireDateObject.getTime()) ||
                                 month < 1 || month > 12 || day < 1 || day > new Date(year, month, 0).getDate()) {
                                 addDateError("تاریخ معتبر وارد کنید.", passExpireField);
                                 isValid = false;
                             } else {
+                                // Check 6-month validity
                                 const timeDiff = passExpireDateObject.getTime() - exitDateMsDate.getTime();
                                 const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                                if (daysDiff< 183) {
+                                if (daysDiff < 183) {
                                     addDateError("تاریخ انقضای گذرنامه باید بیشتر از 6 ماه باشد.", passExpireField);
                                     isValid = false;
                                 } else {
@@ -6770,6 +6806,7 @@ const nextStep = (element) => {
                             }
                         }
 
+                        // Validate passport code
                         const passportCodeField = passengerContent.querySelector(".book-PassportCode");
                         if (passportCodeField && passportCodeField.classList.contains("book-Required")) {
                             const passportCode = passportCodeField.value;
@@ -6785,6 +6822,7 @@ const nextStep = (element) => {
                             }
                         }
 
+                        // Validate national code
                         const nationalCodeField = passengerContent.querySelector(".book-NationalCode");
                         if (nationalCodeField && nationalCodeField.classList.contains("book-Required")) {
                             const placeOfBirth = passengerContent.querySelector(".book-PlaceOfBirth");
@@ -6816,6 +6854,7 @@ const nextStep = (element) => {
                             }
                         }
 
+                        // Validate English fields
                         passengerContent.querySelectorAll(".book-EnglishKey").forEach(englishField => {
                             if (englishField.classList.contains("book-Required")) {
                                 if (englishField.value.length < 2) {
@@ -6833,6 +6872,7 @@ const nextStep = (element) => {
                             }
                         });
 
+                        // Validate country fields
                         passengerContent.querySelectorAll(".book-NameOfCountry").forEach(countryField => {
                             if (countryField.classList.contains("book-Required")) {
                                 if (countryField.getAttribute("data-value") === '') {
@@ -6850,6 +6890,7 @@ const nextStep = (element) => {
                 });
 
                 if (isValid) {
+                    // Transition to buyer step or login
                     const mainUserId = document.querySelector(".main-userid").value;
                     if (mainUserId === "0") {
                         showLoginContainer();
@@ -6873,15 +6914,18 @@ const nextStep = (element) => {
                 }
             }
         } else if (step === "buyer") {
+            // Validate buyer information
             let isExist = true;
             let isValid = true;
             let isVerify = true;
 
             document.querySelectorAll(".book-buyer__info__content").forEach(buyerContent => {
                 buyerContent.querySelectorAll(".book-info__item__container").forEach(e => {
+                    // Remove existing error messages
                     const description = e.querySelector(".book-alert__content");
                     if (description) description.remove();
 
+                    // Validate required fields
                     const necessaryField = e.querySelector(".book-Required");
                     if (necessaryField) {
                         necessaryField.closest(".book-info__item__content").classList.remove("book-invalid");
@@ -6892,6 +6936,7 @@ const nextStep = (element) => {
                         }
                     }
 
+                    // Validate number fields
                     e.querySelectorAll(".book-number__item__container").forEach(numberItem => {
                         const codeField = numberItem.querySelector(".book-code");
                         if (codeField) {
@@ -6906,6 +6951,7 @@ const nextStep = (element) => {
             });
 
             if (isExist) {
+                // Validate agency selection
                 if (document.querySelector(".book-buyer-1")) {
                     const agencyContent = document.querySelector(".book-buyer__agency__content");
                     const selectedAgency = document.querySelector(".book-selected__agency");
@@ -6917,6 +6963,7 @@ const nextStep = (element) => {
                     }
                 }
 
+                // Validate buyer fields
                 function validateField(element, className, regex, errorMessage) {
                     try {
                         const field = element.querySelector(className);
@@ -6938,6 +6985,7 @@ const nextStep = (element) => {
                 }
 
                 Array.from(document.getElementsByClassName("book-buyer__info__content")).forEach(buyerInfo => {
+                    // Validate name
                     Array.from(buyerInfo.getElementsByClassName("book-name")).forEach(e => {
                         if (!validateField(e.closest(".book-info__item__container"), ".book-name", /^.{2,}$/,
                             "حداقل تعداد کاراکتر 2 است .")) {
@@ -6945,6 +6993,7 @@ const nextStep = (element) => {
                         }
                     });
 
+                    // Validate email
                     Array.from(buyerInfo.getElementsByClassName("book-email")).forEach(e => {
                         if (!validateField(e.closest(".book-info__item__container"), ".book-email",
                             /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, "ایمیل صحیح نمی‌باشد.")) {
@@ -6952,6 +7001,7 @@ const nextStep = (element) => {
                         }
                     });
 
+                    // Validate address
                     Array.from(buyerInfo.getElementsByClassName("book-address")).forEach(e => {
                         if (!validateField(e.closest(".book-info__item__container"), ".book-address", /^.{5,}$/,
                             "حداقل تعداد کاراکتر 5 است.")) {
@@ -6959,6 +7009,7 @@ const nextStep = (element) => {
                         }
                     });
 
+                    // Validate mobile
                     Array.from(buyerInfo.getElementsByClassName("book-number__item__container")).forEach(e => {
                         if (e.querySelector(".book-code__number")?.value === '+98') {
                             if (!validateField(e, ".book-mobile", /^9([0123645789]{9})$/,
@@ -6970,6 +7021,7 @@ const nextStep = (element) => {
                 });
 
                 if (isValid) {
+                    // Handle email/mobile verification
                     function handleVerification(e, type) {
                         try {
                             const verifyContainer = type === 'email'
@@ -7006,6 +7058,7 @@ const nextStep = (element) => {
                     });
 
                     if (isVerify) {
+                        // Set dash for empty fields
                         document.querySelectorAll(".book-buyer__info__content").forEach(content => {
                             content.querySelectorAll(".book-has-dash").forEach(input => {
                                 if (input.value === '') {
@@ -7014,18 +7067,21 @@ const nextStep = (element) => {
                             });
                         });
 
+                        // Transition to summary step
                         document.querySelector(".book-buyers__container").classList.add("book-hidden");
                         showSummaryContent(element);
                     }
                 }
             }
         } else if (step === "summary") {
+            // Validate summary step
             let isValid = true;
             const removeDescription = (container) => {
                 const description = container.querySelector(".book-alert__content");
                 if (description) description.remove();
             };
 
+            // Validate company rules checkbox
             const ruleContent = document.querySelector(".book-company__rule__container");
             removeDescription(ruleContent);
             if (!ruleContent.querySelector("input[type=checkbox]").checked) {
@@ -7034,6 +7090,7 @@ const nextStep = (element) => {
                 isValid = false;
             }
 
+            // Validate counter selection
             const counterContent = document.querySelector(".book-counter__container");
             removeDescription(counterContent);
             if (counterContent.classList.contains("book-Required")) {
@@ -7046,6 +7103,7 @@ const nextStep = (element) => {
             }
 
             if (isValid) {
+                // Transition to invoice step
                 const invoiceContainer = document.querySelector(".book-invoice__container");
                 invoiceContainer.classList.remove("book-hidden");
                 if (invoiceContainer.querySelectorAll(".book-invoice__content")[0]) {
@@ -7067,8 +7125,12 @@ const nextStep = (element) => {
                                     <div id="ballsWaveG_8" class="ballsWaveG"></div>
                                 </div></div>`);
 
+                // Handle invoice rendering based on account type
                 const accountType = document.querySelector(".book-buyers__container").dataset.accounttype;
-                const share = busSearchLocalStorage.share;
+                // Use the same localStorage variable as in original code
+                const share = window.flightSearchLocalStorage ? window.flightSearchLocalStorage.share : 
+                             (window.busSearchLocalStorage ? window.busSearchLocalStorage.share : 0);
+                
                 if (share == 1) {
                     invoiceContainer.innerHTML =
                         `<div class="book-invoice__content book-pre__Invoice" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">جهت ثبت قرارداد کلیک کنید</div>`;
@@ -7089,8 +7151,12 @@ const nextStep = (element) => {
     }
 };
 
+
+
+
+
 /**
- * Navigates to the previous booking step (passenger to seat, buyer to passenger, or summary to buyer) with UI updates.
+ * Navigates to the previous booking step with proper visibility control.
  * @param {HTMLElement} element - The element triggering the step transition (e.g., previous button).
  */
 const prevStep = (element) => {
@@ -7098,23 +7164,31 @@ const prevStep = (element) => {
         const step = element.getAttribute("data-step");
 
         if (step === "passenger") {
-            // Transition from passenger to seat step
-            toggleVisibility(".seat-selection-container", ".book-passengers__container");
-            document.querySelector(".book-current__route__map").innerText = 'انتخاب صندلی';
-            element.classList.add("book-invisible");
-            element.setAttribute("data-step", "seat");
-            updateStep("انتخاب صندلی", element);
-
-            // Re-render seat map to reflect selected seats
-            onProcessedRenderSeatMapSelection({ response: window.seatMapResponse });
+            // Transition from passenger to seat step (if seat selection exists)
+            const seatContainer = document.querySelector(".seat-selection-container");
+            if (seatContainer) {
+                document.querySelector(".book-passengers__container").classList.add("book-hidden");
+                seatContainer.classList.remove("book-hidden");
+                document.querySelector(".book-current__route__map").innerText = 'انتخاب صندلی';
+                element.classList.add("book-invisible");
+                element.setAttribute("data-step", "passengers"); // Changed to match seat step
+                updateStepItems("seat");
+                
+                // Re-render seat map if function exists
+                if (typeof onProcessedRenderSeatMapSelection === 'function' && window.seatMapResponse) {
+                    onProcessedRenderSeatMapSelection({ response: window.seatMapResponse });
+                }
+            }
         } else if (step === "buyer") {
             // Transition from buyer to passenger step
-            toggleVisibility(".book-passengers__container", ".book-buyers__container");
+            document.querySelector(".book-buyers__container").classList.add("book-hidden");
+            document.querySelector(".book-passengers__container").classList.remove("book-hidden");
             document.querySelector(".book-current__route__map").innerText = 'مشخصات مسافران';
             element.setAttribute("data-step", "passenger");
-            updateStep("مشخصات مسافران", element);
+            updateStepItems("passenger");
         } else if (step === "summary") {
             // Transition from summary to buyer step
+            // Reset coupon if applicable
             const couponResponse = document.querySelector('.book-coupon__container .book-response-code');
             if (couponResponse && couponResponse.classList.contains('book-true')) {
                 const couponCode = document.querySelector(".book-coupon__code");
@@ -7123,24 +7197,32 @@ const prevStep = (element) => {
                 couponButton.click();
             }
 
+            // Hide invoice container if visible
             const summaryInvoice = document.querySelector(".book-invoice__container");
             if (!summaryInvoice.classList.contains("book-hidden")) {
                 summaryInvoice.classList.add("book-hidden");
             }
 
-            ["book-rule__container", "book-counter__container"].forEach(className => {
-                const description = document.querySelector(`.${className} .book-description`);
+            // Remove error messages from rule and counter containers
+            ["book-company__rule__container", "book-counter__container"].forEach(className => {
+                const description = document.querySelector(`.${className} .book-alert__content`);
                 if (description) description.remove();
             });
 
-            toggleVisibility(".book-buyers__container", ".book-summary__container");
-            element.classList.remove("book-hidden");
-            updateStep("مشخصات خریدار", element);
+            // Show buyer container and hide summary
+            document.querySelector(".book-summary__container").classList.add("book-hidden");
+            document.querySelector(".book-buyers__container").classList.remove("book-hidden");
+            document.querySelector(".book-current__route__map").innerText = 'مشخصات خریدار';
+            element.setAttribute("data-step", "buyer");
+            updateStepItems("buyer");
         }
     } catch (err) {
         console.error(`prevStep: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
     }
 };
+
+
+
 
 /**
  * Renders the seat selection map based on provided layout.
@@ -7291,9 +7373,9 @@ function handleSeatSelection(seat) {
 
                    if(selectedSeats.length > 0){
                     // Extract passenger counts from search data
-                    const Adults = busReserveLocalStorage.priceInfo.passengerFare[0].count;
-                    const Children = busReserveLocalStorage.priceInfo.passengerFare[1].count;
-                    const Infants = busReserveLocalStorage.priceInfo.passengerFare[2].count;
+                    const Adults = flightReserveLocalStorage.priceInfo.passengerFare[0].count;
+                    const Children = flightReserveLocalStorage.priceInfo.passengerFare[1].count;
+                    const Infants = flightReserveLocalStorage.priceInfo.passengerFare[2].count;
     
                     const Adults2 = selectedSeats.length;
                     const Children2 = 0;
@@ -7308,7 +7390,7 @@ function handleSeatSelection(seat) {
                     console.log("internal");
                     console.log(internal);
                     // Get provider ID from booking data
-                    const Provider = busReserveLocalStorage.Provider.Dmnid;
+                    const Provider = flightReserveLocalStorage.Provider.Dmnid;
     
                     // Show appropriate passenger container based on bus type (internal/external)
                     if (internal === true) {
