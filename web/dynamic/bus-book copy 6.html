@@ -2627,7 +2627,7 @@
                                 <basis core="call" run="atclient" file="/book/bank/list" triggers="cms.bankList"
                                     method="get" if="{##cms.bankList##}" OnRendered="renderBankList"></basis>
                                 <basis core="api" name="api.userCredit"
-                                    url="http://185.44.36.51:1550/api/bus/UserCredit?supplier_dmnid=[##cms.cms.domainid##]&rkey={##cms.userCredit.rkey##}"
+                                    url="{##cms.url.value##}/bus/UserCredit?supplier_dmnid=[##cms.cms.domainid##]&rkey={##cms.userCredit.rkey##}"
                                     method="get" content-type="application/json" run="atclient"
                                     triggers="cms.userCredit" if="{##cms.userCredit##}"
                                     onprocessed='onProcessedUserCredit'>
