@@ -1113,1087 +1113,1078 @@ let allbusProposals = [];
 let originalbusProposals = [];
 const filterContent = document.querySelector(".book-aside__filter__content");
 
-
-
-/**
- * Starts the progress bar animation, incrementing up to 95%
- * @param {number} [interval=500] - The interval in milliseconds
- * @returns {void}
- */
-
-
 startProgressBar(1000);
-//   const busManipulation = async (args) => {
-//     // Initialize pagination and UI update variables
-//     let currentIndex = 0;
-//     let start = 0;
-//     let end = 30;
-//     let dynamicBusProposalsCount = 0;
-//     elseExecuted = false;
-//     startProgressBar();
-
-//     /**
-//      * Handles pagination, filtering, and sorting based on source ID
-//      */
-//     if (args.source.id === 'cms.page') {
-//         // Initialize pagination state
-//         mustUpdate = true;
-//         InUpdatePaging = false;
-//         InUpdateFiltering = false;
-//         selectedBusId = null;
-
-//         const currentValue = parseInt(args.source.rows[0].value);
-//         const prevButton = document.querySelector(".book-prevpage");
-//         const nextButton = document.querySelector(".book-nextpage");
-//         const pagingContainer = document.querySelector(".book-paging__cards__container");
-
-//         // Update active page styling
-//         const activeButton = document.querySelector(".book-active__paging");
-//         activeButton.classList.remove("book-active__paging");
-//         activeButton.classList.add("bg-white");
-//         const newActive = pagingContainer.querySelector(`[bc-value="${currentValue}"]`);
-//         newActive.classList.add("book-active__paging");
-//         newActive.classList.remove("bg-white");
-
-//         // Calculate pagination range
-//         start = currentValue * 30;
-//         end = start + 30;
-
-//         // Toggle previous button visibility
-//         prevButton.classList.toggle("book-hidden", currentValue === 0);
-
-//         // Toggle next button visibility
-//         const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
-//         const lastButton = allButtons[allButtons.length - 1];
-//         nextButton.classList.toggle("book-hidden", newActive === lastButton);
-//     } else if (args.source.id === 'cms.nextpage') {
-//         // Handle next page navigation
-//         mustUpdate = true;
-//         InUpdatePaging = false;
-//         InUpdateFiltering = false;
-//         selectedBusId = null;
-
-//         const prevButton = document.querySelector(".book-prevpage");
-//         const nextButton = document.querySelector(".book-nextpage");
-//         const activeButton = document.querySelector(".book-active__paging");
-//         const currentValue = parseInt(activeButton.getAttribute("bc-value"));
-//         const nextValue = currentValue + 1;
-//         const nextPage = document.querySelector(`.book-paging__cards__container [bc-value="${nextValue}"]`);
-
-//         if (nextPage) {
-//             // Update active page styling
-//             activeButton.classList.remove("book-active__paging");
-//             activeButton.classList.add("bg-white");
-//             nextPage.classList.add("book-active__paging");
-//             nextPage.classList.remove("bg-white");
-
-//             // Show next page if hidden
-//             if (nextPage.classList.contains("book-hidden")) {
-//                 nextPage.classList.remove("book-hidden");
-//                 const firstVisible = document.querySelector(".book-paging__container:not(.hidden):not(.book-prevpage):not(.book-nextpage)");
-//                 if (firstVisible) firstVisible.classList.add("book-hidden");
-//             }
-
-//             // Show previous button if not on first page
-//             prevButton.classList.toggle("book-hidden", nextValue === 0);
-//         }
-
-//         // Toggle next button visibility
-//         const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
-//         const lastButton = allButtons[allButtons.length - 1];
-//         nextButton.classList.toggle("book-hidden", nextPage === lastButton);
-
-//         // Update pagination range
-//         start = nextValue * 30;
-//         end = start + 30;
-//     } else if (args.source.id === 'cms.prevpage') {
-//         // Handle previous page navigation
-//         mustUpdate = true;
-//         InUpdatePaging = false;
-//         InUpdateFiltering = false;
-//         selectedBusId = null;
-
-//         const prevButton = document.querySelector(".book-prevpage");
-//         const nextButton = document.querySelector(".book-nextpage");
-//         const activeButton = document.querySelector(".book-active__paging");
-//         const currentValue = parseInt(activeButton.getAttribute("bc-value"));
-//         const prevValue = currentValue - 1;
-//         const prevPage = document.querySelector(`.book-paging__cards__container [bc-value="${prevValue}"]`);
-
-//         if (prevPage) {
-//             // Update active page styling
-//             activeButton.classList.remove("book-active__paging");
-//             activeButton.classList.add("bg-white");
-//             prevPage.classList.add("book-active__paging");
-//             prevPage.classList.remove("bg-white");
-
-//             // Show previous page if hidden
-//             if (prevPage.classList.contains("book-hidden")) {
-//                 prevPage.classList.remove("book-hidden");
-//                 const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
-//                 const lastVisible = allButtons.reverse().find(btn => !btn.classList.contains("book-hidden"));
-//                 if (lastVisible) lastVisible.classList.add("book-hidden");
-//             }
-
-//             // Toggle previous and next button visibility
-//             prevButton.classList.toggle("book-hidden", prevValue === 0);
-//             nextButton.classList.remove("book-hidden");
-//         }
-
-//         // Update pagination range
-//         start = prevValue * 30;
-//         end = start + 30;
-//     } else if (args.source.id === "cms.outboundcompany") {
-//         // Handle outbound bus company filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const value = args.source.rows[0].value;
-//         const index = outboundCompanyNames.indexOf(value);
-//         if (index !== -1) {
-//             outboundCompanyNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-outboundcompany__content", value, false);
-//         } else {
-//             outboundCompanyNames.push(value);
-//             toggleFilterCheckbox(".book-outboundcompany__content", value, true);
-//         }
-//     } else if (args.source.id === "cms.inboundcompany") {
-//         // Handle inbound bus company filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const value = args.source.rows[0].value;
-//         const index = inboundCompanyNames.indexOf(value);
-//         if (index !== -1) {
-//             inboundCompanyNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-inboundcompany__content", value, false);
-//         } else {
-//             inboundCompanyNames.push(value);
-//             toggleFilterCheckbox(".book-inboundcompany__content", value, true);
-//         }
-//     } else if (args.source.id === "cms.company") {
-//         // Handle general bus company filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const value = args.source.rows[0].value;
-//         const index = companyNames.indexOf(value);
-//         if (index !== -1) {
-//             companyNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-company__content", value, false);
-//         } else {
-//             companyNames.push(value);
-//             toggleFilterCheckbox(".book-company__content", value, true);
-//         }
-//     } else if (args.source.id === "cms.outboundterminal") {
-//         // Handle outbound terminal filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const value = args.source.rows[0].value;
-//         const index = outboundTerminalNames.indexOf(value);
-//         if (index !== -1) {
-//             outboundTerminalNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-outboundterminal__content", value, false);
-//         } else {
-//             outboundTerminalNames.push(value);
-//             toggleFilterCheckbox(".book-outboundterminal__content", value, true);
-//         }
-//     } else if (args.source.id === "cms.inboundterminal") {
-//         // Handle inbound terminal filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const value = args.source.rows[0].value;
-//         const index = inboundTerminalNames.indexOf(value);
-//         if (index !== -1) {
-//             inboundTerminalNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-inboundterminal__content", value, false);
-//         } else {
-//             inboundTerminalNames.push(value);
-//             toggleFilterCheckbox(".book-inboundterminal__content", value, true);
-//         }
-//     } else if (args.source.id === "cms.terminal") {
-//         // Handle general terminal filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const value = args.source.rows[0].value;
-//         const index = terminalNames.indexOf(value);
-//         if (index !== -1) {
-//             terminalNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-terminal__content", value, false);
-//         } else {
-//             terminalNames.push(value);
-//             toggleFilterCheckbox(".book-terminal__content", value, true);
-//         }
-//     } else if (args.source.id === "cms.outboundstop") {
-//         // Handle outbound stop filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
-//         const index = outboundStopNames.indexOf(stopValue);
-
-//         if (index !== -1) {
-//             outboundStopNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-outboundstop__content", args.source.rows[0].value, false, "");
-//         } else {
-//             outboundStopNames.push(stopValue);
-//             toggleFilterCheckbox(".book-outboundstop__content", args.source.rows[0].value, true, "");
-//         }
-//     } else if (args.source.id === "cms.inboundstop") {
-//         // Handle inbound stop filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
-//         const index = inboundStopNames.indexOf(stopValue);
-//         if (index !== -1) {
-//             inboundStopNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-inboundstop__content", args.source.rows[0].value, false, "");
-//         } else {
-//             inboundStopNames.push(stopValue);
-//             toggleFilterCheckbox(".book-inboundstop__content", args.source.rows[0].value, true, "");
-//         }
-//     } else if (args.source.id === "cms.stop") {
-//         // Handle general stop filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
-//         const index = stopNames.indexOf(stopValue);
-//         if (index !== -1) {
-//             stopNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-stop__content", args.source.rows[0].value, false, "");
-//         } else {
-//             stopNames.push(stopValue);
-//             toggleFilterCheckbox(".book-stop__content", args.source.rows[0].value, true, "");
-//         }
-//     } else if (args.source.id === "cms.outboundbusnumber") {
-//         // Handle outbound bus number filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const busNumberValue = args.source.rows[0].value.trim();
-//         if (busNumberValue === "") {
-//             outboundBusNumberNames = [];
-//             if (isMobile) {
-//                 removeFilterDiv("outbound-bus-number");
-//             }
-//         } else {
-//             outboundBusNumberNames = busNumberValue
-//                 .split(",")
-//                 .map(item => item.trim().toLowerCase())
-//                 .filter(item => item !== "");
-//             // This code is for the mobile version
-//             if (isMobile) {
-//                 removeFilterDiv("outbound-bus-number");
-//                 addFilterDiv("outbound-bus-number", "cms.outboundbusnumber", busNumberValue);
-//             }
-//         }
-//     } else if (args.source.id === "cms.inboundbusnumber") {
-//         // Handle inbound bus number filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const busNumberValue = args.source.rows[0].value.trim();
-//         if (busNumberValue === "") {
-//             inboundBusNumberNames = [];
-//             if (isMobile) {
-//                 removeFilterDiv("inbound-bus-number");
-//             }
-//         } else {
-//             inboundBusNumberNames = busNumberValue
-//                 .split(",")
-//                 .map(item => item.trim().toLowerCase())
-//                 .filter(item => item !== "");
-//             // This code is for the mobile version
-//             if (isMobile) {
-//                 removeFilterDiv("inbound-bus-number");
-//                 addFilterDiv("inbound-bus-number", "cms.inboundbusnumber", busNumberValue);
-//             }
-//         }
-//     } else if (args.source.id === "cms.busnumber") {
-//         // Handle general bus number filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const busNumberValue = args.source.rows[0].value.trim();
-//         if (busNumberValue === "") {
-//             busNumberNames = [];
-//             if (isMobile) {
-//                 removeFilterDiv("bus-number");
-//             }
-//         } else {
-//             busNumberNames = busNumberValue
-//                 .split(",")
-//                 .map(item => item.trim().toLowerCase())
-//                 .filter(item => item !== "");
-//             // This code is for the mobile version
-//             if (isMobile) {
-//                 removeFilterDiv("bus-number");
-//                 addFilterDiv("bus-number", "cms.busnumber", busNumberValue);
-//             }
-//         }
-//     } else if (args.source.id === "cms.outbounddeparturetime") {
-//         // Handle outbound departure time filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         const content = document.querySelector(".book-outbounddeparturetime__content");
-//         if (!content) return;
-
-//         const value = args.source.rows[0].value;
-//         const selectedEl = content.querySelector(`[bc-value="${value}"]`);
-//         if (!selectedEl) return;
-
-//         const timePeriod = selectedEl.dataset.timePeriod || "";
-//         const timeRange = selectedEl.dataset.timeRange || "";
-//         const flexContainer = content.querySelector(".book-times__content");
-
-//         const index = outboundDepartureTimeNames.indexOf(value);
-//         if (index !== -1) {
-//             outboundDepartureTimeNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-outbounddeparturetime__content", value, false, "");
-//             const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-//             if (existingElement) existingElement.remove();
-//             // Restore default time content if none exists
-//             if (!content.querySelector(".book-time__content")) {
-//                 const defaultTimeContent = document.createElement("div");
-//                 defaultTimeContent.className = "book-time__content";
-//                 defaultTimeContent.setAttribute("data-value", "time");
-//                 defaultTimeContent.innerHTML = `
-//           <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">صبح</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mb-4">
-//             ساعت از: <span class="book-hour">5:00 تا 11:59</span>
-//           </div>
-//         `;
-//                 content.insertBefore(defaultTimeContent, flexContainer);
-//             }
-//         } else {
-//             outboundDepartureTimeNames.push(value);
-//             toggleFilterCheckbox(".book-outbounddeparturetime__content", value, true, "");
-//             const existingTimeContents = content.querySelectorAll(".book-time__content");
-//             if (existingTimeContents.length === 1 && outboundDepartureTimeNames.length === 1) {
-//                 const defaultTimeContent = existingTimeContents[0];
-//                 defaultTimeContent.setAttribute("data-value", value);
-//                 defaultTimeContent.innerHTML = `
-//           <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mb-4">
-//             ساعت از: <span class="book-hour">${timeRange}</span>
-//           </div>
-//         `;
-//             } else {
-//                 const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-//                 if (duplicateElement) duplicateElement.remove();
-
-//                 const newTimeContent = document.createElement("div");
-//                 newTimeContent.className = "book-time__content";
-//                 newTimeContent.setAttribute("data-value", value);
-//                 newTimeContent.innerHTML = `
-//           <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mb-4">
-//             ساعت از: <span class="book-hour">${timeRange}</span>
-//           </div>
-//         `;
-//                 content.insertBefore(newTimeContent, flexContainer);
-//             }
-//         }
-//     } else if (args.source.id === "cms.inbounddeparturetime") {
-//         // Handle inbound departure time filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         const content = document.querySelector(".book-inbounddeparturetime__content");
-//         if (!content) return;
-
-//         const value = args.source.rows[0].value;
-//         const selectedEl = content.querySelector(`[bc-value="${value}"]`);
-//         if (!selectedEl) return;
-
-//         const timePeriod = selectedEl.dataset.timePeriod || "";
-//         const timeRange = selectedEl.dataset.timeRange || "";
-//         const flexContainer = content.querySelector(".book-times__content");
-
-//         const index = inboundDepartureTimeNames.indexOf(value);
-//         if (index !== -1) {
-//             inboundDepartureTimeNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-inbounddeparturetime__content", value, false, "");
-//             const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-//             if (existingElement) existingElement.remove();
-//             if (!content.querySelector(".book-time__content")) {
-//                 const defaultTimeContent = document.createElement("div");
-//                 defaultTimeContent.className = "book-time__content";
-//                 defaultTimeContent.setAttribute("data-value", "time");
-//                 defaultTimeContent.innerHTML = `
-//           <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">صبح</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mb-4">
-//             ساعت از: <span class="book-hour">5:00 تا 11:59</span>
-//           </div>
-//         `;
-//                 content.insertBefore(defaultTimeContent, flexContainer);
-//             }
-//         } else {
-//             inboundDepartureTimeNames.push(value);
-//             toggleFilterCheckbox(".book-inbounddeparturetime__content", value, true, "");
-//             const existingTimeContents = content.querySelectorAll(".book-time__content");
-//             if (existingTimeContents.length === 1 && inboundDepartureTimeNames.length === 1) {
-//                 const defaultTimeContent = existingTimeContents[0];
-//                 defaultTimeContent.setAttribute("data-value", value);
-//                 defaultTimeContent.innerHTML = `
-//           <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mb-4">
-//             ساعت از: <span class="book-hour">${timeRange}</span>
-//           </div>
-//         `;
-//             } else {
-//                 const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-//                 if (duplicateElement) duplicateElement.remove();
-
-//                 const newTimeContent = document.createElement("div");
-//                 newTimeContent.className = "book-time__content";
-//                 newTimeContent.setAttribute("data-value", value);
-//                 newTimeContent.innerHTML = `
-//           <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mb-4">
-//             ساعت از: <span class="book-hour">${timeRange}</span>
-//           </div>
-//         `;
-//                 content.insertBefore(newTimeContent, flexContainer);
-//             }
-//         }
-//     } else if (args.source.id === "cms.departuretime") {
-//         // Handle general departure time filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         const content = document.querySelector(".book-departuretime__content");
-//         if (!content) return;
-
-//         const value = args.source.rows[0].value;
-//         const selectedEl = content.querySelector(`[bc-value="${value}"]`);
-//         if (!selectedEl) return;
-
-//         const timePeriod = selectedEl.dataset.timePeriod || "";
-//         const timeRange = selectedEl.dataset.timeRange || "";
-//         const flexContainer = content.querySelector(".book-times__content");
-
-//         const index = departureTimeNames.indexOf(value);
-//         if (index !== -1) {
-//             departureTimeNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-departuretime__content", value, false, "");
-//             const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-//             if (existingElement) existingElement.remove();
-//             if (!content.querySelector(".book-time__content")) {
-//                 const defaultTimeContent = document.createElement("div");
-//                 defaultTimeContent.className = "book-time__content";
-//                 defaultTimeContent.setAttribute("data-value", "time");
-//                 defaultTimeContent.innerHTML = `
-//           <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">صبح</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mb-4">
-//             ساعت از: <span class="book-hour">5:00 تا 11:59</span>
-//           </div>
-//         `;
-//                 content.insertBefore(defaultTimeContent, flexContainer);
-//             }
-//         } else {
-//             departureTimeNames.push(value);
-//             toggleFilterCheckbox(".book-departuretime__content", value, true, "");
-//             const existingTimeContents = content.querySelectorAll(".book-time__content");
-//             if (existingTimeContents.length === 1 && departureTimeNames.length === 1) {
-//                 const defaultTimeContent = existingTimeContents[0];
-//                 defaultTimeContent.setAttribute("data-value", value);
-//                 defaultTimeContent.innerHTML = `
-//           <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mb-4">
-//             ساعت از: <span class="book-hour">${timeRange}</span>
-//           </div>
-//         `;
-//             } else {
-//                 const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
-//                 if (duplicateElement) duplicateElement.remove();
-
-//                 const newTimeContent = document.createElement("div");
-//                 newTimeContent.className = "book-time__content";
-//                 newTimeContent.setAttribute("data-value", value);
-//                 newTimeContent.innerHTML = `
-//           <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mb-4">
-//             ساعت از: <span class="book-hour">${timeRange}</span>
-//           </div>
-//         `;
-//                 content.insertBefore(newTimeContent, flexContainer);
-//             }
-//         }
-//     } else if (args.source.id === "cms.systembus") {
-//         // Handle system bus filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const value = args.source.rows[0].value;
-//         const index = systemBusNames.indexOf(value);
-//         if (index !== -1) {
-//             systemBusNames.splice(index, 1);
-//             toggleFilterCheckbox(".book-systembus__content", value, false);
-//         } else {
-//             systemBusNames.push(value);
-//             toggleFilterCheckbox(".book-systembus__content", value, true);
-//         }
-//     } else if (args.source.id === "cms.price") {
-//         // Handle price filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const sliderRect = priceSlider.getBoundingClientRect();
-
-//         /**
-//          * Updates price slider position on mouse move
-//          * @param {MouseEvent} e - The mouse event
-//          */
-//         const onMouseMove = (e) => {
-//             const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
-//             const percent = (x / sliderRect.width) * 100;
-//             if (args.source.rows[0].value === "min" && percent <= maxPercent) {
-//                 minPercent = percent;
-//             } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
-//                 maxPercent = percent;
-//             }
-//             updatePriceSlider();
-//         };
-
-//         /**
-//          * Removes event listeners on mouse up
-//          */
-//         const onMouseUp = () => {
-//             document.removeEventListener("mousemove", onMouseMove);
-//             document.removeEventListener("mouseup", onMouseUp);
-//         };
-
-//         document.addEventListener("mousemove", onMouseMove);
-//         document.addEventListener("mouseup", onMouseUp);
-//     } else if (args.source.id === "cms.outboundhour") {
-//         // Handle outbound hour filter (for bus duration if applicable)
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const hourContainer = document.querySelector(".book-outboundhour__content .book-filter__hour__container");
-//         initializeSlider(
-//             hourContainer,
-//             args.source.rows[0].value,
-//             outboundMaxHour,
-//             outboundMinHour,
-//             outboundHourMinValueLabel,
-//             outboundHourMaxValueLabel,
-//             outboundHourRange,
-//             'outboundhour',
-//             'outboundhour-range'
-//         );
-//     } else if (args.source.id === "cms.inboundhour") {
-//         // Handle inbound hour filter (for bus duration if applicable)
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const hourContainer = document.querySelector(".book-inboundhour__content .book-filter__hour__container");
-//         initializeSlider(
-//             hourContainer,
-//             args.source.rows[0].value,
-//             inboundMaxHour,
-//             inboundMinHour,
-//             inboundHourMinValueLabel,
-//             inboundHourMaxValueLabel,
-//             inboundHourRange,
-//             'inboundhour',
-//             'inboundhour-range'
-//         );
-//     } else if (args.source.id === "cms.hour") {
-//         // Handle general hour filter (for bus duration if applicable)
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const hourContainer = document.querySelector(".book-hour__content .book-filter__hour__container");
-//         initializeSlider(
-//             hourContainer,
-//             args.source.rows[0].value,
-//             maxHour,
-//             minHour,
-//             hourMinValueLabel,
-//             hourMaxValueLabel,
-//             hourRange,
-//             'hour',
-//             'hour-range'
-//         );
-//     } else if (args.source.id === "cms.sort") {
-//         // Handle sort filter
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = null;
-//         const sortValue = args.source.rows[0].value;
-//         const sortItem = document.querySelector(`[bc-value="${sortValue}"]`);
-//         const sortOrder = sortItem.getAttribute('data-sort');
-//         const listItems = document.querySelectorAll(".book-sort__cards__container .book-sort__item__content");
-
-//         listItems.forEach(item => {
-//             if (item.getAttribute('data-sort')) {
-//                 item.setAttribute('data-sort', 'descend');
-//             }
-//             const svg = item.querySelector('svg');
-//             if (svg) {
-//                 svg.innerHTML = '<use xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon"></use>';
-//             }
-//             item.classList.remove('book-sorting__active');
-//         });
-
-//         if (sortValue === "default") {
-//             currentSort = { value: "default", order: "" };
-//         } else {
-//             const newOrder = sortOrder === "ascend" ? "descend" : "ascend";
-//             sortItem.setAttribute('data-sort', newOrder);
-//             sortItem.classList.add('book-sorting__active');
-//             toggleSvg(sortItem.querySelector('svg'), newOrder === "ascend");
-//             currentSort = { value: sortValue, order: newOrder };
-//         }
-//         mustUpdate = true;
-//     } else if (args.source.id === "cms.bus") {
-//         // Handle bus selection
-//         InUpdateFiltering = false;
-//         InUpdatePaging = true;
-//         selectedBusId = args.source.rows[0].value;
-//     } else if (args.source.id === "bus.search") {
-//         // Handle new bus data
-//         newDataCame = true;
-//         allDataProcessed = false;
-//     }
-
-//     /**
-//      * Updates UI with filtered and sorted bus proposals
-//      */
-//     if (mustUpdate && !InUpdateUIProcess) {
-//         InUpdateUIProcess = true;
-
-//         // Collect new bus proposals and reset for new searches
-//         if (newDataCame) {
-//             const source = args.context.tryToGetSource("bus.search");
-//             // Reset data for new searches
-//             if (source.rows[0]?.isNewSearch) {
-//                 allBusProposals = [];
-//                 dictionaries = [];
-//             }
-//             const existingBusIds = new Set(allBusProposals.map(bus => bus.busId));
-//             source.rows.forEach(row => {
-//                 if (Array.isArray(row.busProposals)) {
-//                     const newBuses = row.busProposals.filter(bus => !existingBusIds.has(bus.busId));
-//                     allBusProposals.push(...newBuses);
-//                     originalBusProposals = [...allBusProposals];
-//                     newBuses.forEach(bus => existingBusIds.add(bus.busId));
-//                 }
-//             });
-//             dictionaries.push(source.rows[source.rows.length - 1].dictionaries);
-//             newDataCame = false;
-//             allDataProcessed = true;
-//         }
-
-//         const busList = args.context.tryToGetSource("bus.updated");
-
-//         // Apply sorting if not default and all data is processed
-//         if (allDataProcessed) {
-//             if (currentSort.value === "default") {
-//                 allBusProposals = [...originalBusProposals];  // برگرد به ترتیب اصلی
-//             } else {
-//                 allBusProposals.sort((a, b) => {
-//                     let fieldA, fieldB;
-//                     if (currentSort.value === "price") {
-//                         fieldA = a.priceInfo?.totalCommission ? parseFloat(a.priceInfo.totalCommission) : Infinity;
-//                         fieldB = b.priceInfo?.totalCommission ? parseFloat(b.priceInfo.totalCommission) : Infinity;
-//                     } else if (currentSort.value === "stop") {
-//                         fieldA = a.busGroup?.[0]?.numberOfStops || 0;
-//                         fieldB = b.busGroup?.[0]?.numberOfStops || 0;
-//                     } else if (currentSort.value === "time") {
-//                         fieldA = convertToMinutes(a.busGroup?.[0]?.duration || "");
-//                         fieldB = convertToMinutes(b.busGroup?.[0]?.duration || "");
-//                     } else if (currentSort.value === "hour") {
-//                         fieldA = convertToMinutes(a.busGroup?.[0]?.departureTime || "");
-//                         fieldB = convertToMinutes(b.busGroup?.[0]?.departureTime || "");
-//                     }
-//                     if (fieldA !== undefined && fieldB !== undefined) {
-//                         return currentSort.order === "ascend" ? fieldA - fieldB : fieldB - fieldA;
-//                     }
-//                     return 0;
-//                 });
-//             }
-//         }
-
-//         // Define filters for bus proposals
-//         const filters = [
-//             // Company filters
-//             item => !outboundCompanyNames.length || item.busGroup[0]?.routesInfo.some(route => outboundCompanyNames.includes(route.busOperatorCode)),
-//             item => !inboundCompanyNames.length || (item.busGroup[1]?.routesInfo || []).some(route => inboundCompanyNames.includes(route.busOperatorCode)),
-//             item => !companyNames.length || item.busGroup.some(bus => bus.routesInfo.some(route => companyNames.includes(route.busOperatorCode))),
-//             // Terminal filters
-//             item => !outboundTerminalNames.length || outboundTerminalNames.includes(item.busGroup[0]?.destinationTerminal),
-//             item => !inboundTerminalNames.length || inboundTerminalNames.includes(item.busGroup[1]?.destinationTerminal),
-//             item => !terminalNames.length || item.busGroup.some(bus => terminalNames.includes(bus.destinationTerminal)),
-//             // Stop filters
-//             item => !outboundStopNames.length || outboundStopNames.includes(parseInt(item.busGroup[0]?.numberOfStops)),
-//             item => !inboundStopNames.length || inboundStopNames.includes(parseInt(item.busGroup[1]?.numberOfStops)),
-//             item => !stopNames.length || item.busGroup.some(bus => stopNames.includes(parseInt(bus.numberOfStops))),
-//             // Bus number filters (if applicable - buses might not have bus numbers equivalent)
-//             item => !outboundBusNumberNames.length || outboundBusNumberNames.every(bn => item.busGroup[0]?.routesInfo.some(route => route.busNumber?.toLowerCase() === bn)),
-//             item => !inboundBusNumberNames.length || inboundBusNumberNames.every(bn => (item.busGroup[1]?.routesInfo || []).some(route => route.busNumber?.toLowerCase() === bn)),
-//             item => !busNumberNames.length || busNumberNames.every(bn => item.busGroup.some(bus => bus.routesInfo.some(route => route.busNumber?.toLowerCase() === bn))),
-//             // Departure time filters
-//             item => {
-//                 if (!outboundDepartureTimeNames.length) return true;
-//                 const [hour, minute] = item.busGroup[0]?.departureTime.split(":").map(Number);
-//                 if (hour == null || minute == null) return false;
-//                 return outboundDepartureTimeNames.some(range => {
-//                     const [start, end] = range.split("-").map(Number);
-//                     return hour >= start && hour <= end;
-//                 });
-//             },
-//             item => {
-//                 if (!inboundDepartureTimeNames.length) return true;
-//                 const [hour, minute] = item.busGroup[1]?.departureTime?.split(":")?.map(Number) || [];
-//                 if (hour == null || minute == null) return false;
-//                 return inboundDepartureTimeNames.some(range => {
-//                     const [start, end] = range.split("-").map(Number);
-//                     return hour >= start && hour <= end;
-//                 });
-//             },
-//             item => {
-//                 if (!departureTimeNames.length) return true;
-//                 return item.busGroup.some(bus => {
-//                     const [hour, minute] = bus.departureTime?.split(":")?.map(Number) || [];
-//                     if (hour == null || minute == null) return false;
-//                     return departureTimeNames.some(range => {
-//                         const [start, end] = range.split("-").map(Number);
-//                         return hour >= start && hour <= end;
-//                     });
-//                 });
-//             },
-//             // Hour range filters (if buses have duration)
-//             item => {
-//                 const outboundDuration = item.busGroup[0]?.duration;
-//                 if (!outboundDuration) return true; // Skip filter if no duration
-//                 const outboundDurationInMinutes = convertToMinutes(outboundDuration);
-//                 return outboundDurationInMinutes >= outboundHourRange[0] && outboundDurationInMinutes <= outboundHourRange[1];
-//             },
-//             item => {
-//                 return item.busGroup.some(bus => {
-//                     const duration = bus.duration;
-//                     if (!duration) return true; // Skip filter if no duration
-//                     const durationInMinutes = convertToMinutes(duration);
-//                     return durationInMinutes >= hourRange[0] && durationInMinutes <= hourRange[1];
-//                 });
-//             },
-//             item => {
-//                 if (item.schemaId !== 290) return true;
-//                 const inboundDuration = item.busGroup[1]?.duration;
-//                 if (!inboundDuration) return true; // Skip filter if no duration
-//                 const inboundDurationInMinutes = convertToMinutes(inboundDuration);
-//                 return inboundDurationInMinutes >= inboundHourRange[0] && inboundDurationInMinutes <= inboundHourRange[1];
-//             },
-//             // System bus filter
-//             item => !systemBusNames.length || item.busGroup.some(bus => systemBusNames.includes(bus.isSystemBus)),
-//             // Price filter
-//             item => {
-//                 const price = item.priceInfo?.totalCommission ? parseFloat(item.priceInfo.totalCommission) : Infinity;
-//                 return price >= priceRange[0] && price <= priceRange[1];
-//             }
-//         ];
-
-//         // Filter bus proposals
-//         const newSource = allBusProposals.filter(item => filters.every(filter => filter(item)));
-
-//         // Update bus count display
-//         dynamicBusProposalsCount = newSource.length;
-//         document.querySelector(".book-count__api__content").textContent = dynamicBusProposalsCount;
-
-//         // Add index and selection state
-//         const indexedSource = newSource.map((item, i) => ({
-//             ...item,
-//             SelectedBus: item.busId === selectedBusId,
-//             index: currentIndex + i
-//         }));
-//         currentIndex += newSource.length;
-
-//         // Handle selected bus scrolling
-//         const selectedIndex = indexedSource.findIndex(item => item.SelectedBus);
-//         if (selectedIndex !== -1) {
-//             const page = Math.floor(selectedIndex / 30);
-//             start = page * 30;
-//             end = start + 30;
-//             setTimeout(() => {
-//                 const targetElement = document.getElementById(`bus__${selectedIndex}`);
-//                 if (targetElement) {
-//                     targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
-//                 }
-//             }, 100);
-//         }
-
-//         // Apply pagination
-//         const pagedSource = indexedSource.slice(start, end);
-//         BusProposalsSource = pagedSource;
-
-//         if (pagedSource.length > 0) {
-//             // Update price range with parsed prices
-//             const pricesSource = allBusProposals.map(item => item.priceInfo?.totalCommission ? parseFloat(item.priceInfo.totalCommission) : null).filter(Boolean);
-//             minPrice = pricesSource.length ? Math.min(...pricesSource) : 0;
-//             maxPrice = pricesSource.length ? Math.max(...pricesSource) : 0;
-//             priceMaxValueLabel.textContent = new Intl.NumberFormat().format(maxPrice);
-//             priceMinValueLabel.textContent = new Intl.NumberFormat().format(minPrice);
-
-//             // Update pagination UI
-//             if (InUpdatePaging) {
-//                 const container = document.querySelector(".book-paging__cards__container");
-//                 const nextPage = container.querySelector(".book-nextpage");
-//                 const prevPage = container.querySelector(".book-prevpage");
-//                 prevPage.classList.add("book-hidden");
-
-//                 const roundedNumber = Math.ceil(currentIndex / 30);
-//                 const activePage = selectedIndex !== -1 ? Math.floor(selectedIndex / 30) : 0;
-//                 const maxVisiblePages = 5;
-//                 const startPage = Math.max(0, activePage - Math.floor(maxVisiblePages / 2));
-//                 const endPage = Math.min(roundedNumber, startPage + maxVisiblePages);
-//                 const adjustedStartPage = endPage - startPage < maxVisiblePages ? Math.max(0, endPage - maxVisiblePages) : startPage;
-
-//                 const arrayPaging = Array.from({ length: roundedNumber }, (_, i) => ({
-//                     index: i,
-//                     page: i + 1,
-//                     isActive: i === activePage,
-//                     isVisible: i >= adjustedStartPage && i < endPage
-//                 }));
-
-//                 nextPage.classList.toggle("book-hidden", arrayPaging.length <= 1);
-//                 args.context.setAsSource("bus.paging", arrayPaging);
-//             }
-
-//             // Update bus filters
-//             if (InUpdateFiltering) {
-//                 const filteringSource = allBusProposals;
-
-//                 // Merge dictionaries for carriers, currency, and locations
-//                 const mergedCarriers = {};
-//                 const mergedCurrency = {};
-//                 const mergedLocation = {};
-//                 dictionaries.forEach(item => {
-//                     Object.assign(mergedCarriers, item.carriers || {});
-//                     Object.assign(mergedCurrency, item.currency || {});
-//                     Object.assign(mergedLocation, item.location || {});
-//                 });
-
-//                 // Reset company lists
-//                 let allCompanyItems = [];
-//                 let allOutboundCompanyItems = [];
-//                 let allInboundCompanyItems = [];
-
-//                 // Collect company items with parsed prices
-//                 filteringSource.forEach(item => {
-//                     const companyItems = (item.busGroup || []).flatMap(bus =>
-//                         (bus.routesInfo || []).map(value => ({
-//                             Name: mergedCarriers[value.busOperatorCode]?.name || "",
-//                             Logo: mergedCarriers[value.busOperatorCode]?.image || "",
-//                             Code: value.busOperatorCode || "",
-//                             NumberOfStops: bus.numberOfStops || 0,
-//                             BusId: item.busId || "",
-//                             Price: item.priceInfo?.total ? parseFloat(item.priceInfo.total) : Infinity,
-//                             Unit: mergedCurrency[item.priceInfo?.currency] || ""
-//                         }))
-//                     ).filter(item => item.Name && item.Code && item.Price !== Infinity);
-
-//                     allCompanyItems.push(...companyItems);
-
-//                     if (schemaId === 290 || schemaId === 291) {
-//                         const outboundCompany = (item.busGroup?.[0]?.routesInfo || []).map(value => ({
-//                             Name: mergedCarriers[value.busOperatorCode]?.name || "",
-//                             Logo: mergedCarriers[value.busOperatorCode]?.image || "",
-//                             Code: value.busOperatorCode || "",
-//                             NumberOfStops: item.busGroup[0]?.numberOfStops || 0,
-//                             BusId: item.busId || "",
-//                             Price: item.priceInfo?.total ? parseFloat(item.priceInfo.total) : Infinity,
-//                             Unit: mergedCurrency[item.priceInfo?.currency] || ""
-//                         })).filter(item => item.Name && item.Code && item.Price !== Infinity);
-
-//                         allOutboundCompanyItems.push(...outboundCompany);
-
-//                         if (item.busGroup?.[1]) {
-//                             const inboundCompany = (item.busGroup[1].routesInfo || []).map(value => ({
-//                                 Name: mergedCarriers[value.busOperatorCode]?.name || "",
-//                                 Logo: mergedCarriers[value.busOperatorCode]?.image || "",
-//                                 Code: value.busOperatorCode || "",
-//                                 NumberOfStops: item.busGroup[1]?.numberOfStops || 0,
-//                                 BusId: item.busId || "",
-//                                 Price: item.priceInfo?.total ? parseFloat(item.priceInfo.total) : Infinity,
-//                                 Unit: mergedCurrency[item.priceInfo?.currency] || ""
-//                             })).filter(item => item.Name && item.Code && item.Price !== Infinity);
-
-//                             allInboundCompanyItems.push(...inboundCompany);
-//                         }
-//                     }
-//                 });
-
-//                 // Deduplicate companies and select lowest price
-//                 const nameToMinPrice = {};
-//                 allCompanyItems.forEach(item => {
-//                     if (!nameToMinPrice[item.Name] || nameToMinPrice[item.Name].Price > item.Price) {
-//                         nameToMinPrice[item.Name] = item;
-//                     }
-//                 });
-//                 const companyListResult = Object.values(nameToMinPrice).sort((a, b) => a.Price - b.Price);
-
-//                 args.context.setAsSource("bus.slider", companyListResult);
-
-//                 if (schemaId === 290 || schemaId === 291) {
-//                     // Outbound company filter
-//                     const nameToMinPriceOutbound = {};
-//                     allOutboundCompanyItems.forEach(item => {
-//                         if (!nameToMinPriceOutbound[item.Name] || nameToMinPriceOutbound[item.Name].Price > item.Price) {
-//                             nameToMinPriceOutbound[item.Name] = item;
-//                         }
-//                     });
-//                     const outboundCompanyListResult = Object.values(nameToMinPriceOutbound).sort((a, b) => a.Price - b.Price);
-//                     args.context.setAsSource("bus.outboundcompany", outboundCompanyListResult);
-
-//                     // Inbound company filter
-//                     const nameToMinPriceInbound = {};
-//                     allInboundCompanyItems.forEach(item => {
-//                         if (!nameToMinPriceInbound[item.Name] || nameToMinPriceInbound[item.Name].Price > item.Price) {
-//                             nameToMinPriceInbound[item.Name] = item;
-//                         }
-//                     });
-//                     const inboundCompanyListResult = Object.values(nameToMinPriceInbound).sort((a, b) => a.Price - b.Price);
-//                     if (inboundCompanyListResult.length > 0) {
-//                         args.context.setAsSource("bus.inboundcompany", inboundCompanyListResult);
-//                     }
-
-//                     // Terminal filters
-//                     const outboundTerminals = filteringSource.map(item => ({
-//                         Name: item.busGroup?.[0]?.destinationTerminal || "",
-//                         Code: item.busGroup?.[0]?.destinationTerminal || ""
-//                     })).filter(item => item.Name && item.Code);
-
-//                     const inboundTerminals = filteringSource.some(item => item.busGroup?.[1])
-//                         ? filteringSource.map(item => ({
-//                             Name: item.busGroup?.[1]?.destinationTerminal || "",
-//                             Code: item.busGroup?.[1]?.destinationTerminal || ""
-//                         })).filter(item => item.Name && item.Code)
-//                         : [];
-
-//                     const outboundTerminalListResult = outboundTerminals.filter((item, index, self) =>
-//                         index === self.findIndex(t => t.Name === item.Name)
-//                     );
-//                     const inboundTerminalListResult = inboundTerminals.filter((item, index, self) =>
-//                         index === self.findIndex(t => t.Name === item.Name)
-//                     );
-
-//                     args.context.setAsSource("bus.outboundterminal", outboundTerminalListResult);
-//                     if (inboundTerminals.length > 0) {
-//                         args.context.setAsSource("bus.inboundterminal", inboundTerminalListResult);
-//                     }
-
-//                     // Stop filters
-//                     const outboundStopList = filteringSource
-//                         .filter(item => item.busGroup?.[0]?.numberOfStops != null)
-//                         .map(item => ({ Name: item.busGroup[0].numberOfStops }))
-//                         .filter(item => item.Name != null);
-
-//                     const inboundStopList = filteringSource.some(item => item.busGroup?.[1])
-//                         ? filteringSource
-//                             .filter(item => item.busGroup?.[1]?.numberOfStops != null)
-//                             .map(item => ({ Name: item.busGroup[1].numberOfStops }))
-//                             .filter(item => item.Name != null)
-//                         : [];
-
-//                     const outboundStopListResult = outboundStopList.filter((item, index, self) =>
-//                         index === self.findIndex(t => t.Name === item.Name)
-//                     );
-//                     const inboundStopListResult = inboundStopList.filter((item, index, self) =>
-//                         index === self.findIndex(t => t.Name === item.Name)
-//                     );
-
-//                     args.context.setAsSource("bus.outboundstop", outboundStopListResult);
-//                     if (inboundStopList.length > 0) {
-//                         args.context.setAsSource("bus.inboundstop", inboundStopListResult);
-//                     }
-
-//                     // Update hour ranges (if buses have duration)
-//                     const outboundHoursSource = allBusProposals.map(item => item.busGroup?.[0]?.duration).filter(Boolean);
-//                     const inboundHoursSource = allBusProposals.map(item => item.busGroup?.[1]?.duration).filter(Boolean);
-
-//                     if (outboundHoursSource.length > 0) {
-//                         const uniqueHoursSource = [...new Set(outboundHoursSource)];
-//                         const timesInMinutes = uniqueHoursSource.map(convertToMinutes);
-//                         outboundMinHour = timesInMinutes.length ? Math.min(...timesInMinutes) : 0;
-//                         outboundMaxHour = timesInMinutes.length ? Math.max(...timesInMinutes) : 0;
-//                         outboundHourMaxValueLabel.textContent = convertToTime(outboundMaxHour);
-//                         outboundHourMinValueLabel.textContent = convertToTime(outboundMinHour);
-//                     }
-
-//                     if (inboundHoursSource.length > 0) {
-//                         const uniqueInboundHours = [...new Set(inboundHoursSource)];
-//                         const inboundTimesInMinutes = uniqueInboundHours.map(convertToMinutes);
-//                         inboundMinHour = inboundTimesInMinutes.length ? Math.min(...inboundTimesInMinutes) : 0;
-//                         inboundMaxHour = inboundTimesInMinutes.length ? Math.max(...inboundTimesInMinutes) : 0;
-//                         inboundHourMaxValueLabel.textContent = convertToTime(inboundMaxHour);
-//                         inboundHourMinValueLabel.textContent = convertToTime(inboundMinHour);
-//                     }
-
-//                     // Update trip type visibility
-//                     document.querySelectorAll(".book-multitrip__content").forEach(e => e.classList.add("book-hidden"));
-//                     if (schemaId === 290) {
-//                         document.querySelectorAll(".book-roundtrip__content").forEach(e => e.classList.remove("book-hidden"));
-//                     }
-//                 } else {
-//                     args.context.setAsSource("bus.company", companyListResult);
-
-//                     // Terminal filter
-//                     const uniqueTerminal = filteringSource.flatMap(item =>
-//                         (item.busGroup || []).map(bus => ({
-//                             Name: bus.destinationTerminal || "",
-//                             Code: bus.destinationTerminal || ""
-//                         }))
-//                     ).filter(item => item.Name && item.Code);
-
-//                     const terminalListResult = uniqueTerminal.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
-//                     args.context.setAsSource("bus.terminal", terminalListResult);
-
-//                     // Stop filter
-//                     const uniqueStop = filteringSource.flatMap(item =>
-//                         (item.busGroup || []).map(bus => ({ Name: bus.numberOfStops }))
-//                     ).filter(item => item.Name != null);
-
-//                     const stopListResult = uniqueStop.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
-//                     args.context.setAsSource("bus.stop", stopListResult);
-
-//                     // Update trip type visibility
-//                     document.querySelectorAll(".book-multitrip__content").forEach(e => e.classList.remove("book-hidden"));
-//                     document.querySelectorAll(".book-roundtrip__content").forEach(e => e.classList.add("book-hidden"));
-//                     document.querySelectorAll(".book-onewaytrip__content").forEach(e => e.classList.add("book-hidden"));
-//                 }
-//             } else {
-//                 setTimeout(() => {
-//                     setupBookCardButtons();
-//                 }, 0);
-//             }
-
-//             // Update bus list
-//             args.context.setAsSource("bus.updated", pagedSource, { keyFieldName: "busId" });
-//             InUpdateUIProcess = false;
-//         } else {
-//             InUpdateUIProcess = false;
-//             document.querySelector(".book-list__cards__container").innerHTML = `
-//         <div class="book-text-center">
-//           <div>هیچ اتوبوسی مطابق با فیلترهای شما وجود ندارد.</div>
-//           <div class="book-text-zinc-900 book-text-xs book-mt-2">برای مشاهده نتایج، فیلترهای خود را پاک کنید.</div>
-//         </div>
-//       `;
-//             const container = document.querySelector(".book-paging__cards__container");
-//             const buttons = container.querySelectorAll(".book-paging__container:not(.book-nextpage):not(.book-prevpage)");
-//             const nextPage = container.querySelector(".book-nextpage");
-//             const prevPage = container.querySelector(".book-prevpage");
-//             prevPage.classList.add("book-hidden");
-//             nextPage.classList.add("book-hidden");
-//             buttons.forEach(button => button.remove());
-//         }
-//     }
-// };
+  const busManipulation = async (args) => {
+    // Initialize pagination and UI update variables
+    let currentIndex = 0;
+    let start = 0;
+    let end = 30;
+    let dynamicBusProposalsCount = 0;
+    elseExecuted = false;
+    startProgressBar();
+
+    /**
+     * Handles pagination, filtering, and sorting based on source ID
+     */
+    if (args.source.id === 'cms.page') {
+        // Initialize pagination state
+        mustUpdate = true;
+        InUpdatePaging = false;
+        InUpdateFiltering = false;
+        selectedBusId = null;
+
+        const currentValue = parseInt(args.source.rows[0].value);
+        const prevButton = document.querySelector(".book-prevpage");
+        const nextButton = document.querySelector(".book-nextpage");
+        const pagingContainer = document.querySelector(".book-paging__cards__container");
+
+        // Update active page styling
+        const activeButton = document.querySelector(".book-active__paging");
+        activeButton.classList.remove("book-active__paging");
+        activeButton.classList.add("bg-white");
+        const newActive = pagingContainer.querySelector(`[bc-value="${currentValue}"]`);
+        newActive.classList.add("book-active__paging");
+        newActive.classList.remove("bg-white");
+
+        // Calculate pagination range
+        start = currentValue * 30;
+        end = start + 30;
+
+        // Toggle previous button visibility
+        prevButton.classList.toggle("book-hidden", currentValue === 0);
+
+        // Toggle next button visibility
+        const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
+        const lastButton = allButtons[allButtons.length - 1];
+        nextButton.classList.toggle("book-hidden", newActive === lastButton);
+    } else if (args.source.id === 'cms.nextpage') {
+        // Handle next page navigation
+        mustUpdate = true;
+        InUpdatePaging = false;
+        InUpdateFiltering = false;
+        selectedBusId = null;
+
+        const prevButton = document.querySelector(".book-prevpage");
+        const nextButton = document.querySelector(".book-nextpage");
+        const activeButton = document.querySelector(".book-active__paging");
+        const currentValue = parseInt(activeButton.getAttribute("bc-value"));
+        const nextValue = currentValue + 1;
+        const nextPage = document.querySelector(`.book-paging__cards__container [bc-value="${nextValue}"]`);
+
+        if (nextPage) {
+            // Update active page styling
+            activeButton.classList.remove("book-active__paging");
+            activeButton.classList.add("bg-white");
+            nextPage.classList.add("book-active__paging");
+            nextPage.classList.remove("bg-white");
+
+            // Show next page if hidden
+            if (nextPage.classList.contains("book-hidden")) {
+                nextPage.classList.remove("book-hidden");
+                const firstVisible = document.querySelector(".book-paging__container:not(.hidden):not(.book-prevpage):not(.book-nextpage)");
+                if (firstVisible) firstVisible.classList.add("book-hidden");
+            }
+
+            // Show previous button if not on first page
+            prevButton.classList.toggle("book-hidden", nextValue === 0);
+        }
+
+        // Toggle next button visibility
+        const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
+        const lastButton = allButtons[allButtons.length - 1];
+        nextButton.classList.toggle("book-hidden", nextPage === lastButton);
+
+        // Update pagination range
+        start = nextValue * 30;
+        end = start + 30;
+    } else if (args.source.id === 'cms.prevpage') {
+        // Handle previous page navigation
+        mustUpdate = true;
+        InUpdatePaging = false;
+        InUpdateFiltering = false;
+        selectedBusId = null;
+
+        const prevButton = document.querySelector(".book-prevpage");
+        const nextButton = document.querySelector(".book-nextpage");
+        const activeButton = document.querySelector(".book-active__paging");
+        const currentValue = parseInt(activeButton.getAttribute("bc-value"));
+        const prevValue = currentValue - 1;
+        const prevPage = document.querySelector(`.book-paging__cards__container [bc-value="${prevValue}"]`);
+
+        if (prevPage) {
+            // Update active page styling
+            activeButton.classList.remove("book-active__paging");
+            activeButton.classList.add("bg-white");
+            prevPage.classList.add("book-active__paging");
+            prevPage.classList.remove("bg-white");
+
+            // Show previous page if hidden
+            if (prevPage.classList.contains("book-hidden")) {
+                prevPage.classList.remove("book-hidden");
+                const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
+                const lastVisible = allButtons.reverse().find(btn => !btn.classList.contains("book-hidden"));
+                if (lastVisible) lastVisible.classList.add("book-hidden");
+            }
+
+            // Toggle previous and next button visibility
+            prevButton.classList.toggle("book-hidden", prevValue === 0);
+            nextButton.classList.remove("book-hidden");
+        }
+
+        // Update pagination range
+        start = prevValue * 30;
+        end = start + 30;
+    } else if (args.source.id === "cms.outboundcompany") {
+        // Handle outbound bus company filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const value = args.source.rows[0].value;
+        const index = outboundCompanyNames.indexOf(value);
+        if (index !== -1) {
+            outboundCompanyNames.splice(index, 1);
+            toggleFilterCheckbox(".book-outboundcompany__content", value, false);
+        } else {
+            outboundCompanyNames.push(value);
+            toggleFilterCheckbox(".book-outboundcompany__content", value, true);
+        }
+    } else if (args.source.id === "cms.inboundcompany") {
+        // Handle inbound bus company filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const value = args.source.rows[0].value;
+        const index = inboundCompanyNames.indexOf(value);
+        if (index !== -1) {
+            inboundCompanyNames.splice(index, 1);
+            toggleFilterCheckbox(".book-inboundcompany__content", value, false);
+        } else {
+            inboundCompanyNames.push(value);
+            toggleFilterCheckbox(".book-inboundcompany__content", value, true);
+        }
+    } else if (args.source.id === "cms.company") {
+        // Handle general bus company filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const value = args.source.rows[0].value;
+        const index = companyNames.indexOf(value);
+        if (index !== -1) {
+            companyNames.splice(index, 1);
+            toggleFilterCheckbox(".book-company__content", value, false);
+        } else {
+            companyNames.push(value);
+            toggleFilterCheckbox(".book-company__content", value, true);
+        }
+    } else if (args.source.id === "cms.outboundterminal") {
+        // Handle outbound terminal filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const value = args.source.rows[0].value;
+        const index = outboundTerminalNames.indexOf(value);
+        if (index !== -1) {
+            outboundTerminalNames.splice(index, 1);
+            toggleFilterCheckbox(".book-outboundterminal__content", value, false);
+        } else {
+            outboundTerminalNames.push(value);
+            toggleFilterCheckbox(".book-outboundterminal__content", value, true);
+        }
+    } else if (args.source.id === "cms.inboundterminal") {
+        // Handle inbound terminal filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const value = args.source.rows[0].value;
+        const index = inboundTerminalNames.indexOf(value);
+        if (index !== -1) {
+            inboundTerminalNames.splice(index, 1);
+            toggleFilterCheckbox(".book-inboundterminal__content", value, false);
+        } else {
+            inboundTerminalNames.push(value);
+            toggleFilterCheckbox(".book-inboundterminal__content", value, true);
+        }
+    } else if (args.source.id === "cms.terminal") {
+        // Handle general terminal filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const value = args.source.rows[0].value;
+        const index = terminalNames.indexOf(value);
+        if (index !== -1) {
+            terminalNames.splice(index, 1);
+            toggleFilterCheckbox(".book-terminal__content", value, false);
+        } else {
+            terminalNames.push(value);
+            toggleFilterCheckbox(".book-terminal__content", value, true);
+        }
+    } else if (args.source.id === "cms.outboundstop") {
+        // Handle outbound stop filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
+        const index = outboundStopNames.indexOf(stopValue);
+
+        if (index !== -1) {
+            outboundStopNames.splice(index, 1);
+            toggleFilterCheckbox(".book-outboundstop__content", args.source.rows[0].value, false, "");
+        } else {
+            outboundStopNames.push(stopValue);
+            toggleFilterCheckbox(".book-outboundstop__content", args.source.rows[0].value, true, "");
+        }
+    } else if (args.source.id === "cms.inboundstop") {
+        // Handle inbound stop filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
+        const index = inboundStopNames.indexOf(stopValue);
+        if (index !== -1) {
+            inboundStopNames.splice(index, 1);
+            toggleFilterCheckbox(".book-inboundstop__content", args.source.rows[0].value, false, "");
+        } else {
+            inboundStopNames.push(stopValue);
+            toggleFilterCheckbox(".book-inboundstop__content", args.source.rows[0].value, true, "");
+        }
+    } else if (args.source.id === "cms.stop") {
+        // Handle general stop filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const stopValue = parseInt(args.source.rows[0].value.split('-')[1]);
+        const index = stopNames.indexOf(stopValue);
+        if (index !== -1) {
+            stopNames.splice(index, 1);
+            toggleFilterCheckbox(".book-stop__content", args.source.rows[0].value, false, "");
+        } else {
+            stopNames.push(stopValue);
+            toggleFilterCheckbox(".book-stop__content", args.source.rows[0].value, true, "");
+        }
+    } else if (args.source.id === "cms.outboundbusnumber") {
+        // Handle outbound bus number filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const busNumberValue = args.source.rows[0].value.trim();
+        if (busNumberValue === "") {
+            outboundBusNumberNames = [];
+            if (isMobile) {
+                removeFilterDiv("outbound-bus-number");
+            }
+        } else {
+            outboundBusNumberNames = busNumberValue
+                .split(",")
+                .map(item => item.trim().toLowerCase())
+                .filter(item => item !== "");
+            // This code is for the mobile version
+            if (isMobile) {
+                removeFilterDiv("outbound-bus-number");
+                addFilterDiv("outbound-bus-number", "cms.outboundbusnumber", busNumberValue);
+            }
+        }
+    } else if (args.source.id === "cms.inboundbusnumber") {
+        // Handle inbound bus number filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const busNumberValue = args.source.rows[0].value.trim();
+        if (busNumberValue === "") {
+            inboundBusNumberNames = [];
+            if (isMobile) {
+                removeFilterDiv("inbound-bus-number");
+            }
+        } else {
+            inboundBusNumberNames = busNumberValue
+                .split(",")
+                .map(item => item.trim().toLowerCase())
+                .filter(item => item !== "");
+            // This code is for the mobile version
+            if (isMobile) {
+                removeFilterDiv("inbound-bus-number");
+                addFilterDiv("inbound-bus-number", "cms.inboundbusnumber", busNumberValue);
+            }
+        }
+    } else if (args.source.id === "cms.busnumber") {
+        // Handle general bus number filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const busNumberValue = args.source.rows[0].value.trim();
+        if (busNumberValue === "") {
+            busNumberNames = [];
+            if (isMobile) {
+                removeFilterDiv("bus-number");
+            }
+        } else {
+            busNumberNames = busNumberValue
+                .split(",")
+                .map(item => item.trim().toLowerCase())
+                .filter(item => item !== "");
+            // This code is for the mobile version
+            if (isMobile) {
+                removeFilterDiv("bus-number");
+                addFilterDiv("bus-number", "cms.busnumber", busNumberValue);
+            }
+        }
+    } else if (args.source.id === "cms.outbounddeparturetime") {
+        // Handle outbound departure time filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        const content = document.querySelector(".book-outbounddeparturetime__content");
+        if (!content) return;
+
+        const value = args.source.rows[0].value;
+        const selectedEl = content.querySelector(`[bc-value="${value}"]`);
+        if (!selectedEl) return;
+
+        const timePeriod = selectedEl.dataset.timePeriod || "";
+        const timeRange = selectedEl.dataset.timeRange || "";
+        const flexContainer = content.querySelector(".book-times__content");
+
+        const index = outboundDepartureTimeNames.indexOf(value);
+        if (index !== -1) {
+            outboundDepartureTimeNames.splice(index, 1);
+            toggleFilterCheckbox(".book-outbounddeparturetime__content", value, false, "");
+            const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+            if (existingElement) existingElement.remove();
+            // Restore default time content if none exists
+            if (!content.querySelector(".book-time__content")) {
+                const defaultTimeContent = document.createElement("div");
+                defaultTimeContent.className = "book-time__content";
+                defaultTimeContent.setAttribute("data-value", "time");
+                defaultTimeContent.innerHTML = `
+          <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">صبح</div>
+          <div class="book-text-zinc-900 book-text-xs book-mb-4">
+            ساعت از: <span class="book-hour">5:00 تا 11:59</span>
+          </div>
+        `;
+                content.insertBefore(defaultTimeContent, flexContainer);
+            }
+        } else {
+            outboundDepartureTimeNames.push(value);
+            toggleFilterCheckbox(".book-outbounddeparturetime__content", value, true, "");
+            const existingTimeContents = content.querySelectorAll(".book-time__content");
+            if (existingTimeContents.length === 1 && outboundDepartureTimeNames.length === 1) {
+                const defaultTimeContent = existingTimeContents[0];
+                defaultTimeContent.setAttribute("data-value", value);
+                defaultTimeContent.innerHTML = `
+          <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+          <div class="book-text-zinc-900 book-text-xs book-mb-4">
+            ساعت از: <span class="book-hour">${timeRange}</span>
+          </div>
+        `;
+            } else {
+                const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+                if (duplicateElement) duplicateElement.remove();
+
+                const newTimeContent = document.createElement("div");
+                newTimeContent.className = "book-time__content";
+                newTimeContent.setAttribute("data-value", value);
+                newTimeContent.innerHTML = `
+          <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+          <div class="book-text-zinc-900 book-text-xs book-mb-4">
+            ساعت از: <span class="book-hour">${timeRange}</span>
+          </div>
+        `;
+                content.insertBefore(newTimeContent, flexContainer);
+            }
+        }
+    } else if (args.source.id === "cms.inbounddeparturetime") {
+        // Handle inbound departure time filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        const content = document.querySelector(".book-inbounddeparturetime__content");
+        if (!content) return;
+
+        const value = args.source.rows[0].value;
+        const selectedEl = content.querySelector(`[bc-value="${value}"]`);
+        if (!selectedEl) return;
+
+        const timePeriod = selectedEl.dataset.timePeriod || "";
+        const timeRange = selectedEl.dataset.timeRange || "";
+        const flexContainer = content.querySelector(".book-times__content");
+
+        const index = inboundDepartureTimeNames.indexOf(value);
+        if (index !== -1) {
+            inboundDepartureTimeNames.splice(index, 1);
+            toggleFilterCheckbox(".book-inbounddeparturetime__content", value, false, "");
+            const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+            if (existingElement) existingElement.remove();
+            if (!content.querySelector(".book-time__content")) {
+                const defaultTimeContent = document.createElement("div");
+                defaultTimeContent.className = "book-time__content";
+                defaultTimeContent.setAttribute("data-value", "time");
+                defaultTimeContent.innerHTML = `
+          <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">صبح</div>
+          <div class="book-text-zinc-900 book-text-xs book-mb-4">
+            ساعت از: <span class="book-hour">5:00 تا 11:59</span>
+          </div>
+        `;
+                content.insertBefore(defaultTimeContent, flexContainer);
+            }
+        } else {
+            inboundDepartureTimeNames.push(value);
+            toggleFilterCheckbox(".book-inbounddeparturetime__content", value, true, "");
+            const existingTimeContents = content.querySelectorAll(".book-time__content");
+            if (existingTimeContents.length === 1 && inboundDepartureTimeNames.length === 1) {
+                const defaultTimeContent = existingTimeContents[0];
+                defaultTimeContent.setAttribute("data-value", value);
+                defaultTimeContent.innerHTML = `
+          <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+          <div class="book-text-zinc-900 book-text-xs book-mb-4">
+            ساعت از: <span class="book-hour">${timeRange}</span>
+          </div>
+        `;
+            } else {
+                const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+                if (duplicateElement) duplicateElement.remove();
+
+                const newTimeContent = document.createElement("div");
+                newTimeContent.className = "book-time__content";
+                newTimeContent.setAttribute("data-value", value);
+                newTimeContent.innerHTML = `
+          <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+          <div class="book-text-zinc-900 book-text-xs book-mb-4">
+            ساعت از: <span class="book-hour">${timeRange}</span>
+          </div>
+        `;
+                content.insertBefore(newTimeContent, flexContainer);
+            }
+        }
+    } else if (args.source.id === "cms.departuretime") {
+        // Handle general departure time filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        const content = document.querySelector(".book-departuretime__content");
+        if (!content) return;
+
+        const value = args.source.rows[0].value;
+        const selectedEl = content.querySelector(`[bc-value="${value}"]`);
+        if (!selectedEl) return;
+
+        const timePeriod = selectedEl.dataset.timePeriod || "";
+        const timeRange = selectedEl.dataset.timeRange || "";
+        const flexContainer = content.querySelector(".book-times__content");
+
+        const index = departureTimeNames.indexOf(value);
+        if (index !== -1) {
+            departureTimeNames.splice(index, 1);
+            toggleFilterCheckbox(".book-departuretime__content", value, false, "");
+            const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+            if (existingElement) existingElement.remove();
+            if (!content.querySelector(".book-time__content")) {
+                const defaultTimeContent = document.createElement("div");
+                defaultTimeContent.className = "book-time__content";
+                defaultTimeContent.setAttribute("data-value", "time");
+                defaultTimeContent.innerHTML = `
+          <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">صبح</div>
+          <div class="book-text-zinc-900 book-text-xs book-mb-4">
+            ساعت از: <span class="book-hour">5:00 تا 11:59</span>
+          </div>
+        `;
+                content.insertBefore(defaultTimeContent, flexContainer);
+            }
+        } else {
+            departureTimeNames.push(value);
+            toggleFilterCheckbox(".book-departuretime__content", value, true, "");
+            const existingTimeContents = content.querySelectorAll(".book-time__content");
+            if (existingTimeContents.length === 1 && departureTimeNames.length === 1) {
+                const defaultTimeContent = existingTimeContents[0];
+                defaultTimeContent.setAttribute("data-value", value);
+                defaultTimeContent.innerHTML = `
+          <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+          <div class="book-text-zinc-900 book-text-xs book-mb-4">
+            ساعت از: <span class="book-hour">${timeRange}</span>
+          </div>
+        `;
+            } else {
+                const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+                if (duplicateElement) duplicateElement.remove();
+
+                const newTimeContent = document.createElement("div");
+                newTimeContent.className = "book-time__content";
+                newTimeContent.setAttribute("data-value", value);
+                newTimeContent.innerHTML = `
+          <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+          <div class="book-text-zinc-900 book-text-xs book-mb-4">
+            ساعت از: <span class="book-hour">${timeRange}</span>
+          </div>
+        `;
+                content.insertBefore(newTimeContent, flexContainer);
+            }
+        }
+    } else if (args.source.id === "cms.systembus") {
+        // Handle system bus filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const value = args.source.rows[0].value;
+        const index = systemBusNames.indexOf(value);
+        if (index !== -1) {
+            systemBusNames.splice(index, 1);
+            toggleFilterCheckbox(".book-systembus__content", value, false);
+        } else {
+            systemBusNames.push(value);
+            toggleFilterCheckbox(".book-systembus__content", value, true);
+        }
+    } else if (args.source.id === "cms.price") {
+        // Handle price filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const sliderRect = priceSlider.getBoundingClientRect();
+
+        /**
+         * Updates price slider position on mouse move
+         * @param {MouseEvent} e - The mouse event
+         */
+        const onMouseMove = (e) => {
+            const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
+            const percent = (x / sliderRect.width) * 100;
+            if (args.source.rows[0].value === "min" && percent <= maxPercent) {
+                minPercent = percent;
+            } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
+                maxPercent = percent;
+            }
+            updatePriceSlider();
+        };
+
+        /**
+         * Removes event listeners on mouse up
+         */
+        const onMouseUp = () => {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
+        };
+
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+    } else if (args.source.id === "cms.outboundhour") {
+        // Handle outbound hour filter (for bus duration if applicable)
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const hourContainer = document.querySelector(".book-outboundhour__content .book-filter__hour__container");
+        initializeSlider(
+            hourContainer,
+            args.source.rows[0].value,
+            outboundMaxHour,
+            outboundMinHour,
+            outboundHourMinValueLabel,
+            outboundHourMaxValueLabel,
+            outboundHourRange,
+            'outboundhour',
+            'outboundhour-range'
+        );
+    } else if (args.source.id === "cms.inboundhour") {
+        // Handle inbound hour filter (for bus duration if applicable)
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const hourContainer = document.querySelector(".book-inboundhour__content .book-filter__hour__container");
+        initializeSlider(
+            hourContainer,
+            args.source.rows[0].value,
+            inboundMaxHour,
+            inboundMinHour,
+            inboundHourMinValueLabel,
+            inboundHourMaxValueLabel,
+            inboundHourRange,
+            'inboundhour',
+            'inboundhour-range'
+        );
+    } else if (args.source.id === "cms.hour") {
+        // Handle general hour filter (for bus duration if applicable)
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const hourContainer = document.querySelector(".book-hour__content .book-filter__hour__container");
+        initializeSlider(
+            hourContainer,
+            args.source.rows[0].value,
+            maxHour,
+            minHour,
+            hourMinValueLabel,
+            hourMaxValueLabel,
+            hourRange,
+            'hour',
+            'hour-range'
+        );
+    } else if (args.source.id === "cms.sort") {
+        // Handle sort filter
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = null;
+        const sortValue = args.source.rows[0].value;
+        const sortItem = document.querySelector(`[bc-value="${sortValue}"]`);
+        const sortOrder = sortItem.getAttribute('data-sort');
+        const listItems = document.querySelectorAll(".book-sort__cards__container .book-sort__item__content");
+
+        listItems.forEach(item => {
+            if (item.getAttribute('data-sort')) {
+                item.setAttribute('data-sort', 'descend');
+            }
+            const svg = item.querySelector('svg');
+            if (svg) {
+                svg.innerHTML = '<use xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon"></use>';
+            }
+            item.classList.remove('book-sorting__active');
+        });
+
+        if (sortValue === "default") {
+            currentSort = { value: "default", order: "" };
+        } else {
+            const newOrder = sortOrder === "ascend" ? "descend" : "ascend";
+            sortItem.setAttribute('data-sort', newOrder);
+            sortItem.classList.add('book-sorting__active');
+            toggleSvg(sortItem.querySelector('svg'), newOrder === "ascend");
+            currentSort = { value: sortValue, order: newOrder };
+        }
+        mustUpdate = true;
+    } else if (args.source.id === "cms.bus") {
+        // Handle bus selection
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedBusId = args.source.rows[0].value;
+    } else if (args.source.id === "bus.search") {
+        // Handle new bus data
+        newDataCame = true;
+        allDataProcessed = false;
+    }
+
+    /**
+     * Updates UI with filtered and sorted bus proposals
+     */
+    if (mustUpdate && !InUpdateUIProcess) {
+        InUpdateUIProcess = true;
+
+        // Collect new bus proposals and reset for new searches
+        if (newDataCame) {
+            const source = args.context.tryToGetSource("bus.search");
+            // Reset data for new searches
+            if (source.rows[0]?.isNewSearch) {
+                allBusProposals = [];
+                dictionaries = [];
+            }
+            const existingBusIds = new Set(allBusProposals.map(bus => bus.busId));
+            source.rows.forEach(row => {
+                if (Array.isArray(row.busProposals)) {
+                    const newBuses = row.busProposals.filter(bus => !existingBusIds.has(bus.busId));
+                    allBusProposals.push(...newBuses);
+                    originalBusProposals = [...allBusProposals];
+                    newBuses.forEach(bus => existingBusIds.add(bus.busId));
+                }
+            });
+            dictionaries.push(source.rows[source.rows.length - 1].dictionaries);
+            newDataCame = false;
+            allDataProcessed = true;
+        }
+
+        const busList = args.context.tryToGetSource("bus.updated");
+
+        // Apply sorting if not default and all data is processed
+        if (allDataProcessed) {
+            if (currentSort.value === "default") {
+                allBusProposals = [...originalBusProposals];  // برگرد به ترتیب اصلی
+            } else {
+                allBusProposals.sort((a, b) => {
+                    let fieldA, fieldB;
+                    if (currentSort.value === "price") {
+                        fieldA = a.priceInfo?.totalCommission ? parseFloat(a.priceInfo.totalCommission) : Infinity;
+                        fieldB = b.priceInfo?.totalCommission ? parseFloat(b.priceInfo.totalCommission) : Infinity;
+                    } else if (currentSort.value === "stop") {
+                        fieldA = a.busGroup?.[0]?.numberOfStops || 0;
+                        fieldB = b.busGroup?.[0]?.numberOfStops || 0;
+                    } else if (currentSort.value === "time") {
+                        fieldA = convertToMinutes(a.busGroup?.[0]?.duration || "");
+                        fieldB = convertToMinutes(b.busGroup?.[0]?.duration || "");
+                    } else if (currentSort.value === "hour") {
+                        fieldA = convertToMinutes(a.busGroup?.[0]?.departureTime || "");
+                        fieldB = convertToMinutes(b.busGroup?.[0]?.departureTime || "");
+                    }
+                    if (fieldA !== undefined && fieldB !== undefined) {
+                        return currentSort.order === "ascend" ? fieldA - fieldB : fieldB - fieldA;
+                    }
+                    return 0;
+                });
+            }
+        }
+
+        // Define filters for bus proposals
+        const filters = [
+            // Company filters
+            item => !outboundCompanyNames.length || item.busGroup[0]?.routesInfo.some(route => outboundCompanyNames.includes(route.busOperatorCode)),
+            item => !inboundCompanyNames.length || (item.busGroup[1]?.routesInfo || []).some(route => inboundCompanyNames.includes(route.busOperatorCode)),
+            item => !companyNames.length || item.busGroup.some(bus => bus.routesInfo.some(route => companyNames.includes(route.busOperatorCode))),
+            // Terminal filters
+            item => !outboundTerminalNames.length || outboundTerminalNames.includes(item.busGroup[0]?.destinationTerminal),
+            item => !inboundTerminalNames.length || inboundTerminalNames.includes(item.busGroup[1]?.destinationTerminal),
+            item => !terminalNames.length || item.busGroup.some(bus => terminalNames.includes(bus.destinationTerminal)),
+            // Stop filters
+            item => !outboundStopNames.length || outboundStopNames.includes(parseInt(item.busGroup[0]?.numberOfStops)),
+            item => !inboundStopNames.length || inboundStopNames.includes(parseInt(item.busGroup[1]?.numberOfStops)),
+            item => !stopNames.length || item.busGroup.some(bus => stopNames.includes(parseInt(bus.numberOfStops))),
+            // Bus number filters (if applicable - buses might not have bus numbers equivalent)
+            item => !outboundBusNumberNames.length || outboundBusNumberNames.every(bn => item.busGroup[0]?.routesInfo.some(route => route.busNumber?.toLowerCase() === bn)),
+            item => !inboundBusNumberNames.length || inboundBusNumberNames.every(bn => (item.busGroup[1]?.routesInfo || []).some(route => route.busNumber?.toLowerCase() === bn)),
+            item => !busNumberNames.length || busNumberNames.every(bn => item.busGroup.some(bus => bus.routesInfo.some(route => route.busNumber?.toLowerCase() === bn))),
+            // Departure time filters
+            item => {
+                if (!outboundDepartureTimeNames.length) return true;
+                const [hour, minute] = item.busGroup[0]?.departureTime.split(":").map(Number);
+                if (hour == null || minute == null) return false;
+                return outboundDepartureTimeNames.some(range => {
+                    const [start, end] = range.split("-").map(Number);
+                    return hour >= start && hour <= end;
+                });
+            },
+            item => {
+                if (!inboundDepartureTimeNames.length) return true;
+                const [hour, minute] = item.busGroup[1]?.departureTime?.split(":")?.map(Number) || [];
+                if (hour == null || minute == null) return false;
+                return inboundDepartureTimeNames.some(range => {
+                    const [start, end] = range.split("-").map(Number);
+                    return hour >= start && hour <= end;
+                });
+            },
+            item => {
+                if (!departureTimeNames.length) return true;
+                return item.busGroup.some(bus => {
+                    const [hour, minute] = bus.departureTime?.split(":")?.map(Number) || [];
+                    if (hour == null || minute == null) return false;
+                    return departureTimeNames.some(range => {
+                        const [start, end] = range.split("-").map(Number);
+                        return hour >= start && hour <= end;
+                    });
+                });
+            },
+            // Hour range filters (if buses have duration)
+            item => {
+                const outboundDuration = item.busGroup[0]?.duration;
+                if (!outboundDuration) return true; // Skip filter if no duration
+                const outboundDurationInMinutes = convertToMinutes(outboundDuration);
+                return outboundDurationInMinutes >= outboundHourRange[0] && outboundDurationInMinutes <= outboundHourRange[1];
+            },
+            item => {
+                return item.busGroup.some(bus => {
+                    const duration = bus.duration;
+                    if (!duration) return true; // Skip filter if no duration
+                    const durationInMinutes = convertToMinutes(duration);
+                    return durationInMinutes >= hourRange[0] && durationInMinutes <= hourRange[1];
+                });
+            },
+            item => {
+                if (item.schemaId !== 290) return true;
+                const inboundDuration = item.busGroup[1]?.duration;
+                if (!inboundDuration) return true; // Skip filter if no duration
+                const inboundDurationInMinutes = convertToMinutes(inboundDuration);
+                return inboundDurationInMinutes >= inboundHourRange[0] && inboundDurationInMinutes <= inboundHourRange[1];
+            },
+            // System bus filter
+            item => !systemBusNames.length || item.busGroup.some(bus => systemBusNames.includes(bus.isSystemBus)),
+            // Price filter
+            item => {
+                const price = item.priceInfo?.totalCommission ? parseFloat(item.priceInfo.totalCommission) : Infinity;
+                return price >= priceRange[0] && price <= priceRange[1];
+            }
+        ];
+
+        // Filter bus proposals
+        const newSource = allBusProposals.filter(item => filters.every(filter => filter(item)));
+
+        // Update bus count display
+        dynamicBusProposalsCount = newSource.length;
+        document.querySelector(".book-count__api__content").textContent = dynamicBusProposalsCount;
+
+        // Add index and selection state
+        const indexedSource = newSource.map((item, i) => ({
+            ...item,
+            SelectedBus: item.busId === selectedBusId,
+            index: currentIndex + i
+        }));
+        currentIndex += newSource.length;
+
+        // Handle selected bus scrolling
+        const selectedIndex = indexedSource.findIndex(item => item.SelectedBus);
+        if (selectedIndex !== -1) {
+            const page = Math.floor(selectedIndex / 30);
+            start = page * 30;
+            end = start + 30;
+            setTimeout(() => {
+                const targetElement = document.getElementById(`bus__${selectedIndex}`);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }, 100);
+        }
+
+        // Apply pagination
+        const pagedSource = indexedSource.slice(start, end);
+        BusProposalsSource = pagedSource;
+
+        if (pagedSource.length > 0) {
+            // Update price range with parsed prices
+            const pricesSource = allBusProposals.map(item => item.priceInfo?.totalCommission ? parseFloat(item.priceInfo.totalCommission) : null).filter(Boolean);
+            minPrice = pricesSource.length ? Math.min(...pricesSource) : 0;
+            maxPrice = pricesSource.length ? Math.max(...pricesSource) : 0;
+            priceMaxValueLabel.textContent = new Intl.NumberFormat().format(maxPrice);
+            priceMinValueLabel.textContent = new Intl.NumberFormat().format(minPrice);
+
+            // Update pagination UI
+            if (InUpdatePaging) {
+                const container = document.querySelector(".book-paging__cards__container");
+                const nextPage = container.querySelector(".book-nextpage");
+                const prevPage = container.querySelector(".book-prevpage");
+                prevPage.classList.add("book-hidden");
+
+                const roundedNumber = Math.ceil(currentIndex / 30);
+                const activePage = selectedIndex !== -1 ? Math.floor(selectedIndex / 30) : 0;
+                const maxVisiblePages = 5;
+                const startPage = Math.max(0, activePage - Math.floor(maxVisiblePages / 2));
+                const endPage = Math.min(roundedNumber, startPage + maxVisiblePages);
+                const adjustedStartPage = endPage - startPage < maxVisiblePages ? Math.max(0, endPage - maxVisiblePages) : startPage;
+
+                const arrayPaging = Array.from({ length: roundedNumber }, (_, i) => ({
+                    index: i,
+                    page: i + 1,
+                    isActive: i === activePage,
+                    isVisible: i >= adjustedStartPage && i < endPage
+                }));
+
+                nextPage.classList.toggle("book-hidden", arrayPaging.length <= 1);
+                args.context.setAsSource("bus.paging", arrayPaging);
+            }
+
+            // Update bus filters
+            if (InUpdateFiltering) {
+                const filteringSource = allBusProposals;
+
+                // Merge dictionaries for carriers, currency, and locations
+                const mergedCarriers = {};
+                const mergedCurrency = {};
+                const mergedLocation = {};
+                dictionaries.forEach(item => {
+                    Object.assign(mergedCarriers, item.carriers || {});
+                    Object.assign(mergedCurrency, item.currency || {});
+                    Object.assign(mergedLocation, item.location || {});
+                });
+
+                // Reset company lists
+                let allCompanyItems = [];
+                let allOutboundCompanyItems = [];
+                let allInboundCompanyItems = [];
+
+                // Collect company items with parsed prices
+                filteringSource.forEach(item => {
+                    const companyItems = (item.busGroup || []).flatMap(bus =>
+                        (bus.routesInfo || []).map(value => ({
+                            Name: mergedCarriers[value.busOperatorCode]?.name || "",
+                            Logo: mergedCarriers[value.busOperatorCode]?.image || "",
+                            Code: value.busOperatorCode || "",
+                            NumberOfStops: bus.numberOfStops || 0,
+                            BusId: item.busId || "",
+                            Price: item.priceInfo?.total ? parseFloat(item.priceInfo.total) : Infinity,
+                            Unit: mergedCurrency[item.priceInfo?.currency] || ""
+                        }))
+                    ).filter(item => item.Name && item.Code && item.Price !== Infinity);
+
+                    allCompanyItems.push(...companyItems);
+
+                    if (schemaId === 290 || schemaId === 291) {
+                        const outboundCompany = (item.busGroup?.[0]?.routesInfo || []).map(value => ({
+                            Name: mergedCarriers[value.busOperatorCode]?.name || "",
+                            Logo: mergedCarriers[value.busOperatorCode]?.image || "",
+                            Code: value.busOperatorCode || "",
+                            NumberOfStops: item.busGroup[0]?.numberOfStops || 0,
+                            BusId: item.busId || "",
+                            Price: item.priceInfo?.total ? parseFloat(item.priceInfo.total) : Infinity,
+                            Unit: mergedCurrency[item.priceInfo?.currency] || ""
+                        })).filter(item => item.Name && item.Code && item.Price !== Infinity);
+
+                        allOutboundCompanyItems.push(...outboundCompany);
+
+                        if (item.busGroup?.[1]) {
+                            const inboundCompany = (item.busGroup[1].routesInfo || []).map(value => ({
+                                Name: mergedCarriers[value.busOperatorCode]?.name || "",
+                                Logo: mergedCarriers[value.busOperatorCode]?.image || "",
+                                Code: value.busOperatorCode || "",
+                                NumberOfStops: item.busGroup[1]?.numberOfStops || 0,
+                                BusId: item.busId || "",
+                                Price: item.priceInfo?.total ? parseFloat(item.priceInfo.total) : Infinity,
+                                Unit: mergedCurrency[item.priceInfo?.currency] || ""
+                            })).filter(item => item.Name && item.Code && item.Price !== Infinity);
+
+                            allInboundCompanyItems.push(...inboundCompany);
+                        }
+                    }
+                });
+
+                // Deduplicate companies and select lowest price
+                const nameToMinPrice = {};
+                allCompanyItems.forEach(item => {
+                    if (!nameToMinPrice[item.Name] || nameToMinPrice[item.Name].Price > item.Price) {
+                        nameToMinPrice[item.Name] = item;
+                    }
+                });
+                const companyListResult = Object.values(nameToMinPrice).sort((a, b) => a.Price - b.Price);
+
+                args.context.setAsSource("bus.slider", companyListResult);
+
+                if (schemaId === 290 || schemaId === 291) {
+                    // Outbound company filter
+                    const nameToMinPriceOutbound = {};
+                    allOutboundCompanyItems.forEach(item => {
+                        if (!nameToMinPriceOutbound[item.Name] || nameToMinPriceOutbound[item.Name].Price > item.Price) {
+                            nameToMinPriceOutbound[item.Name] = item;
+                        }
+                    });
+                    const outboundCompanyListResult = Object.values(nameToMinPriceOutbound).sort((a, b) => a.Price - b.Price);
+                    args.context.setAsSource("bus.outboundcompany", outboundCompanyListResult);
+
+                    // Inbound company filter
+                    const nameToMinPriceInbound = {};
+                    allInboundCompanyItems.forEach(item => {
+                        if (!nameToMinPriceInbound[item.Name] || nameToMinPriceInbound[item.Name].Price > item.Price) {
+                            nameToMinPriceInbound[item.Name] = item;
+                        }
+                    });
+                    const inboundCompanyListResult = Object.values(nameToMinPriceInbound).sort((a, b) => a.Price - b.Price);
+                    if (inboundCompanyListResult.length > 0) {
+                        args.context.setAsSource("bus.inboundcompany", inboundCompanyListResult);
+                    }
+
+                    // Terminal filters
+                    const outboundTerminals = filteringSource.map(item => ({
+                        Name: item.busGroup?.[0]?.destinationTerminal || "",
+                        Code: item.busGroup?.[0]?.destinationTerminal || ""
+                    })).filter(item => item.Name && item.Code);
+
+                    const inboundTerminals = filteringSource.some(item => item.busGroup?.[1])
+                        ? filteringSource.map(item => ({
+                            Name: item.busGroup?.[1]?.destinationTerminal || "",
+                            Code: item.busGroup?.[1]?.destinationTerminal || ""
+                        })).filter(item => item.Name && item.Code)
+                        : [];
+
+                    const outboundTerminalListResult = outboundTerminals.filter((item, index, self) =>
+                        index === self.findIndex(t => t.Name === item.Name)
+                    );
+                    const inboundTerminalListResult = inboundTerminals.filter((item, index, self) =>
+                        index === self.findIndex(t => t.Name === item.Name)
+                    );
+
+                    args.context.setAsSource("bus.outboundterminal", outboundTerminalListResult);
+                    if (inboundTerminals.length > 0) {
+                        args.context.setAsSource("bus.inboundterminal", inboundTerminalListResult);
+                    }
+
+                    // Stop filters
+                    const outboundStopList = filteringSource
+                        .filter(item => item.busGroup?.[0]?.numberOfStops != null)
+                        .map(item => ({ Name: item.busGroup[0].numberOfStops }))
+                        .filter(item => item.Name != null);
+
+                    const inboundStopList = filteringSource.some(item => item.busGroup?.[1])
+                        ? filteringSource
+                            .filter(item => item.busGroup?.[1]?.numberOfStops != null)
+                            .map(item => ({ Name: item.busGroup[1].numberOfStops }))
+                            .filter(item => item.Name != null)
+                        : [];
+
+                    const outboundStopListResult = outboundStopList.filter((item, index, self) =>
+                        index === self.findIndex(t => t.Name === item.Name)
+                    );
+                    const inboundStopListResult = inboundStopList.filter((item, index, self) =>
+                        index === self.findIndex(t => t.Name === item.Name)
+                    );
+
+                    args.context.setAsSource("bus.outboundstop", outboundStopListResult);
+                    if (inboundStopList.length > 0) {
+                        args.context.setAsSource("bus.inboundstop", inboundStopListResult);
+                    }
+
+                    // Update hour ranges (if buses have duration)
+                    const outboundHoursSource = allBusProposals.map(item => item.busGroup?.[0]?.duration).filter(Boolean);
+                    const inboundHoursSource = allBusProposals.map(item => item.busGroup?.[1]?.duration).filter(Boolean);
+
+                    if (outboundHoursSource.length > 0) {
+                        const uniqueHoursSource = [...new Set(outboundHoursSource)];
+                        const timesInMinutes = uniqueHoursSource.map(convertToMinutes);
+                        outboundMinHour = timesInMinutes.length ? Math.min(...timesInMinutes) : 0;
+                        outboundMaxHour = timesInMinutes.length ? Math.max(...timesInMinutes) : 0;
+                        outboundHourMaxValueLabel.textContent = convertToTime(outboundMaxHour);
+                        outboundHourMinValueLabel.textContent = convertToTime(outboundMinHour);
+                    }
+
+                    if (inboundHoursSource.length > 0) {
+                        const uniqueInboundHours = [...new Set(inboundHoursSource)];
+                        const inboundTimesInMinutes = uniqueInboundHours.map(convertToMinutes);
+                        inboundMinHour = inboundTimesInMinutes.length ? Math.min(...inboundTimesInMinutes) : 0;
+                        inboundMaxHour = inboundTimesInMinutes.length ? Math.max(...inboundTimesInMinutes) : 0;
+                        inboundHourMaxValueLabel.textContent = convertToTime(inboundMaxHour);
+                        inboundHourMinValueLabel.textContent = convertToTime(inboundMinHour);
+                    }
+
+                    // Update trip type visibility
+                    document.querySelectorAll(".book-multitrip__content").forEach(e => e.classList.add("book-hidden"));
+                    if (schemaId === 290) {
+                        document.querySelectorAll(".book-roundtrip__content").forEach(e => e.classList.remove("book-hidden"));
+                    }
+                } else {
+                    args.context.setAsSource("bus.company", companyListResult);
+
+                    // Terminal filter
+                    const uniqueTerminal = filteringSource.flatMap(item =>
+                        (item.busGroup || []).map(bus => ({
+                            Name: bus.destinationTerminal || "",
+                            Code: bus.destinationTerminal || ""
+                        }))
+                    ).filter(item => item.Name && item.Code);
+
+                    const terminalListResult = uniqueTerminal.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
+                    args.context.setAsSource("bus.terminal", terminalListResult);
+
+                    // Stop filter
+                    const uniqueStop = filteringSource.flatMap(item =>
+                        (item.busGroup || []).map(bus => ({ Name: bus.numberOfStops }))
+                    ).filter(item => item.Name != null);
+
+                    const stopListResult = uniqueStop.filter((item, index, self) => index === self.findIndex(t => t.Name === item.Name));
+                    args.context.setAsSource("bus.stop", stopListResult);
+
+                    // Update trip type visibility
+                    document.querySelectorAll(".book-multitrip__content").forEach(e => e.classList.remove("book-hidden"));
+                    document.querySelectorAll(".book-roundtrip__content").forEach(e => e.classList.add("book-hidden"));
+                    document.querySelectorAll(".book-onewaytrip__content").forEach(e => e.classList.add("book-hidden"));
+                }
+            } else {
+                setTimeout(() => {
+                    setupBookCardButtons();
+                }, 0);
+            }
+
+            // Update bus list
+            args.context.setAsSource("bus.updated", pagedSource, { keyFieldName: "busId" });
+            InUpdateUIProcess = false;
+        } else {
+            InUpdateUIProcess = false;
+            document.querySelector(".book-list__cards__container").innerHTML = `
+        <div class="book-text-center">
+          <div>هیچ اتوبوسی مطابق با فیلترهای شما وجود ندارد.</div>
+          <div class="book-text-zinc-900 book-text-xs book-mt-2">برای مشاهده نتایج، فیلترهای خود را پاک کنید.</div>
+        </div>
+      `;
+            const container = document.querySelector(".book-paging__cards__container");
+            const buttons = container.querySelectorAll(".book-paging__container:not(.book-nextpage):not(.book-prevpage)");
+            const nextPage = container.querySelector(".book-nextpage");
+            const prevPage = container.querySelector(".book-prevpage");
+            prevPage.classList.add("book-hidden");
+            nextPage.classList.add("book-hidden");
+            buttons.forEach(button => button.remove());
+        }
+    }
+};
 
   function formatPrice(price, currencyText) {
     const formatted = (+price).toLocaleString('fa-IR');
