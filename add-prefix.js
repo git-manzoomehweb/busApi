@@ -4,6 +4,7 @@ const path = require('path');
 
 // تنظیمات:
 const targetDir = './web/static';
+const targetDirmob = './mobile/static';
 const fileExtensions = ['.html', '.js'];
 const prefix = 'book-';
 
@@ -42,3 +43,4 @@ function processFiles(dir) {
 }
 
 processFiles(targetDir);
+processFiles(targetDirmob);
