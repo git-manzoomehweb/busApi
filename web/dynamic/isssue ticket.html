@@ -1,0 +1,11 @@
+        <basis core="api" name="api.issue-ticket" url="http://185.44.36.51:1550/api/bus/issue-ticket" method="post"
+            content-type="application/json" run="atclient" triggers="cms.issueTicket"
+            if="{##cms.issueTicket.run|(false)##}" body='{
+                "sessionId": "[##cms.form.SessionId##]",
+                "basisFlyBookId": "{##cms.issueTicket.bookId##}",
+                "rKey": "[##cms.cookie.rkey##]"
+}'>
+        </basis>
+
+        <basis core="callback" run="atclient" triggers="api.issue-ticket" method="setIssueTicket">
+        </basis>

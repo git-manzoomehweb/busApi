@@ -2623,7 +2623,7 @@
                                 <basis core="call" run="atclient" file="/book/bank/list" triggers="cms.bankList"
                                     method="get" if="{##cms.bankList##}" OnRendered="renderBankList"></basis>
                                 <basis core="api" name="api.userCredit"
-                                    url="http://185.44.36.51:1550/api/bus/UserCredit?supplier_dmnid=[##cms.cms.domainid##]&rkey={##cms.userCredit.rkey##}"
+                                    url="{##cms.url.value##}/Flight/UserCredit?supplier_dmnid=[##cms.cms.domainid##]&rkey={##cms.userCredit.rkey##}"
                                     method="get" content-type="application/json" run="atclient"
                                     triggers="cms.userCredit" if="{##cms.userCredit##}"
                                     onprocessed='onProcessedUserCredit'>
@@ -3661,6 +3661,7 @@
          */
         const renderBankList = async (element) => {
             try {
+                console.log("bank list:" , element)
                 // Update all invoice content elements with the first pay cost
                 document.querySelectorAll(".book-invoice__content").forEach(e => {
                     const firstPayCost = e.querySelector(".book-firstpay__cost");
@@ -5151,49 +5152,207 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
          * @param {number} children - Number of child passengers.
          * @param {number} infants - Number of infant passengers.
          */
+
+
+
+        // Helper function to create hidden seat ID input
+        const createSeatIdInput = (parentElement) => {
+            const seatIdInput = document.createElement('input');
+            seatIdInput.type = 'hidden';
+            seatIdInput.className = 'seat-id';
+            seatIdInput.name = `seat-id-selected`;
+            // seatIdInput.name = `seat-id-${parentElement.getAttribute('data-index')}`;
+            parentElement.appendChild(seatIdInput);
+            return seatIdInput;
+        };
+        
         const addPassenger = (parentSelector, adults, children, infants) => {
-            try {
-                console.log(parentSelector, adults, children, infants)
-                const busId = sessionBookStorage.busId;
-                const parent = document.querySelector(parentSelector);
-                const templateElement = parent.querySelector('.book-passenger__container');
-                parent.innerHTML = ''; // Clear existing content
-                let dataIndex = 1; // Start indexing from 1
-                let adultCounter = 1, childCounter = 1, infantCounter = 1;
-                const ordinalNumbers = ["اول", "دوم", "سوم", "چهارم", "پنجم", "ششم", "هفتم", "هشتم", "نهم", "دهم"];
+    try {
+        console.log(parentSelector, adults, children, infants, selectedSeats);
+        
+        const busId = sessionBookStorage.busId;
+        const parent = document.querySelector(parentSelector);
+        const templateElement = parent.querySelector('.book-passenger__container');
+        parent.innerHTML = ''; // Clear existing content
+        
+        let dataIndex = 1; // Start indexing from 1
+        let adultCounter = 1, childCounter = 1, infantCounter = 1;
+        let seatIndex = 0; // Index for selectedSeats array
+        
+        const ordinalNumbers = ["اول", "دوم", "سوم", "چهارم", "پنجم", "ششم", "هفتم", "هشتم", "نهم", "دهم"];
 
-                // Helper function to add passengers of a specific category
-                const addCategory = (category, count, counter, type) => {
-                    for (let i = 0; i < count; i++) {
-                        const newElement = templateElement.cloneNode(true);
-                        newElement.setAttribute('data-index', dataIndex);
-                        // Update radio input names for uniqueness
-                        const typeContainer = newElement.querySelector(".book-passenger__container__type");
-                        if (typeContainer) {
-                            typeContainer.querySelectorAll("input[type=radio]").forEach(e => {
-                                e.setAttribute('name', `type-${dataIndex}`);
-                            });
-                        }
-                        // Set data-index and type
-                        newElement.querySelector(".book-previous__passenger__container").setAttribute('data-index', dataIndex);
-                        newElement.querySelector(".book-Type").value = type;
-                        // Set title with Persian ordinal number
-                        const ordinalText = ordinalNumbers[counter - 1] || `${counter}`;
-                        newElement.querySelector(".book-passenger__container__title").textContent = `${category} ${ordinalText}`;
-                        parent.appendChild(newElement);
-                        dataIndex++;
-                        counter++;
-                    }
-                };
-
-                // Add passengers for each category
-                addCategory('بزرگسال', adults, adultCounter, 'ADT');
-                addCategory('کودک', children, childCounter, 'CHD');
-                addCategory('نوزاد', infants, infantCounter, 'INF');
-            } catch (err) {
-                console.error(`addPassenger: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        // Helper function to add passengers of a specific category
+        const addCategory = (category, count, counter, type) => {
+            for (let i = 0; i < count; i++) {
+                const newElement = templateElement.cloneNode(true);
+                newElement.setAttribute('data-index', dataIndex);
+                
+                // Update radio input names for uniqueness
+                const typeContainer = newElement.querySelector(".book-passenger__container__type");
+                if (typeContainer) {
+                    typeContainer.querySelectorAll("input[type=radio]").forEach(e => {
+                        e.setAttribute('name', `type-${dataIndex}`);
+                    });
+                }
+                
+                // Set data-index and type
+                newElement.querySelector(".book-previous__passenger__container").setAttribute('data-index', dataIndex);
+                newElement.querySelector(".book-Type").value = type;
+                
+                // Set title with Persian ordinal number
+                const ordinalText = ordinalNumbers[counter - 1] || `${counter}`;
+                newElement.querySelector(".book-passenger__container__title").textContent = `${category} ${ordinalText}`;
+                
+                // Add seat information if available
+                if (selectedSeats && selectedSeats[seatIndex]) {
+                    const seatInfo = selectedSeats[seatIndex];
+                    
+                    // Add seat number to the card
+                    const seatNumberElement = newElement.querySelector(".seat-number") || createSeatInfoElement(newElement, "seat-number");
+                    seatNumberElement.textContent = `صندلی: ${seatInfo.number}`;
+                    
+                    // Add seat ID (hidden input for form submission)
+                    const seatIdInput = newElement.querySelector(".seat-id") || createSeatIdInput(newElement);
+                    seatIdInput.value = seatInfo.id;
+                    
+                    // Store seat info in data attributes for easy access
+                    newElement.setAttribute('data-seat-id', seatInfo.id);
+                    newElement.setAttribute('data-seat-number', seatInfo.number);
+                    
+                    seatIndex++; // Move to next seat
+                }
+                
+                parent.appendChild(newElement);
+                dataIndex++;
+                counter++;
             }
-        }
+        };
+
+        // Helper function to create seat info element
+        const createSeatInfoElement = (parentElement, className) => {
+            const seatInfoDiv = document.createElement('div');
+            seatInfoDiv.className = `seat-info ${className}`;
+            seatInfoDiv.style.cssText = `
+                margin: 5px 0;
+                padding: 5px;
+                background-color: #f0f0f0;
+                border-radius: 3px;
+                font-size: 12px;
+                color: #666;
+            `;
+            
+            // Add to title area or create a seat info container
+            const titleElement = parentElement.querySelector(".book-passenger__container__title");
+            if (titleElement) {
+                titleElement.parentNode.insertBefore(seatInfoDiv, titleElement.nextSibling);
+            } else {
+                parentElement.appendChild(seatInfoDiv);
+            }
+            
+            return seatInfoDiv;
+        };
+
+        // Add passengers for each category
+        addCategory('بزرگسال', adults, adultCounter, 'ADT');
+        addCategory('کودک', children, childCounter, 'CHD');
+        addCategory('نوزاد', infants, infantCounter, 'INF');
+        
+        // Log seat assignment for debugging
+        console.log('Seat assignment completed:', {
+            totalPassengers: dataIndex - 1,
+            totalSeats: selectedSeats.length,
+            seatsUsed: seatIndex
+        });
+        
+    } catch (err) {
+        console.error(`addPassenger: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+    }
+};
+
+// Alternative version if you want to display seat info more prominently
+const addPassengerWithSeatDisplay = (parentSelector, adults, children, infants) => {
+    try {
+        console.log(parentSelector, adults, children, infants, selectedSeats);
+        
+        const busId = sessionBookStorage.busId;
+        const parent = document.querySelector(parentSelector);
+        const templateElement = parent.querySelector('.book-passenger__container');
+        parent.innerHTML = ''; // Clear existing content
+        
+        let dataIndex = 1;
+        let adultCounter = 1, childCounter = 1, infantCounter = 1;
+        let seatIndex = 0;
+        
+        const ordinalNumbers = ["اول", "دوم", "سوم", "چهارم", "پنجم", "ششم", "هفتم", "هشتم", "نهم", "دهم"];
+
+        const addCategory = (category, count, counter, type) => {
+            for (let i = 0; i < count; i++) {
+                const newElement = templateElement.cloneNode(true);
+                newElement.setAttribute('data-index', dataIndex);
+                
+                // Update radio input names for uniqueness
+                const typeContainer = newElement.querySelector(".book-passenger__container__type");
+                if (typeContainer) {
+                    typeContainer.querySelectorAll("input[type=radio]").forEach(e => {
+                        e.setAttribute('name', `type-${dataIndex}`);
+                    });
+                }
+                
+                // Set data-index and type
+                newElement.querySelector(".book-previous__passenger__container").setAttribute('data-index', dataIndex);
+                newElement.querySelector(".book-Type").value = type;
+                
+                // Enhanced title with seat information
+                const ordinalText = ordinalNumbers[counter - 1] || `${counter}`;
+                const titleElement = newElement.querySelector(".book-passenger__container__title");
+                
+                if (selectedSeats && selectedSeats[seatIndex]) {
+                    const seatInfo = selectedSeats[seatIndex];
+                    titleElement.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>${category} ${ordinalText}</span>
+                            <span style="background: #007bff; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px;">
+                                صندلی ${seatInfo.number}
+                            </span>
+                        </div>
+                    `;
+                    
+                    // Store seat information
+                    newElement.setAttribute('data-seat-id', seatInfo.id);
+                    newElement.setAttribute('data-seat-number', seatInfo.number);
+                    
+                    // Add hidden input for seat ID
+                    const seatIdInput = document.createElement('input');
+                    seatIdInput.type = 'hidden';
+                    seatIdInput.name = `seat-id-${dataIndex}`;
+                    seatIdInput.value = seatInfo.id;
+                    newElement.appendChild(seatIdInput);
+                    
+                    seatIndex++;
+                } else {
+                    titleElement.textContent = `${category} ${ordinalText}`;
+                }
+                
+                parent.appendChild(newElement);
+                dataIndex++;
+                counter++;
+            }
+        };
+
+        // Add passengers for each category
+        addCategory('بزرگسال', adults, adultCounter, 'ADT');
+        addCategory('کودک', children, childCounter, 'CHD');
+        addCategory('نوزاد', infants, infantCounter, 'INF');
+        
+    } catch (err) {
+        console.error(`addPassenger: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+    }
+};
+
+// Usage example:
+// addPassenger('.passengers-container', 2, 1, 0, selectedSeats);
+// or
+// addPassengerWithSeatDisplay('.passengers-container', 2, 1, 0, selectedSeats);
 
         /**
          * Adds an error message to a field and marks it as invalid.
@@ -6486,6 +6645,8 @@ const updateStep = (stepText, element) => {
                             nationalCode: getFieldValue(passengerElement, ".book-NationalCode"),
                             dateOfBirth: getFieldValue(passengerElement, ".book-DateOfBirth"),
                             placeOfBirth: getFieldValue(passengerElement, ".book-PlaceOfBirth"),
+                            parentId: null,
+                            seatId: [getFieldValue(passengerElement, ".seat-id"),]
                         };
                         passengerList.push(passengerData);
                     }
@@ -7316,12 +7477,17 @@ const nextStep = (element) => {
                     if (typeof $bc !== 'undefined' && $bc.setSource) {
                         const selectedMode = window.selectedMode || '';
                         
-                        $bc.setSource("cms.bankList", [{
-                            bank: utmSource === "safarmarket" ? "safarmarket" : "",
-                            rkey: rkey,
-                            selectedMode: selectedMode,
-                            run: true
-                        }]);
+                        $bc.setSource("cms.bankList", true);
+                        let cookieValue = `; ${document.cookie}`;
+                        let cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
+                        $bc.setSource("cms.userCredit", { rkey: cookieParts[1] });
+
+                        // $bc.setSource("cms.bankList", [{
+                        //     bank: utmSource === "safarmarket" ? "safarmarket" : "",
+                        //     rkey: rkey,
+                        //     selectedMode: selectedMode,
+                        //     run: true
+                        // }]);
                     }
                 }
             }
@@ -7479,6 +7645,7 @@ const onProcessedRenderSeatMapSelection = async (args) => {
                     const seatCountElement = document.getElementById('seat-count');
                     if (seatCountElement) {
                         seatCountElement.textContent = `تعداد صندلی‌های انتخاب شده: ${selectedSeats.length}`;
+                        console.log(selectedSeats)
                     }
                     handleSeatSelection(seat);
                 });

@@ -33,36 +33,27 @@
 
         <basis core="api" name="api.reserve" url="http://185.44.36.51:1550/api/bus/reserve" method="post"
             content-type="application/json" run="atclient" body='{
-                "rkey": "[##cms.cookie.rkey##]",
+                "rKey": "[##cms.cookie.rkey##]",
                 "sessionId": "[##cms.form.SessionId##]",
                 "busId": "[##cms.form.busId##]",
                 "busGroup": [##cms.form.busGroup##],
-                "travelers": [##cms.form.Travelers##]
+                "travelers": [##cms.form.Travelers##] ,
+                "account": [##cms.form.account##],
+                "agencycountername": "[##cms.form.agencycountername##]",
+                "agencycounter": "[##cms.form.agencycounter##]",
+                "clear": "[##cms.form.clear##]",
+                "code": "[##cms.form.code##]",
+                "accounttype": "[##cms.form.accounttype##]",
+                "lid": "[##cms.query.lid|(1)##]",
+                "mid": "[##cms.form.mid##]",
+                "share": "[##cms.form.share|(0)##]"
             }'>
         </basis>
-
-
-
-
-
-
-
         <basis core="callback" run="atclient" triggers="api.reserve" method="setReserve">
         </basis>
 
 
-        <basis core="api" name="api.issue-ticket" url="http://185.44.36.51:1550/api/bus/issue-ticket" method="post"
-            content-type="application/json" run="atclient" triggers="cms.issueTicket"
-            if="{##cms.issueTicket.run|(false)##}" body='{
-                "SessionId": "[##cms.form.SessionId##]",
-                "BasisFlyBookId": "{##cms.issueTicket.bookId##}",
-                "dmnid": "[##cms.cms.domainid##]",
-                "rkey": "[##cms.cookie.rkey##]"
-}'>
-        </basis>
 
-        <basis core="callback" run="atclient" triggers="api.issue-ticket" method="setIssueTicket">
-        </basis>
 
         <div class="book-layout__main book-max-w-7xl book-mx-auto" data-id="{##cms.token.bookId##}">
             <div class="book-message__booking__container book-w-full book-text-center book-my-10 book-py-10">
@@ -83,6 +74,8 @@
                     </div>
                 </div>
             </div>
+
+            [##cms.form.bankIdentifier##]
             <basis core="group" name="invoice-type" if="'[##cms.form.accounttype##]' <> '1'">
                 <basis core="group" name="pay-type" if="'[##cms.form.payType##]' <> 'credit'">
                     <basis core="group" name="bank-type" if="'[##cms.form.bankIdentifier##]' <> '-1'">
@@ -174,94 +167,69 @@
        * Processes booking API response, handles price changes, and initiates ticket issuance or payment.
        * @param {Object} args - API response object containing source data with status, price change, and book ID.
        */
-        const setReserve = async (args) => {
-
-            console.log(args);
-            // try {
-            //     // Validate API response
-            //     const response = args.source?.rows?.[0];
-            //     if (!response || response.Status === undefined) {
-            //         throw new Error("Invalid or missing API response data");
-            //     }
-
-            //     const responseStatus = response.Status;
-            //     const responseErrorMessage = response.ErrorMessage || "خطایی رخ داده است";
-            //     const responseContainer = document.querySelector(".book-message__booking__container");
-            //     if (!responseContainer) {
-            //         throw new Error("Response container not found");
-            //     }
-
-            //     const responseFirst = responseContainer.querySelector(".book__first__message__content");
-            //     const responseLast = responseContainer.querySelector(".book__last__message__content");
-            //     if (!responseLast) {
-            //         throw new Error("Last message content element not found");
-            //     }
-            //     const lastMessage = responseLast.querySelector(".book__last__message");
-            //     if (!lastMessage) {
-            //         throw new Error("Last message element not found");
-            //     }
-
-            //     if (responseStatus === true) {
-
-            //         const priceChange = response.PriceChange;
-            //         const bookId = response.AirReservation?.BasisFlyBookId;
-            //         if (!bookId) {
-            //             throw new Error("Book ID not found in response");
-            //         }
-            //         // Chack safarmarket api
-            //         if (bankIdentifier == '') {
-            //             $bc.setSource("cms.safarmarket", [{
-            //                 pnr: bookId,
-            //                 fliNo: busGroup[0].RoutesInfo[0].busNumber,
-            //                 typ: busGroup[0].isSystembus === "true" || busGroup[0].isSystembus === true ? "SYSTEM" : "CHARTER",
-            //                 pri: PriceInfo.PassengerFare[0].Unit,
-            //                 pax: PriceInfo.TotalCommission,
-            //                 adu: PriceInfo.PassengerFare.find(p => p.passengerType === "Adult")?.Count || 0,
-            //                 chi: PriceInfo.PassengerFare.find(p => p.passengerType === "Child")?.Count || 0,
-            //                 inf: PriceInfo.PassengerFare.find(p => p.passengerType === "Infant")?.Count || 0,
-            //                 from: busGroup[0].RoutesInfo[0].OriginAirport,
-            //                 to: busGroup[0].RoutesInfo[0].DestinationAirport,
-            //                 dep: `${busGroup[0].RoutesInfo[0].DepartureDate} ${busGroup[0].RoutesInfo[0].DepartureTime}`,
-            //                 ret: busGroup.length > 1 ? `${busGroup[1].RoutesInfo[0].DepartureDate} ${busGroup[1].RoutesInfo[0].DepartureTime}` : "",
-            //                 nam: fullname,
-            //                 pho: mobile,
-            //                 ema: email,
-            //                 rFTyp: busGroup[1] ? (busGroup[1].isSystembus === "true" || busGroup[1].isSystembus === true ? "SYSTEM" : "CHARTER") : "",
-            //                 rPnr: bookId,
-            //                 rFliNo: busGroup[1] && busGroup[1].RoutesInfo && busGroup[1].RoutesInfo[0] ? busGroup[1].RoutesInfo[0].busNumber : "",
-            //                 run: true
-            //             }]);
 
 
+       const setReserve = async (args) => {
+    try {
+        // Validate API response
+        console.log("set reserve:")
+        console.log(args)
+        const response = args.source?._rows?.[0];
+        if (!response || response.status === undefined) {
+            throw new Error("Invalid or missing API response data");
+        }
 
-            //         };
-            //         if (priceChange === null) {
-            //             // No price change, proceed with booking
-            //             confirmBookingProcesse(bookId, `${responseErrorMessage}`);
-            //         } else {
-            //             // Display price change confirmation UI
-            //             if (responseFirst) {
-            //                 responseFirst.classList.add("book-hidden");
-            //             }
-            //             responseLast.classList.remove("book-hidden");
-            //             lastMessage.innerHTML = `
-            //         <div class="book-price__changed">تغییر قیمت اتفاق افتاده ,مایل به ادامه فرآیند رزرو با مبلغ 
-            //         ${new Intl.NumberFormat().format(priceChange)} هستید؟</div>
-            //         <button class="book-mx-2 book-bg-green-600 book-mt-4 book-text-white  book-rounded-lg book-p-2 book-min-w-28" onclick="confirmBookingProcesse('${bookId}','${responseErrorMessage}')">بله, ادامه میدم</button>
-            //         <button class="book-mx-2 book-bg-red-500 book-mt-4 book-text-white  book-rounded-lg book-p-2 book-min-w-28" onclick="rejectBookingProcesse()">خیر, منصرف شدم</button>`;
-            //         }
-            //     } else {
-            //         // Display error message
-            //         if (responseFirst) {
-            //             responseFirst.classList.add("book-hidden");
-            //         }
-            //         responseLast.classList.remove("book-hidden");
-            //         lastMessage.textContent = responseErrorMessage;
-            //     }
-            // } catch (err) {
-            //     console.error(`setReserve: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            // }
-        };
+        const responseStatus = response.status;
+        const responseErrorMessage = response.errorMessage || "خطایی رخ داده است";
+        const responseContainer = document.querySelector(".book-message__booking__container");
+        if (!responseContainer) {
+            throw new Error("Response container not found");
+        }
+
+        const responseFirst = responseContainer.querySelector(".book__first__message__content");
+        const responseLast = responseContainer.querySelector(".book__last__message__content");
+        if (!responseLast) {
+            throw new Error("Last message content element not found");
+        }
+        const lastMessage = responseLast.querySelector(".book__last__message");
+        if (!lastMessage) {
+            throw new Error("Last message element not found");
+        }
+
+        if (responseStatus === true) {
+
+            const priceChange = response.priceChange;
+            const bookId = response.airReservation?.basisFlyBookId;
+            if (!bookId) {
+                throw new Error("Book ID not found in response");
+            }
+            if (priceChange === null) {
+                // No price change, proceed with booking
+                confirmBookingProcesse(bookId);
+            } else {
+                // Display price change confirmation UI
+                if (responseFirst) {
+                    responseFirst.classList.add("book-hidden");
+                }
+                responseLast.classList.remove("book-hidden");
+                lastMessage.innerHTML = `
+                    <div class="book-price__changed">تغییر قیمت اتفاق افتاده ,مایل به ادامه فرآیند رزرو با مبلغ 
+                    ${new Intl.NumberFormat().format(priceChange)} هستید؟</div>
+                    <button class="book-mx-2 book-bg-green-600 book-mt-4 book-text-white  book-rounded-lg book-p-2 book-min-w-28" onclick="confirmBookingProcesse('${bookId}')">بله, ادامه میدم</button>
+                    <button class="book-mx-2 book-bg-red-500 book-mt-4 book-text-white  book-rounded-lg book-p-2 book-min-w-28" onclick="rejectBookingProcesse()">خیر, منصرف شدم</button>`;
+            }
+        } else {
+            // Display error message
+            if (responseFirst) {
+                responseFirst.classList.add("book-hidden");
+            }
+            responseLast.classList.remove("book-hidden");
+            lastMessage.textContent = responseErrorMessage;
+        }
+    } catch (err) {
+        console.error(`setReserve: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+    }
+};
 
         /**
          * Confirms price change or booking and triggers ticket issuance or payment gateway.
@@ -269,6 +237,7 @@
          */
         const confirmBookingProcesse = async (bookId, responseErrorMessage, priceChange) => {
             try {
+                console.log("bookid=" , bookId)
                 const share = "[##cms.form.share##]";
                 // Validate DOM elements
                 const responseContainer = document.querySelector(".book-message__booking__container");
@@ -368,40 +337,40 @@
          * Processes ticket issuance API response and updates UI with status or error message.
          * @param {Object} args - API response object containing source data with status and error message.
          */
-        const setIssueTicket = async (args) => {
-            try {
-                // Validate API response
-                const response = args.source?.rows?.[0];
-                const responseStatus = response.Status;
-                if (!response || response.Status === undefined) {
-                    throw new Error("Invalid or missing API response data");
-                }
+const setIssueTicket = async (args) => {
+    try {
+        // Validate API response
+        const response = args.source?._rows?.[0];
+        const responseStatus = response.Status;
+        if (!response || response.Status === undefined) {
+            throw new Error("Invalid or missing API response data");
+        }
 
-                // Validate DOM elements
-                const responseContainer = document.querySelector(".book-message__booking__container");
-                if (!responseContainer) {
-                    throw new Error("Response container not found");
-                }
-                const responseLast = responseContainer.querySelector(".book__last__message__content");
-                if (!responseLast) {
-                    throw new Error("Last message content element not found");
-                }
-                const lastMessage = responseLast.querySelector(".book__last__message");
-                if (!lastMessage) {
-                    throw new Error("Last message element not found");
-                }
-                // Display error message
-                if (responseStatus === true) {
-                    lastMessage.textContent = `رزرو شما با موفقیت انجام شد`;
-                } else {
-                    lastMessage.textContent = response.ErrorMessage || "خطایی رخ داده است";
-                }
+        // Validate DOM elements
+        const responseContainer = document.querySelector(".book-message__booking__container");
+        if (!responseContainer) {
+            throw new Error("Response container not found");
+        }
+        const responseLast = responseContainer.querySelector(".book__last__message__content");
+        if (!responseLast) {
+            throw new Error("Last message content element not found");
+        }
+        const lastMessage = responseLast.querySelector(".book__last__message");
+        if (!lastMessage) {
+            throw new Error("Last message element not found");
+        }
+        // Display error message
+        if (responseStatus === true) {
+            lastMessage.textContent = `رزرو شما با موفقیت انجام شد`;
+        } else {
+            lastMessage.textContent = response.ErrorMessage || "خطایی رخ داده است";
+        }
 
 
-            } catch (err) {
-                console.error(`setIssueTicket: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
+    } catch (err) {
+        console.error(`setIssueTicket: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+    }
+};
 
         /**
          * Processes payment gateway token API response and initiates payment form submission or redirect.
@@ -422,9 +391,9 @@
                 if (!lastMessage) {
                     throw new Error("Last message element not found");
                 }
-
+                console.log("set token:" , args)
                 // Validate API response
-                const source = args.source?.rows;
+                const source = args.source?._rows;
                 if (!source || !source[0]) {
                     throw new Error("Source data not found");
                 }

@@ -2532,7 +2532,7 @@ startProgressBar(1000);
       if (response.status !== 200) return;
 
       const responseJson = await response.json();
-      const renderingContainer = document.querySelector(`.rule-id-${responseJson[0].bustId}`);
+      const renderingContainer = document.querySelector(`.rule-id-${responseJson[0].busId}`);
       if (!renderingContainer) return;
 
       const busRules = responseJson[0].busRules;
