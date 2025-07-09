@@ -2280,23 +2280,6 @@ body {
   }
 }
 
-.book-seat-by-for-gentlemans {
-  background-image: url("../images/seat-men.svg");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.book-seat-available {
-  background-image: url("../images/available.svg");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.book-seat-ladies {
-  background-image: url("../images/seat-women.svg");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
 
 .book-glass3 {
   background-color: #6a6a6a4d;

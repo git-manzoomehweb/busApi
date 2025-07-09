@@ -8,64 +8,6 @@
     <title>[##cms.seo.title##]</title>
     <link href="[##cms.cms.cdn##]/booking/css/bus-search.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
     <link href="[##cms.cms.cdn##]/booking/css/book.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
-
-    <style>
-        .book-aisle {
-            background: #f0f0f0;
-            height: 40px;
-            /* Match seat height */
-        }
-
-        .book-seat-selected {
-            background-image: url("http://basisflydemo.ir/booking/images/seat-selected.svg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            color: white !important;
-        }
-
-        .seat-item {
-            width: 40px;
-            height: 40px;
-            background-color: #6c757d;
-            /* خاکستری برای غیرقابل انتخاب */
-            border-radius: 8px 8px 4px 4px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-            user-select: none;
-            cursor: default;
-            transition: background-color 0.3s ease;
-        }
-
-        .seat-item.available {
-            background-color: #4CAF50;
-            /* سبز */
-            cursor: pointer;
-        }
-
-        .seat-item.available:hover {
-            background-color: #388E3C;
-        }
-
-        .seat-item::before {
-            content: "";
-            position: absolute;
-            top: -10px;
-            left: 8px;
-            width: 24px;
-            height: 15px;
-            background-color: #4CAF50;
-            border-radius: 12px 12px 0 0;
-        }
-
-        .seat-item.unavailable {
-            background-color: #b0b0b0;
-            cursor: not-allowed;
-        }
-    </style>
 </head>
 
 <body class="book-bg-specialcolor-1">
@@ -513,8 +455,7 @@
                             </div>
                             <div class="book-flex book-justify-between book-my-5">
                                 <button
-                                    class="book-btn__content book-min-w-40 book-text-white book-rounded-2xl book-p-3 book-cursor-pointer book-text-center book-prev__btn 
-                                     hover:book-bg-zinc-600 book-invisible book-bg-red-500"
+                                    class="book-btn__content book-min-w-40 book-text-white book-rounded-2xl book-p-3 book-cursor-pointer book-text-center book-prev__btn book-bg-zinc-300 hover:book-bg-zinc-200 book-hidden"
                                     data-step="seat" onclick="prevStep(this)">
                                     بازگشت به مرحله قبل
                                 </button>
@@ -538,7 +479,7 @@
             <div class="book-nodata__container book-w-full book-text-center book-hidden">
                 <div>
                     <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
-                        <use xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#no-data-icon">
+                        <use xlink:href="/booking/images/sprite-booking-icons.svg#no-data-icon">
                         </use>
                     </svg>
                 </div>
@@ -563,25 +504,23 @@
                             onclick="closeModalContainer(document.querySelector('.book-previous__passengers__container'), 'book-card__container__selected')"
                             class="book-cursor-pointer book-flex book-gap-1 book-card__container__selected">
                             <svg width="28" height="28">
-                                <use href="/booking/images/sprite-booking-icons.svg#close-icon"></use>
+                                <use xlink:href="/booking/images/sprite-booking-icons.svg#close-icon"></use>
                             </svg>
                             <span class="book-text-base">مسافران سابق</span>
                         </span>
                     </div>
-
                     <!-- grid -->
                     <basis core="component.grid.grid" run="atclient" dataMemberName="cms.gridPreviousPassengers"
                         options="gridPreviousPassengers"></basis>
                 </div>
             </div>
         </div>
-
-
-
-
     </main>
     <!-- Footer -->
     <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+
+    <script src="[##cms.cms.cdn##]/booking/js/book-functions.js?ver=1" type="text/javascript"></script>
+
     <script>
 
 
@@ -697,66 +636,6 @@
                 SeatSelection = sessionBookStorage.busGroup[0].SeatSelection
             }
 
-            // Add excess service or seat service UI if enabled
-            //             if (ExcessService || SeatSelection) {
-            //                 const container = document.querySelector(".book-passengers__container");
-            //                 const div = document.createElement("div");
-            //                 div.innerHTML = `<div class="book-services__container book-api__container book-bg-white book-shadow-md book-border-slate-600 book-rounded-2xl book-border-b-3 book-p-5 book-mb-10">
-            //     <div class="book-text-base book-flex book-justify-between book-items-center book-cursor-pointer" onclick="toggleContentApi(this,'','book-services__container')" data-run="0">
-            //         <div> گزینه‌های اضافی
-            //         <div class="book-text-zinc-500  book-text-xs book-mt-2 book-mb-5">با رزرو صندلی دلخواه، انتخاب
-            //             پیشاپیش وعده غذایی مورد علاقه‌تان، یا خرید ظرفیت بار
-            //             اضافی، با راحتی
-            //             اتوبوس کنید.</div></div>
-
-            //      <svg class="book-api__container__arrow" width="24" height="24">
-            //                                                                         <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-            //                                                                         </use>
-            //                                                                     </svg>
-            //     </div>
-            //     <div class="book-api__content book-hidden">
-            //             <div
-            //         class="book-tab__navigation__container book-flex book-justify-around book-space-x-2 book-space-x-reverse book-mb-10">
-            //         <button onclick="selectServiceTab(this,'baggageService','ExcessService')" data-run="0" type="button"
-            //             class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-            //             <svg width="51" height="50">
-            //                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#wheel-bag-icon">
-            //                 </use>
-            //             </svg>
-            //             <h6 class="book-text-sm">بار
-            //                 اضافه</h6>
-            //         </button>
-            //         <button onclick="selectServiceTab(this,'mealService','ExcessService')" data-run="0" type="button"
-            //             class="book-tab__navigation__content book-min-w-52  book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-            //             <svg width="41" height="50">
-            //                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#meal-icon">
-            //                 </use>
-            //             </svg>
-            //             <h6 class="book-text-sm">وعده
-            //                 غذایی</h6>
-            //         </button>
-            //         <button onclick="selectServiceTab(this,'seatService','SeatAvailability')" data-run="0" type="button"
-            //             class="book-tab__navigation__content book-min-w-52 book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
-            //             <svg width="41" height="50">
-            //                 <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#seat-icon">
-
-            //                 </use>
-            //             </svg>
-            //             <h6 class="book-text-sm">انتخاب
-            //                 صندلی</h6>
-            //         </button>
-            //     </div>
-            //     <div class="book-api__container__content book-mt-4 book-hidden">
-            //         <span
-            //             class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
-            //     </div>
-
-            //     </div>
-
-            // </div>`;
-            //                 container.appendChild(div.firstChild);
-
-            //             }
 
         });
 
@@ -1009,26 +888,27 @@
             try {
                 // Fetch bus data from localStorage
 
-                const renderBusInfo = (icon, label, value) => {
-                    if (value && value !== "") {
-                        return `
-                <div class="book-flex book-items-center book-mb-2">
-                    <div class="book-w-10 book-h-10 book-bg-primary-50 book-flex book-items-center book-justify-center book-rounded book-ml-2">
-                        <svg width="25" height="24">
-                            <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#${icon}"></use>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="book-text-zinc-500 book-my-2">${label}:</p>
-                        <p class="book-text-zinc-900">${value}</p>
-                    </div>
-                </div>`;
-                    }
-                    return "";
-                };
+                // const renderBusInfo = (icon, label, value) => {
+                //     if (value && value !== "") {
+                //         return `
+                // <div class="book-flex book-items-center book-mb-2">
+                //     <div class="book-w-10 book-h-10 book-bg-primary-50 book-flex book-items-center book-justify-center book-rounded book-ml-2">
+                //         <svg width="25" height="24">
+                //             <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#${icon}"></use>
+                //         </svg>
+                //     </div>
+                //     <div>
+                //         <p class="book-text-zinc-500 book-my-2">${label}:</p>
+                //         <p class="book-text-zinc-900">${value}</p>
+                //     </div>
+                // </div>`;
+                //     }
+                //     return "";
+                // };
 
                 const routeHtml = async (item, index) => {
                     // Helper functions to resolve location and carrier details
+                    // checkk
                     const renderLocation = async (locationId) => {
                         const location = busData.dictionaries?.location?.[locationId] || {};
                         return location.city || "Unknown";
@@ -1111,248 +991,7 @@
                 return "";
             }
         };
-        /**
-        * Formats a date to Persian (Shamsi) format with weekday, day, and month.
-        */
-        const renderFormatterDate = async (element) => {
-            try {
-                const gregorianDate = new Date(element);
-                const formatter = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
-                    weekday: 'long',
-                    day: 'numeric',
-                    month: 'long'
-                });
-                return formatter.format(gregorianDate);
-            } catch (error) {
-                console.error("renderFormatterDate: " + error.message);
-                return "";
-            }
-        };
-        /**
-   * Formats duration string (e.g., '2h30m') to Persian format.
-   
-   */
-        const renderFormatterDuration = (str) => {
-            try {
-                return str.replace('h', ' ساعت').replace('m', ' دقیقه');
-            } catch (error) {
-                console.error("renderFormatterDuration: " + error.message);
-                return str;
-            }
-        };
-        /**
- * Renders the country name for a given location code.
- */
-        const renderCountry = async (element) => {
-            try {
-                const mergedLocation = dictionaries.reduce((acc, item) => ({ ...acc, ...item.location }), {});
-                return mergedLocation[element]?.country || "";
-            } catch (error) {
-                console.error("renderCountry: " + error.message);
-                return "";
-            }
-        };
-        /**
-* Renders an airline logo image.
-*/
-        const renderAirlineLogo = async (element, heightClass, width, height, item) => {
-            try {
-                const mergedCarriers = dictionaries.reduce((acc, item) => ({ ...acc, ...item.carriers }), {});
-                const carrier = mergedCarriers[element] || { image: "", name: "" };
-                let extraClass = "";
-                const imgTag = `<img class="book-route__airline book-mx-auto book-h-${heightClass}" src="[##cms.cms.cdn##]/${carrier.image}" width="${width}" height="${height}" alt="${carrier.name}"/>`
-                if (item?.RoutesInfo?.length > 1) {
-                    const codes = item.RoutesInfo.map(route => route.AirlineCode);
-                    const uniqueCodes = [...new Set(codes)];
-                    if (uniqueCodes.length > 1) {
-                        return `<div class="book-multi__airlines">${imgTag}</div>`;
-                    } else {
-                        return imgTag
-                    }
-                } else {
-                    return imgTag
-                }
 
-
-            } catch (error) {
-                console.error("renderAirlineLogo: " + error.message);
-                return "";
-            }
-        };
-        /**
-* Renders codeshare indicator for operating airline.
-*/
-        const renderOperatingAirlineCode = async (element) => {
-            try {
-
-                if (element.OperatingAirlineCode !== element.AirlineCode) {
-                    return `
-                <div class="book-text-zinc-600 book-text-sm book-my-2 book-mx-3">
-                    <span class="book-mr-1">Operated By</span>
-                    <span class="book-mr-1">${element.OperatingAirlineCode}</span><span>(${await renderAirlineName(element.OperatingAirlineCode)})</span>
-                </div>
-            `;
-                }
-                return "";
-            } catch (error) {
-                console.error("renderOperatingAirlineCode: " + error.message);
-                return "";
-            }
-        };
-        /**
-* Renders the bus class in Persian.
- 
-*/
-        const renderbusClass = async (element) => {
-            try {
-                const classMap = {
-                    economy: "اکونومی",
-                    businessclass: "بیزینس",
-                    firstclass: "فرست"
-                };
-                return classMap[element.toLowerCase()] || "فرست";
-            } catch (error) {
-                console.error("renderbusClass: " + error.message);
-                return "";
-            }
-        };
-
-        /**
-         * Renders airline logo based on airline code.
-         * @param {string} element - Airline code.
-         * @returns {string} HTML string of airline logo or empty string on error.
-         */
-
-        const renderAirlineCode = async (element) => {
-            try {
-                const mergedCarriers = {};
-                dictionaries.forEach(item => {
-                    Object.keys(item.carriers).forEach(key => {
-                        mergedCarriers[key] = item.carriers[key];
-                    });
-                });
-                return `<img src="/${mergedCarriers[element].image}" width="70" height="28" alt="${mergedCarriers[element].name}"/>`;
-            } catch (err) {
-                console.error(`renderAirlineCode: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-                return "";
-            }
-        };
-
-        /**
-        * Renders the airline name for a given airline code.
-        */
-        const renderAirlineName = async (element) => {
-            try {
-                const mergedCarriers = dictionaries.reduce((acc, item) => ({ ...acc, ...item.carriers }), {});
-                return mergedCarriers[element]?.name || "";
-            } catch (error) {
-                console.error("renderAirlineName: " + error.message);
-                return "";
-            }
-        };
-        /**
-* Renders baggage information.
-*/
-        const renderBaggages = async (element, style) => {
-            try {
-                if (Number(element?.Baggage) === 0) {
-                    return `<span class="book-baggage__info ${style ? 'book-font-bold' : ''}">بدون بار</span>`;
-                }
-                const baggageHTML = `
-            <span class="book-baggage__info ${style ? 'book-relative book-top-[2px] book-font-bold' : ''}">
-                ${element.Baggage}
-                <span class="book-ml-1">${element.Unit || ""}</span>
-            </span>
-        `;
-
-                return baggageHTML.trim();
-            } catch (error) {
-                console.error("renderBaggages: " + error.message);
-                return "";
-            }
-        };
-        /**
-        * Renders connection time for a route stop.
-        */
-        const renderConnectionTimeRoute = async (element) => {
-            try {
-                if (element?.ConnectionTime > 0) {
-                    const hours = Math.floor(element.ConnectionTime / 60);
-                    const minutes = element.ConnectionTime % 60;
-                    return `<div class="book-my-10 book-flex book-text-zinc-800 book-text-sm book-justify-between book-bg-zinc-100 book-rounded-xl book-p-3">
-            <div class="book-flex book-gap-1">
-                <svg width="15" height="16">
-                    <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#hourglass-icon"></use>
-                </svg>
-                <span>مدت توقف: ${hours} ساعت و ${minutes} دقیقه</span>
-            </div>
-            <div>
-                (${element.DestinationAirport})
-                ${await renderAirport(element.DestinationAirport)}
-            </div>
-        </div>`;
-                }
-                return "";
-            } catch (error) {
-                console.error("renderConnectionTimeRoute: " + error.message);
-                return "";
-            }
-        };
-
-        /**
-             * Renders the city name for a given location code.
-             */
-        const renderCity = async (element) => {
-            try {
-                const mergedLocation = dictionaries.reduce((acc, item) => ({ ...acc, ...item.location }), {});
-                return mergedLocation[element]?.city || "";
-            } catch (error) {
-                console.error("renderCity: " + error.message);
-                return "";
-            }
-        };
-
-
-        /**
-         * Renders airport name based on airport code.
-         * @param {string} element - Airport code.
-         * @returns {string} Airport name or empty string on error.
-         */
-        const renderAirport = async (element) => {
-            try {
-                const mergedLocation = {};
-                dictionaries.forEach(item => {
-                    Object.keys(item.location).forEach(key => {
-                        mergedLocation[key] = item.location[key];
-                    });
-                });
-                return mergedLocation[element].airport;
-            } catch (err) {
-                console.error(`renderAirport: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-                return "";
-            }
-        };
-
-
-
-        /**
-        * Renders fare rules as title-text pairs.
-        */
-        const renderRule = async (element) => {
-            try {
-                let output = "";
-                for (const item of element || []) {
-                    output += `<div class="book-text-sm">
-            <div class="book-text-zinc-600 book-mb-1">${item.title}:</div>
-            <div>${item.text}</div>
-        </div>`;
-                }
-                return output;
-            } catch (error) {
-                console.error("renderRule: " + error.message);
-                return "";
-            }
-        };
 
         /**
             * Renders passenger fare details (base fare, tax, unit, total).
@@ -1402,89 +1041,6 @@
             }
         };
 
-
-        /**
-         * Renders currency symbol or value based on currency code.
-         * @param {string} element - Currency code.
-         * @param {string} [type] - Optional type ('input' for raw value, else HTML span).
-         * @returns {string} Currency value or HTML span with symbol, or empty string on error.
-         */
-        // const renderCurrency = async (element, type) => {
-        //     try {
-        //         const mergedCurrency = {};
-        //         // Merge currency data from dictionaries
-        //         dictionaries.forEach(item => {
-        //             Object.keys(item.currency).forEach(key => {
-        //                 mergedCurrency[key] = item.currency[key];
-        //             });
-        //         });
-        //         if (type === "input") {
-        //             return mergedCurrency[element]; // Return raw currency value
-        //         }
-        //         return `<span class="book-text-xs book-mr-1">${mergedCurrency[element]}</span>`; // Return HTML span with symbol
-        //     } catch (err) {
-        //         console.error(`renderCurrency: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-        //         return "";
-        //     }
-        // };
-
-
-
-        // const renderCurrency = async (currencyCode) => {
-        const renderCurrency = async (currencyCode) => {
-            try {
-                // Fetch bus data from localStorage
-                const busData = JSON.parse(sessionStorage.getItem('sessionBook')) || {};
-                const currencyMap = busData.dictionaries?.currency || { IRR: "ریال" }; // Fallback to IRR if not found
-
-                // Check if the currency code exists
-                if (!currencyMap[currencyCode]) {
-                    throw new Error(`Currency code ${currencyCode} not found`);
-                }
-
-                // Return HTML span with currency symbol
-                return `<span class="book-text-xs book-mr-1">${currencyMap[currencyCode]}</span>`;
-            } catch (err) {
-                console.error(`renderCurrency: ${err.message}`);
-                // Return fallback currency symbol
-                return `<span class="book-text-xs book-mr-1">ریال</span>`;
-            }
-        };
-        /**
-         * Renders API list data by updating UI elements after processing.
-         * Sets the data-run attribute and hides the loader.
-         */
-        const renderListApi = async () => {
-            try {
-                const apiContainer = document.querySelector(".book-rendering__list__api");
-                // Set data-run attribute to indicate processing completion
-                apiContainer.querySelector(".book-api__load").setAttribute("data-run", "1");
-                // Hide the loader if it exists
-                const loader = apiContainer.querySelector(".book-drop__loader__content");
-                if (loader) {
-                    loader.classList.add("book-hidden");
-                }
-            } catch (err) {
-                console.error(`renderListApi: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-        /**
-         * Renders API info data by updating UI elements after processing.
-         * Hides the loader and removes the rendering class.
-         */
-        const renderInfoApi = async () => {
-            try {
-                const apiContainer = document.querySelector(".book-rendering__info__api");
-                // Hide the loader
-                apiContainer.querySelector(".book-api__container__loader").classList.add("book-hidden");
-                // Remove the rendering class to reset state
-                apiContainer.classList.remove("book-rendering__info__api");
-            } catch (err) {
-                console.error(`renderInfoApi: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
         /**
          * Initiates coupon code validation by triggering an API call.
          * Shows the loader and sends coupon data.
@@ -1522,63 +1078,6 @@
                 }]);
             } catch (err) {
                 console.error(`renderCheckCoupon: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-        /**
-         * Renders counter selection UI after data is processed.
-         * Sets the data-run attribute and hides the loader.
-         */
-        const renderCounter = async () => {
-            try {
-                const counterContainer = document.querySelector(".book-counter__container");
-                // Set data-run attribute to indicate processing completion
-                counterContainer.querySelector("input").setAttribute("data-run", "1");
-                // Hide the loader if it exists
-                const loader = counterContainer.querySelector(".book-drop__loader__content");
-                if (loader) {
-                    loader.classList.add("book-hidden");
-                }
-            } catch (err) {
-                console.error(`renderCounter: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-        /**
-         * Renders company rules UI after data is processed.
-         * Sets the data-run attribute on the input.
-         */
-        const renderCompanyRule = async () => {
-            try {
-                // Set data-run attribute to indicate processing completion
-                document.querySelector(".book-company__rule__container input").setAttribute("data-run", "1");
-            } catch (err) {
-                console.error(`renderCompanyRule: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-        /**
-         * Renders the bank list by updating invoice content with the first pay cost and removing the loader.
-         * @param {HTMLElement} element - The element triggering the rendering (not used in the function).
-         */
-        const renderBankList = async (element) => {
-            try {
-                console.log("bank list:" , element)
-                // Update all invoice content elements with the first pay cost
-                document.querySelectorAll(".book-invoice__content").forEach(e => {
-                    const firstPayCost = e.querySelector(".book-firstpay__cost");
-                    if (firstPayCost) {
-                        // Set the first pay cost text to match the value in the first pay container
-                        firstPayCost.textContent = document.querySelector(".book-firstpay__container .book-firstpay__cost").textContent;
-                    }
-                });
-
-                // Remove the API loader if it exists
-                const loader = document.querySelector(".book-invoice__container .book-api__container__loader");
-                if (loader) {
-                    loader.remove();
-                }
-            } catch (err) {
-                console.error(`renderBankList: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
             }
         };
         /**
@@ -1635,74 +1134,9 @@
                 console.error("toggleContentApi: " + error.message);
             }
         };
-        /**
-         * Toggles passenger type fields (internal/external) and updates UI.
-         * @param {HTMLElement} element - Radio input element triggering the toggle.
-         * @param {string} add - Passenger type to show (e.g., 'domestic').
-         * @param {string} remove - Passenger type to hide (e.g., 'international').
-         */
-        const togglePassengerType = (element, add, remove) => {
-            try {
-                const passengerContainer = element.closest(".book-passenger__container");
 
-                // Show fields for the added type and mark as required
-                passengerContainer.querySelectorAll(`.book-internal__${add}`).forEach(e => {
-                    e.querySelectorAll(".book-check-required").forEach(ie => {
-                        ie.classList.add("book-Required");
-                    });
-                    e.classList.remove("book-hidden");
-                });
 
-                // Hide fields for the removed type and clear required status
-                passengerContainer.querySelectorAll(`.book-internal__${remove}`).forEach(e => {
-                    e.querySelectorAll(".book-check-required").forEach(ie => {
-                        ie.classList.remove("book-Required");
-                    });
-                    e.classList.add("book-hidden");
-                });
 
-                // Check the selected radio input
-                element.querySelector("input[type=radio]").checked = true;
-
-                // Update date dropdown items for DateOfBirth field
-                passengerContainer.querySelector(".book-DateOfBirth").closest(".book-date__item__container")
-                    .querySelectorAll(".book-drop__item__content").forEach(e => {
-                        e.querySelectorAll("li").forEach(ie => {
-                            if (ie.getAttribute("data-switch")) {
-                                const dataSwitch = ie.getAttribute("data-switch");
-                                const dataValue = ie.getAttribute("data-value");
-                                // Update text content with the new data-switch value
-                                ie.textContent = dataSwitch;
-                                // Update dataset id if year dropdown
-                                if (ie.closest(".book-date__item__content").querySelector(".book-year")) {
-                                    ie.dataset.id = dataSwitch;
-                                }
-                                // Swap data-switch and data-value attributes
-                                ie.setAttribute("data-switch", dataValue);
-                                ie.setAttribute("data-value", dataSwitch);
-                            }
-                        });
-                    });
-            } catch (err) {
-                console.error(`togglePassengerType: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-        /**
-         * Toggles visibility of two elements by showing one and hiding the other.
-         * @param {string} showClass - CSS class of the element to show.
-         * @param {string} hideClass - CSS class of the element to hide.
-         */
-        // const toggleVisibility = (showClass, hideClass) => {
-        //     try {
-        //         // Show the specified element
-        //         document.querySelector(showClass).classList.remove("book-hidden");
-        //         // Hide the specified element
-        //         document.querySelector(hideClass).classList.add("book-hidden");
-        //     } catch (err) {
-        //         console.error(`toggleVisibility: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-        //     }
-        // };
 
         const toggleVisibility = (showSelector, hideSelector) => {
     try {
@@ -1717,165 +1151,13 @@
 };
 
 
-        /**
-         * Toggles dropdown item visibility and triggers data load if needed.
-         * @param {HTMLElement} element - Input element triggering the dropdown.
-         * @param {string} type - Container class type (e.g., 'code__item__container').
-         * @param {string} [load] - Optional API load identifier (e.g., 'dataSource').
-         */
-        const toggleDropItem = (element, type, load) => {
-            try {
-                // Reset input attributes
-                element.setAttribute("data-id", "");
-                element.value = "";
-
-                // Close all other dropdowns
-                document.querySelectorAll(".book-drop__item__content").forEach(e => {
-                    e.classList.remove("book-drop__item__content-toggle");
-                });
-
-                // Show all list items in the target dropdown
-                const dropContainer = element.closest(`.${type}`);
-                dropContainer.querySelector(".book-drop__item__content").querySelectorAll("li").forEach(e => {
-                    e.classList.remove("book-hidden");
-                });
-
-                // Toggle the target dropdown visibility
-                dropContainer.querySelector(".book-drop__item__content").classList.toggle("book-drop__item__content-toggle");
-
-                // Trigger data load if specified and not yet run
-                if (load && !element.getAttribute("data-run")) {
-                    // Set positioning for loader based on container type
-                    let left = "book-left-12";
-                    let top = "book-top-7";
-                    if (element.closest(".book-code__item__container") || element.closest(".book-counter__container")) {
-                        left = "book-left-9";
-                        top = "book-top-2.5";
-                    }
-                    // Insert loader HTML
-                    element.insertAdjacentHTML("afterend",
-                        `<span class="book-drop__loader__content book-absolute ${top} ${left}">
-                                        <svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#000" width="18" height="18">
-                                            <g fill="none" fill-rule="evenodd">
-                                                <g transform="translate(1 1)" stroke-width="2">
-                                                    <circle stroke-opacity=".5" cx="18" cy="18" r="18"></circle>
-                                                    <path d="M36 18c0-9.94-8.06-18-18-18">
-                                                        <animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"></animateTransform>
-                                                    </path>
-                                                </g>
-                                            </g>
-                                        </svg>
-                                    </span>`);
-                    // Trigger API call
-                    $bc.setSource(`cms.${load}`, true);
-                    // Add rendering class if in API container
-                    if (element.closest(".book-api__container")) {
-                        element.closest(".book-api__container").classList.add("book-rendering__list__api");
-                    }
-                }
-            } catch (err) {
-                console.error(`toggleDropItem: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-        /**
-         * Toggles company rules modal visibility and triggers data load if needed.
-         * @param {HTMLElement} element - Element triggering the toggle (e.g., checkbox).
-         */
-        const toggleCompanyRule = (element) => {
-            try {
-                const ruleContainer = element.closest(".book-company__rule__container");
-                // Toggle modal visibility if it exists
-                ruleContainer.querySelector(".book-modal__container")?.classList.toggle("book-hidden");
-                const checkbox = ruleContainer.querySelector("input[type=checkbox]");
-                // Trigger API call if not yet run
-                if (checkbox.getAttribute("data-run") === "0") {
-                    $bc.setSource("cms.companyRules", true);
-                    checkbox.setAttribute("data-run", "1");
-                }
-            } catch (err) {
-                console.error(`toggleCompanyRule: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-        /**
-         * Toggles the visibility of a select item content element.
-         * @param {HTMLElement} element - The element triggering the toggle (e.g., a button or link).
-         */
-        function toggleSelectItem(element) {
-            try {
-                // Find the select item content within the closest container
-                const selectItemContent = element.closest('.book-select__item__container').querySelector('.book-select__item__content');
-
-                // Toggle visibility by adding or removing the hidden class
-                if (selectItemContent.classList.contains("book-hidden")) {
-                    selectItemContent.classList.remove("book-hidden");
-                } else {
-                    selectItemContent.classList.add("book-hidden");
-                }
-            } catch (err) {
-                console.error(`toggleSelectItem: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        }
-
-        /**
-    * Processes coupon API response, updates UI with messages, and adjusts prices.
-    * @param {Object} args - API response object containing status and data.
-    */
-
-
-        const onProcessedCheckCoupon = async (args) => {
-            try {
-                const response = args.response;
-                if (response.status === 200) {
-                    const responseJson = await response.json();
-                    const couponContainer = document.querySelector(".book-coupon__container");
-                    if (!couponContainer) throw new Error("Coupon container not found");
-
-                    // Hide loader
-                    const loader = couponContainer.querySelector(".book-api__container__loader");
-                    if (loader) loader.classList.add("book-hidden");
-
-                    const responseElement = couponContainer.querySelector(".book-api__container__reponse");
-                    if (!responseElement) throw new Error("Response element not found");
-
-                    if (responseJson) {
-                        // Handle coupon response codes
-                        if (Number(responseJson.code) === 1) {
-                            responseElement.textContent = `مبلغ محصول کمتر از مبلغ کوپن است`;
-                            updatePrices();
-                        } else if (Number(responseJson.code) === 2) {
-                            responseElement.textContent = `کد کوپن شما برای این محصول وجود ندارد`;
-                            updatePrices();
-                        } else if (Number(responseJson.code) === 3) {
-                            responseElement.textContent = `کوپنی با این اطلاعات وجود ندارد`;
-                            updatePrices();
-                        } else if (Number(responseJson.code) === 4) {
-                            responseElement.textContent = `کد کوپن استفاده شده است`;
-                            updatePrices();
-                        } else {
-                            // Handle valid coupon
-                            if (responseJson.coupon_price?.unit === 'percent') {
-                                responseElement.innerHTML = `<span>کوپن شما شامل <span>${responseJson.coupon_price.cost}</span> درصد تخفیف است</span>`;
-                                updatePrices(responseJson.buy_price?.cost, responseJson.buy_price?.firstpay);
-                            } else {
-                                // Non-percent unit case (currently empty as per original)
-                            }
-                        }
-                    }
-                }
-            } catch (err) {
-                console.error(`onProcessedCheckCoupon: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-
-
 
         /**
          * Processes bus group API response, updates localStorage, and displays a warning modal if needed.
          * @param {Object} args - API response object containing the response data.
          */
-        const onProcessedbusGroup = async (args) => {
+        // checkk
+         const onProcessedbusGroup = async (args) => {
             try {
                 // Trigger research API call
                 $bc.setSource("cms.research", true);
@@ -1936,209 +1218,12 @@
             }
         };
 
-        /**
-         * Hides the warning modal when the user confirms.
-         * @param {HTMLElement} element - The button element triggering the confirmation.
-         */
-        const warningConfirm = (element) => {
-            try {
-                const modal = element.closest(".book-warning__message__modal__container");
-                if (!modal) {
-                    throw new Error("Warning modal container not found");
-                }
-                modal.classList.add("book-hidden");
-            } catch (err) {
-                console.error(`warningConfirm: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-        /**
-         * Redirects to the homepage when the user rejects the warning.
-         * @param {HTMLElement} element - The button element triggering the rejection.
-         */
-        const warningReject = (element) => {
-            try {
-                window.location = "/";
-            } catch (err) {
-                console.error(`warningReject: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-        /**
-         * Renders the bus search UI based on stored bus group data.
-         */
-        const renderResearch = async () => {
-            try {
-                // Validate localStorage data
-                if (!sessionSearchLocalStorage || !sessionSearchLocalStorage.Schemaid) {
-                    throw new Error("Missing Schemaid in sessionSearchLocalStorage");
-                }
-                if (!sessionBookStorage || !sessionBookStorage.busGroup || !sessionBookStorage.priceInfo) {
-                    throw new Error("Invalid or missing data in sessionBookStorage");
-                }
-
-                schemaId = sessionSearchLocalStorage.Schemaid;
-
-                // Update cabin class display
-                const cabinClass = document.querySelector(".book-cabinClass__searched__content");
-                if (!cabinClass) {
-                    throw new Error("Cabin class element not found");
-                }
-
-                const cabinMap = {
-                    Economy: { text: "اکونومی", class: "Economy" },
-                    BusinessClass: { text: "بیزینس", class: "BusinessClass" },
-                    FirstClass: { text: "فرست", class: "FirstClass" }
-                };
-                const busClass = sessionBookStorage.busGroup[0].Class;
-                const cabin = cabinMap[busClass] || { text: "اکونومی", class: "Economy" }; // Fallback to Economy
-                cabinClass.textContent = cabin.text;
-                cabinClass.dataset.class = cabin.class;
-
-                // Update bus type selection
-                const busTypes = document.querySelectorAll('.book-module__bus__type li');
-                if (busTypes.length < 3) {
-                    throw new Error("bus type elements not found or insufficient");
-                }
-                busTypes.forEach(item => item.classList.remove('book-active__module__bus__type'));
-                const typeIndex = { 291: 0, 290: 1, 292: 2 }[schemaId];
-                if (busTypes[typeIndex]) {
-                    busTypes[typeIndex].classList.add('book-active__module__bus__type');
-                } else {
-                    console.warn(`Invalid schemaId: ${schemaId}, defaulting to first bus type`);
-                    busTypes[0].classList.add('book-active__module__bus__type');
-                }
-
-                // Update passenger summary
-                const passengerItems = document.querySelectorAll('.book-passenger__searched__items li');
-                const passengerCountInput = document.querySelector('.book-passenger__count');
-                if (passengerItems.length < 3 || !passengerCountInput) {
-                    throw new Error("Passenger items or count input not found");
-                }
-
-                const passengerFare = sessionBookStorage.priceInfo.passengerFare;
-                const passengerParts = [];
-                if (passengerFare[0].count > 0) passengerParts.push(`${passengerFare[0].count} بزرگسال`);
-                if (passengerFare[1].count > 0) passengerParts.push(`${passengerFare[1].count} کودک`);
-                if (passengerFare[2].count > 0) passengerParts.push(`${passengerFare[2].count} نوزاد`);
-                const passengerSummary = passengerParts.join(' / ') || "1 بزرگسال"; // Fallback
-                passengerCountInput.value = passengerSummary;
-
-                passengerItems[0].querySelector(".book-passenger__count__value").innerHTML = passengerFare[0].count || 0;
-                passengerItems[1].querySelector(".book-passenger__count__value").innerHTML = passengerFare[1].count || 0;
-                passengerItems[2].querySelector(".book-passenger__count__value").innerHTML = passengerFare[2].count || 0;
-
-                // Update passenger UI for single adult case
-                if (passengerFare[0].count === 1 && passengerFare[1].count === 0 && passengerFare[2].count === 0) {
-                    updatePassengerUI(); // Assumed to be defined elsewhere
-                }
-
-                // Update trip details
-                if (sessionBookStorage.busGroup.length === 0) {
-                    throw new Error("No bus group data available");
-                }
-
-                const departureLocationName = document.querySelector(".departure__location__name");
-                const arrivalLocationName = document.querySelector(".arrival__location__name");
-                const departureDate = document.querySelector(".departure__date");
-                const arrivalDate = document.querySelector(".arrival__date");
-                const arrivalDateContainer = document.querySelector(".arrival__date__container");
-                if (!departureLocationName || !arrivalLocationName || !departureDate || !arrivalDate || !arrivalDateContainer) {
-                    throw new Error("Trip detail elements not found");
-                }
-
-                const busGroup = sessionBookStorage.busGroup;
-                const lastIndex = busGroup.length - 1;
-
-                if (schemaId === 291) {
-                    // One-way trip
-                    departureLocationName.value = await renderCity(busGroup[0].Origin) || "";
-                    arrivalLocationName.value = await renderCity(busGroup[lastIndex].Destination) || "";
-                    departureLocationName.dataset.id = busGroup[0].Origin;
-                    arrivalLocationName.dataset.id = busGroup[lastIndex].Destination;
-                    departureDate.value = convertToPersianDate(busGroup[0].DepartureDate) || "";
-                    departureDate.dataset.date = busGroup[0].DepartureDate || "";
-                } else if (schemaId === 290) {
-                    // Round-trip
-                    departureLocationName.value = await renderCity(busGroup[0].Origin) || "";
-                    arrivalLocationName.value = await renderCity(busGroup[lastIndex].Destination) || "";
-                    departureLocationName.dataset.id = busGroup[0].Origin;
-                    arrivalLocationName.dataset.id = busGroup[lastIndex].Destination;
-                    departureDate.value = convertToPersianDate(busGroup[0].DepartureDate) || "";
-                    departureDate.dataset.date = busGroup[0].DepartureDate || "";
-                    arrivalDate.value = convertToPersianDate(busGroup[lastIndex].ArrivalDate) || "";
-                    arrivalDate.dataset.date = busGroup[lastIndex].ArrivalDate || "";
-                    arrivalDateContainer.classList.remove("disabled__date__container");
-                } else {
-                    // Multi-city trip
-                    const container = document.querySelector("#route__template");
-                    if (!container) {
-                        throw new Error("Route template container not found");
-                    }
-                    const templateHTML = container.innerHTML;
-                    container.innerHTML = "";
-
-                    for (let index = 0; index < busGroup.length; index++) {
-                        const trip = busGroup[index];
-                        const tripClone = document.createElement("div");
-                        tripClone.innerHTML = templateHTML.trim();
-                        const tripElement = tripClone.firstElementChild;
-
-                        // Add trip name
-                        const tripNameDiv = document.createElement("div");
-                        tripNameDiv.classList.add("route__name", "book-text-sm", "book-mb-1");
-                        tripNameDiv.textContent = `مسیر ${tripNames[index] || (index + 1)}`; // Fallback to index
-                        tripElement.insertAdjacentElement("afterbegin", tripNameDiv);
-
-                        // Update trip details
-                        const depInput = tripElement.querySelector(".departure__location__name");
-                        const arrInput = tripElement.querySelector(".arrival__location__name");
-                        const depDate = tripElement.querySelector(".departure__date");
-                        const arrDateContainer = tripElement.querySelector(".arrival__date__container");
-                        if (!depInput || !arrInput || !depDate || !arrDateContainer) {
-                            throw new Error("Trip element inputs not found");
-                        }
-
-                        depInput.value = await renderCity(trip.Origin) || "";
-                        arrInput.value = await renderCity(trip.Destination) || "";
-                        depInput.dataset.id = trip.Origin;
-                        arrInput.dataset.id = trip.Destination;
-                        depDate.value = convertToPersianDate(trip.DepartureDate) || "";
-                        depDate.dataset.date = trip.DepartureDate || "";
-                        arrDateContainer.classList.add("book-hidden");
-
-                        // Add delete button for trips 3 and 4
-                        if (index === 2 || index === 3) {
-                            const deleteButton = document.createElement("button");
-                            deleteButton.textContent = "حذف";
-                            deleteButton.type = "button";
-                            deleteButton.classList.add("route__delete", "book-bg-red-500", "book-text-sm", "book-text-white", "book-px-2", "book-py-1", "book-rounded", "book-left-5", "book-top-0", "book-absolute");
-                            deleteButton.onclick = () => deleteRoute(deleteButton); // Assumed to be defined elsewhere
-                            tripElement.appendChild(deleteButton);
-                        }
-
-                        container.appendChild(tripElement);
-                    }
-
-                    // Update container styling for multi-city trips
-                    container.classList.remove("md:book-w-3/5");
-                    container.classList.add("book-grid", "book-grid-cols-2", "book-gap-4");
-                    container.querySelectorAll(".book-min-w-48").forEach(e => e.classList.remove("book-min-w-48"));
-                    container.querySelectorAll(".departure__date__container").forEach(e => e.classList.add("book-w-11/12"));
-                    const addRouteContainer = document.querySelector(".book__add__roue__container");
-                    if (addRouteContainer) {
-                        addRouteContainer.classList.remove("book-hidden");
-                    }
-                }
-            } catch (err) {
-                console.error(`renderResearch: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-        /**
+/**
          * Processes bus API rule response and renders bus rules, baggage, or services.
          * @param {Object} args - API response object containing status and data.
          */
         // Handle tab navigation click events for service selection
+        // checkk
         const selectServiceTab = (element, tabType, serviceType) => {
             // Get all navigation buttons and containers
             const buttons = document.querySelectorAll('.book-tab__navigation__content');
@@ -2193,6 +1278,7 @@
             }
         };
         // Process bus API rules for rendering bus rules, baggage, and services
+        // checkk
         const onProcessedbusApiRule = async (args) => {
             try {
                 // Validate response
@@ -2650,288 +1736,7 @@ onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
             }
         };
 
-        const toggleServiceTable = (element, serviceItemId) => {
-            const allServices = element.closest(".book-services__content").querySelectorAll(".book-route__service");
-            const allRouteButtons = element.closest(".book-services__content").querySelectorAll(".book-active__roue__excessService");
-
-            // Hide all service sections
-            allServices.forEach(item => item.classList.add("book-hidden"));
-
-            // Remove active class from all route headers and set arrow icon to "up"
-            allRouteButtons.forEach(btn => {
-                btn.classList.remove("book-active__roue__excessService");
-                const iconUse = btn.querySelector(".book-arrow__icon").querySelector("svg:last-of-type use");
-                if (iconUse) {
-                    iconUse.setAttribute("href", "[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#up-arrow-icon");
-                }
-            });
-
-            // Show the selected service section
-            const currentItem = document.getElementById(serviceItemId);
-            if (currentItem) {
-                currentItem.classList.remove("book-hidden");
-
-                // Add active class to the selected route header
-                element.classList.add("book-active__roue__excessService");
-
-                // Change arrow icon to "down"
-                const iconUse = element.querySelector(".book-arrow__icon").querySelector("svg:last-of-type use");
-                if (iconUse) {
-                    iconUse.setAttribute("href", "[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon");
-                }
-            }
-        };
-        // Update passenger table with selected baggage
-        const updatePassengerTable = async (element, tableId, description, price, currency) => {
-            try {
-                const table = document.getElementById(tableId);
-                const rows = table.getElementsByTagName('tr');
-
-                for (let row of rows) {
-                    const secondCellText = row.cells[1]?.textContent.trim();
-
-                    if (secondCellText === 'انتخاب نشده') {
-                        row.setAttribute("data-id", element.dataset.id);
-                        row.cells[1].textContent = description;
-                        row.cells[2].innerHTML = `${new Intl.NumberFormat().format(price).replace(/,/g, '/')} ${await renderCurrency(currency)}`;
-                        row.classList.add('book-passenger__row__selected');
-                        row.cells[2].insertAdjacentHTML("beforeend", ` <p class="book-text-red-600 book-mt-1 book-cursor-pointer" onclick="removePassengerServices(this)">حذف</p>`);
-
-                        let serviceAttr = "";
-                        if (tableId.includes('seat')) {
-                            serviceAttr = "data-seatId";
-                        } else if (tableId.includes('meal') || tableId.includes('baggage')) {
-                            serviceAttr = "data-serviceId";
-                        }
-
-                        const rowIndex = row.getAttribute("data-index");
-
-                        const passengerContainers = document.querySelectorAll(".book-passengers__container .book-passenger__container");
-                        passengerContainers.forEach(container => {
-                            const containerIndex = container.getAttribute("data-index");
-                            if (containerIndex === rowIndex && !container.closest(".book-hidden")) {
-                                let currentValue = container.getAttribute(serviceAttr);
-                                let currentArray = [];
-                                if (currentValue) {
-                                    try {
-                                        currentArray = JSON.parse(currentValue);
-                                    } catch {
-                                        currentArray = [];
-                                    }
-                                }
-                                const idToAdd = element.dataset.id;
-                                if (!currentArray.includes(idToAdd)) {
-                                    currentArray.push(idToAdd);
-                                }
-                                container.setAttribute(serviceAttr, JSON.stringify(currentArray));
-                            }
-                        });
-
-                        originalServiceTotalCost += price;
-                        updatePrices(parseInt(originalTotalCom) + parseInt(originalServiceTotalCost), parseInt(originalFirstPay) + parseInt(originalServiceTotalCost));
-
-                        if (tableId.includes('seat')) {
-                            element.classList.add('book-seat__selected');
-                        }
-
-                        const allRowsFilled = Array.from(rows).slice(1).every(r => r.cells[1]?.textContent.trim() !== 'انتخاب نشده');
-
-                        if (allRowsFilled) {
-                            let serviceType = tableId.includes('baggage') ? 'baggage'
-                                : tableId.includes('meal') ? 'meal'
-                                    : tableId.includes('seat') ? 'seat'
-                                        : 'unknown';
-
-                            const currentRouteSection = table.closest('.book-route__service');
-                            const serviceContainer = table.closest('.book-services__content');
-                            const allRouteSections = serviceContainer.querySelectorAll('.book-route__service');
-                            const currentRouteIndex = Array.from(allRouteSections).indexOf(currentRouteSection);
-
-                            if (currentRouteIndex < allRouteSections.length - 1) {
-                                const nextRouteSection = allRouteSections[currentRouteIndex + 1];
-                                const nextRouteId = nextRouteSection.id;
-
-                                // پیدا کردن هدر مسیر بعدی با روش مقاوم‌تر
-                                const parentContainer = nextRouteSection.closest('.book-excessService__content');
-                                const nextRouteHeader = parentContainer.querySelector('.book-flex[onclick*="toggleServiceTable"]');
-
-                                if (nextRouteHeader) {
-                                    toggleServiceTable(nextRouteHeader, nextRouteId);
-                                }
-                            }
-                        }
-
-                        break;
-                    }
-                }
-            } catch (error) {
-                console.error(`updatePassengerTable: ${error.message}`);
-            }
-        };
-
-        const removePassengerServices = (element) => {
-            const row = element.closest('tr');
-            if (!row) return;
-
-            const idToRemove = row.getAttribute("data-id");
-            if (!idToRemove) return;
-
-            const rawPriceText = row.cells[2]?.textContent?.split(' ')[0] || "";
-            const priceNumber = parseInt(rawPriceText.replace(/[^\d]/g, ''), 10);
-
-            row.cells[1].textContent = 'انتخاب نشده';
-            row.cells[2].textContent = '---';
-            row.setAttribute("data-id", "");
-            row.classList.remove('book-passenger__row__selected');
-
-            const closestRendering = row.closest(".book-api__container__rendering__seatService, .book-api__container__rendering__baggageService, .book-api__container__rendering__mealService");
-            if (!closestRendering) return;
-
-            let serviceAttr = "";
-            if (closestRendering.classList.contains("book-api__container__rendering__seatService")) {
-                serviceAttr = "data-seatId";
-            } else if (
-                closestRendering.classList.contains("book-api__container__rendering__baggageService") ||
-                closestRendering.classList.contains("book-api__container__rendering__mealService")
-            ) {
-                serviceAttr = "data-serviceId";
-            }
-
-            const rowIndex = row.getAttribute("data-index");
-            if (!rowIndex) return;
-
-            const passengerContainers = document.querySelectorAll(".book-passengers__container .book-passenger__container");
-            passengerContainers.forEach(container => {
-                if (!container.closest(".book-hidden")) {
-                    const containerIndex = container.getAttribute("data-index");
-                    if (containerIndex === rowIndex) {
-                        let currentValue = container.getAttribute(serviceAttr);
-                        let currentArray = [];
-                        if (currentValue) {
-                            try {
-                                currentArray = JSON.parse(currentValue);
-                            } catch {
-                                currentArray = [];
-                            }
-                        }
-
-                        const filteredArray = currentArray.filter(id => id !== idToRemove);
-                        container.setAttribute(serviceAttr, JSON.stringify(filteredArray));
-                    }
-                }
-            });
-
-            if (serviceAttr === "data-seatId") {
-                const seatElement = document.querySelector(`[data-id="${idToRemove}"].book-seat__selected`);
-                if (seatElement) {
-                    seatElement.classList.remove("book-seat__selected");
-                    seatElement.querySelectorAll('.seat-part').forEach(el => {
-                        el.setAttribute('fill', '#3b82f6');
-                    });
-                }
-            }
-
-            // 🟢 حالا که مقدار priceNumber رو داریم، کم کنیم از originalServiceTotalCost
-            if (!isNaN(priceNumber)) {
-                originalServiceTotalCost -= priceNumber;
-                updatePrices(parseInt(originalTotalCom) + parseInt(originalServiceTotalCost), parseInt(originalFirstPay) + parseInt(originalServiceTotalCost));
-            }
-        };
-
-
-
-        /**
-                 * Processes supplier credit response and updates UI based on credit status.
-                 * @param {Object} args - API response object containing status and data.
-                 */
-        const onProcessedSupplierCredit = async (args) => {
-            try {
-                const response = args.response;
-                if (response.status === 200) {
-                    const responseJson = await response.json();
-                    if (responseJson === false) {
-                        // Handle case where supplier credit is invalid
-                        const messageBox = document.querySelector(".book-nodata__container");
-                        const mainContainer = document.querySelector(".book-main__container");
-                        localStorage.removeItem("sessionSearch");
-                        localStorage.removeItem("sessionBook");
-                        // Show message box and hide main container
-                        if (messageBox) messageBox.classList.remove("book-hidden");
-                        if (mainContainer) mainContainer.classList.add("book-hidden"); // Fixed: Replaced passengersInfo with mainContainer
-                    }
-                } else {
-                    // Handle non-200 response by clearing bus book and showing expiry message
-                    localStorage.removeItem("sessionBook");
-                    document.querySelector(".book-expire__message__modal__container").classList.remove("book-hidden");
-                    document.querySelector(".book-no__time").classList.remove("book-hidden");
-                }
-            } catch (err) {
-                console.error(`onProcessedSupplierCredit: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-        /**
-         * Processes previous passengers response and updates UI to display passenger list.
-         * @param {Object} args - API response object containing status and data.
-         */
-        const onProcessedPreviousPassengers = async (args) => {
-            try {
-                const response = args.response;
-                if (response.status === 200) {
-                    const responseJson = await response.json();
-                    if (responseJson) {
-                        const previousPassengersContainer = document.querySelector(".book-previous__passengers__container");
-                        // Show previous passengers container if hidden
-                        if (previousPassengersContainer.classList.contains("book-hidden")) {
-                            previousPassengersContainer.classList.remove("book-hidden");
-                        }
-                        // Hide the next sibling of the previous passenger container
-                        document.querySelector(".book-selected__passenger .book-previous__passenger__container")
-                            .nextElementSibling.classList.add("book-hidden");
-                        // Trigger grid rendering with response data
-                        $bc.setSource("cms.gridPreviousPassengers", responseJson);
-                    }
-                }
-            } catch (err) {
-                console.error(`onProcessedPreviousPassengers: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
-
-        /**
-         * Processes user credit response and renders credit payment option if sufficient credit exists.
-         * @param {Object} args - API response object containing status and data.
-         */
-        const onProcessedUserCredit = async (args) => {
-            try {
-                const response = args.response;
-                if (response.status === 200) {
-                    const responseJson = await response.json();
-                    if (responseJson) {
-                        const userCredit = parseFloat(responseJson.user_credit);
-                        const firstPay = parseFloat(document.querySelector(".book-firstpay__cost").textContent.replace(/,/g, ""));
-                        // Check if user has sufficient credit
-                        if (userCredit > firstPay) {
-                            // Render credit payment option
-                            document.querySelector(".book-invoice__container").insertAdjacentHTML("beforeend", `<div class="book-invoice__content book-cursor-pointer book-p-2" data-run="0" onclick="submitInvoice(this,'credit__Invoice')">
-                                            <ul class="book-flex book-justify-between">
-                                                <li>${document.querySelector(".book-buyers__container").dataset.accounttype === "3" ? "پرداخت از طریق کیف پول" : "پرداخت اعتباری"}</li>
-                                                <li></li>
-                                                <li><img src="[##cms.cms.cdn##]/booking/images/credit-booking.png" alt="creditlogo" width="50" height="50" /></li>
-                                                <li><p>اعتبار باقی مانده :</p>
-                                                    <span class="book-price_remaining_of_credit">${new Intl.NumberFormat().format(userCredit - firstPay).replace(/,/g, '/')}</span>
-                                                    <span class="book-text-xs book-mx-1">${document.querySelector(".book-unit__content span").textContent}</span></li>
-                                                <li><span class="book-totalcom__cost">${document.querySelector(".book-firstpay__cost").textContent}</span>
-                                                    <span class="book-text-xs book-mx-1">${document.querySelector(".book-unit__content span").textContent}</span></li>
-                                                <li><button type="button" class="book-btn__content book-text-white book-rounded-2xl book-p-3 book-cursor-pointer book-text-center book-bg-primary-400 book-next__btn hover:book-bg-secondary-400">تایید و پرداخت</button></li>
-                                            </ul>
-                                        </div>`);
-                        }
-                    }
-                }
-            } catch (err) {
-                console.error(`onProcessedUserCredit: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
-            }
-        };
+// //////////////////////////////////////////////////////////////////////////
         /**
          * Processes country ID API response and renders country list in dropdowns.
          * @param {Object} args - API response object containing status and data.
