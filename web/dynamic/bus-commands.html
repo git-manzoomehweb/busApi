@@ -41,7 +41,7 @@ if="{##cms.rule.run|(false)##}"
 
 <!-- bus_rules -->
 <basis core="api" name="bus.rules" url="http://185.44.36.51:1550/api/bus/bus-rules" method="post" 
-    if="{##cms.seat.run|(false)##} " triggers="cms.seat" 
+    if="{##cms.seat.run|(false)##}" triggers="cms.seat" 
     content-type="application/json" run="atclient" body='{
     "busId": "{##cms.seat.busId##}",
     "busGroup": {##cms.seat.busGroup##},

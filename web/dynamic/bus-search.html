@@ -2223,18 +2223,22 @@ startProgressBar(1000);
     }
 
     // افزودن origin و destination به هر آیتم busGroup
-    const enrichedBusGroup = busGroupArray.map(item => ({
-      ...item,
-      origin: sessionSearchStorage.tripGroup.origin,
-      destination: sessionSearchStorage.tripGroup.destination
-    }));
+    // const enrichedBusGroup = busGroupArray.map(item => ({
+    //   ...item
+    // }));
 
-    console.log(enrichedBusGroup);
+   // const enrichedBusGroup = busGroupArray.map(item => ({
+   //   ...item,
+   //   origin: sessionSearchStorage.tripGroup.origin,
+   //   destination: sessionSearchStorage.tripGroup.destination
+   // }));
+
+    console.log(busGroupArray);
 
     $bc.setSource("cms.seat", {
       type: "upselling",
       busId: idToFind,
-      busGroup: JSON.stringify(enrichedBusGroup),
+      busGroup: JSON.stringify(busGroupArray),
       run: true
     });
 
@@ -2524,14 +2528,16 @@ startProgressBar(1000);
   };
 
 
-
-
   const onProcessedRenderBusRules = async (args) => {
     try {
+      console.log("onProcessedRenderBusRulesssssssssssssssssssssssssssssssssssssssssssss" , args);
       const { response } = args;
+      console.log("onProcessedRenderBusRulesssssssssssssssssssssssssssssssssssssssssssss" , response);
+      console.log("onProcessedRenderBusRulesssssssssssssssssssssssssssssssssssssssssssss" , response.status);
       if (response.status !== 200) return;
-
+      
       const responseJson = await response.json();
+      console.log("onProcessedRenderBusRulesssssssssssssssssssssssssssssssssssssssssssss" , responseJson);
       const renderingContainer = document.querySelector(`.rule-id-${responseJson[0].busId}`);
       if (!renderingContainer) return;
 
@@ -2561,7 +2567,7 @@ startProgressBar(1000);
           const rule = item.rule[j];
           if (rule.title === 'cancel rule') {
             // Split the rule text to extract conditions
-            const conditions = rule.text.split(' .');
+            const conditions = rule.text.split('.');
             for (let condition of conditions) {
               if (condition.trim() === '') continue;
               // Extract percentage and time
