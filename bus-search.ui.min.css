@@ -2184,7 +2184,7 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-.book-bus-card::before {
+/* .book-bus-card::before {
   content: "";
   position: absolute;
   height: 100%;
@@ -2197,7 +2197,7 @@ body {
   border-right: 2px solid var(--primary-700);
   transition: all 0.3s ease-in-out;
   z-index: 0 !important;
-}
+} */
 
 .book-bus-card.book-h-\[482px\]::after {
   height: 92%;

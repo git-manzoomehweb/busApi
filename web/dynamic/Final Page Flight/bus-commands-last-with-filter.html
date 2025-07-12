@@ -20,12 +20,19 @@ if="{##cms.rule.run|(false)##}"
 }'>
 </basis>
 
+<basis core="callback" run="atclient"
+    triggers="bus.search"
+    method="onCloseConnectionBus">
+</basis>
 
 <basis core="callback" run="atclient"
-    triggers="bus.search cms.page cms.nextpage cms.prevpage cms.company cms.outboundcompany cms.inboundcompany cms.terminal cms.outboundterminal cms.inboundterminal cms.stop cms.outboundstop cms.inboundstop cms.busnumber cms.outboundbusnumber cms.inboundbusnumber
-      cms.departuretime cms.outbounddeparturetime cms.inbounddeparturetime cms.outboundhour cms.inboundhour cms.hour cms.systembus cms.price cms.sort cms.bus"
+    triggers="bus.search cms.page cms.nextpage cms.prevpage 
+        cms.carrier cms.bustype  cms.originterminal  cms.departuretime cms.destinationterminal 
+      cms.hour cms.price cms.sort cms.bus cms.duration"
     method="busManipulation">
 </basis>
+
+
 
 
 <!-- available-seat -->
@@ -43,7 +50,7 @@ if="{##cms.rule.run|(false)##}"
 
 <!-- bus_rules -->
 <basis core="api" name="bus.rules" url="http://185.44.36.51:1550/api/bus/bus-rules" method="post" 
-    if="{##cms.seat.run|(false)##} " triggers="cms.seat" 
+    if="{##cms.seat.run|(false)##}" triggers="cms.seat" 
     content-type="application/json" run="atclient" body='{
     "busId": "{##cms.seat.busId##}",
     "busGroup": {##cms.seat.busGroup##},

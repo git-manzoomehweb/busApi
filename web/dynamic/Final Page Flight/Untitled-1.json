@@ -1,0 +1,975 @@
+{
+    "status": true,
+    "errorMessage": null,
+    "busProposals": [
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzBfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "06:00",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 19,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T12",
+                            "busOperatorImage": "ref647773200001689111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "06:00",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "VIP \u0647\u0645\u0631\u0627\u0647 \u0628\u0627 \u0634\u0627\u0631\u0698\u0631\u0627\u062e\u062a\u0635\u0627\u0635\u06cc"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8705000",
+                "tax": "0",
+                "providerFare": "1044600",
+                "totalCommission": "9749600",
+                "total": "9749600",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9749600",
+                        "baseFare": "8705000",
+                        "tax": "0",
+                        "providerFare": "1044600",
+                        "total": "9749600",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzFfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "07:00",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 17,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T12",
+                            "busOperatorImage": "ref647773200001689111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "07:00",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "VIP \u0647\u0645\u0631\u0627\u0647 \u0628\u0627 \u0634\u0627\u0631\u0698\u0631\u0627\u062e\u062a\u0635\u0627\u0635\u06cc"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8705000",
+                "tax": "0",
+                "providerFare": "1044600",
+                "totalCommission": "9749600",
+                "total": "9749600",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9749600",
+                        "baseFare": "8705000",
+                        "tax": "0",
+                        "providerFare": "1044600",
+                        "total": "9749600",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzJfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "22:00",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 15,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T12",
+                            "busOperatorImage": "ref647773200001689111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "22:00",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "VIP \u0647\u0645\u0631\u0627\u0647 \u0628\u0627 \u0634\u0627\u0631\u0698\u0631\u0627\u062e\u062a\u0635\u0627\u0635\u06cc"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8705000",
+                "tax": "0",
+                "providerFare": "1044600",
+                "totalCommission": "9749600",
+                "total": "9749600",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9749600",
+                        "baseFare": "8705000",
+                        "tax": "0",
+                        "providerFare": "1044600",
+                        "total": "9749600",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzNfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "22:45",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 14,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T12",
+                            "busOperatorImage": "ref647773200001689111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "22:45",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "VIP \u0647\u0645\u0631\u0627\u0647 \u0628\u0627 \u0634\u0627\u0631\u0698\u0631\u0627\u062e\u062a\u0635\u0627\u0635\u06cc"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8705000",
+                "tax": "0",
+                "providerFare": "1044600",
+                "totalCommission": "9749600",
+                "total": "9749600",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9749600",
+                        "baseFare": "8705000",
+                        "tax": "0",
+                        "providerFare": "1044600",
+                        "total": "9749600",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzRfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "21:30",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 8,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T15",
+                            "busOperatorImage": "ref947773200001989111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "21:30",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "VIP \u062a\u062e\u062a \u0634\u0648+\u0634\u0627\u0631\u0698\u0631 \u0627\u062e\u062a\u0635\u0627\u0635\u06cc"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8710000",
+                "tax": "0",
+                "providerFare": "1045200",
+                "totalCommission": "9755200",
+                "total": "9755200",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9755200",
+                        "baseFare": "8710000",
+                        "tax": "0",
+                        "providerFare": "1045200",
+                        "total": "9755200",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzVfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u0634\u0631\u0642(\u062a\u0647\u0631\u0627\u0646)",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "20:30",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 18,
+                    "description": "\u0645\u062d\u0644 \u0633\u0648\u0627\u0631\u0634\u062f\u0646 \u062a\u0631\u0645\u06cc\u0646\u0627\u0644 \u067e\u0631\u062f\u06cc\u0633 \u062c\u062f\u06cc\u062f",
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T15",
+                            "busOperatorImage": "ref947773200001989111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "20:30",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "25VOLVO-B9VIP\u0646\u0641\u0631\u0647(\u062a\u0647\u0631\u0627\u0646\u067e\u0627\u0631\u0633)"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8710000",
+                "tax": "0",
+                "providerFare": "1045200",
+                "totalCommission": "9755200",
+                "total": "9755200",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9755200",
+                        "baseFare": "8710000",
+                        "tax": "0",
+                        "providerFare": "1045200",
+                        "total": "9755200",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzZfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "17:30",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 18,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T08",
+                            "busOperatorImage": "ref047773200001289111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "17:30",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "\u0627\u0633\u06a9\u0627\u0646\u06cc\u0627 \u0648\u06cc \u0627\u06cc \u067e\u06cc25\u0635\u0646\u062f\u0644\u06cc"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8710000",
+                "tax": "0",
+                "providerFare": "1045200",
+                "totalCommission": "9755200",
+                "total": "9755200",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9755200",
+                        "baseFare": "8710000",
+                        "tax": "0",
+                        "providerFare": "1045200",
+                        "total": "9755200",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzdfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "21:00",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 17,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T08",
+                            "busOperatorImage": "ref047773200001289111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "21:00",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "\u0648\u06cc \u0622\u06cc \u067e\u06cc25\u0635\u0646\u062f\u0644\u06cc \u062a\u062e\u062a \u0634\u0648"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8710000",
+                "tax": "0",
+                "providerFare": "1045200",
+                "totalCommission": "9755200",
+                "total": "9755200",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9755200",
+                        "baseFare": "8710000",
+                        "tax": "0",
+                        "providerFare": "1045200",
+                        "total": "9755200",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzhfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "23:59",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 18,
+                    "description": null,
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "T08",
+                            "busOperatorImage": "ref047773200001289111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "23:59",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "\u0648\u06cc \u0622\u06cc \u067e\u06cc25\u0635\u0646\u062f\u0644\u06cc \u062a\u062e\u062a \u0634\u0648"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8710000",
+                "tax": "0",
+                "providerFare": "1045200",
+                "totalCommission": "9755200",
+                "total": "9755200",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9755200",
+                        "baseFare": "8710000",
+                        "tax": "0",
+                        "providerFare": "1045200",
+                        "total": "9755200",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzlfMTE4",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "15:45",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 19,
+                    "description": "\u062d\u0636\u0648\u0631\u0645\u0633\u0627\u0641\u0631\u06cc\u0646 \u0645\u062d\u062a\u0631\u0645 15 \u062f\u0642\u06cc\u0642\u0647 \u0642\u0628\u0644 \u0627\u0632 \u062d\u0631\u06a9\u062a \u0627\u0644\u0632\u0627\u0645\u06cc\u0633\u062a 55185424\u0627\u0644\u06cc26",
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "SYRSFR",
+                            "busOperatorImage": "ref237773200001679111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "15:45",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "\u0645\u0627\u0631\u0627\u064425* V.I.P + \u0634\u0627\u0631\u0698\u0631"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8700000",
+                "tax": "0",
+                "providerFare": "1044000",
+                "totalCommission": "9744000",
+                "total": "9744000",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9744000",
+                        "baseFare": "8700000",
+                        "tax": "0",
+                        "providerFare": "1044000",
+                        "total": "9744000",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        },
+        {
+            "busId": "Njg3MjRiMmVkYWQ0YTE4OTFhZWMzYmVhXzEwXzExOA==",
+            "busGroup": [
+                {
+                    "origin": 1203548,
+                    "originTerminal": "\u067e\u0627\u06cc\u0627\u0646\u0647 \u062c\u0646\u0648\u0628 \u062a\u0647\u0631\u0627\u0646",
+                    "destination": 1211083,
+                    "destinationTerminal": "\u0645\u0634\u0647\u062f (\u062e\u0631\u0627\u0633\u0627\u0646 )",
+                    "numberOfStops": 0,
+                    "departureDate": "1404-04-24",
+                    "departureTime": "16:45",
+                    "duration": null,
+                    "arrivalTime": null,
+                    "arrivalDate": null,
+                    "refundable": true,
+                    "availableSeats": 22,
+                    "description": "\u062d\u0636\u0648\u0631\u0645\u0633\u0627\u0641\u0631\u06cc\u0646 \u0645\u062d\u062a\u0631\u0645 15 \u062f\u0642\u06cc\u0642\u0647 \u0642\u0628\u0644 \u0627\u0632 \u062d\u0631\u06a9\u062a \u0627\u0644\u0632\u0627\u0645\u06cc\u0633\u062a 55185424\u0627\u0644\u06cc26",
+                    "routesInfo": [
+                        {
+                            "SegmentId": 1,
+                            "busOperatorCode": "SYRSFR",
+                            "busOperatorImage": "ref237773200001679111320001",
+                            "departureDate": "1404-04-24",
+                            "departureTime": "16:45",
+                            "arrivalDate": "",
+                            "arrivalTime": "",
+                            "duration": null,
+                            "originRoute": 1203548,
+                            "destinationRoute": 1211083,
+                            "busType": "\u0645\u0627\u0631\u0627\u064425* V.I.P + \u0634\u0627\u0631\u0698\u0631"
+                        }
+                    ]
+                }
+            ],
+            "priceInfo": {
+                "baseFare": "8700000",
+                "tax": "0",
+                "providerFare": "1044000",
+                "totalCommission": "9744000",
+                "total": "9744000",
+                "currency": "IRR",
+                "passengerFare": [
+                    {
+                        "passengerType": "Adult",
+                        "count": 1,
+                        "unit": "9744000",
+                        "baseFare": "8700000",
+                        "tax": "0",
+                        "providerFare": "1044000",
+                        "total": "9744000",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Child",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    },
+                    {
+                        "passengerType": "Infant",
+                        "count": 0,
+                        "unit": "0",
+                        "baseFare": "0",
+                        "tax": "0",
+                        "providerFare": "0",
+                        "total": "0",
+                        "commission": "0",
+                        "totalCommission": "0",
+                        "currency": "IRR"
+                    }
+                ]
+            },
+            "Provider": {
+                "ProviderId": "118",
+                "Dmnid": "2475"
+            }
+        }
+    ],
+    "dictionaries": {
+        "location": {
+            "1203548": {
+                "country": "\u0627\u06cc\u0631\u0627\u0646",
+                "city": "\u062a\u0647\u0631\u0627\u0646"
+            },
+            "1211083": {
+                "country": "\u0627\u06cc\u0631\u0627\u0646",
+                "city": "\u0645\u0634\u0647\u062f"
+            }
+        },
+        "carriers": {
+            "T12": {
+                "name": "\u06af\u06cc\u062a\u06cc \u0646\u0648\u0631\u062f \u062a\u0639\u0627\u0648\u0646\u064a 12",
+                "image": "ref647773200001689111320001"
+            },
+            "T15": {
+                "name": "\u062a\u0631\u0627\u0628\u0631\u0628\u06cc \u062a\u0627 \u062a\u0639\u0627\u0648\u0646\u06cc 15",
+                "image": "ref947773200001989111320001"
+            },
+            "T08": {
+                "name": "\u0644\u0648\u0627\u0646 \u0646\u0648\u0631 \u062a\u0639\u0627\u0648\u0646\u06cc 8",
+                "image": "ref047773200001289111320001"
+            },
+            "SYRSFR": {
+                "name": "\u0633\u06cc\u0631\u0648\u0633\u0641\u0631",
+                "image": "ref237773200001679111320001"
+            }
+        },
+        "currency": {
+            "IRR": "\u0631\u06cc\u0627\u0644"
+        },
+        "internal": true
+    }
+}
