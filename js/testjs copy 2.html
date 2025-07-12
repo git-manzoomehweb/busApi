@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .dropdown-trigger {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background: #007cba;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            user-select: none;
+            transition: background 0.3s;
+        }
+        
+        .dropdown-trigger:hover {
+            background: #005a8b;
+        }
+        
+        .dropdown-container {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .dropdown-header {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        
+        .dropdown-content {
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .book-drop__item__content {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .book-li-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .book-li-item:last-child {
+            border-bottom: none;
+        }
+        
+        .book-li-item:hover {
+            background-color: #f0f8ff;
+        }
+        
+        .book-cursor-pointer {
+            cursor: pointer;
+        }
+        
+        .book-p-2 {
+            padding: 8px;
+        }
+        
+        .selected-item {
+            background-color: #007cba !important;
+            color: white;
+        }
+        
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            color: #666;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .close-btn:hover {
+            color: #000;
+        }
+        
+        .selected-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 4px;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Date Dropdown Generator Test</h1>
+
+    <div class="dropdown-trigger" onclick="showDropdown('day')">Day</div>
+    <div class="dropdown-trigger" onclick="showDropdown('gregorianYear')">Gregorian Year</div>
+    <div class="dropdown-trigger" onclick="showDropdown('persianYear')">Persian Year</div>
+    <div class="dropdown-trigger" onclick="showDropdown('englishMonth')">English Month</div>
+    <div class="dropdown-trigger" onclick="showDropdown('persianMonth')">Persian Month</div>
+
+    <!-- Day Dropdown -->
+    <div id="dayDropdown" class="dropdown-container">
+        <div class="dropdown-header">
+            Days (1-31)
+            <span class="close-btn" onclick="hideDropdown('dayDropdown')">&times;</span>
+        </div>
+        <div class="dropdown-content" id="dayContent"></div>
+        <div id="daySelected" class="selected-info"></div>
+    </div>
+
+    <!-- Gregorian Year Dropdown -->
+    <div id="gregorianYearDropdown" class="dropdown-container">
+        <div class="dropdown-header">
+            Gregorian Years (1990-2025)
+            <span class="close-btn" onclick="hideDropdown('gregorianYearDropdown')">&times;</span>
+        </div>
+        <div class="dropdown-content" id="gregorianYearContent"></div>
+        <div id="gregorianYearSelected" class="selected-info"></div>
+    </div>
+
+    <!-- Persian Year Dropdown -->
+    <div id="persianYearDropdown" class="dropdown-container">
+        <div class="dropdown-header">
+            Persian Years (1380-1500)
+            <span class="close-btn" onclick="hideDropdown('persianYearDropdown')">&times;</span>
+        </div>
+        <div class="dropdown-content" id="persianYearContent"></div>
+        <div id="persianYearSelected" class="selected-info"></div>
+    </div>
+
+    <!-- English Month Dropdown -->
+    <div id="englishMonthDropdown" class="dropdown-container">
+        <div class="dropdown-header">
+            English Months
+            <span class="close-btn" onclick="hideDropdown('englishMonthDropdown')">&times;</span>
+        </div>
+        <div class="dropdown-content" id="englishMonthContent"></div>
+        <div id="englishMonthSelected" class="selected-info"></div>
+    </div>
+
+    <!-- Persian Month Dropdown -->
+    <div id="persianMonthDropdown" class="dropdown-container">
+        <div class="dropdown-header">
+            Persian Months
+            <span class="close-btn" onclick="hideDropdown('persianMonthDropdown')">&times;</span>
+        </div>
+        <div class="dropdown-content" id="persianMonthContent"></div>
+        <div id="persianMonthSelected" class="selected-info"></div>
+    </div>
+
+    <script>
+        // فانکشن برای تولید dropdown روزها
+        function generateDayDropdown() {
+            let html = '<ul class="book-drop__item__content">';
+            
+            for (let day = 1; day <= 31; day++) {
+                const dayFormatted = day.toString().padStart(2, '0');
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content', 'daySelected')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-id="${dayFormatted}" data-value="${day}">${day}</li>`;
+            }
+            
+            html += '\n</ul>';
+            return html;
+        }
+
+        // فانکشن برای تولید dropdown سال‌های میلادی
+        function generateGregorianYearDropdown(startYear, endYear) {
+            let html = '<ul class="book-drop__item__content">';
+            
+            // سال‌ها را از جدید به قدیم مرتب می‌کنیم
+            for (let year = endYear; year >= startYear; year--) {
+                const persianYear = year - 621;
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content', 'gregorianYearSelected')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-switch="${year}" data-id="${persianYear}" data-value="${persianYear}">${persianYear}
+                    </li>`;
+            }
+            
+            html += '\n</ul>';
+            return html;
+        }
+
+        // فانکشن برای تولید dropdown سال‌های شمسی
+        function generatePersianYearDropdown(startPersianYear, endPersianYear) {
+            let html = '<ul class="book-drop__item__content">';
+            
+            // سال‌ها را از جدید به قدیم مرتب می‌کنیم
+            for (let persianYear = endPersianYear; persianYear >= startPersianYear; persianYear--) {
+                const gregorianYear = persianYear + 621;
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content', 'persianYearSelected')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-switch="${gregorianYear}" data-id="${persianYear}" data-value="${persianYear}">${persianYear}
+                    </li>`;
+            }
+            
+            html += '\n</ul>';
+            return html;
+        }
+
+        // فانکشن برای تولید dropdown ماه‌ها (انگلیسی)
+        function generateEnglishMonthDropdown() {
+            const months = [
+                { id: '01', persian: 'فروردین', english: 'January' },
+                { id: '02', persian: 'اردیبهشت', english: 'February' },
+                { id: '03', persian: 'خرداد', english: 'March' },
+                { id: '04', persian: 'تیر', english: 'April' },
+                { id: '05', persian: 'مرداد', english: 'May' },
+                { id: '06', persian: 'شهریور', english: 'June' },
+                { id: '07', persian: 'مهر', english: 'July' },
+                { id: '08', persian: 'آبان', english: 'August' },
+                { id: '09', persian: 'آذر', english: 'September' },
+                { id: '10', persian: 'دی', english: 'October' },
+                { id: '11', persian: 'بهمن', english: 'November' },
+                { id: '12', persian: 'اسفند', english: 'December' }
+            ];
+            
+            let html = '<ul class="book-drop__item__content">';
+            
+            months.forEach(month => {
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content', 'englishMonthSelected')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-id="${month.id}" data-switch="${month.persian}" data-value="${month.english}">
+                        ${month.english}</li>`;
+            });
+            
+            html += '\n</ul>';
+            return html;
+        }
+
+        // فانکشن برای تولید dropdown ماه‌ها (فارسی)
+        function generatePersianMonthDropdown() {
+            const months = [
+                { id: '01', persian: 'فروردین', english: 'January' },
+                { id: '02', persian: 'اردیبهشت', english: 'February' },
+                { id: '03', persian: 'خرداد', english: 'March' },
+                { id: '04', persian: 'تیر', english: 'April' },
+                { id: '05', persian: 'مرداد', english: 'May' },
+                { id: '06', persian: 'شهریور', english: 'June' },
+                { id: '07', persian: 'مهر', english: 'July' },
+                { id: '08', persian: 'آبان', english: 'August' },
+                { id: '09', persian: 'آذر', english: 'September' },
+                { id: '10', persian: 'دی', english: 'October' },
+                { id: '11', persian: 'بهمن', english: 'November' },
+                { id: '12', persian: 'اسفند', english: 'December' }
+            ];
+            
+            let html = '<ul class="book-drop__item__content">';
+            
+            months.forEach(month => {
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content', 'persianMonthSelected')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-switch="${month.english}" data-id="${month.id}" data-value="${month.persian}">
+                        ${month.persian}</li>`;
+            });
+            
+            html += '\n</ul>';
+            return html;
+        }
+
+        // فانکشن برای نمایش dropdown
+        function showDropdown(type) {
+            // ابتدا همه dropdown ها را مخفی کن
+            hideAllDropdowns();
+            
+            let content, container;
+            
+            switch(type) {
+                case 'day':
+                    content = generateDayDropdown();
+                    container = 'dayDropdown';
+                    document.getElementById('dayContent').innerHTML = content;
+                    break;
+                    
+                case 'gregorianYear':
+                    content = generateGregorianYearDropdown(1990, 2025);
+                    container = 'gregorianYearDropdown';
+                    document.getElementById('gregorianYearContent').innerHTML = content;
+                    break;
+                    
+                case 'persianYear':
+                    content = generatePersianYearDropdown(1380, 1500);
+                    container = 'persianYearDropdown';
+                    document.getElementById('persianYearContent').innerHTML = content;
+                    break;
+                    
+                case 'englishMonth':
+                    content = generateEnglishMonthDropdown();
+                    container = 'englishMonthDropdown';
+                    document.getElementById('englishMonthContent').innerHTML = content;
+                    break;
+                    
+                case 'persianMonth':
+                    content = generatePersianMonthDropdown();
+                    container = 'persianMonthDropdown';
+                    document.getElementById('persianMonthContent').innerHTML = content;
+                    break;
+            }
+            
+            // نمایش dropdown مربوطه
+            document.getElementById(container).style.display = 'block';
+        }
+
+        // فانکشن برای مخفی کردن یک dropdown خاص
+        function hideDropdown(dropdownId) {
+            document.getElementById(dropdownId).style.display = 'none';
+        }
+
+        // فانکشن برای مخفی کردن همه dropdown ها
+        function hideAllDropdowns() {
+            const dropdowns = ['dayDropdown', 'gregorianYearDropdown', 'persianYearDropdown', 'englishMonthDropdown', 'persianMonthDropdown'];
+            dropdowns.forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+        }
+
+        // فانکشن selectDropItem که در onclick ها استفاده می‌شود
+        function selectDropItem(element, className, selectedInfoId) {
+            // حذف کلاس selected از همه آیتم‌ها در همین ul
+            const allItems = element.parentElement.querySelectorAll('.book-li-item');
+            allItems.forEach(item => item.classList.remove('selected-item'));
+            
+            // اضافه کردن کلاس selected به آیتم کلیک شده
+            element.classList.add('selected-item');
+            
+            // نمایش اطلاعات آیتم انتخاب شده
+            const dataId = element.getAttribute('data-id');
+            const dataValue = element.getAttribute('data-value');
+            const dataSwitch = element.getAttribute('data-switch');
+            const text = element.textContent.trim();
+            
+            let resultText = `Selected: "${text}"`;
+            if (dataId) resultText += ` | data-id: "${dataId}"`;
+            if (dataValue) resultText += ` | data-value: "${dataValue}"`;
+            if (dataSwitch) resultText += ` | data-switch: "${dataSwitch}"`;
+            
+            // نمایش در قسمت اطلاعات انتخابی
+            const selectedInfo = document.getElementById(selectedInfoId);
+            selectedInfo.textContent = resultText;
+            selectedInfo.style.display = 'block';
+            
+            console.log('آیتم انتخاب شده:', {
+                text: text,
+                dataId: dataId,
+                dataValue: dataValue,
+                dataSwitch: dataSwitch,
+                element: element
+            });
+        }
+    </script>
+</body>
+</html>

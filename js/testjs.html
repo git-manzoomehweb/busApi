@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .dropdown-trigger {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background: #007cba;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .book-drop__item__content {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            position: absolute;
+            top: 38px;left: 0;right: 0;
+        }
+        
+        .book-li-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .book-li-item:hover {
+            background-color: #f0f8ff;
+        }
+        
+        .book-cursor-pointer {
+            cursor: pointer;
+        }
+        
+        .book-p-2 {
+            padding: 8px;
+        }
+        
+        .selected-item {
+            background-color: #007cba !important;
+            color: white;
+        }
+        .container-date{display: flex ;justify-content: space-between;}
+        .relative{position: relative;}
+    </style>
+</head>
+<body>
+    <h1>testtttt</h1>
+
+    <div class="container-date">
+        <div class="relative">
+            
+            <div class="dropdown-trigger" onclick="generateDayDropdown(this)">day</div>
+        </div>
+        <div class="relative">
+            <div class="dropdown-trigger" onclick="generateGregorianYearDropdown(1990, 2025, this)">year</div>
+
+        </div>
+        <div class="relative">
+            <div class="dropdown-trigger" onclick="generatePersianYearDropdown(1380, 1500, this)">year</div>
+
+        </div>
+        <div class="relative">
+
+            <div class="dropdown-trigger" onclick="generateEnglishMonthDropdown(this)">month</div>
+        </div>
+        <div class="relative">
+            <div class="dropdown-trigger" onclick="generatePersianMonthDropdown(this)">month</div>
+
+        </div>
+    </div>
+
+    <script>
+        function generateDayDropdown(element) {
+            let html = '<ul class="book-drop__item__content">';
+            
+            for (let day = 1; day <= 31; day++) {
+                const dayFormatted = day.toString().padStart(2, '0');
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-id="${dayFormatted}" data-value="${day}">${day}</li>`;
+            }
+            
+            html += '</ul>';
+            
+            const existingDropdown = element.nextElementSibling;
+            if (existingDropdown && existingDropdown.tagName === 'UL') {
+                existingDropdown.remove();
+            }
+            
+            element.insertAdjacentHTML('afterend', html);
+        }
+
+        function generateGregorianYearDropdown(startYear, endYear, element) {
+            let html = '<ul class="book-drop__item__content">';
+            
+            for (let year = endYear; year >= startYear; year--) {
+                const persianYear = year - 621;
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-switch="${year}" data-id="${persianYear}" data-value="${persianYear}">${persianYear}
+                    </li>`;
+            }
+            
+            html += '</ul>';
+            
+            const existingDropdown = element.nextElementSibling;
+            if (existingDropdown && existingDropdown.tagName === 'UL') {
+                existingDropdown.remove();
+            }
+            
+            element.insertAdjacentHTML('afterend', html);
+        }
+
+        function generatePersianYearDropdown(startPersianYear, endPersianYear, element) {
+            let html = '<ul class="book-drop__item__content">';
+            
+            for (let persianYear = endPersianYear; persianYear >= startPersianYear; persianYear--) {
+                const gregorianYear = persianYear + 621;
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-switch="${gregorianYear}" data-id="${persianYear}" data-value="${persianYear}">${persianYear}
+                    </li>`;
+            }
+            
+            html += '</ul>';
+            
+            const existingDropdown = element.nextElementSibling;
+            if (existingDropdown && existingDropdown.tagName === 'UL') {
+                existingDropdown.remove();
+            }
+            
+            element.insertAdjacentHTML('afterend', html);
+        }
+
+        function generateEnglishMonthDropdown(element) {
+            const months = [
+                { id: '01', persian: 'فروردین', english: 'January' },
+                { id: '02', persian: 'اردیبهشت', english: 'February' },
+                { id: '03', persian: 'خرداد', english: 'March' },
+                { id: '04', persian: 'تیر', english: 'April' },
+                { id: '05', persian: 'مرداد', english: 'May' },
+                { id: '06', persian: 'شهریور', english: 'June' },
+                { id: '07', persian: 'مهر', english: 'July' },
+                { id: '08', persian: 'آبان', english: 'August' },
+                { id: '09', persian: 'آذر', english: 'September' },
+                { id: '10', persian: 'دی', english: 'October' },
+                { id: '11', persian: 'بهمن', english: 'November' },
+                { id: '12', persian: 'اسفند', english: 'December' }
+            ];
+            
+            let html = '<ul class="book-drop__item__content">';
+            
+            months.forEach(month => {
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-id="${month.id}" data-switch="${month.persian}" data-value="${month.english}">
+                        ${month.english}</li>`;
+            });
+            
+            html += '</ul>';
+            
+            const existingDropdown = element.nextElementSibling;
+            if (existingDropdown && existingDropdown.tagName === 'UL') {
+                existingDropdown.remove();
+            }
+            
+            element.insertAdjacentHTML('afterend', html);
+        }
+
+        function generatePersianMonthDropdown(element) {
+            const months = [
+                { id: '01', persian: 'فروردین', english: 'January' },
+                { id: '02', persian: 'اردیبهشت', english: 'February' },
+                { id: '03', persian: 'خرداد', english: 'March' },
+                { id: '04', persian: 'تیر', english: 'April' },
+                { id: '05', persian: 'مرداد', english: 'May' },
+                { id: '06', persian: 'شهریور', english: 'June' },
+                { id: '07', persian: 'مهر', english: 'July' },
+                { id: '08', persian: 'آبان', english: 'August' },
+                { id: '09', persian: 'آذر', english: 'September' },
+                { id: '10', persian: 'دی', english: 'October' },
+                { id: '11', persian: 'بهمن', english: 'November' },
+                { id: '12', persian: 'اسفند', english: 'December' }
+            ];
+            
+            let html = '<ul class="book-drop__item__content">';
+            
+            months.forEach(month => {
+                html += `
+                    <li onclick="selectDropItem(this,'book-date__item__content')"
+                        class="book-li-item book-cursor-pointer book-p-2"
+                        data-switch="${month.english}" data-id="${month.id}" data-value="${month.persian}">
+                        ${month.persian}</li>`;
+            });
+            
+            html += '</ul>';
+            
+            const existingDropdown = element.nextElementSibling;
+            if (existingDropdown && existingDropdown.tagName === 'UL') {
+                existingDropdown.remove();
+            }
+            
+            element.insertAdjacentHTML('afterend', html);
+        }
+
+        function selectDropItem(element, className) {
+            const allItems = element.parentElement.querySelectorAll('.book-li-item');
+            allItems.forEach(item => item.classList.remove('selected-item'));
+                       element.classList.add('selected-item');
+            
+            console.log('Selected:', element.textContent.trim(), element.dataset);
+        }
+    </script>
+</body>
+</html>
