@@ -1,0 +1,335 @@
+<basis core="group" name="flight" if="'[##cms.form.selectedMode##]'= 'flight'">
+    <div class="book-research__container book-my-5">
+        <div class="search-nav book-hidden">
+            <ul class="reservation-item">
+                <li data-type="1" class="flight-btn active-module" data-id="r-flight" data-nav="flight">
+                </li>
+            </ul>
+        </div>
+        <div id="r-flight">
+            <form id="flightSearch" class="formflight">
+                <div class="book-mb-8">
+                    <ul
+                        class="book-module__flight__type book-text-sm book-bg-specialcolor-1 book-text-zinc-800 book-rounded-3xl book-flex book-justify-between book-text-center">
+                        <li class="book-py-3 book-px-2 book-min-w-16 book-cursor-pointer book-active__module__flight__type"
+                            onclick="selectModuleFlightType(this,291)">
+                            یکطرفه</li>
+                        <li class="book-py-3 book-px-2 book-min-w-16 book-cursor-pointer"
+                            onclick="selectModuleFlightType(this,290)">
+                            رفت
+                            و برگشت</li>
+                        <li class="book-py-3 book-px-2 book-min-w-16 book-cursor-pointer"
+                            onclick="selectModuleFlightType(this,292)">
+                            چند
+                            مسیره</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div id="route__template" class="book-w-full book-route__mob">
+                        <div class="route__block book-relative">
+                            <div class="book-w-full book-relative">
+                                <div class="book-relative  book-city__option__container book-mb-4">
+                                    <div class="book-flex book-items-center">
+                                        <input type="text" onclick="handleCityListClick(this)"
+                                            oninput="handleCitySearch(this)"
+                                            class="departure__location__name book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
+                                            placeholder="مبدا" value>
+                                    </div>
+                                </div>
+                                <div onclick="exchangeCities(this)"
+                                    class="book-absolute book-z-[1] book-left-0 book-top-1.2 book--translate-y-1.2 book-bg-primary-500 book-rounded-lg book-px-2 book-text-center book-cursor-pointer hover:book-bg-secondary-500">
+                                    <svg width="30" height="30" stroke-width="1.5" stroke="white"
+                                        class="book-mt-2 book-ml-1">
+                                        <use
+                                            xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#exchange-down-icon">
+                                        </use>
+                                    </svg>
+                                </div>
+                                <div class="book-relative  book-city__option__container book-mb-4">
+                                    <div class="book-flex book-items-center">
+                                        <input type="text" onclick="handleCityListClick(this)"
+                                            oninput="handleCitySearch(this)"
+                                            class="arrival__location__name book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
+                                            placeholder="مقصد" value>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="date__searched__container book-w-full book-mb-4">
+                                <div class="Basis_Date_Box book-flex book-flex-wrap ">
+                                    <div class="departure__date__container book-w-1/2">
+                                        <div class="book-flex book-items-center">
+                                            <p class="auto-fit clear-both text-base text-textColor book-hidden">
+                                                <span class="selected-day"></span><span class="selected-month"></span>
+                                            </p>
+                                            <input type="text"
+                                                onclick="this.removeAttribute('data-date');Basis_Calendar(this,'[##cms.cms.date##]', 1)"
+                                                data-lang="fa" data-active="0" data-cache="0" readonly
+                                                class="Basis_Date departure__date start_date book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
+                                                placeholder="تاریخ رفت" value>
+                                            <input value class="mstring_date mstring_fdate" type="hidden"
+                                                aria-label="mstring_fdate">
+                                            <div class="clr"></div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="arrival__date__container book-w-1/2  disabled__date__container book-pr-2">
+                                        <div class="book-flex book-items-center">
+                                            <p class="auto-fit clear-both text-base text-textColor book-hidden">
+                                                <span class="selected-day"></span><span class="selected-month"></span>
+                                            </p>
+                                            <input type="text"
+                                                onclick="this.removeAttribute('data-date');Basis_Calendar(this,'[##cms.cms.date##]', 1)"
+                                                data-lang="fa" data-active="0" data-cache="0" readonly
+                                                class="Basis_Date arrival__date end_date  book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
+                                                placeholder="تاریخ برگشت" value>
+                                            <input value class="mstring_date mstring_tdate" type="hidden"
+                                                aria-label="mstring_tdate">
+                                            <div class="clr"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="book-passenger__searched__container book-w-full book-mb-4">
+                        <div>
+
+                            <div class="book-relative">
+                                <div class="book-flex book-items-center">
+                                    <input type="text" readonly
+                                        onclick="document.querySelector('.book-passenger__searched__content').classList.toggle('book-hidden')"
+                                        class="book-passenger__count book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600 book-cursor-pointer"
+                                        placeholder value="1 بزرگسال">
+                                </div>
+                                <div
+                                    class="book-passenger__searched__content book-text-zinc-800 book-bg-white book-z-[1] book-top-14 book-w-full  book-rounded-lg book-text-sm book-shadow-md book-p-3 book-absolute book-hidden">
+                                    <ul class="book-passenger__searched__items book-flex book-flex-col book-gap-4">
+                                        <li class="book-flex book-items-center book-justify-between book-h-10"
+                                            data-type="adult">
+                                            <div class="book-flex book-flex-col book-text-zinc-800">
+                                                <span class="book-text-sm book-mb-1">بزرگسال</span>
+                                                <span class="book-text-xs  book-text-zinc-600">بالای
+                                                    12
+                                                    سال</span>
+                                            </div>
+                                            <div class="book-flex book-items-center  book-justify-between book-gap-2">
+                                                <span onclick="increasePassengerCount(this)"
+                                                    class="book-plus book-border book-p-1 book-border-solid book-border-zinc-400 book-rounded-full book-cursor-pointer">
+                                                    <svg width="20" height="20">
+                                                        <use
+                                                            xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#plus-icon">
+                                                        </use>
+                                                    </svg>
+                                                </span>
+                                                <span class="book-passenger__count__value">1</span>
+                                                <span onclick="decreasePassengerCount(this)"
+                                                    class="book-minus book-border book-p-1 book-border-solid book-border-zinc-400 book-rounded-full book-cursor-pointer">
+                                                    <svg width="20" height="20">
+                                                        <use
+                                                            xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#minus-icon">
+                                                        </use>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="book-flex book-items-center book-justify-between book-h-10"
+                                            data-type="child">
+                                            <div class="book-flex book-flex-col book-text-zinc-800">
+                                                <span class="book-text-sm book-mb-1">کودک</span>
+                                                <span class="book-text-xs  book-text-zinc-600">2
+                                                    تا 12
+                                                    سال</span>
+                                            </div>
+                                            <div class="book-flex book-items-center  book-justify-between book-gap-2">
+                                                <span onclick="increasePassengerCount(this)"
+                                                    class="book-plus book-border book-p-1 book-border-solid book-border-zinc-400 book-rounded-full book-cursor-pointer">
+                                                    <svg width="20" height="20">
+                                                        <use
+                                                            xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#plus-icon">
+                                                        </use>
+                                                    </svg>
+                                                </span>
+                                                <span class="book-passenger__count__value">0</span>
+                                                <span onclick="decreasePassengerCount(this)"
+                                                    class="book-minus book-border book-p-1 book-border-solid book-border-zinc-400 book-rounded-full book-cursor-pointer">
+                                                    <svg width="20" height="20">
+                                                        <use
+                                                            xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#minus-icon">
+                                                        </use>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="book-flex book-items-center book-justify-between book-h-10"
+                                            data-type="infant">
+                                            <div class="book-flex book-flex-col book-text-zinc-800">
+                                                <span class="book-text-sm book-mb-1">نوزاد</span>
+                                                <span class="book-text-xs  book-text-zinc-600">زیر
+                                                    2 سال</span>
+                                            </div>
+                                            <div class="book-flex book-items-center  book-justify-between book-gap-2">
+                                                <span onclick="increasePassengerCount(this)"
+                                                    class="book-plus book-border book-p-1 book-border-solid book-border-zinc-400 book-rounded-full book-cursor-pointer">
+                                                    <svg width="20" height="20">
+                                                        <use
+                                                            xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#plus-icon">
+                                                        </use>
+                                                    </svg>
+                                                </span>
+                                                <span class="book-passenger__count__value">0</span>
+                                                <span onclick="decreasePassengerCount(this)"
+                                                    class="book-minus book-border book-p-1 book-border-solid book-border-zinc-400 book-rounded-full book-cursor-pointer">
+                                                    <svg width="20" height="20">
+                                                        <use
+                                                            xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#minus-icon">
+                                                        </use>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="book-cabinClass__searched__container book-relative book-cursor-pointer book-mb-4">
+                        <div class="book-bg-zinc-100 book-rounded-lg book-text-zinc-400 book-flex book-justify-between book-p-3"
+                            onclick="toggleCabinClassDropdown(this)">
+                            <span class="book-cabinClass__searched__content" data-class="Economy">اکونومی</span>
+                            <svg width="24" height="24">
+                                <use
+                                    xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                </use>
+                            </svg>
+                        </div>
+                        <div
+                            class="book-cabinClass__searched__items book-text-zinc-800 book-bg-white book-z-[1] book-top-14  book-w-full book-rounded-lg book-text-sm book-shadow-md book-p-3 book-absolute book-hidden">
+                            <ul>
+                                <li class="book-py-1 book-pr-2 book-cursor-pointer hover:book-bg-primary-50 book-rounded"
+                                    onclick="selectCabinClass(this)" data-id="Economy">اکونومی
+                                </li>
+                                <li class="book-py-1 book-pr-2 book-cursor-pointer hover:book-bg-primary-50 book-rounded"
+                                    onclick="selectCabinClass(this)" data-id="BusinessClass">بیزینس
+                                </li>
+                                <li class="book-py-1 book-pr-2 book-cursor-pointer hover:book-bg-primary-50 book-rounded"
+                                    onclick="selectCabinClass(this)" data-id="FirstClass">فرست</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="book__add__roue__container book-w-full book-mb-4 book-hidden">
+                        <button onclick="addRoute()" type="button"
+                            class="book-bg-secondary-500 book-text-white book-px-2 book-py-3 book-w-full book-rounded-lg hover:book-bg-primary-500 book-transition-colors book-animate-pulse-light">مسیر
+                            جدید</button>
+                    </div>
+                    <div class="book-w-full">
+                        <button onclick="fetchApi(this)" type="button"
+                            class="book-bg-primary-500 book-text-white book-px-2 book-py-3 book-w-full book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">جستجو</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</basis>
+
+
+<basis core="group" name="bus" if="'[##cms.form.selectedMode##]'= 'bus'">
+    <div class="book-research__container book-my-5">
+        <div class="search-nav book-hidden">
+            <ul class="reservation-item">
+                <li data-type="1" class="bus-btn active-module" data-id="r-bus" data-nav="bus">
+                </li>
+            </ul>
+        </div>
+        <div id="r-bus">
+            <form id="busSearch" class="formbus">
+                <div>
+                    <div class="book-w-full book-route__mob">
+                        <div class="route__block book-relative">
+                            <div class="book-w-full book-relative">
+                                <div class="book-relative  book-city__option__container book-mb-4">
+                                    <div class="book-flex book-items-center">
+                                        <input type="text" onclick="handleCityListClick(this)"
+                                            oninput="handleCitySearch(this)"
+                                            class="departure__location__name book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
+                                            placeholder="مبدا" value>
+                                    </div>
+                                </div>
+                                <div onclick="exchangeCities(this)"
+                                    class="book-absolute book-z-[1] book-left-0 book-top-1.2 book--translate-y-1.2 book-bg-primary-500 book-rounded-lg book-px-2 book-text-center book-cursor-pointer hover:book-bg-secondary-500">
+                                    <svg width="30" height="30" stroke-width="1.5" stroke="white"
+                                        class="book-mt-2 book-ml-1">
+                                        <use
+                                            xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#exchange-down-icon">
+                                        </use>
+                                    </svg>
+                                </div>
+                                <div class="book-relative  book-city__option__container book-mb-4">
+                                    <div class="book-flex book-items-center">
+                                        <input type="text" onclick="handleCityListClick(this)"
+                                            oninput="handleCitySearch(this)"
+                                            class="arrival__location__name book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
+                                            placeholder="مقصد" value>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="date__searched__container book-w-full book-mb-4">
+                                <div class="Basis_Date_Box book-flex book-flex-wrap ">
+                                    <div class="departure__date__container book-w-full">
+                                        <div class="book-flex book-items-center">
+                                            <p class="auto-fit clear-both text-base text-textColor book-hidden">
+                                                <span class="selected-day"></span><span class="selected-month"></span>
+                                            </p>
+                                            <input type="text"
+                                                onclick="this.removeAttribute('data-date');Basis_Calendar(this,'[##cms.cms.date##]', 1)"
+                                                data-lang="fa" data-active="0" data-cache="0" readonly
+                                                class="Basis_Date departure__date start_date book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
+                                                placeholder="تاریخ رفت" value>
+                                            <input value class="mstring_date mstring_fdate" type="hidden"
+                                                aria-label="mstring_fdate">
+                                            <div class="clr"></div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="arrival__date__container book-w-1/2  disabled__date__container book-pr-2 book-hidden">
+                                        <div class="book-flex book-items-center">
+                                            <p class="auto-fit clear-both text-base text-textColor book-hidden">
+                                                <span class="selected-day"></span><span class="selected-month"></span>
+                                            </p>
+                                            <input type="text"
+                                                onclick="this.removeAttribute('data-date');Basis_Calendar(this,'[##cms.cms.date##]', 1)"
+                                                data-lang="fa" data-active="0" data-cache="0" readonly
+                                                class="Basis_Date arrival__date end_date  book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
+                                                placeholder="تاریخ برگشت" value>
+                                            <input value class="mstring_date mstring_tdate" type="hidden"
+                                                aria-label="mstring_tdate">
+                                            <div class="clr"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="book-w-full">
+                        <button onclick="fetchApi(this)" type="button"
+                            class="book-bg-primary-500 book-text-white book-px-2 book-py-3 book-w-full book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">جستجو</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</basis>
+
+
+
+
+<link href="[##cms.cms.cdn##]/css/search-multicalendar-style-fa-ver.1.css?ver=1" type="text/css" rel="stylesheet" />
+<script src="[##cms.cms.cdn##]/js/search-multicalendar-scripts-fa-ver.1.js?ver=1"></script>
+<script src="[##cms.cms.cdn##]/booking/js/flight-retry-search.js?ver=1"></script>
+<basis core="call" file="Client_MultiLang_CalendarFa.inc" />

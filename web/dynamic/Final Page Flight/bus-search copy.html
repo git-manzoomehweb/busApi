@@ -1280,6 +1280,7 @@ const busManipulation = async (args) => {
 
         // ⭐ ذخیره listData در متغیر جهانی برای استفاده در سایر فانکشن‌ها
         globalListData = args;
+
         // ⭐ ذخیره داده‌های اصلی در صورت وجود
         if (args.source.id === "bus.search" && args.source._rows && Array.isArray(args.source._rows)) {
             const existingBusIds = new Set(globalBusProposals.map(bus => bus.busId));
@@ -1291,7 +1292,6 @@ const busManipulation = async (args) => {
                 }
             });
         }
-
 
         listData = args; // حفظ سازگاری با کد موجود
 
@@ -1625,9 +1625,6 @@ const busManipulation = async (args) => {
             InUpdatePaging = true;
             selectedBusId = null;
 
-                        ensurePriceSliderInitialized();
-
-
             if (!priceSlider) {
                 console.error("busManipulation: Price slider not found");
                 return;
@@ -1638,75 +1635,61 @@ const busManipulation = async (args) => {
                 return;
             }
 
+            const sliderRect = priceSlider.getBoundingClientRect();
+            let isDragging = false;
 
-            // 🔥 اصلاح: فقط در صورت عدم وجود drag فعال، handlePriceDrag اجرا شود
-            if (!isDragging) {
-                handlePriceDrag(args);
-            } else {
-                console.warn("busManipulation: Price drag already in progress, skipping");
-            }
+            /**
+             * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
+             */
+            const onMouseMove = (e) => {
+                if (!isDragging) return;
 
-            // جلوگیری از ادامه پردازش در حین drag
-            if (isDragging) {
-                return;
-            }
+                const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
+                const percent = (x / sliderRect.width) * 100;
 
+                if (args.source.rows[0].value === "min" && percent <= maxPercent) {
+                    minPercent = percent;
+                } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
+                    maxPercent = percent;
+                }
 
-            // const sliderRect = priceSlider.getBoundingClientRect();
-            // let isDragging = false;
+                // به‌روزرسانی فوری UI و priceRange
+                updatePriceSlider();
+            };
 
-            // /**
-            //  * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
-            //  */
-            // const onMouseMove = (e) => {
-            //     if (!isDragging) return;
+            /**
+             * پایان drag - اعمال فیلتر فوری
+             */
+            const onMouseUp = () => {
+                if (!isDragging) return;
 
-            //     const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
-            //     const percent = (x / sliderRect.width) * 100;
+                isDragging = false;
+                const dragDuration = Date.now() - dragStartTime;
 
-            //     if (args.source.rows[0].value === "min" && percent <= maxPercent) {
-            //         minPercent = percent;
-            //     } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
-            //         maxPercent = percent;
-            //     }
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
 
-            //     // به‌روزرسانی فوری UI و priceRange
-            //     updatePriceSlider();
-            // };
+                // 🔥 علامت‌گذاری که کاربر محدوده را تغییر داده
+                userHasChangedPriceRange = true;
+                lastUserMinPrice = priceRange[0];
+                lastUserMaxPrice = priceRange[1];
 
-            // /**
-            //  * پایان drag - اعمال فیلتر فوری
-            //  */
-            // const onMouseUp = () => {
-            //     if (!isDragging) return;
+                // اعمال فیلتر با تأخیر کمتر
+                clearTimeout(window.priceFilterTimeout);
 
-            //     isDragging = false;
-            //     const dragDuration = Date.now() - dragStartTime;
+                const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
 
-            //     document.removeEventListener("mousemove", onMouseMove);
-            //     document.removeEventListener("mouseup", onMouseUp);
+                window.priceFilterTimeout = setTimeout(() => {
+                    triggerPriceFilter();
+                }, delay);
 
-            //     // 🔥 علامت‌گذاری که کاربر محدوده را تغییر داده
-            //     userHasChangedPriceRange = true;
-            //     lastUserMinPrice = priceRange[0];
-            //     lastUserMaxPrice = priceRange[1];
+                console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
+            };
 
-            //     // اعمال فیلتر با تأخیر کمتر
-            //     clearTimeout(window.priceFilterTimeout);
-
-            //     const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
-
-            //     window.priceFilterTimeout = setTimeout(() => {
-            //         triggerPriceFilter();
-            //     }, delay);
-
-            //     console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
-            // };
-
-            // // شروع drag
-            // isDragging = true;
-            // document.addEventListener("mousemove", onMouseMove);
-            // document.addEventListener("mouseup", onMouseUp);
+            // شروع drag
+            isDragging = true;
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
         }
         else if (args.source.id === "cms.price.update") {
             // مدیریت به‌روزرسانی فیلتر قیمت (internal trigger)
@@ -2502,221 +2485,55 @@ const busManipulation = async (args) => {
     /**
      * به‌روزرسانی اسلایدر قیمت
      */
-const updatePriceSlider = () => {
-    try {
-        const totalRange = maxPrice - minPrice;
-        const priceMinValue = Math.round((minPercent / 100) * totalRange + minPrice);
-        const priceMaxValue = Math.round((maxPercent / 100) * totalRange + minPrice);
+    const updatePriceSlider = () => {
+        try {
+            const totalRange = maxPrice - minPrice;
+            const priceMinValue = Math.round((minPercent / 100) * totalRange + minPrice);
+            const priceMaxValue = Math.round((maxPercent / 100) * totalRange + minPrice);
 
-        // به‌روزرسانی فوری priceRange در همین لحظه
-        priceRange = [priceMinValue, priceMaxValue];
+            // به‌روزرسانی فوری priceRange در همین لحظه
+            priceRange = [priceMinValue, priceMaxValue];
 
-        // 🔥 به‌روزرسانی نمایش قیمت‌ها با مقادیر انتخاب شده (نه حداقل/حداکثر اصلی)
-        if (priceMinValueLabel) {
-            priceMinValueLabel.textContent = new Intl.NumberFormat().format(priceMinValue);
-        }
-        if (priceMaxValueLabel) {
-            priceMaxValueLabel.textContent = new Intl.NumberFormat().format(priceMaxValue);
-        }
-
-        // به‌روزرسانی UI اسلایدر
-        if (priceThumbMin) {
-            priceThumbMin.style.left = `${minPercent}%`;
-        }
-        if (priceThumbMax) {
-            priceThumbMax.style.left = `${maxPercent}%`;
-        }
-        if (priceTrack) {
-            priceTrack.style.left = `${minPercent}%`;
-            priceTrack.style.right = `${100 - maxPercent}%`;
-        }
-
-        // فراخوانی updateFilterDisplay برای موبایل (اگر موجود باشد)
-        if (typeof updateFilterDisplay === 'function') {
-            updateFilterDisplay(
-                "price",
-                "price-range",
-                priceMinValue,
-                priceMaxValue,
-                minPrice,
-                maxPrice,
-                null,
-                null
-            );
-        }
-
-        console.log(`💰 Price Range Updated: ${priceMinValue} - ${priceMaxValue}`);
-
-    } catch (error) {
-        console.error(`updatePriceSlider: ${error.message}`);
-    }
-};
-
-// 🔥 تابع جدید برای پاکسازی کامل event listener ها
-const cleanupEventListeners = () => {
-    try {
-        // پاکسازی price slider
-        if (priceThumbMin && priceThumbMin._priceMouseDownHandler) {
-            priceThumbMin.removeEventListener("mousedown", priceThumbMin._priceMouseDownHandler);
-            priceThumbMin._priceMouseDownHandler = null;
-        }
-        if (priceThumbMax && priceThumbMax._priceMouseDownHandler) {
-            priceThumbMax.removeEventListener("mousedown", priceThumbMax._priceMouseDownHandler);
-            priceThumbMax._priceMouseDownHandler = null;
-        }
-
-        // پاکسازی card events
-        const container = document.querySelector(".book-bus-cards-container");
-        if (container && container._busCardHandler) {
-            container.removeEventListener("click", container._busCardHandler, true);
-            container._busCardHandler = null;
-        }
-
-        // بازنشانی flags
-        priceSliderInitialized = false;
-        cardEventsInitialized = false;
-        
-        console.log("🧹 Event listeners cleaned up");
-    } catch (error) {
-        console.error("cleanupEventListeners: " + error.message);
-    }
-};
-
-// 🔥 تابع برای initialize کردن price slider به صورت lazy
-const ensurePriceSliderInitialized = () => {
-    if (!priceSliderInitialized && priceSlider && priceThumbMin && priceThumbMax) {
-        initializePriceSlider();
-    }
-};
-
-// 🔥 تابع برای initialize کردن card events به صورت lazy  
-const ensureCardEventsInitialized = () => {
-    if (!cardEventsInitialized) {
-        const container = document.querySelector(".book-bus-cards-container");
-        if (container) {
-            // تعریف handler اصلی با مدیریت صحیح propagation
-            const busCardHandler = (event) => {
-                // جلوگیری از اجرای event در صورت drag قیمت
-                if (isDragging) {
-                    console.log("🚫 Event blocked due to price dragging");
-                    return;
-                }
-
-                const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
-                const closeCardBtn = event.target.closest(".book-closeCard");
-                const openFirstMenu = event.target.closest(".book-open-first-menu");
-                const closeFirstMenu = event.target.closest(".book-first-menu .book-clode-menu");
-                const openSecondMenu = event.target.closest(".book-open-second-menu");
-                const closeSecondMenu = event.target.closest(".book-second-menu .book-clode-menu");
-                const openThirdMenu = event.target.closest(".book-open-third-menu");
-                const closeThirdMenu = event.target.closest(".book-third-menu .book-clode-menu");
-
-                const card = event.target.closest(".book-bus-card");
-                if (!card) return;
-
-                // متوقف کردن propagation برای جلوگیری از تداخل
-                event.stopPropagation();
-
-                // باز کردن کارت
-                if (seeMoreBtn) {
-                    event.preventDefault();
-                    seeMoreBtn.classList.add("book-hidden");
-                    card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.remove("book-hidden"));
-                    card.classList.remove("book-h-[240px]");
-                    card.classList.add("book-h-[482px]");
-                    console.log("🔓 Card opened");
-                    return;
-                }
-
-                // بستن کارت
-                if (closeCardBtn) {
-                    event.preventDefault();
-                    const seeMore = card.querySelector(".book-see-and-buy-ticket");
-                    if (seeMore) seeMore.classList.remove("book-hidden");
-                    card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.add("book-hidden"));
-                    card.classList.add("book-h-[240px]");
-                    card.classList.remove("book-h-[482px]");
-                    console.log("🔒 Card closed");
-                    return;
-                }
-
-                // منوهای مختلف
-                if (openFirstMenu) {
-                    event.preventDefault();
-                    const firstMenu = card.querySelector(".book-first-menu");
-                    if (firstMenu) {
-                        firstMenu.classList.remove("book-translate-x-[105%]");
-                        console.log("📋 First menu opened");
-                    }
-                    return;
-                }
-                
-                if (closeFirstMenu) {
-                    event.preventDefault();
-                    const firstMenu = card.querySelector(".book-first-menu");
-                    if (firstMenu) {
-                        firstMenu.classList.add("book-translate-x-[105%]");
-                        console.log("📋 First menu closed");
-                    }
-                    return;
-                }
-
-                if (openSecondMenu) {
-                    event.preventDefault();
-                    const secondMenu = card.querySelector(".book-second-menu");
-                    if (secondMenu) {
-                        secondMenu.classList.remove("book-translate-x-[105%]");
-                        console.log("📋 Second menu opened");
-                    }
-                    return;
-                }
-                
-                if (closeSecondMenu) {
-                    event.preventDefault();
-                    const secondMenu = card.querySelector(".book-second-menu");
-                    if (secondMenu) {
-                        secondMenu.classList.add("book-translate-x-[105%]");
-                        console.log("📋 Second menu closed");
-                    }
-                    return;
-                }
-
-                if (openThirdMenu) {
-                    event.preventDefault();
-                    const thirdMenu = card.querySelector(".book-third-menu");
-                    if (thirdMenu) {
-                        thirdMenu.classList.remove("book-translate-x-[105%]");
-                        console.log("📋 Third menu opened");
-                    }
-                    return;
-                }
-                
-                if (closeThirdMenu) {
-                    event.preventDefault();
-                    const thirdMenu = card.querySelector(".book-third-menu");
-                    if (thirdMenu) {
-                        thirdMenu.classList.add("book-translate-x-[105%]");
-                        console.log("📋 Third menu closed");
-                    }
-                    return;
-                }
-            };
-
-            // حذف listener قبلی اگر وجود دارد
-            if (container._busCardHandler) {
-                container.removeEventListener("click", container._busCardHandler, true);
+            // 🔥 به‌روزرسانی نمایش قیمت‌ها با مقادیر انتخاب شده (نه حداقل/حداکثر اصلی)
+            if (priceMinValueLabel) {
+                priceMinValueLabel.textContent = new Intl.NumberFormat().format(priceMinValue);
+            }
+            if (priceMaxValueLabel) {
+                priceMaxValueLabel.textContent = new Intl.NumberFormat().format(priceMaxValue);
             }
 
-            // ذخیره reference و اضافه کردن listener جدید با capture
-            container._busCardHandler = busCardHandler;
-            container.addEventListener("click", busCardHandler, true);
+            // به‌روزرسانی UI اسلایدر
+            if (priceThumbMin) {
+                priceThumbMin.style.left = `${minPercent}%`;
+            }
+            if (priceThumbMax) {
+                priceThumbMax.style.left = `${maxPercent}%`;
+            }
+            if (priceTrack) {
+                priceTrack.style.left = `${minPercent}%`;
+                priceTrack.style.right = `${100 - maxPercent}%`;
+            }
 
-            cardEventsInitialized = true;
-            console.log("✅ Card events initialized");
+            // فراخوانی updateFilterDisplay برای موبایل (اگر موجود باشد)
+            if (typeof updateFilterDisplay === 'function') {
+                updateFilterDisplay(
+                    "price",
+                    "price-range",
+                    priceMinValue,
+                    priceMaxValue,
+                    minPrice,
+                    maxPrice,
+                    null,
+                    null
+                );
+            }
+
+            console.log(`💰 Price Range Updated: ${priceMinValue} - ${priceMaxValue}`);
+
+        } catch (error) {
+            console.error(`updatePriceSlider: ${error.message}`);
         }
-    }
-};
-
+    };
 
     const preservePriceLabels = () => {
         try {
@@ -2740,228 +2557,160 @@ const ensureCardEventsInitialized = () => {
         }
     };
 
-const triggerPriceFilter = () => {
-    try {
-        // جلوگیری از تریگر در حین drag
-        if (isDragging) {
-            console.warn("triggerPriceFilter: Cannot trigger during drag");
-            return;
-        }
+    function triggerPriceFilter() {
+        try {
+            // تنظیم flag برای به‌روزرسانی
+            mustUpdate = true;
 
-        // تنظیم flag برای به‌روزرسانی
-        mustUpdate = true;
-
-        console.log(`🎯 Price Filter Triggered: ${priceRange[0]} - ${priceRange[1]}`);
-
-        // استفاده از BasisCore برای تریگر کردن فیلتر
-        if (typeof $bc !== 'undefined' && $bc.setSource) {
-            $bc.setSource("cms.price.update", {
-                value: "range",
-                minPrice: priceRange[0],
-                maxPrice: priceRange[1],
-                run: true
-            });
-        } else {
-            // fallback در صورت عدم دسترسی به $bc
-            busManipulation({
-                source: {
-                    id: 'cms.price.update',
-                    rows: [{
-                        value: 'range',
-                        minPrice: priceRange[0],
-                        maxPrice: priceRange[1]
-                    }]
-                },
-                context: {
-                    setAsSource: function (sourceId, data) {
-                        console.log(`Setting source ${sourceId}:`, data);
+            // استفاده از BasisCore برای تریگر کردن فیلتر
+            if (typeof $bc !== 'undefined' && $bc.setSource) {
+                $bc.setSource("cms.price", {
+                    value: "range",
+                    minPrice: priceRange[0],
+                    maxPrice: priceRange[1],
+                    run: true
+                });
+            } else {
+                // fallback در صورت عدم دسترسی به $bc
+                busManipulation({
+                    source: {
+                        id: 'cms.price.update',
+                        rows: [{
+                            value: 'range',
+                            minPrice: priceRange[0],
+                            maxPrice: priceRange[1]
+                        }]
                     },
-                    tryToGetSource: function (sourceId) {
-                        if (sourceId === "bus.search") {
-                            return listData?.source || null;
+                    context: {
+                        setAsSource: function (sourceId, data) {
+                            console.log(`Setting source ${sourceId}:`, data);
+                        },
+                        tryToGetSource: function (sourceId) {
+                            if (sourceId === "bus.search") {
+                                return listData?.source || null;
+                            }
+                            return null;
                         }
-                        return null;
                     }
-                }
-            });
-        }
-
-    } catch (error) {
-        console.error("triggerPriceFilter: " + error.message);
-    }
-};
-
-// 🔥 تابع اصلاح شده handlePriceDrag
-const handlePriceDrag = (args) => {
-    try {
-        if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
-            console.error("handlePriceDrag: Invalid source rows");
-            return;
-        }
-
-        if (!priceSlider) {
-            console.error("handlePriceDrag: Price slider not found");
-            return;
-        }
-
-        // جلوگیری از شروع drag جدید اگر یکی در حال انجام است
-        if (isDragging) {
-            console.warn("handlePriceDrag: Another drag is in progress");
-            return;
-        }
-
-        const sliderRect = priceSlider.getBoundingClientRect();
-        isDragging = true;
-        dragStartTime = Date.now();
-        currentDragType = args.source.rows[0].value; // ⭐ ذخیره نوع drag
-        
-        console.log(`🖱️ Price Drag Started: ${currentDragType}`);
-
-        // تنظیم cursor برای کل صفحه
-        document.body.style.cursor = 'grabbing';
-        document.body.style.userSelect = 'none';
-
-        /**
-         * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
-         */
-        const onMouseMove = (e) => {
-            if (!isDragging || currentDragType !== args.source.rows[0].value) return;
-
-            // جلوگیری از default behavior
-            e.preventDefault();
-            e.stopPropagation();
-
-            const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
-            const percent = (x / sliderRect.width) * 100;
-
-            if (args.source.rows[0].value === "min" && percent <= maxPercent) {
-                minPercent = percent;
-            } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
-                maxPercent = percent;
+                });
             }
 
-            // به‌روزرسانی فوری UI (بدون تأخیر)
-            updatePriceSlider();
-        };
+            console.log(`🎯 Price Filter Triggered: ${priceRange[0]} - ${priceRange[1]}`);
 
-        /**
-         * پایان drag - اعمال فیلتر با تأخیر کم
-         */
-        const onMouseUp = (e) => {
-            if (!isDragging || currentDragType !== args.source.rows[0].value) return;
-
-            // جلوگیری از propagation
-            e.preventDefault();
-            e.stopPropagation();
-
-            isDragging = false;
-            currentDragType = null; // ⭐ بازنشانی نوع drag
-            const dragDuration = Date.now() - dragStartTime;
-
-            // بازگردانی cursor
-            document.body.style.cursor = '';
-            document.body.style.userSelect = '';
-
-            // حذف event listener ها
-            document.removeEventListener("mousemove", onMouseMove, true);
-            document.removeEventListener("mouseup", onMouseUp, true);
-
-            // 🔥 علامت‌گذاری که کاربر محدوده را تغییر داده
-            userHasChangedPriceRange = true;
-            lastUserMinPrice = priceRange[0];
-            lastUserMaxPrice = priceRange[1];
-
-            // اعمال فیلتر با تأخیر کمتر
-            clearTimeout(window.priceFilterTimeout);
-
-            // تأخیر کمتر برای drag های سریع
-            const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
-
-            window.priceFilterTimeout = setTimeout(() => {
-                triggerPriceFilter();
-            }, delay);
-
-            console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
-        };
-
-        // اضافه کردن event listener ها با capture برای جلوگیری از تداخل
-        document.addEventListener("mousemove", onMouseMove, true);
-        document.addEventListener("mouseup", onMouseUp, true);
-
-    } catch (error) {
-        console.error("handlePriceDrag: " + error.message);
-        // پاکسازی در صورت خطا
-        isDragging = false;
-        currentDragType = null;
-        document.body.style.cursor = '';
-        document.body.style.userSelect = '';
+        } catch (error) {
+            console.error("triggerPriceFilter: " + error.message);
+        }
     }
-};
 
-// 🔥 تابع اصلاح شده initializePriceSlider
-const initializePriceSlider = () => {
-    try {
-        if (!priceSlider || !priceThumbMin || !priceThumbMax) {
-            console.error("Price slider elements not found");
-            return;
-        }
 
-        // جلوگیری از اجرای مکرر
-        if (priceSliderInitialized) {
-            console.log("Price slider already initialized");
-            return;
-        }
+    function handlePriceDrag(args) {
+        try {
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+                console.error("busManipulation: Invalid source rows for cms.price");
+                return;
+            }
 
-        // حذف event listener های قبلی در صورت وجود
-        if (priceThumbMin._priceMouseDownHandler) {
-            priceThumbMin.removeEventListener("mousedown", priceThumbMin._priceMouseDownHandler);
-        }
-        if (priceThumbMax._priceMouseDownHandler) {
-            priceThumbMax.removeEventListener("mousedown", priceThumbMax._priceMouseDownHandler);
-        }
+            if (!priceSlider) {
+                console.error("busManipulation: Price slider not found");
+                return;
+            }
 
-        // تعریف handler ها
-        const minThumbHandler = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!isDragging) { // ⭐ چک کردن وضعیت
+            const sliderRect = priceSlider.getBoundingClientRect();
+            isDragging = true;
+            dragStartTime = Date.now();
+
+            /**
+             * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
+             */
+            const onMouseMove = (e) => {
+                if (!isDragging) return;
+
+                const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
+                const percent = (x / sliderRect.width) * 100;
+
+                if (args.source.rows[0].value === "min" && percent <= maxPercent) {
+                    minPercent = percent;
+                } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
+                    maxPercent = percent;
+                }
+
+                // به‌روزرسانی فوری UI (بدون تأخیر)
+                updatePriceSlider();
+            };
+
+            /**
+             * پایان drag - اعمال فیلتر با تأخیر کم
+             */
+            const onMouseUp = () => {
+                if (!isDragging) return;
+
+                isDragging = false;
+                const dragDuration = Date.now() - dragStartTime;
+
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+
+                // اعمال فیلتر با تأخیر کمتر
+                clearTimeout(window.priceFilterTimeout);
+
+                // تأخیر کمتر برای drag های سریع
+                const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
+
+                window.priceFilterTimeout = setTimeout(() => {
+                    triggerPriceFilter();
+                }, delay);
+
+                console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
+            };
+
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+
+        } catch (error) {
+            console.error("handlePriceDrag: " + error.message);
+        }
+    }
+
+
+
+    function initializePriceSlider() {
+        try {
+            if (!priceSlider || !priceThumbMin || !priceThumbMax) {
+                console.error("Price slider elements not found");
+                return;
+            }
+
+            // حذف event listener های قبلی
+            priceThumbMin.removeEventListener("mousedown", handlePriceSliderMouseDown);
+            priceThumbMax.removeEventListener("mousedown", handlePriceSliderMouseDown);
+
+            // اضافه کردن event listener های جدید
+            priceThumbMin.addEventListener("mousedown", (e) => {
+                e.preventDefault();
                 handlePriceDrag({
                     source: {
                         id: "cms.price",
                         rows: [{ value: "min" }]
                     }
                 });
-            }
-        };
+            });
 
-        const maxThumbHandler = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!isDragging) { // ⭐ چک کردن وضعیت
+            priceThumbMax.addEventListener("mousedown", (e) => {
+                e.preventDefault();
                 handlePriceDrag({
                     source: {
                         id: "cms.price",
                         rows: [{ value: "max" }]
                     }
                 });
-            }
-        };
+            });
 
-        // ذخیره reference برای حذف بعدی
-        priceThumbMin._priceMouseDownHandler = minThumbHandler;
-        priceThumbMax._priceMouseDownHandler = maxThumbHandler;
+            console.log("✅ Price slider initialized successfully");
 
-        // اضافه کردن event listener های جدید
-        priceThumbMin.addEventListener("mousedown", minThumbHandler);
-        priceThumbMax.addEventListener("mousedown", maxThumbHandler);
-
-        priceSliderInitialized = true;
-        console.log("✅ Price slider initialized successfully");
-
-    } catch (error) {
-        console.error("initializePriceSlider: " + error.message);
+        } catch (error) {
+            console.error("initializePriceSlider: " + error.message);
+        }
     }
-};
 
 
     const resetPriceFilter = () => {
@@ -3142,139 +2891,10 @@ function findBusData(idToFind) {
     return null;
 }
 
-// ⭐ تابع اصلاح شده initializeBusCards
-// function initializeBusCards(idToFind) {
-//     try {
-//         const cleanId = String(idToFind).trim().replace(/[^a-zA-Z0-9]/g, '');
-//         console.log("🔍 Searching for bus ID:", cleanId);
 
-//         // استفاده از تابع کمکی برای پیدا کردن داده
-//         const result = findBusData(cleanId);
-        
-//         if (!result) {
-//             console.warn("⚠️ آیتم مورد نظر با busId پیدا نشد:", cleanId);
-            
-//             // ⭐ تلاش مجدد با ID اصلی (بدون پاکسازی)
-//             const originalResult = findBusData(idToFind);
-//             if (!originalResult) {
-//                 console.error("❌ هیچ داده‌ای برای busId یافت نشد:", idToFind);
-//                 return;
-//             }
-//             result.object = originalResult.object;
-//             result.source = originalResult.source;
-//         }
-
-//         console.log("✅ داده پیدا شد از منبع:", result.source);
-
-//         const foundObject = result.object;
-
-//         // استخراج busGroup
-//         let busGroupArray = [];
-//         if (Array.isArray(foundObject.busGroup)) {
-//             busGroupArray = foundObject.busGroup;
-//         } else if (typeof foundObject.busGroup === 'object' && foundObject.busGroup !== null) {
-//             busGroupArray = Object.values(foundObject.busGroup);
-//         }
-
-//         console.log("🚌 busGroupArray:", busGroupArray);
-
-//         // تنظیم $bc.setSource
-//         if (typeof $bc !== 'undefined' && $bc.setSource) {
-//             $bc.setSource("cms.seat", {
-//                 type: "upselling",
-//                 busId: cleanId,
-//                 busGroup: JSON.stringify(busGroupArray),
-//                 run: true
-//             });
-//         }
-
-//         // مدیریت رویدادهای کلیک
-//         const container = document.querySelector(".book-bus-cards-container");
-//         if (!container) {
-//             console.error("❌ کانتینر .book-bus-cards-container پیدا نشد");
-//             return;
-//         }
-
-//         // ⭐ حذف event listener قبلی برای جلوگیری از تداخل
-//         const existingHandler = container.getAttribute('data-event-attached');
-//         if (!existingHandler) {
-//             container.setAttribute('data-event-attached', 'true');
-            
-//             container.addEventListener("click", (event) => {
-//                 const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
-//                 const closeCardBtn = event.target.closest(".book-closeCard");
-//                 const openFirstMenu = event.target.closest(".book-open-first-menu");
-//                 const closeFirstMenu = event.target.closest(".book-first-menu .book-clode-menu");
-//                 const openSecondMenu = event.target.closest(".book-open-second-menu");
-//                 const closeSecondMenu = event.target.closest(".book-second-menu .book-clode-menu");
-//                 const openThirdMenu = event.target.closest(".book-open-third-menu");
-//                 const closeThirdMenu = event.target.closest(".book-third-menu .book-clode-menu");
-
-//                 const card = event.target.closest(".book-bus-card");
-//                 if (!card) return;
-
-//                 // باز کردن کارت
-//                 if (seeMoreBtn) {
-//                     seeMoreBtn.classList.add("book-hidden");
-//                     card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.remove("book-hidden"));
-//                     card.classList.remove("book-h-[240px]");
-//                     card.classList.add("book-h-[482px]");
-//                 }
-
-//                 // بستن کارت
-//                 if (closeCardBtn) {
-//                     const seeMore = card.querySelector(".book-see-and-buy-ticket");
-//                     if (seeMore) seeMore.classList.remove("book-hidden");
-//                     card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.add("book-hidden"));
-//                     card.classList.add("book-h-[240px]");
-//                     card.classList.remove("book-h-[482px]");
-//                 }
-
-//                 // منوهای مختلف
-//                 if (openFirstMenu) {
-//                     const firstMenu = card.querySelector(".book-first-menu");
-//                     if (firstMenu) firstMenu.classList.remove("book-translate-x-[105%]");
-//                 }
-//                 if (closeFirstMenu) {
-//                     const firstMenu = card.querySelector(".book-first-menu");
-//                     if (firstMenu) firstMenu.classList.add("book-translate-x-[105%]");
-//                 }
-
-//                 if (openSecondMenu) {
-//                     const secondMenu = card.querySelector(".book-second-menu");
-//                     if (secondMenu) secondMenu.classList.remove("book-translate-x-[105%]");
-//                 }
-//                 if (closeSecondMenu) {
-//                     const secondMenu = card.querySelector(".book-second-menu");
-//                     if (secondMenu) secondMenu.classList.add("book-translate-x-[105%]");
-//                 }
-
-//                 if (openThirdMenu) {
-//                     const thirdMenu = card.querySelector(".book-third-menu");
-//                     if (thirdMenu) thirdMenu.classList.remove("book-translate-x-[105%]");
-//                 }
-//                 if (closeThirdMenu) {
-//                     const thirdMenu = card.querySelector(".book-third-menu");
-//                     if (thirdMenu) thirdMenu.classList.add("book-translate-x-[105%]");
-//                 }
-//             });
-//         }
-
-//         console.log("✅ initializeBusCards تکمیل شد");
-
-//     } catch (error) {
-//         console.error("❌ initializeBusCards: " + error.message);
-//     }
-// }
-
-
-
-// 🔥 تابع اصلاح شده initializeBusCards
-const initializeBusCards = (idToFind) => {
+// 🔥 فقط این تابع را جایگزین کنید - باقی کد همان قبلی باشد
+function initializeBusCards(idToFind) {
     try {
-        // اطمینان از initialize شدن card events
-        ensureCardEventsInitialized();
-        
         const cleanId = String(idToFind).trim().replace(/[^a-zA-Z0-9]/g, '');
         console.log("🔍 Searching for bus ID:", cleanId);
 
@@ -3284,6 +2904,7 @@ const initializeBusCards = (idToFind) => {
         if (!result) {
             console.warn("⚠️ آیتم مورد نظر با busId پیدا نشد:", cleanId);
             
+            // تلاش مجدد با ID اصلی (بدون پاکسازی)
             const originalResult = findBusData(idToFind);
             if (!originalResult) {
                 console.error("❌ هیچ داده‌ای برای busId یافت نشد:", idToFind);
@@ -3315,16 +2936,130 @@ const initializeBusCards = (idToFind) => {
                 busGroup: JSON.stringify(busGroupArray),
                 run: true
             });
+            console.log("🟢 $bc.setSource اجرا شد");
         }
+
+        // 🔥 مدیریت رویدادهای کلیک - بدون تداخل
+        const container = document.querySelector(".book-bus-cards-container");
+        if (!container) {
+            console.error("❌ کانتینر .book-bus-cards-container پیدا نشد");
+            return;
+        }
+        console.log("🟡 کانتینر پیدا شد:", container);
+
+        // 🔥 فقط حذف و اضافه مجدد event listener برای این container
+        // حذف listener قبلی اگر وجود دارد
+        if (container._busCardHandler) {
+            container.removeEventListener("click", container._busCardHandler);
+            console.log("🟠 Event listener قبلی حذف شد");
+        }
+
+        // تعریف handler جدید
+        const busCardHandler = (event) => {
+            console.log("🟢 کلیک شد روی:", event.target);
+            const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
+            const closeCardBtn = event.target.closest(".book-closeCard");
+            const openFirstMenu = event.target.closest(".book-open-first-menu");
+            const closeFirstMenu = event.target.closest(".book-first-menu .book-clode-menu");
+            const openSecondMenu = event.target.closest(".book-open-second-menu");
+            const closeSecondMenu = event.target.closest(".book-second-menu .book-clode-menu");
+            const openThirdMenu = event.target.closest(".book-open-third-menu");
+            const closeThirdMenu = event.target.closest(".book-third-menu .book-clode-menu");
+
+            const card = event.target.closest(".book-bus-card");
+            console.log("🟡 card پیدا شده؟", card);
+            if (!card) return;
+
+            console.log("🔵 seeMoreBtn:", seeMoreBtn, "closeCardBtn:", closeCardBtn);
+
+            // باز کردن کارت
+            if (seeMoreBtn) {
+                event.stopPropagation(); // جلوگیری از bubbling
+                console.log("🟢 باز کردن کارت شروع شد");
+                seeMoreBtn.classList.add("book-hidden");
+                card.querySelectorAll(".book-hidden-elements").forEach(el => {
+                    console.log("🟣 حذف book-hidden از:", el);
+                    el.classList.remove("book-hidden");
+                });
+                card.classList.remove("book-h-[240px]");
+                card.classList.add("book-h-[482px]");
+                console.log("🟢 وضعیت کارت بعد از باز شدن:", card.className);
+                console.log("🟡 وضعیت نهایی کارت:", card.outerHTML);
+            }
+
+            // بستن کارت
+            if (closeCardBtn) {
+                event.stopPropagation(); // جلوگیری از bubbling
+                console.log("🔴 بستن کارت شروع شد");
+                const seeMore = card.querySelector(".book-see-and-buy-ticket");
+                if (seeMore) seeMore.classList.remove("book-hidden");
+                card.querySelectorAll(".book-hidden-elements").forEach(el => {
+                    console.log("🟣 اضافه کردن book-hidden به:", el);
+                    el.classList.add("book-hidden");
+                });
+                card.classList.add("book-h-[240px]");
+                card.classList.remove("book-h-[482px]");
+                console.log("🔴 وضعیت کارت بعد از بسته شدن:", card.className);
+                console.log("🟡 وضعیت نهایی کارت:", card.outerHTML);
+            }
+
+            // منوهای مختلف
+            if (openFirstMenu) {
+                const firstMenu = card.querySelector(".book-first-menu");
+                if (firstMenu) firstMenu.classList.remove("book-translate-x-[105%]");
+                console.log("🟢 منوی اول باز شد");
+            }
+            if (closeFirstMenu) {
+                const firstMenu = card.querySelector(".book-first-menu");
+                if (firstMenu) firstMenu.classList.add("book-translate-x-[105%]");
+                console.log("🔴 منوی اول بسته شد");
+            }
+
+            if (openSecondMenu) {
+                const secondMenu = card.querySelector(".book-second-menu");
+                if (secondMenu) secondMenu.classList.remove("book-translate-x-[105%]");
+                console.log("🟢 منوی دوم باز شد");
+            }
+            if (closeSecondMenu) {
+                const secondMenu = card.querySelector(".book-second-menu");
+                if (secondMenu) secondMenu.classList.add("book-translate-x-[105%]");
+                console.log("🔴 منوی دوم بسته شد");
+            }
+
+            if (openThirdMenu) {
+                const thirdMenu = card.querySelector(".book-third-menu");
+                if (thirdMenu) thirdMenu.classList.remove("book-translate-x-[105%]");
+                console.log("🟢 منوی سوم باز شد");
+            }
+            if (closeThirdMenu) {
+                const thirdMenu = card.querySelector(".book-third-menu");
+                if (thirdMenu) thirdMenu.classList.add("book-translate-x-[105%]");
+                console.log("🔴 منوی سوم بسته شد");
+            }
+        };
+
+        // ذخیره reference و اضافه کردن listener جدید
+        container._busCardHandler = busCardHandler;
+        container.addEventListener("click", busCardHandler);
+        console.log("✅ Event listener جدید اضافه شد");
+
+        // مشاهده تغییرات DOM برای دیباگ
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                console.log("🟠 تغییر در DOM:", mutation);
+            });
+        });
+        observer.observe(container, { attributes: true, childList: true, subtree: true });
+        console.log("🟡 MutationObserver فعال شد");
 
         console.log("✅ initializeBusCards تکمیل شد");
 
     } catch (error) {
         console.error("❌ initializeBusCards: " + error.message);
     }
-};
+}
 
-    const onProcessedRenderSeatMap = async (args) => {
+const onProcessedRenderSeatMap = async (args) => {
         try {
             if (!args || !args.response) {
                 console.error("onProcessedRenderSeatMap: Invalid arguments");

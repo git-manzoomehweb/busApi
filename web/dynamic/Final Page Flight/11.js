@@ -1,763 +1,3 @@
-<html lang="fa" dir="rtl">
-
-<head>
-    <basis core="call" file="book/taglist" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
-
-    <title>[##cms.seo.title|(سیستم رزرو بلیط اتوبوس)##]</title>
-
-    <link href="[##cms.cms.cdn##]/booking/css/bus-search.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
-    <link href="[##cms.cms.cdn##]/_css/swiper-bundle.min.css" type="text/css" rel="stylesheet" />
-
-</head>
-
-
-
-
-<body class="book-relative book-bg-zinc-50 book-bg-specialcolor-1">
-    <!-- header -->
-    <basis core="call" file="header.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
-
-
-    <span class="book-hidden book-rotate-180 book-h-[482px]"></span>
-    <!-- main -->
-    <main data-dmnid="[##cms.cms.domainid##]" class="book-py-6 book-relative book-flex book-justify-center">
-
-        <!-- Commands / Requests -->
-        <basis core="call" file="bus/commands" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
-
-
-        <div
-            class="book-layout__main book-w-full book-z-10">
-
-            <!-- Expire  Modal-->
-            <div
-                class="book-expire__message__modal__container book-modal__container book-fixed book-top-0 book-left-0 book-w-screen book-h-screen book-overflow-hidden book-z-50 book-hidden">
-                <div
-                    class="book-modal__content book-bg-white book-fixed book-inset-x-0 book-top-1.2 book--translate-y-1.2 book-w-[560px] book-rounded-2xl book-mx-auto book-p-5 book-text-center">
-                    <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
-                        <use xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#hour-expire-icon">
-                        </use>
-                    </svg>
-                    <div class="book-no__time book-hidden">
-                        <div class="book-text-2xl book-font-bold book-mt-6">اعتبار
-                            نتایج به پایان رسید</div>
-                        <div class="book-text-zinc-500 book-mt-3">لطفا برای
-                            نمایش جدیدترین اطلاعات و قیمت‌ها نتایج جستجو را
-                            بروز رسانی
-                            کنید</div>
-                        <div class="book-flex book-justify-between book-mt-6">
-                            <button onclick="location.reload()" type="button"
-                                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">بروز
-                                رسانی جستجو</button>
-                            <button onclick="window.location='/'" type="button"
-                                class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-primary-400 hover:book-book-text-white">بازگشت
-                                به صفحه اصلی</button>
-                        </div>
-                    </div>
-                    <div class="book-some__time book-hidden">
-                        <div class="book-text-2xl book-font-bold book-mt-6">نتایج جستجو تا 6 دقیقه دیگر معتبر می باشد.
-                        </div>
-                        <div class="book-text-zinc-500 book-mt-3">بعد از به پایان رسیدن مدت اعتبار، اتوبوس دیگر در دسترس
-                            نمی‌باشد.</div>
-                        <div class="book-mt-6">
-                            <button
-                                onclick="document.querySelector('.book-expire__message__modal__container').classList.add('book-hidden')"
-                                type="button"
-                                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">
-                                متوجه شدم</button>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="book-max-w-7xl book-mx-auto book-px-4 book-py-2">
-                <!-- Retry Search -->
-                <basis core="call" file="/module/retry/search" method="post" selectedMode="bus" run="atclient"
-                    pageindex="[##cms.cms.pageindex|(1)##]">
-                </basis>
-
-                <div class="book-main__container book-w-full book-flex book-flex-wrap book--mx-2">
-                    <!-- Filters Sidebar -->
-                    <aside class="book-aside__container book-w-[22%] book-px-2 book-mb-4 lg:book-mb-0">
-                        <div class="book-relative book-bg-white book-rounded-xl book-shadow-sm book-p-2 book-mb-4">
-
-                            <basis core="print" datamembername="bus.carriers" run="atclient">
-                                <layout>
-                                    <script type="text/template">
-                                  <div
-                                  class="book-filter__container book-selector__container  book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-hidden">
-                                  <div class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
-                                      <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
-                                          onclick="toggleContent(this)">
-                                          <h3 class="book-font-bold book-text-sm book-text-zinc-900">شرکت های حمل و نقل
-                                          </h3>
-                                          <svg width="24" height="24">
-                                              <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                                              </use>
-                                          </svg>
-                                      </div>
-                                      <div class="book-space-y-2 book-selector__content book-text-zinc-600">
-                                          <div class="book-filter__content book-carrier__content ">
-                                              @child
-                              
-                                          </div>
-                              
-                                      </div>
-                                  </div>
-                              </div>                              
-                                                                      
-                              </script>
-                                </layout>
-                                <face>
-                                    <script type="text/template">
-                                  <div class="book-filter__item book-mt-5 book-flex book-items-center">
-                                      <div bc-value="@Code@" bc-name="cms.carrier" bc-triggers="click"
-                                      class="book-custom__checkbox book-shrink-0 book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
-                                  </div>
-                                  <div class="book-label__content book-w-11/12">
-                                      <div
-                                          class="book-flex book-justify-between book-items-center book-text-xs gap-1">
-                                          <img src="[##cms.cms.cdn##]/@Logo@" width="50"
-                                          height="20" alt="@Name@" class="book-h-5 book-ml-1" />
-                                          {{
-                                              return `<span><span class="book-ml-1">از</span><span>${new Intl.NumberFormat().format($data.Price)}</span><span
-                                              class="book-mr-1">${$data.Unit}</span></span>`
-                                          }}
-                                          
-                                      </div>
-                                  </div>
-                                  </div>
-                                                                     
-                              </script>
-                                </face>
-                            </basis>
-
-
-
-
-
-                            <basis core="print" datamembername="bus.originterminals" run="atclient">
-                                <layout>
-                                    <script type="text/template">
-                                  <div
-                                  class="book-filter__container book-selector__container  book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-hidden">
-                                  <div class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
-                                      <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
-                                          onclick="toggleContent(this)">
-                                          <h3 class="book-font-bold book-text-sm book-text-zinc-900">پایانه های مبدا
-                                          </h3>
-                                          <svg width="24" height="24">
-                                              <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                                              </use>
-                                          </svg>
-                                      </div>
-                                      <div class="book-space-y-2 book-selector__content book-text-zinc-600">
-                                          <div class="book-filter__content book-originterminal__content">
-                                              @child
-                              
-                                          </div>
-                                      </div>
-                                  </div>
-                               </div>
-                                                                      
-                              </script>
-                                </layout>
-                                <face>
-                                    <script type="text/template">
-                                  <div class="book-filter__item book-mt-5 book-flex book-items-center">
-                                      <div bc-value="@Code@" bc-name="cms.originterminal" bc-triggers="click"
-                                          class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
-                                      </div>
-                                      <div class="book-w-11/12">
-                                          <div
-                                              class="book-flex book-justify-between book-items-center book-text-xs">
-                                              <span class="book-label__content">@Name@</span>
-                                          </div>
-                                      </div>
-                                  </div>
-                      
-                              </script>
-                                </face>
-                            </basis>
-                            <basis core="print" datamembername="bus.destinationterminals" run="atclient">
-                                <layout>
-                                    <script type="text/template">
-                                  <div
-                                  class="book-filter__container book-selector__container  book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-hidden">
-                                  <div class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
-                                      <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
-                                          onclick="toggleContent(this)">
-                                          <h3 class="book-font-bold book-text-sm book-text-zinc-900">پایانه های مقصد
-                                          </h3>
-                                          <svg width="24" height="24">
-                                              <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                                              </use>
-                                          </svg>
-                                      </div>
-                                      <div class="book-space-y-2 book-selector__content book-text-zinc-600">
-                                          <div class="book-filter__content book-destinationterminal__content">
-                                              @child
-                              
-                                          </div>
-                                      </div>
-                                  </div>
-                               </div>
-                                                                      
-                              </script>
-                                </layout>
-                                <face>
-                                    <script type="text/template">
-                                  <div class="book-filter__item book-mt-5 book-flex book-items-center">
-                                      <div bc-value="@Code@" bc-name="cms.destinationterminal" bc-triggers="click"
-                                          class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
-                                      </div>
-                                      <div class="book-w-11/12">
-                                          <div
-                                              class="book-flex book-justify-between book-items-center book-text-xs">
-                                              <span class="book-label__content">@Name@</span>
-                                          </div>
-                                      </div>
-                                  </div>
-                      
-                              </script>
-                                </face>
-                            </basis>
-
-
-
-                            <div
-                                class="book-filter__container book-selector__container book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-auto">
-                                <div
-                                    class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
-                                    <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
-                                        onclick="toggleContent(this)">
-                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">ساعت
-                                            حرکت</h3>
-                                        <svg width="24" height="24">
-                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                                            </use>
-                                        </svg>
-                                    </div>
-
-                                    <div class="book-space-y-2 book-selector__content book-text-zinc-500">
-
-                                        <div class="book-filter__content book-departuretime__content">
-                                            <div class="book-time__content">
-                                                <div
-                                                    class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">
-                                                    همه زمان ها</div>
-                                                <div class="book-text-zinc-900 book-text-xs book-mb-4">ساعت
-                                                    فیلتر شده از
-                                                    <span class="book-hour">00:00 الی
-                                                        23:59</span>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="book-times__content book-flex book-justify-between book-bg-zinc-200 book-rounded-lg">
-
-                                                <div bc-value="0-4" data-time-period="صبح زود"
-                                                    data-time-range="4:59 الی 12:00" bc-name="cms.departuretime"
-                                                    bc-triggers="click"
-                                                    class="book-custom__checkbox book-button__content  book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
-                                                    <svg width="24" height="24" class="book-mx-auto">
-                                                        <use
-                                                            xlink:href="/booking/images/sprite-booking-icons.svg#sunrise-icon">
-                                                        </use>
-                                                    </svg>
-                                                </div>
-
-
-                                                <div bc-value="5-11" data-time-period="صبح"
-                                                    data-time-range="5:00 الی 11:59" bc-name="cms.departuretime"
-                                                    bc-triggers="click"
-                                                    class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
-                                                    <svg width="24" height="24" class="book-mx-auto">
-                                                        <use
-                                                            xlink:href="/booking/images/sprite-booking-icons.svg#morning-icon">
-                                                        </use>
-                                                    </svg>
-                                                </div>
-
-                                                <div bc-value="12-17" data-time-period="ظهر"
-                                                    data-time-range="12:00 الی 17:59" bc-name="cms.departuretime"
-                                                    bc-triggers="click"
-                                                    class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
-                                                    <svg width="24" height="24" class="book-mx-auto">
-                                                        <use
-                                                            xlink:href="/booking/images/sprite-booking-icons.svg#sunset-icon">
-                                                        </use>
-                                                    </svg>
-                                                </div>
-
-
-                                                <div bc-value="18-23" data-time-period="شب"
-                                                    data-time-range="18:00 الی 23:59" bc-name="cms.departuretime"
-                                                    bc-triggers="click"
-                                                    class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
-                                                    <svg width="24" height="24" class="book-mx-auto">
-                                                        <use
-                                                            xlink:href="/booking/images/sprite-booking-icons.svg#moon-icon">
-                                                        </use>
-                                                    </svg>
-                                                </div>
-
-
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div
-                                class="book-filter__container book-selector__container  book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-auto">
-                                <div
-                                    class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
-                                    <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
-                                        onclick="toggleContent(this)">
-                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">بازه
-                                            قیمت</h3>
-                                        <svg width="24" height="24">
-                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                                            </use>
-                                        </svg>
-                                    </div>
-
-                                    <div class="book-space-y-2 book-selector__content book-text-zinc-500">
-
-                                        <div class="book-filter__content">
-                                            <div class="book-filter__price__container book-my-1 book-ltr">
-                                                <div class="book-slider__container book-mx-auto">
-                                                    <div
-                                                        class="book-flex book-justify-between book-items-center book-text-xs">
-                                                        <div class="book-slider__value__container book-rtl">
-                                                            <span class="book-min__value">0</span>
-                                                            <span class="book-mr-1 book-unit__value">ریال</span>
-                                                        </div>
-                                                        <div class="book-slider__value__container book-rtl">
-                                                            <span class="book-max__value">0</span>
-                                                            <span class="book-mr-1 book-unit__value">ریال</span>
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        class="book-slider__content book-relative book-h-1 book-mx-2 book-rounded-sm book-bg-primary-50 book-mt-5">
-                                                        <div
-                                                            class="book-slider__track book-absolute book-rounded-sm book-h-full book-inset-x-0 book-z-[1] book-bg-primary-400">
-                                                        </div>
-                                                        <div class="book-thumb__min book-absolute book-left-0 book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
-                                                            bc-name="cms.price" bc-triggers="mousedown" bc-value="min">
-                                                        </div>
-                                                        <div class="book-thumb__max book-absolute book-left-full book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
-                                                            bc-name="cms.price" bc-triggers="mousedown" bc-value="max">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </aside>
-
-
-
-                    <!-- ticket container -->
-                    <section class="book-w-[76%] book-flex book-flex-col book-gap-5 book-main__content">
-                        <div class="book-flex book-justify-between book-text-lg">
-                            <div class="book-rendering__container book-flex book-items-center book-gap-2 book-mb-1">
-                                در حال جستجو اتوبوس
-                                <span class="book-loading__spinner"></span>
-                            </div>
-                            <div class="book-count__api__container book-text-center"><span
-                                    class="book-count__api__content book-w-10 book-inline-block book-text-primary-400 book-font-bold">0</span>
-                                اتوبوس یافت شد
-                            </div>
-                        </div>
-                        <div
-                            class="book-progress__bar__container book-w-full book-rounded-md book-bg-zinc-300 book-my-3">
-                            <div
-                                class="book-progress__bar book-h-2 book-bg-gradient-special book-rounded-md book-relative">
-                            </div>
-                        </div>
-                        <div class="book-relative">
-
-                            <!-- bus Advertisment -->
-                            <div class="book-advertisment__container book-rendered__container book-hidden book-my-6">
-                                <img src="[##cms.cms.cdn##]/booking/images/advertisment-hero.jpg"
-                                    class="book-w-full  book-rounded-lg" width="930" height="100" alt />
-                            </div>
-
-
-
-
-
-
-
-                            <!-- bus Sorting Options -->
-                            <div
-                                class="book-sort__cards__container book-rendered__container book-hidden book-selector__container book-my-6">
-                                <div
-                                    class="book-sort__cards__content book-selector__content book-flex book-flex-wrap book-justify-between book-items-center book-text-sm">
-                                    <div class="book-text-zinc-900">مرتب سازی بر
-                                        اساس:</div>
-                                    <div bc-triggers="click" bc-name="cms.sort" bc-value="default"
-                                        class="book-cursor-pointer book-sort__item__content book-sorting__active book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-min-w-32 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
-
-                                        <h6 class="book-text-sm">پیش فرض</ا>
-                                    </div>
-                                    <div bc-triggers="click" bc-name="cms.sort" bc-value="price" data-sort="descend"
-                                        class="book-cursor-pointer book-sort__item__content book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-min-w-32 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
-
-                                        <svg width="24" height="25">
-                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon">
-                                            </use>
-                                        </svg>
-
-                                        <h6 class="book-text-sm">قیمت</h6>
-                                    </div>
-                                    <div bc-triggers="click" bc-name="cms.sort" bc-value="hour" data-sort="descend"
-                                        class="book-cursor-pointer book-sort__item__content book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-min-w-32 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
-
-                                        <svg width="24" height="25">
-                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon">
-                                            </use>
-                                        </svg>
-
-                                        <h6 class="book-text-sm">ساعت
-                                            اتوبوس</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-- filter horizontally -->
-                            <!-- <div class="book-flex book-items-center book-gap-3 book-categories-show book-hidden">
-    <p class="book-text-zinc-700 book-font-bold">نمایش بر اساس:</p>
-    <button
-      class="book-flex book-gap-3 book-text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-6 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
-      type="button">
-      <span class="book-tick book-hidden">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </span>
-      همه سرویس ها
-    </button>
-    <button
-      class="book-flex book-gap-3 book-text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-6 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
-      type="button">
-      <span class="book-tick book-hidden">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </span>
-      اتوبوس
-    </button>
-    <button
-      class="book-flex book-gap-3 book-text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-6 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
-      type="button">
-      <span class="book-tick book-hidden">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </span>
-      سواری
-    </button>
-    <button
-      class="book-flex book-gap-3 book-text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-6 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
-      type="button">
-      <span class="book-tick book-hidden">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </span>
-      ون
-    </button>
-  </div> -->
-
-
-                            <!-- ticket cards -->
-                            <div
-                                class="book-cards__container book-w-full book-flex book-flex-col book-gap-5 book-bus-cards-container">
-
-
-                                <!-- BasisCore Print Component برای نمایش جدول -->
-                                <basis core="print" datamembername="bus.updated" run="atclient">
-                                    <layout>
-                                        <script type="text/template">
-                              <div class="book-list__cards__container">
-                                  @child
-                               </div>
-                            </script>
-                                    </layout>
-                                    <face>
-                                        <script type="text/template">
-                                  <div id="bus__@index@" data-id="@busId@" data-index="@index@" class="book-bus-card book-drop-shadow-sm book-transition-all book-ease-in-out book-overflow-hidden book-relative book-w-full book-flex book-h-[240px] book-mb-4">
-                                                  <div
-        class="book-translate-x-[105%] book-absolute book-first-menu book-flex book-flex-col book-gap-4 book-justify-center book-items-center book-top-0 book-left-0 book-w-full book-h-full book-rounded-2xl book-glass2 book-z-20 book-transition-all book-duration-200">
-        <a href=""
-          class="book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
-          بلیط</a>
-        <a href=""
-          class="book-w-[330px] book-text-sm book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-700 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
-          اطلاعات ترمینال (@originTerminal@ - @destinationTerminal@)</a>
-        <button type="button"
-          class="book-clode-menu book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
-          بستـن
-        </button>
-      </div>
-      <div
-        class="book-translate-x-[105%] book-absolute book-second-menu book-flex book-flex-col book-gap-4 book-justify-center book-items-center book-top-0 book-left-0 book-w-full book-h-full book-rounded-2xl book-glass2 book-z-20 book-transition-all book-duration-200">
-        <a href=""
-          class="book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
-          بلیط</a>
-        <a href=""
-          class="book-w-[330px] book-text-sm book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-700 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
-          اطلاعات ترمینال (@originTerminal@)</a>
-        <button type="button"
-          class="book-clode-menu book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
-          بستـن
-        </button>
-      </div>
-      <div
-        class="book-translate-x-[105%] book-absolute book-third-menu book-flex book-flex-col book-gap-4 book-justify-center book-items-center book-top-0 book-left-0 book-w-full book-h-full book-rounded-2xl book-glass2 book-z-20 book-transition-all book-duration-200">
-        <a href=""
-          class="book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
-          بلیط</a>
-        <a href=""
-          class="book-w-[330px] book-text-sm book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-700 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
-          @carrierName@</a>
-        <button type="button"
-          class="book-clode-menu book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
-          بستـن
-        </button>
-      </div>
-      <div class="book-absolute book-top-[-22.3px] book-rotate-[270deg] book-right-[71.5%]">
-        <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_1_69)">
-            <g mask="url(#mask0_1_69)">
-              <path
-                d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                fill="white" stroke="transparent" stroke-width="2"></path>
-            </g>
-          </g>
-          <defs>
-            <clipPath id="clip0_1_69">
-              <rect width="21" height="63" fill="white"></rect>
-            </clipPath>
-          </defs>
-        </svg>
-      </div>
-      <div class="book-absolute book-bottom-[-22px] book-rotate-90 book-right-[71.5%]">
-        <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_1_69)">
-            <g mask="url(#mask0_1_69)">
-              <path
-                d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                fill="white" stroke="transparent" stroke-width="2"></path>
-            </g>
-          </g>
-          <defs>
-            <clipPath id="clip0_1_69">
-              <rect width="21" height="63" fill="white"></rect>
-            </clipPath>
-          </defs>
-        </svg>
-      </div>
-      <div
-        class="book-rounded-r-2xl book-px-9 book-p-3 book-flex book-flex-col book-justify-center book-gap-6 book-rounded-l-[32px] book-h-full book-w-[73%] book-bg-white">
-        <div
-          class="book-flex book-items-center book-cursor-pointer book-open-third-menu book-gap-2 book-text-sm book-text-zinc-700">
-          <img class="book-w-12 book-h-12" src="[##cms.cms.cdn##]/@carrierImage@"
-            alt="@carrierName@" />
-          @carrierName@
-        </div>
-        <div class="book-w-full book-flex book-justify-between book-items-center">
-          <div
-            class="book-flex book-open-first-menu book-cursor-pointer book-items-center book-gap-1 book-whitespace-nowrap">
-            <p class="book-font-bold book-text-lg">@originCity@</p>
-            <p class="book-text-zinc-700 book-text-sm">( @originTerminal@ )</p>
-          </div>
-          <div
-            class="book-w-[40%] book-set-before-after book-relative book-h-[1px] book-border-t book-border-dashed book-border-zinc-800">
-            <span></span><span></span>
-          </div>
-          <div
-            class="book-flex book-items-center book-cursor-pointer book-open-second-menu book-gap-1 book-whitespace-nowrap">
-            <p class="book-font-bold book-text-lg">@destinationCity@</p>
-            <p class="book-text-zinc-700 book-text-sm">( @destinationTerminal@ )</p>
-          </div>
-        </div>
-        <div class="book-flex book-gap-2 book-items-center book-text-sm book-text-zinc-700">
-          <img src="[##cms.cms.cdn##]/booking/images/bus.svg" alt="bus" />
-          @busType@
-        </div>
-
-        <div class=" book-hidden-elements book-hidden book-w-full book-flex book-flex-col book-gap-3 book-seat__container__rendering">
-
-
-          <div class="book-flex book-w-full book-relative book-h-[240px]">
-<div
-  class="book-w-full book-group book-overflow-hidden book-relative book-px-5 book-py-6 book-flex book-flex-col book-justify-between book-z-0 book-rounded-r-xl book--translate-x-[2.08rem] book-h-full book-bg-[#E9E9E9]">
-  <div
-      class="book-absolute book-z-10 book-transition-all book-duration-300 book-hidden book-top-0 book-left-0 book-h-full book-w-full book-glass3 book-rounded-xl group-hover:book-!flex book-flex-col book-justify-center book-items-center book-gap-6">
-      <a href=""
-          class="book-w-[150px] book-h-10 book-flex hover:book-bg-primary-950 hover:book-shadow-lg book-justify-center book-items-center book-text-white book-bg-primary-800 book-rounded-lg">خرید</a><button
-          type="button"
-          class="book-w-[150px] book-closeCard book-h-10 book-flex hover:book-bg-primary-950 hover:book-shadow-lg book-justify-center book-items-center book-text-white book-bg-zinc-800 book-rounded-lg">بسـتن
-      </button>
-  </div>
-
-
-
-  <div dir="ltr" class="seat-id-@busId@  book-flex book-dir-ltr">
-                      <!-- seat  -->
-
-  </div>
-  
-  
-
-
-
-
-
-</div><img class="book-z-10" src="[##cms.cms.cdn##]/booking/images/bus-inner.svg" alt="inner-bus" />
-</div>
-<div class="book-w-full book-flex book-justify-center book-items-center book-gap-4">
-<div class="book-flex book-gap-2 book-items-center"><span
-      class="book-size-4 book-rounded book-border book-border-zinc-900"></span>
-  <p class="book-text-zinc-900 book-text-sm">قابل خرید</p>
-</div>
-<div class="book-flex book-gap-2 book-items-center"><span class="book-size-4 book-rounded book-bg-[#00cbff]"></span>
-  <p class="book-text-zinc-900 book-text-sm">خریداری شده برای آقایان </p>
-</div>
-<div class="book-flex book-gap-2 book-items-center"><span class="book-size-4 book-rounded book-bg-[#ff98e7]"></span>
-  <p class="book-text-zinc-900 book-text-sm">خریداری شده برای بانوان </p>
-</div>
-<div class="book-flex book-gap-2 book-items-center"><span class="book-size-4 book-rounded book-bg-zinc-400"></span>
-  <p class="book-text-zinc-900 book-text-sm">غیر قابل خرید</p>
-</div>
-</div>
-
-
-
-        </div>
-      </div>
-      <div
-        class="book-rounded-l-2xl book-p-3 book-flex book-flex-col book-justify-between book-items-center book-rounded-r-[29px] book-translate-x-1 book-h-full book-w-[27%] book-bg-white">
-        <div class="book-flex book-items-center book-gap-2 book-font-bold book-text-lg book-text-primary-700">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-            class="book-size-6">
-            <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
-              class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            </path>
-            <path d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1" class="book-stroke-primary-700"
-              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-          @departureTime@
-        </div>
-        <div class="book-text-zinc-800">@availableSeats@ صندلی خالی</div>
-        <div class="book-flex book-items-center book-gap-2 book-text-primary-700 book-font-bold">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            class="book-size-6">
-            <path
-              d="M18.5 12.65v3.7c0 3.12-2.91 5.65-6.5 5.65s-6.5-2.53-6.5-5.65v-3.7C5.5 15.77 8.41 18 12 18s6.5-2.23 6.5-5.35Z"
-              class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            </path>
-            <path
-              d="M18.5 7.65c0 .91-.25 1.75-.69 2.47C16.74 11.88 14.54 13 12 13c-2.54 0-4.74-1.12-5.81-2.88-.44-.72-.69-1.56-.69-2.47 0-1.56.73-2.97 1.9-3.99C8.58 2.63 10.2 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
-              class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            </path>
-            <path
-              d="M18.5 7.65v5c0 3.12-2.91 5.35-6.5 5.35s-6.5-2.23-6.5-5.35v-5C5.5 4.53 8.41 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
-              class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            </path>
-          </svg>
-          @formattedPrice@
-        </div>
-        <button type="button" onclick='initializeBusCards(  "@busId@")'
-          class=" book-w-[90%] book-see-and-buy-ticket book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
-مشاهده صندلی های خالی
-        </button>
-        <div
-          class="rule-id-@busId@ book-hidden-elements book-hidden book-flex book-flex-col book-gap-3 book-w-full book-items-center">
-        </div>
-
-        <button type="button" data-run="0" data-id="@busId@" onclick="{{return `submitCard(this,'${$data.busId}')`}}" class="book-card__btn   book-mt-8 book-w-[90%] book-h-10 book-bg-primary-900 book-text-white book-justify-center book-items-center book-flex book-rounded-lg hover:book-book-bg-primary-200 hover:book-book-text-primary-950 hover:book-book-shadow-lg">خرید</button>
-
-            
-      </div>
-                                  </div>
-                              </script>
-                                    </face>
-                                </basis>
-
-
-                            </div>
-
-
-                            <!-- paging -->
-                            <div
-                                class="book-paging__cards__container book-text-center book-my-10 book-ltr book-justify-center book-gap-1 book-flex">
-                                <button
-                                    class="book-paging__container book-leading-9 book-prevpage book-border book-border-solid book-border-zinc-200 book-rounded-lg book-w-8 book-h-8 book-hidden book-bg-white"
-                                    type="button" bc-value bc-name="cms.prevpage" bc-triggers="click">
-                                    <svg width="32" height="24">
-                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#prev-page-icon">
-                                        </use>
-                                    </svg>
-                                </button>
-                                <basis core="print" datamembername="bus.paging" run="atclient">
-                                    <layout>
-                                        <script type="text/template">@child</script>
-                                    </layout>
-                                    <face>
-                                        <script type="text/template">
-          {{
-              return await renderPaging($data)
-          }}
-      </script>
-                                    </face>
-                                </basis>
-                                <button
-                                    class="book-paging__container book-leading-9 book-nextpage book-border book-border-solid book-border-zinc-200 book-rounded-lg book-w-8 book-h-8 book-hidden book-bg-white"
-                                    type="button" bc-value bc-name="cms.nextpage" bc-triggers="click">
-                                    <svg width="32" height="24">
-                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#next-page-icon">
-                                        </use>
-                                    </svg>
-                                </button>
-                            </div>
-
-                        </div>
-                    </section>
-                </div>
-            </div>
-
-
-        </div>
-    </main>
-
-    <!-- footer -->
-    <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
-
-</body>
-<script src="https://cdn.basiscore.net/basisfly.com/js/swiper-bundle.min.js"></script>
-<script src="[##cms.cms.cdn##]/booking/js/bus-search.js"></script>
-
-
-<script>
     /**
      * Global state for session management and UI updates.
      */
@@ -1280,6 +520,7 @@ const busManipulation = async (args) => {
 
         // ⭐ ذخیره listData در متغیر جهانی برای استفاده در سایر فانکشن‌ها
         globalListData = args;
+
         // ⭐ ذخیره داده‌های اصلی در صورت وجود
         if (args.source.id === "bus.search" && args.source._rows && Array.isArray(args.source._rows)) {
             const existingBusIds = new Set(globalBusProposals.map(bus => bus.busId));
@@ -1291,7 +532,6 @@ const busManipulation = async (args) => {
                 }
             });
         }
-
 
         listData = args; // حفظ سازگاری با کد موجود
 
@@ -1625,9 +865,6 @@ const busManipulation = async (args) => {
             InUpdatePaging = true;
             selectedBusId = null;
 
-                        ensurePriceSliderInitialized();
-
-
             if (!priceSlider) {
                 console.error("busManipulation: Price slider not found");
                 return;
@@ -1638,75 +875,61 @@ const busManipulation = async (args) => {
                 return;
             }
 
+            const sliderRect = priceSlider.getBoundingClientRect();
+            let isDragging = false;
 
-            // 🔥 اصلاح: فقط در صورت عدم وجود drag فعال، handlePriceDrag اجرا شود
-            if (!isDragging) {
-                handlePriceDrag(args);
-            } else {
-                console.warn("busManipulation: Price drag already in progress, skipping");
-            }
+            /**
+             * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
+             */
+            const onMouseMove = (e) => {
+                if (!isDragging) return;
 
-            // جلوگیری از ادامه پردازش در حین drag
-            if (isDragging) {
-                return;
-            }
+                const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
+                const percent = (x / sliderRect.width) * 100;
 
+                if (args.source.rows[0].value === "min" && percent <= maxPercent) {
+                    minPercent = percent;
+                } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
+                    maxPercent = percent;
+                }
 
-            // const sliderRect = priceSlider.getBoundingClientRect();
-            // let isDragging = false;
+                // به‌روزرسانی فوری UI و priceRange
+                updatePriceSlider();
+            };
 
-            // /**
-            //  * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
-            //  */
-            // const onMouseMove = (e) => {
-            //     if (!isDragging) return;
+            /**
+             * پایان drag - اعمال فیلتر فوری
+             */
+            const onMouseUp = () => {
+                if (!isDragging) return;
 
-            //     const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
-            //     const percent = (x / sliderRect.width) * 100;
+                isDragging = false;
+                const dragDuration = Date.now() - dragStartTime;
 
-            //     if (args.source.rows[0].value === "min" && percent <= maxPercent) {
-            //         minPercent = percent;
-            //     } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
-            //         maxPercent = percent;
-            //     }
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
 
-            //     // به‌روزرسانی فوری UI و priceRange
-            //     updatePriceSlider();
-            // };
+                // 🔥 علامت‌گذاری که کاربر محدوده را تغییر داده
+                userHasChangedPriceRange = true;
+                lastUserMinPrice = priceRange[0];
+                lastUserMaxPrice = priceRange[1];
 
-            // /**
-            //  * پایان drag - اعمال فیلتر فوری
-            //  */
-            // const onMouseUp = () => {
-            //     if (!isDragging) return;
+                // اعمال فیلتر با تأخیر کمتر
+                clearTimeout(window.priceFilterTimeout);
 
-            //     isDragging = false;
-            //     const dragDuration = Date.now() - dragStartTime;
+                const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
 
-            //     document.removeEventListener("mousemove", onMouseMove);
-            //     document.removeEventListener("mouseup", onMouseUp);
+                window.priceFilterTimeout = setTimeout(() => {
+                    triggerPriceFilter();
+                }, delay);
 
-            //     // 🔥 علامت‌گذاری که کاربر محدوده را تغییر داده
-            //     userHasChangedPriceRange = true;
-            //     lastUserMinPrice = priceRange[0];
-            //     lastUserMaxPrice = priceRange[1];
+                console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
+            };
 
-            //     // اعمال فیلتر با تأخیر کمتر
-            //     clearTimeout(window.priceFilterTimeout);
-
-            //     const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
-
-            //     window.priceFilterTimeout = setTimeout(() => {
-            //         triggerPriceFilter();
-            //     }, delay);
-
-            //     console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
-            // };
-
-            // // شروع drag
-            // isDragging = true;
-            // document.addEventListener("mousemove", onMouseMove);
-            // document.addEventListener("mouseup", onMouseUp);
+            // شروع drag
+            isDragging = true;
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
         }
         else if (args.source.id === "cms.price.update") {
             // مدیریت به‌روزرسانی فیلتر قیمت (internal trigger)
@@ -2502,221 +1725,55 @@ const busManipulation = async (args) => {
     /**
      * به‌روزرسانی اسلایدر قیمت
      */
-const updatePriceSlider = () => {
-    try {
-        const totalRange = maxPrice - minPrice;
-        const priceMinValue = Math.round((minPercent / 100) * totalRange + minPrice);
-        const priceMaxValue = Math.round((maxPercent / 100) * totalRange + minPrice);
+    const updatePriceSlider = () => {
+        try {
+            const totalRange = maxPrice - minPrice;
+            const priceMinValue = Math.round((minPercent / 100) * totalRange + minPrice);
+            const priceMaxValue = Math.round((maxPercent / 100) * totalRange + minPrice);
 
-        // به‌روزرسانی فوری priceRange در همین لحظه
-        priceRange = [priceMinValue, priceMaxValue];
+            // به‌روزرسانی فوری priceRange در همین لحظه
+            priceRange = [priceMinValue, priceMaxValue];
 
-        // 🔥 به‌روزرسانی نمایش قیمت‌ها با مقادیر انتخاب شده (نه حداقل/حداکثر اصلی)
-        if (priceMinValueLabel) {
-            priceMinValueLabel.textContent = new Intl.NumberFormat().format(priceMinValue);
-        }
-        if (priceMaxValueLabel) {
-            priceMaxValueLabel.textContent = new Intl.NumberFormat().format(priceMaxValue);
-        }
-
-        // به‌روزرسانی UI اسلایدر
-        if (priceThumbMin) {
-            priceThumbMin.style.left = `${minPercent}%`;
-        }
-        if (priceThumbMax) {
-            priceThumbMax.style.left = `${maxPercent}%`;
-        }
-        if (priceTrack) {
-            priceTrack.style.left = `${minPercent}%`;
-            priceTrack.style.right = `${100 - maxPercent}%`;
-        }
-
-        // فراخوانی updateFilterDisplay برای موبایل (اگر موجود باشد)
-        if (typeof updateFilterDisplay === 'function') {
-            updateFilterDisplay(
-                "price",
-                "price-range",
-                priceMinValue,
-                priceMaxValue,
-                minPrice,
-                maxPrice,
-                null,
-                null
-            );
-        }
-
-        console.log(`💰 Price Range Updated: ${priceMinValue} - ${priceMaxValue}`);
-
-    } catch (error) {
-        console.error(`updatePriceSlider: ${error.message}`);
-    }
-};
-
-// 🔥 تابع جدید برای پاکسازی کامل event listener ها
-const cleanupEventListeners = () => {
-    try {
-        // پاکسازی price slider
-        if (priceThumbMin && priceThumbMin._priceMouseDownHandler) {
-            priceThumbMin.removeEventListener("mousedown", priceThumbMin._priceMouseDownHandler);
-            priceThumbMin._priceMouseDownHandler = null;
-        }
-        if (priceThumbMax && priceThumbMax._priceMouseDownHandler) {
-            priceThumbMax.removeEventListener("mousedown", priceThumbMax._priceMouseDownHandler);
-            priceThumbMax._priceMouseDownHandler = null;
-        }
-
-        // پاکسازی card events
-        const container = document.querySelector(".book-bus-cards-container");
-        if (container && container._busCardHandler) {
-            container.removeEventListener("click", container._busCardHandler, true);
-            container._busCardHandler = null;
-        }
-
-        // بازنشانی flags
-        priceSliderInitialized = false;
-        cardEventsInitialized = false;
-        
-        console.log("🧹 Event listeners cleaned up");
-    } catch (error) {
-        console.error("cleanupEventListeners: " + error.message);
-    }
-};
-
-// 🔥 تابع برای initialize کردن price slider به صورت lazy
-const ensurePriceSliderInitialized = () => {
-    if (!priceSliderInitialized && priceSlider && priceThumbMin && priceThumbMax) {
-        initializePriceSlider();
-    }
-};
-
-// 🔥 تابع برای initialize کردن card events به صورت lazy  
-const ensureCardEventsInitialized = () => {
-    if (!cardEventsInitialized) {
-        const container = document.querySelector(".book-bus-cards-container");
-        if (container) {
-            // تعریف handler اصلی با مدیریت صحیح propagation
-            const busCardHandler = (event) => {
-                // جلوگیری از اجرای event در صورت drag قیمت
-                if (isDragging) {
-                    console.log("🚫 Event blocked due to price dragging");
-                    return;
-                }
-
-                const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
-                const closeCardBtn = event.target.closest(".book-closeCard");
-                const openFirstMenu = event.target.closest(".book-open-first-menu");
-                const closeFirstMenu = event.target.closest(".book-first-menu .book-clode-menu");
-                const openSecondMenu = event.target.closest(".book-open-second-menu");
-                const closeSecondMenu = event.target.closest(".book-second-menu .book-clode-menu");
-                const openThirdMenu = event.target.closest(".book-open-third-menu");
-                const closeThirdMenu = event.target.closest(".book-third-menu .book-clode-menu");
-
-                const card = event.target.closest(".book-bus-card");
-                if (!card) return;
-
-                // متوقف کردن propagation برای جلوگیری از تداخل
-                event.stopPropagation();
-
-                // باز کردن کارت
-                if (seeMoreBtn) {
-                    event.preventDefault();
-                    seeMoreBtn.classList.add("book-hidden");
-                    card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.remove("book-hidden"));
-                    card.classList.remove("book-h-[240px]");
-                    card.classList.add("book-h-[482px]");
-                    console.log("🔓 Card opened");
-                    return;
-                }
-
-                // بستن کارت
-                if (closeCardBtn) {
-                    event.preventDefault();
-                    const seeMore = card.querySelector(".book-see-and-buy-ticket");
-                    if (seeMore) seeMore.classList.remove("book-hidden");
-                    card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.add("book-hidden"));
-                    card.classList.add("book-h-[240px]");
-                    card.classList.remove("book-h-[482px]");
-                    console.log("🔒 Card closed");
-                    return;
-                }
-
-                // منوهای مختلف
-                if (openFirstMenu) {
-                    event.preventDefault();
-                    const firstMenu = card.querySelector(".book-first-menu");
-                    if (firstMenu) {
-                        firstMenu.classList.remove("book-translate-x-[105%]");
-                        console.log("📋 First menu opened");
-                    }
-                    return;
-                }
-                
-                if (closeFirstMenu) {
-                    event.preventDefault();
-                    const firstMenu = card.querySelector(".book-first-menu");
-                    if (firstMenu) {
-                        firstMenu.classList.add("book-translate-x-[105%]");
-                        console.log("📋 First menu closed");
-                    }
-                    return;
-                }
-
-                if (openSecondMenu) {
-                    event.preventDefault();
-                    const secondMenu = card.querySelector(".book-second-menu");
-                    if (secondMenu) {
-                        secondMenu.classList.remove("book-translate-x-[105%]");
-                        console.log("📋 Second menu opened");
-                    }
-                    return;
-                }
-                
-                if (closeSecondMenu) {
-                    event.preventDefault();
-                    const secondMenu = card.querySelector(".book-second-menu");
-                    if (secondMenu) {
-                        secondMenu.classList.add("book-translate-x-[105%]");
-                        console.log("📋 Second menu closed");
-                    }
-                    return;
-                }
-
-                if (openThirdMenu) {
-                    event.preventDefault();
-                    const thirdMenu = card.querySelector(".book-third-menu");
-                    if (thirdMenu) {
-                        thirdMenu.classList.remove("book-translate-x-[105%]");
-                        console.log("📋 Third menu opened");
-                    }
-                    return;
-                }
-                
-                if (closeThirdMenu) {
-                    event.preventDefault();
-                    const thirdMenu = card.querySelector(".book-third-menu");
-                    if (thirdMenu) {
-                        thirdMenu.classList.add("book-translate-x-[105%]");
-                        console.log("📋 Third menu closed");
-                    }
-                    return;
-                }
-            };
-
-            // حذف listener قبلی اگر وجود دارد
-            if (container._busCardHandler) {
-                container.removeEventListener("click", container._busCardHandler, true);
+            // 🔥 به‌روزرسانی نمایش قیمت‌ها با مقادیر انتخاب شده (نه حداقل/حداکثر اصلی)
+            if (priceMinValueLabel) {
+                priceMinValueLabel.textContent = new Intl.NumberFormat().format(priceMinValue);
+            }
+            if (priceMaxValueLabel) {
+                priceMaxValueLabel.textContent = new Intl.NumberFormat().format(priceMaxValue);
             }
 
-            // ذخیره reference و اضافه کردن listener جدید با capture
-            container._busCardHandler = busCardHandler;
-            container.addEventListener("click", busCardHandler, true);
+            // به‌روزرسانی UI اسلایدر
+            if (priceThumbMin) {
+                priceThumbMin.style.left = `${minPercent}%`;
+            }
+            if (priceThumbMax) {
+                priceThumbMax.style.left = `${maxPercent}%`;
+            }
+            if (priceTrack) {
+                priceTrack.style.left = `${minPercent}%`;
+                priceTrack.style.right = `${100 - maxPercent}%`;
+            }
 
-            cardEventsInitialized = true;
-            console.log("✅ Card events initialized");
+            // فراخوانی updateFilterDisplay برای موبایل (اگر موجود باشد)
+            if (typeof updateFilterDisplay === 'function') {
+                updateFilterDisplay(
+                    "price",
+                    "price-range",
+                    priceMinValue,
+                    priceMaxValue,
+                    minPrice,
+                    maxPrice,
+                    null,
+                    null
+                );
+            }
+
+            console.log(`💰 Price Range Updated: ${priceMinValue} - ${priceMaxValue}`);
+
+        } catch (error) {
+            console.error(`updatePriceSlider: ${error.message}`);
         }
-    }
-};
-
+    };
 
     const preservePriceLabels = () => {
         try {
@@ -2740,228 +1797,160 @@ const ensureCardEventsInitialized = () => {
         }
     };
 
-const triggerPriceFilter = () => {
-    try {
-        // جلوگیری از تریگر در حین drag
-        if (isDragging) {
-            console.warn("triggerPriceFilter: Cannot trigger during drag");
-            return;
-        }
+    function triggerPriceFilter() {
+        try {
+            // تنظیم flag برای به‌روزرسانی
+            mustUpdate = true;
 
-        // تنظیم flag برای به‌روزرسانی
-        mustUpdate = true;
-
-        console.log(`🎯 Price Filter Triggered: ${priceRange[0]} - ${priceRange[1]}`);
-
-        // استفاده از BasisCore برای تریگر کردن فیلتر
-        if (typeof $bc !== 'undefined' && $bc.setSource) {
-            $bc.setSource("cms.price.update", {
-                value: "range",
-                minPrice: priceRange[0],
-                maxPrice: priceRange[1],
-                run: true
-            });
-        } else {
-            // fallback در صورت عدم دسترسی به $bc
-            busManipulation({
-                source: {
-                    id: 'cms.price.update',
-                    rows: [{
-                        value: 'range',
-                        minPrice: priceRange[0],
-                        maxPrice: priceRange[1]
-                    }]
-                },
-                context: {
-                    setAsSource: function (sourceId, data) {
-                        console.log(`Setting source ${sourceId}:`, data);
+            // استفاده از BasisCore برای تریگر کردن فیلتر
+            if (typeof $bc !== 'undefined' && $bc.setSource) {
+                $bc.setSource("cms.price", {
+                    value: "range",
+                    minPrice: priceRange[0],
+                    maxPrice: priceRange[1],
+                    run: true
+                });
+            } else {
+                // fallback در صورت عدم دسترسی به $bc
+                busManipulation({
+                    source: {
+                        id: 'cms.price.update',
+                        rows: [{
+                            value: 'range',
+                            minPrice: priceRange[0],
+                            maxPrice: priceRange[1]
+                        }]
                     },
-                    tryToGetSource: function (sourceId) {
-                        if (sourceId === "bus.search") {
-                            return listData?.source || null;
+                    context: {
+                        setAsSource: function (sourceId, data) {
+                            console.log(`Setting source ${sourceId}:`, data);
+                        },
+                        tryToGetSource: function (sourceId) {
+                            if (sourceId === "bus.search") {
+                                return listData?.source || null;
+                            }
+                            return null;
                         }
-                        return null;
                     }
-                }
-            });
-        }
-
-    } catch (error) {
-        console.error("triggerPriceFilter: " + error.message);
-    }
-};
-
-// 🔥 تابع اصلاح شده handlePriceDrag
-const handlePriceDrag = (args) => {
-    try {
-        if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
-            console.error("handlePriceDrag: Invalid source rows");
-            return;
-        }
-
-        if (!priceSlider) {
-            console.error("handlePriceDrag: Price slider not found");
-            return;
-        }
-
-        // جلوگیری از شروع drag جدید اگر یکی در حال انجام است
-        if (isDragging) {
-            console.warn("handlePriceDrag: Another drag is in progress");
-            return;
-        }
-
-        const sliderRect = priceSlider.getBoundingClientRect();
-        isDragging = true;
-        dragStartTime = Date.now();
-        currentDragType = args.source.rows[0].value; // ⭐ ذخیره نوع drag
-        
-        console.log(`🖱️ Price Drag Started: ${currentDragType}`);
-
-        // تنظیم cursor برای کل صفحه
-        document.body.style.cursor = 'grabbing';
-        document.body.style.userSelect = 'none';
-
-        /**
-         * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
-         */
-        const onMouseMove = (e) => {
-            if (!isDragging || currentDragType !== args.source.rows[0].value) return;
-
-            // جلوگیری از default behavior
-            e.preventDefault();
-            e.stopPropagation();
-
-            const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
-            const percent = (x / sliderRect.width) * 100;
-
-            if (args.source.rows[0].value === "min" && percent <= maxPercent) {
-                minPercent = percent;
-            } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
-                maxPercent = percent;
+                });
             }
 
-            // به‌روزرسانی فوری UI (بدون تأخیر)
-            updatePriceSlider();
-        };
+            console.log(`🎯 Price Filter Triggered: ${priceRange[0]} - ${priceRange[1]}`);
 
-        /**
-         * پایان drag - اعمال فیلتر با تأخیر کم
-         */
-        const onMouseUp = (e) => {
-            if (!isDragging || currentDragType !== args.source.rows[0].value) return;
-
-            // جلوگیری از propagation
-            e.preventDefault();
-            e.stopPropagation();
-
-            isDragging = false;
-            currentDragType = null; // ⭐ بازنشانی نوع drag
-            const dragDuration = Date.now() - dragStartTime;
-
-            // بازگردانی cursor
-            document.body.style.cursor = '';
-            document.body.style.userSelect = '';
-
-            // حذف event listener ها
-            document.removeEventListener("mousemove", onMouseMove, true);
-            document.removeEventListener("mouseup", onMouseUp, true);
-
-            // 🔥 علامت‌گذاری که کاربر محدوده را تغییر داده
-            userHasChangedPriceRange = true;
-            lastUserMinPrice = priceRange[0];
-            lastUserMaxPrice = priceRange[1];
-
-            // اعمال فیلتر با تأخیر کمتر
-            clearTimeout(window.priceFilterTimeout);
-
-            // تأخیر کمتر برای drag های سریع
-            const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
-
-            window.priceFilterTimeout = setTimeout(() => {
-                triggerPriceFilter();
-            }, delay);
-
-            console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
-        };
-
-        // اضافه کردن event listener ها با capture برای جلوگیری از تداخل
-        document.addEventListener("mousemove", onMouseMove, true);
-        document.addEventListener("mouseup", onMouseUp, true);
-
-    } catch (error) {
-        console.error("handlePriceDrag: " + error.message);
-        // پاکسازی در صورت خطا
-        isDragging = false;
-        currentDragType = null;
-        document.body.style.cursor = '';
-        document.body.style.userSelect = '';
+        } catch (error) {
+            console.error("triggerPriceFilter: " + error.message);
+        }
     }
-};
 
-// 🔥 تابع اصلاح شده initializePriceSlider
-const initializePriceSlider = () => {
-    try {
-        if (!priceSlider || !priceThumbMin || !priceThumbMax) {
-            console.error("Price slider elements not found");
-            return;
-        }
 
-        // جلوگیری از اجرای مکرر
-        if (priceSliderInitialized) {
-            console.log("Price slider already initialized");
-            return;
-        }
+    function handlePriceDrag(args) {
+        try {
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+                console.error("busManipulation: Invalid source rows for cms.price");
+                return;
+            }
 
-        // حذف event listener های قبلی در صورت وجود
-        if (priceThumbMin._priceMouseDownHandler) {
-            priceThumbMin.removeEventListener("mousedown", priceThumbMin._priceMouseDownHandler);
-        }
-        if (priceThumbMax._priceMouseDownHandler) {
-            priceThumbMax.removeEventListener("mousedown", priceThumbMax._priceMouseDownHandler);
-        }
+            if (!priceSlider) {
+                console.error("busManipulation: Price slider not found");
+                return;
+            }
 
-        // تعریف handler ها
-        const minThumbHandler = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!isDragging) { // ⭐ چک کردن وضعیت
+            const sliderRect = priceSlider.getBoundingClientRect();
+            isDragging = true;
+            dragStartTime = Date.now();
+
+            /**
+             * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
+             */
+            const onMouseMove = (e) => {
+                if (!isDragging) return;
+
+                const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
+                const percent = (x / sliderRect.width) * 100;
+
+                if (args.source.rows[0].value === "min" && percent <= maxPercent) {
+                    minPercent = percent;
+                } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
+                    maxPercent = percent;
+                }
+
+                // به‌روزرسانی فوری UI (بدون تأخیر)
+                updatePriceSlider();
+            };
+
+            /**
+             * پایان drag - اعمال فیلتر با تأخیر کم
+             */
+            const onMouseUp = () => {
+                if (!isDragging) return;
+
+                isDragging = false;
+                const dragDuration = Date.now() - dragStartTime;
+
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+
+                // اعمال فیلتر با تأخیر کمتر
+                clearTimeout(window.priceFilterTimeout);
+
+                // تأخیر کمتر برای drag های سریع
+                const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
+
+                window.priceFilterTimeout = setTimeout(() => {
+                    triggerPriceFilter();
+                }, delay);
+
+                console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
+            };
+
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+
+        } catch (error) {
+            console.error("handlePriceDrag: " + error.message);
+        }
+    }
+
+
+
+    function initializePriceSlider() {
+        try {
+            if (!priceSlider || !priceThumbMin || !priceThumbMax) {
+                console.error("Price slider elements not found");
+                return;
+            }
+
+            // حذف event listener های قبلی
+            priceThumbMin.removeEventListener("mousedown", handlePriceSliderMouseDown);
+            priceThumbMax.removeEventListener("mousedown", handlePriceSliderMouseDown);
+
+            // اضافه کردن event listener های جدید
+            priceThumbMin.addEventListener("mousedown", (e) => {
+                e.preventDefault();
                 handlePriceDrag({
                     source: {
                         id: "cms.price",
                         rows: [{ value: "min" }]
                     }
                 });
-            }
-        };
+            });
 
-        const maxThumbHandler = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!isDragging) { // ⭐ چک کردن وضعیت
+            priceThumbMax.addEventListener("mousedown", (e) => {
+                e.preventDefault();
                 handlePriceDrag({
                     source: {
                         id: "cms.price",
                         rows: [{ value: "max" }]
                     }
                 });
-            }
-        };
+            });
 
-        // ذخیره reference برای حذف بعدی
-        priceThumbMin._priceMouseDownHandler = minThumbHandler;
-        priceThumbMax._priceMouseDownHandler = maxThumbHandler;
+            console.log("✅ Price slider initialized successfully");
 
-        // اضافه کردن event listener های جدید
-        priceThumbMin.addEventListener("mousedown", minThumbHandler);
-        priceThumbMax.addEventListener("mousedown", maxThumbHandler);
-
-        priceSliderInitialized = true;
-        console.log("✅ Price slider initialized successfully");
-
-    } catch (error) {
-        console.error("initializePriceSlider: " + error.message);
+        } catch (error) {
+            console.error("initializePriceSlider: " + error.message);
+        }
     }
-};
 
 
     const resetPriceFilter = () => {
@@ -3142,139 +2131,10 @@ function findBusData(idToFind) {
     return null;
 }
 
-// ⭐ تابع اصلاح شده initializeBusCards
-// function initializeBusCards(idToFind) {
-//     try {
-//         const cleanId = String(idToFind).trim().replace(/[^a-zA-Z0-9]/g, '');
-//         console.log("🔍 Searching for bus ID:", cleanId);
 
-//         // استفاده از تابع کمکی برای پیدا کردن داده
-//         const result = findBusData(cleanId);
-        
-//         if (!result) {
-//             console.warn("⚠️ آیتم مورد نظر با busId پیدا نشد:", cleanId);
-            
-//             // ⭐ تلاش مجدد با ID اصلی (بدون پاکسازی)
-//             const originalResult = findBusData(idToFind);
-//             if (!originalResult) {
-//                 console.error("❌ هیچ داده‌ای برای busId یافت نشد:", idToFind);
-//                 return;
-//             }
-//             result.object = originalResult.object;
-//             result.source = originalResult.source;
-//         }
-
-//         console.log("✅ داده پیدا شد از منبع:", result.source);
-
-//         const foundObject = result.object;
-
-//         // استخراج busGroup
-//         let busGroupArray = [];
-//         if (Array.isArray(foundObject.busGroup)) {
-//             busGroupArray = foundObject.busGroup;
-//         } else if (typeof foundObject.busGroup === 'object' && foundObject.busGroup !== null) {
-//             busGroupArray = Object.values(foundObject.busGroup);
-//         }
-
-//         console.log("🚌 busGroupArray:", busGroupArray);
-
-//         // تنظیم $bc.setSource
-//         if (typeof $bc !== 'undefined' && $bc.setSource) {
-//             $bc.setSource("cms.seat", {
-//                 type: "upselling",
-//                 busId: cleanId,
-//                 busGroup: JSON.stringify(busGroupArray),
-//                 run: true
-//             });
-//         }
-
-//         // مدیریت رویدادهای کلیک
-//         const container = document.querySelector(".book-bus-cards-container");
-//         if (!container) {
-//             console.error("❌ کانتینر .book-bus-cards-container پیدا نشد");
-//             return;
-//         }
-
-//         // ⭐ حذف event listener قبلی برای جلوگیری از تداخل
-//         const existingHandler = container.getAttribute('data-event-attached');
-//         if (!existingHandler) {
-//             container.setAttribute('data-event-attached', 'true');
-            
-//             container.addEventListener("click", (event) => {
-//                 const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
-//                 const closeCardBtn = event.target.closest(".book-closeCard");
-//                 const openFirstMenu = event.target.closest(".book-open-first-menu");
-//                 const closeFirstMenu = event.target.closest(".book-first-menu .book-clode-menu");
-//                 const openSecondMenu = event.target.closest(".book-open-second-menu");
-//                 const closeSecondMenu = event.target.closest(".book-second-menu .book-clode-menu");
-//                 const openThirdMenu = event.target.closest(".book-open-third-menu");
-//                 const closeThirdMenu = event.target.closest(".book-third-menu .book-clode-menu");
-
-//                 const card = event.target.closest(".book-bus-card");
-//                 if (!card) return;
-
-//                 // باز کردن کارت
-//                 if (seeMoreBtn) {
-//                     seeMoreBtn.classList.add("book-hidden");
-//                     card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.remove("book-hidden"));
-//                     card.classList.remove("book-h-[240px]");
-//                     card.classList.add("book-h-[482px]");
-//                 }
-
-//                 // بستن کارت
-//                 if (closeCardBtn) {
-//                     const seeMore = card.querySelector(".book-see-and-buy-ticket");
-//                     if (seeMore) seeMore.classList.remove("book-hidden");
-//                     card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.add("book-hidden"));
-//                     card.classList.add("book-h-[240px]");
-//                     card.classList.remove("book-h-[482px]");
-//                 }
-
-//                 // منوهای مختلف
-//                 if (openFirstMenu) {
-//                     const firstMenu = card.querySelector(".book-first-menu");
-//                     if (firstMenu) firstMenu.classList.remove("book-translate-x-[105%]");
-//                 }
-//                 if (closeFirstMenu) {
-//                     const firstMenu = card.querySelector(".book-first-menu");
-//                     if (firstMenu) firstMenu.classList.add("book-translate-x-[105%]");
-//                 }
-
-//                 if (openSecondMenu) {
-//                     const secondMenu = card.querySelector(".book-second-menu");
-//                     if (secondMenu) secondMenu.classList.remove("book-translate-x-[105%]");
-//                 }
-//                 if (closeSecondMenu) {
-//                     const secondMenu = card.querySelector(".book-second-menu");
-//                     if (secondMenu) secondMenu.classList.add("book-translate-x-[105%]");
-//                 }
-
-//                 if (openThirdMenu) {
-//                     const thirdMenu = card.querySelector(".book-third-menu");
-//                     if (thirdMenu) thirdMenu.classList.remove("book-translate-x-[105%]");
-//                 }
-//                 if (closeThirdMenu) {
-//                     const thirdMenu = card.querySelector(".book-third-menu");
-//                     if (thirdMenu) thirdMenu.classList.add("book-translate-x-[105%]");
-//                 }
-//             });
-//         }
-
-//         console.log("✅ initializeBusCards تکمیل شد");
-
-//     } catch (error) {
-//         console.error("❌ initializeBusCards: " + error.message);
-//     }
-// }
-
-
-
-// 🔥 تابع اصلاح شده initializeBusCards
-const initializeBusCards = (idToFind) => {
+// 🔥 فقط این تابع را جایگزین کنید - باقی کد همان قبلی باشد
+function initializeBusCards(idToFind) {
     try {
-        // اطمینان از initialize شدن card events
-        ensureCardEventsInitialized();
-        
         const cleanId = String(idToFind).trim().replace(/[^a-zA-Z0-9]/g, '');
         console.log("🔍 Searching for bus ID:", cleanId);
 
@@ -3284,6 +2144,7 @@ const initializeBusCards = (idToFind) => {
         if (!result) {
             console.warn("⚠️ آیتم مورد نظر با busId پیدا نشد:", cleanId);
             
+            // تلاش مجدد با ID اصلی (بدون پاکسازی)
             const originalResult = findBusData(idToFind);
             if (!originalResult) {
                 console.error("❌ هیچ داده‌ای برای busId یافت نشد:", idToFind);
@@ -3315,16 +2176,130 @@ const initializeBusCards = (idToFind) => {
                 busGroup: JSON.stringify(busGroupArray),
                 run: true
             });
+            console.log("🟢 $bc.setSource اجرا شد");
         }
+
+        // 🔥 مدیریت رویدادهای کلیک - بدون تداخل
+        const container = document.querySelector(".book-bus-cards-container");
+        if (!container) {
+            console.error("❌ کانتینر .book-bus-cards-container پیدا نشد");
+            return;
+        }
+        console.log("🟡 کانتینر پیدا شد:", container);
+
+        // 🔥 فقط حذف و اضافه مجدد event listener برای این container
+        // حذف listener قبلی اگر وجود دارد
+        if (container._busCardHandler) {
+            container.removeEventListener("click", container._busCardHandler);
+            console.log("🟠 Event listener قبلی حذف شد");
+        }
+
+        // تعریف handler جدید
+        const busCardHandler = (event) => {
+            console.log("🟢 کلیک شد روی:", event.target);
+            const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
+            const closeCardBtn = event.target.closest(".book-closeCard");
+            const openFirstMenu = event.target.closest(".book-open-first-menu");
+            const closeFirstMenu = event.target.closest(".book-first-menu .book-clode-menu");
+            const openSecondMenu = event.target.closest(".book-open-second-menu");
+            const closeSecondMenu = event.target.closest(".book-second-menu .book-clode-menu");
+            const openThirdMenu = event.target.closest(".book-open-third-menu");
+            const closeThirdMenu = event.target.closest(".book-third-menu .book-clode-menu");
+
+            const card = event.target.closest(".book-bus-card");
+            console.log("🟡 card پیدا شده؟", card);
+            if (!card) return;
+
+            console.log("🔵 seeMoreBtn:", seeMoreBtn, "closeCardBtn:", closeCardBtn);
+
+            // باز کردن کارت
+            if (seeMoreBtn) {
+                event.stopPropagation(); // جلوگیری از bubbling
+                console.log("🟢 باز کردن کارت شروع شد");
+                seeMoreBtn.classList.add("book-hidden");
+                card.querySelectorAll(".book-hidden-elements").forEach(el => {
+                    console.log("🟣 حذف book-hidden از:", el);
+                    el.classList.remove("book-hidden");
+                });
+                card.classList.remove("book-h-[240px]");
+                card.classList.add("book-h-[482px]");
+                console.log("🟢 وضعیت کارت بعد از باز شدن:", card.className);
+                console.log("🟡 وضعیت نهایی کارت:", card.outerHTML);
+            }
+
+            // بستن کارت
+            if (closeCardBtn) {
+                event.stopPropagation(); // جلوگیری از bubbling
+                console.log("🔴 بستن کارت شروع شد");
+                const seeMore = card.querySelector(".book-see-and-buy-ticket");
+                if (seeMore) seeMore.classList.remove("book-hidden");
+                card.querySelectorAll(".book-hidden-elements").forEach(el => {
+                    console.log("🟣 اضافه کردن book-hidden به:", el);
+                    el.classList.add("book-hidden");
+                });
+                card.classList.add("book-h-[240px]");
+                card.classList.remove("book-h-[482px]");
+                console.log("🔴 وضعیت کارت بعد از بسته شدن:", card.className);
+                console.log("🟡 وضعیت نهایی کارت:", card.outerHTML);
+            }
+
+            // منوهای مختلف
+            if (openFirstMenu) {
+                const firstMenu = card.querySelector(".book-first-menu");
+                if (firstMenu) firstMenu.classList.remove("book-translate-x-[105%]");
+                console.log("🟢 منوی اول باز شد");
+            }
+            if (closeFirstMenu) {
+                const firstMenu = card.querySelector(".book-first-menu");
+                if (firstMenu) firstMenu.classList.add("book-translate-x-[105%]");
+                console.log("🔴 منوی اول بسته شد");
+            }
+
+            if (openSecondMenu) {
+                const secondMenu = card.querySelector(".book-second-menu");
+                if (secondMenu) secondMenu.classList.remove("book-translate-x-[105%]");
+                console.log("🟢 منوی دوم باز شد");
+            }
+            if (closeSecondMenu) {
+                const secondMenu = card.querySelector(".book-second-menu");
+                if (secondMenu) secondMenu.classList.add("book-translate-x-[105%]");
+                console.log("🔴 منوی دوم بسته شد");
+            }
+
+            if (openThirdMenu) {
+                const thirdMenu = card.querySelector(".book-third-menu");
+                if (thirdMenu) thirdMenu.classList.remove("book-translate-x-[105%]");
+                console.log("🟢 منوی سوم باز شد");
+            }
+            if (closeThirdMenu) {
+                const thirdMenu = card.querySelector(".book-third-menu");
+                if (thirdMenu) thirdMenu.classList.add("book-translate-x-[105%]");
+                console.log("🔴 منوی سوم بسته شد");
+            }
+        };
+
+        // ذخیره reference و اضافه کردن listener جدید
+        container._busCardHandler = busCardHandler;
+        container.addEventListener("click", busCardHandler);
+        console.log("✅ Event listener جدید اضافه شد");
+
+        // مشاهده تغییرات DOM برای دیباگ
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                console.log("🟠 تغییر در DOM:", mutation);
+            });
+        });
+        observer.observe(container, { attributes: true, childList: true, subtree: true });
+        console.log("🟡 MutationObserver فعال شد");
 
         console.log("✅ initializeBusCards تکمیل شد");
 
     } catch (error) {
         console.error("❌ initializeBusCards: " + error.message);
     }
-};
+}
 
-    const onProcessedRenderSeatMap = async (args) => {
+const onProcessedRenderSeatMap = async (args) => {
         try {
             if (!args || !args.response) {
                 console.error("onProcessedRenderSeatMap: Invalid arguments");
@@ -3749,6 +2724,3 @@ function debugDataState() {
             console.error(`toggleContent: ${error.message}`);
         }
     };
-</script>
-
-</html>
