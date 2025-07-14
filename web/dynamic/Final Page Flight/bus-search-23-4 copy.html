@@ -1,0 +1,14273 @@
+<html lang="fa" dir="rtl">
+
+
+
+
+
+
+
+<head>
+
+
+
+    <basis core="call" file="book/taglist" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+
+
+
+
+
+
+
+    <title>[##cms.seo.title|(سیستم رزرو بلیط اتوبوس)##]</title>
+
+
+
+
+
+
+
+    <link href="[##cms.cms.cdn##]/booking/css/bus-search.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
+
+
+
+    <link href="[##cms.cms.cdn##]/_css/swiper-bundle.min.css" type="text/css" rel="stylesheet" />
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body class="book-relative book-bg-zinc-50 book-bg-specialcolor-1">
+
+
+
+    <!-- header -->
+
+
+
+    <basis core="call" file="header.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+
+
+
+
+
+
+
+
+
+
+
+    <span class="book-hidden book-rotate-180 book-h-[482px]"></span>
+
+
+
+    <!-- main -->
+
+
+
+    <main data-dmnid="[##cms.cms.domainid##]" class="book-py-6 book-relative book-flex book-justify-center">
+
+
+
+
+
+
+
+        <!-- Commands / Requests -->
+
+
+
+        <basis core="call" file="bus/commands" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+
+
+
+
+
+
+
+
+
+
+
+        <div
+
+
+
+            class="book-layout__main book-w-full book-z-10">
+
+
+
+
+
+
+
+            <!-- Expire  Modal-->
+
+
+
+            <div
+
+
+
+                class="book-expire__message__modal__container book-modal__container book-fixed book-top-0 book-left-0 book-w-screen book-h-screen book-overflow-hidden book-z-50 book-hidden">
+
+
+
+                <div
+
+
+
+                    class="book-modal__content book-bg-white book-fixed book-inset-x-0 book-top-1.2 book--translate-y-1.2 book-w-[560px] book-rounded-2xl book-mx-auto book-p-5 book-text-center">
+
+
+
+                    <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
+
+
+
+                        <use xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#hour-expire-icon">
+
+
+
+                        </use>
+
+
+
+                    </svg>
+
+
+
+                    <div class="book-no__time book-hidden">
+
+
+
+                        <div class="book-text-2xl book-font-bold book-mt-6">اعتبار
+
+
+
+                            نتایج به پایان رسید</div>
+
+
+
+                        <div class="book-text-zinc-500 book-mt-3">لطفا برای
+
+
+
+                            نمایش جدیدترین اطلاعات و قیمت‌ها نتایج جستجو را
+
+
+
+                            بروز رسانی
+
+
+
+                            کنید</div>
+
+
+
+                        <div class="book-flex book-justify-between book-mt-6">
+
+
+
+                            <button onclick="location.reload()" type="button"
+
+
+
+                                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">بروز
+
+
+
+                                رسانی جستجو</button>
+
+
+
+                            <button onclick="window.location='/'" type="button"
+
+
+
+                                class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-primary-400 hover:book-book-text-white">بازگشت
+
+
+
+                                به صفحه اصلی</button>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <div class="book-some__time book-hidden">
+
+
+
+                        <div class="book-text-2xl book-font-bold book-mt-6">نتایج جستجو تا 6 دقیقه دیگر معتبر می باشد.
+
+
+
+                        </div>
+
+
+
+                        <div class="book-text-zinc-500 book-mt-3">بعد از به پایان رسیدن مدت اعتبار، اتوبوس دیگر در دسترس
+
+
+
+                            نمی‌باشد.</div>
+
+
+
+                        <div class="book-mt-6">
+
+
+
+                            <button
+
+
+
+                                onclick="document.querySelector('.book-expire__message__modal__container').classList.add('book-hidden')"
+
+
+
+                                type="button"
+
+
+
+                                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">
+
+
+
+                                متوجه شدم</button>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="book-max-w-7xl book-mx-auto book-px-4 book-py-2">
+
+
+
+                <!-- Retry Search -->
+
+
+
+                <basis core="call" file="/module/retry/search" method="post" selectedMode="bus" run="atclient"
+
+
+
+                    pageindex="[##cms.cms.pageindex|(1)##]">
+
+
+
+                </basis>
+
+
+
+
+
+
+
+                <div class="book-main__container book-w-full book-flex book-flex-wrap book--mx-2">
+
+
+
+                    <!-- Filters Sidebar -->
+
+
+
+                    <aside class="book-aside__container book-w-[22%] book-px-2 book-mb-4 lg:book-mb-0">
+
+
+
+                        <div class="book-relative book-bg-white book-rounded-xl book-shadow-sm book-p-2 book-mb-4">
+
+
+
+
+
+
+
+                            <basis core="print" datamembername="bus.carriers" run="atclient">
+
+
+
+                                <layout>
+
+
+
+                                    <script type="text/template">
+
+
+
+                                  <div
+
+
+
+                                  class="book-filter__container book-selector__container  book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-hidden">
+
+
+
+                                  <div class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
+
+
+
+                                      <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
+
+
+
+                                          onclick="toggleContent(this)">
+
+
+
+                                          <h3 class="book-font-bold book-text-sm book-text-zinc-900">شرکت های حمل و نقل
+
+
+
+                                          </h3>
+
+
+
+                                          <svg width="24" height="24">
+
+
+
+                                              <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+
+
+
+                                              </use>
+
+
+
+                                          </svg>
+
+
+
+                                      </div>
+
+
+
+                                      <div class="book-space-y-2 book-selector__content book-text-zinc-600">
+
+
+
+                                          <div class="book-filter__content book-carrier__content ">
+
+
+
+                                              @child
+
+
+
+                              
+
+
+
+                                          </div>
+
+
+
+                              
+
+
+
+                                      </div>
+
+
+
+                                  </div>
+
+
+
+                              </div>                              
+
+
+
+                                                                      
+
+
+
+                              </script>
+
+
+
+                                </layout>
+
+
+
+                                <face>
+
+
+
+                                    <script type="text/template">
+
+
+
+                                  <div class="book-filter__item book-mt-5 book-flex book-items-center">
+
+
+
+                                      <div bc-value="@Code@" bc-name="cms.carrier" bc-triggers="click"
+
+
+
+                                      class="book-custom__checkbox book-shrink-0 book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+
+
+
+                                  </div>
+
+
+
+                                  <div class="book-label__content book-w-11/12">
+
+
+
+                                      <div
+
+
+
+                                          class="book-flex book-justify-between book-items-center book-text-xs gap-1">
+
+
+
+                                          <img src="[##cms.cms.cdn##]/@Logo@" width="50"
+
+
+
+                                          height="20" alt="@Name@" class="book-h-5 book-ml-1" />
+
+
+
+                                          {{
+
+
+
+                                              return `<span><span class="book-ml-1">از</span><span>${new Intl.NumberFormat().format($data.Price)}</span><span
+
+
+
+                                              class="book-mr-1">${$data.Unit}</span></span>`
+
+
+
+                                          }}
+
+
+
+                                          
+
+
+
+                                      </div>
+
+
+
+                                  </div>
+
+
+
+                                  </div>
+
+
+
+                                                                     
+
+
+
+                              </script>
+
+
+
+                                </face>
+
+
+
+                            </basis>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <basis core="print" datamembername="bus.originterminals" run="atclient">
+
+
+
+                                <layout>
+
+
+
+                                    <script type="text/template">
+
+
+
+                                  <div
+
+
+
+                                  class="book-filter__container book-selector__container  book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-hidden">
+
+
+
+                                  <div class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
+
+
+
+                                      <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
+
+
+
+                                          onclick="toggleContent(this)">
+
+
+
+                                          <h3 class="book-font-bold book-text-sm book-text-zinc-900">پایانه های مبدا
+
+
+
+                                          </h3>
+
+
+
+                                          <svg width="24" height="24">
+
+
+
+                                              <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+
+
+
+                                              </use>
+
+
+
+                                          </svg>
+
+
+
+                                      </div>
+
+
+
+                                      <div class="book-space-y-2 book-selector__content book-text-zinc-600">
+
+
+
+                                          <div class="book-filter__content book-originterminal__content">
+
+
+
+                                              @child
+
+
+
+                              
+
+
+
+                                          </div>
+
+
+
+                                      </div>
+
+
+
+                                  </div>
+
+
+
+                               </div>
+
+
+
+                                                                      
+
+
+
+                              </script>
+
+
+
+                                </layout>
+
+
+
+                                <face>
+
+
+
+                                    <script type="text/template">
+
+
+
+                                  <div class="book-filter__item book-mt-5 book-flex book-items-center">
+
+
+
+                                      <div bc-value="@Code@" bc-name="cms.originterminal" bc-triggers="click"
+
+
+
+                                          class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+
+
+
+                                      </div>
+
+
+
+                                      <div class="book-w-11/12">
+
+
+
+                                          <div
+
+
+
+                                              class="book-flex book-justify-between book-items-center book-text-xs">
+
+
+
+                                              <span class="book-label__content">@Name@</span>
+
+
+
+                                          </div>
+
+
+
+                                      </div>
+
+
+
+                                  </div>
+
+
+
+                      
+
+
+
+                              </script>
+
+
+
+                                </face>
+
+
+
+                            </basis>
+
+
+
+                            <basis core="print" datamembername="bus.destinationterminals" run="atclient">
+
+
+
+                                <layout>
+
+
+
+                                    <script type="text/template">
+
+
+
+                                  <div
+
+
+
+                                  class="book-filter__container book-selector__container  book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-hidden">
+
+
+
+                                  <div class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
+
+
+
+                                      <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
+
+
+
+                                          onclick="toggleContent(this)">
+
+
+
+                                          <h3 class="book-font-bold book-text-sm book-text-zinc-900">پایانه های مقصد
+
+
+
+                                          </h3>
+
+
+
+                                          <svg width="24" height="24">
+
+
+
+                                              <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+
+
+
+                                              </use>
+
+
+
+                                          </svg>
+
+
+
+                                      </div>
+
+
+
+                                      <div class="book-space-y-2 book-selector__content book-text-zinc-600">
+
+
+
+                                          <div class="book-filter__content book-destinationterminal__content">
+
+
+
+                                              @child
+
+
+
+                              
+
+
+
+                                          </div>
+
+
+
+                                      </div>
+
+
+
+                                  </div>
+
+
+
+                               </div>
+
+
+
+                                                                      
+
+
+
+                              </script>
+
+
+
+                                </layout>
+
+
+
+                                <face>
+
+
+
+                                    <script type="text/template">
+
+
+
+                                  <div class="book-filter__item book-mt-5 book-flex book-items-center">
+
+
+
+                                      <div bc-value="@Code@" bc-name="cms.destinationterminal" bc-triggers="click"
+
+
+
+                                          class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+
+
+
+                                      </div>
+
+
+
+                                      <div class="book-w-11/12">
+
+
+
+                                          <div
+
+
+
+                                              class="book-flex book-justify-between book-items-center book-text-xs">
+
+
+
+                                              <span class="book-label__content">@Name@</span>
+
+
+
+                                          </div>
+
+
+
+                                      </div>
+
+
+
+                                  </div>
+
+
+
+                      
+
+
+
+                              </script>
+
+
+
+                                </face>
+
+
+
+                            </basis>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div
+
+
+
+                                class="book-filter__container book-selector__container book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-auto">
+
+
+
+                                <div
+
+
+
+                                    class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
+
+
+
+                                    <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
+
+
+
+                                        onclick="toggleContent(this)">
+
+
+
+                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">ساعت
+
+
+
+                                            حرکت</h3>
+
+
+
+                                        <svg width="24" height="24">
+
+
+
+                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+
+
+
+                                            </use>
+
+
+
+                                        </svg>
+
+
+
+                                    </div>
+
+
+
+
+
+
+
+                                    <div class="book-space-y-2 book-selector__content book-text-zinc-500">
+
+
+
+
+
+
+
+                                        <div class="book-filter__content book-departuretime__content">
+
+
+
+                                            <div class="book-time__content">
+
+
+
+                                                <div
+
+
+
+                                                    class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">
+
+
+
+                                                    همه زمان ها</div>
+
+
+
+                                                <div class="book-text-zinc-900 book-text-xs book-mb-4">ساعت
+
+
+
+                                                    فیلتر شده از
+
+
+
+                                                    <span class="book-hour">00:00 الی
+
+
+
+                                                        23:59</span>
+
+
+
+                                                </div>
+
+
+
+                                            </div>
+
+
+
+                                            <div
+
+
+
+                                                class="book-times__content book-flex book-justify-between book-bg-zinc-200 book-rounded-lg">
+
+
+
+
+
+
+
+                                                <div bc-value="0-4" data-time-period="صبح زود"
+
+
+
+                                                    data-time-range="4:59 الی 12:00" bc-name="cms.departuretime"
+
+
+
+                                                    bc-triggers="click"
+
+
+
+                                                    class="book-custom__checkbox book-button__content  book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+
+
+
+                                                    <svg width="24" height="24" class="book-mx-auto">
+
+
+
+                                                        <use
+
+
+
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#sunrise-icon">
+
+
+
+                                                        </use>
+
+
+
+                                                    </svg>
+
+
+
+                                                </div>
+
+
+
+
+
+
+
+
+
+
+
+                                                <div bc-value="5-11" data-time-period="صبح"
+
+
+
+                                                    data-time-range="5:00 الی 11:59" bc-name="cms.departuretime"
+
+
+
+                                                    bc-triggers="click"
+
+
+
+                                                    class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+
+
+
+                                                    <svg width="24" height="24" class="book-mx-auto">
+
+
+
+                                                        <use
+
+
+
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#morning-icon">
+
+
+
+                                                        </use>
+
+
+
+                                                    </svg>
+
+
+
+                                                </div>
+
+
+
+
+
+
+
+                                                <div bc-value="12-17" data-time-period="ظهر"
+
+
+
+                                                    data-time-range="12:00 الی 17:59" bc-name="cms.departuretime"
+
+
+
+                                                    bc-triggers="click"
+
+
+
+                                                    class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+
+
+
+                                                    <svg width="24" height="24" class="book-mx-auto">
+
+
+
+                                                        <use
+
+
+
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#sunset-icon">
+
+
+
+                                                        </use>
+
+
+
+                                                    </svg>
+
+
+
+                                                </div>
+
+
+
+
+
+
+
+
+
+
+
+                                                <div bc-value="18-23" data-time-period="شب"
+
+
+
+                                                    data-time-range="18:00 الی 23:59" bc-name="cms.departuretime"
+
+
+
+                                                    bc-triggers="click"
+
+
+
+                                                    class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+
+
+
+                                                    <svg width="24" height="24" class="book-mx-auto">
+
+
+
+                                                        <use
+
+
+
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#moon-icon">
+
+
+
+                                                        </use>
+
+
+
+                                                    </svg>
+
+
+
+                                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            </div>
+
+
+
+                                        </div>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                            <div
+
+
+
+                                class="book-filter__container book-selector__container  book-bg-zinc-100 book-rounded-xl book-mb-4 book-overflow-auto">
+
+
+
+                                <div
+
+
+
+                                    class="book-inner-scroll book-max-h-[21rem] book-px-4 book-py-6 book-overflow-auto">
+
+
+
+                                    <div class="book-filter__title__container book-flex book-justify-between book-mb-3 book-cursor-pointer"
+
+
+
+                                        onclick="toggleContent(this)">
+
+
+
+                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">بازه
+
+
+
+                                            قیمت</h3>
+
+
+
+                                        <svg width="24" height="24">
+
+
+
+                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+
+
+
+                                            </use>
+
+
+
+                                        </svg>
+
+
+
+                                    </div>
+
+
+
+
+
+
+
+                                    <div class="book-space-y-2 book-selector__content book-text-zinc-500">
+
+
+
+
+
+
+
+                                        <div class="book-filter__content">
+
+
+
+                                            <div class="book-filter__price__container book-my-1 book-ltr">
+
+
+
+                                                <div class="book-slider__container book-mx-auto">
+
+
+
+                                                    <div
+
+
+
+                                                        class="book-flex book-justify-between book-items-center book-text-xs">
+
+
+
+                                                        <div class="book-slider__value__container book-rtl">
+
+
+
+                                                            <span class="book-min__value">0</span>
+
+
+
+                                                            <span class="book-mr-1 book-unit__value">ریال</span>
+
+
+
+                                                        </div>
+
+
+
+                                                        <div class="book-slider__value__container book-rtl">
+
+
+
+                                                            <span class="book-max__value">0</span>
+
+
+
+                                                            <span class="book-mr-1 book-unit__value">ریال</span>
+
+
+
+                                                        </div>
+
+
+
+                                                    </div>
+
+
+
+                                                    <div
+
+
+
+                                                        class="book-slider__content book-relative book-h-1 book-mx-2 book-rounded-sm book-bg-primary-50 book-mt-5">
+
+
+
+                                                        <div
+
+
+
+                                                            class="book-slider__track book-absolute book-rounded-sm book-h-full book-inset-x-0 book-z-[1] book-bg-primary-400">
+
+
+
+                                                        </div>
+
+
+
+                                                        <div class="book-thumb__min book-absolute book-left-0 book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+
+
+
+                                                            bc-name="cms.price" bc-triggers="mousedown" bc-value="min">
+
+
+
+                                                        </div>
+
+
+
+                                                        <div class="book-thumb__max book-absolute book-left-full book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+
+
+
+                                                            bc-name="cms.price" bc-triggers="mousedown" bc-value="max">
+
+
+
+                                                        </div>
+
+
+
+                                                    </div>
+
+
+
+                                                </div>
+
+
+
+                                            </div>
+
+
+
+                                        </div>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                    </aside>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- ticket container -->
+
+
+
+                    <section class="book-w-[76%] book-flex book-flex-col book-gap-5 book-main__content">
+
+
+
+                        <div class="book-flex book-justify-between book-text-lg">
+
+
+
+                            <div class="book-rendering__container book-flex book-items-center book-gap-2 book-mb-1">
+
+
+
+                                در حال جستجو اتوبوس
+
+
+
+                                <span class="book-loading__spinner"></span>
+
+
+
+                            </div>
+
+
+
+                            <div class="book-count__api__container book-text-center"><span
+
+
+
+                                    class="book-count__api__content book-w-10 book-inline-block book-text-primary-400 book-font-bold">0</span>
+
+
+
+                                اتوبوس یافت شد
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                        <div
+
+
+
+                            class="book-progress__bar__container book-w-full book-rounded-md book-bg-zinc-300 book-my-3">
+
+
+
+                            <div
+
+
+
+                                class="book-progress__bar book-h-2 book-bg-gradient-special book-rounded-md book-relative">
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                        <div class="book-relative">
+
+
+
+
+
+
+
+                            <!-- bus Advertisment -->
+
+
+
+                            <div class="book-advertisment__container book-rendered__container book-hidden book-my-6">
+
+
+
+                                <img src="[##cms.cms.cdn##]/booking/images/advertisment-hero.jpg"
+
+
+
+                                    class="book-w-full  book-rounded-lg" width="930" height="100" alt />
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <!-- bus Sorting Options -->
+
+
+
+                            <div
+
+
+
+                                class="book-sort__cards__container book-rendered__container book-hidden book-selector__container book-my-6">
+
+
+
+                                <div
+
+
+
+                                    class="book-sort__cards__content book-selector__content book-flex book-flex-wrap book-justify-between book-items-center book-text-sm">
+
+
+
+                                    <div class="book-text-zinc-900">مرتب سازی بر
+
+
+
+                                        اساس:</div>
+
+
+
+                                    <div bc-triggers="click" bc-name="cms.sort" bc-value="default"
+
+
+
+                                        class="book-cursor-pointer book-sort__item__content book-sorting__active book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-min-w-32 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
+
+
+
+
+
+
+
+                                        <h6 class="book-text-sm">پیش فرض</ا>
+
+
+
+                                    </div>
+
+
+
+                                    <div bc-triggers="click" bc-name="cms.sort" bc-value="price" data-sort="descend"
+
+
+
+                                        class="book-cursor-pointer book-sort__item__content book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-min-w-32 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
+
+
+
+
+
+
+
+                                        <svg width="24" height="25">
+
+
+
+                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon">
+
+
+
+                                            </use>
+
+
+
+                                        </svg>
+
+
+
+
+
+
+
+                                        <h6 class="book-text-sm">قیمت</h6>
+
+
+
+                                    </div>
+
+
+
+                                    <div bc-triggers="click" bc-name="cms.sort" bc-value="hour" data-sort="descend"
+
+
+
+                                        class="book-cursor-pointer book-sort__item__content book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-min-w-32 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
+
+
+
+
+
+
+
+                                        <svg width="24" height="25">
+
+
+
+                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon">
+
+
+
+                                            </use>
+
+
+
+                                        </svg>
+
+
+
+
+
+
+
+                                        <h6 class="book-text-sm">ساعت
+
+
+
+                                            اتوبوس</h6>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+                            <!-- filter horizontally -->
+
+
+
+                            <!-- <div class="book-flex book-items-center book-gap-3 book-categories-show book-hidden">
+
+
+
+    <p class="book-text-zinc-700 book-font-bold">نمایش بر اساس:</p>
+
+
+
+    <button
+
+
+
+      class="book-flex book-gap-3 book-text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-6 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
+
+
+
+      type="button">
+
+
+
+      <span class="book-tick book-hidden">
+
+
+
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+
+
+          <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
+
+
+
+            stroke-linecap="round" stroke-linejoin="round"></path>
+
+
+
+        </svg>
+
+
+
+      </span>
+
+
+
+      همه سرویس ها
+
+
+
+    </button>
+
+
+
+    <button
+
+
+
+      class="book-flex book-gap-3 book-text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-6 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
+
+
+
+      type="button">
+
+
+
+      <span class="book-tick book-hidden">
+
+
+
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+
+
+          <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
+
+
+
+            stroke-linecap="round" stroke-linejoin="round"></path>
+
+
+
+        </svg>
+
+
+
+      </span>
+
+
+
+      اتوبوس
+
+
+
+    </button>
+
+
+
+    <button
+
+
+
+      class="book-flex book-gap-3 book-text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-6 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
+
+
+
+      type="button">
+
+
+
+      <span class="book-tick book-hidden">
+
+
+
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+
+
+          <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
+
+
+
+            stroke-linecap="round" stroke-linejoin="round"></path>
+
+
+
+        </svg>
+
+
+
+      </span>
+
+
+
+      سواری
+
+
+
+    </button>
+
+
+
+    <button
+
+
+
+      class="book-flex book-gap-3 book-text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-6 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
+
+
+
+      type="button">
+
+
+
+      <span class="book-tick book-hidden">
+
+
+
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+
+
+          <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
+
+
+
+            stroke-linecap="round" stroke-linejoin="round"></path>
+
+
+
+        </svg>
+
+
+
+      </span>
+
+
+
+      ون
+
+
+
+    </button>
+
+
+
+  </div> -->
+
+
+
+
+
+
+
+
+
+
+
+                            <!-- ticket cards -->
+
+
+
+                            <div
+
+
+
+                                class="book-cards__container book-w-full book-flex book-flex-col book-gap-5 book-bus-cards-container">
+
+
+
+
+
+
+
+
+
+
+
+                                <!-- BasisCore Print Component برای نمایش جدول -->
+
+
+
+                                <basis core="print" datamembername="bus.updated" run="atclient">
+
+
+
+                                    <layout>
+
+
+
+                                        <script type="text/template">
+
+
+
+                              <div class="book-list__cards__container">
+
+
+
+                                  @child
+
+
+
+                               </div>
+
+
+
+                            </script>
+
+
+
+                                    </layout>
+
+
+
+                                    <face>
+
+
+
+                                        <script type="text/template">
+
+
+
+                                  <div id="bus__@index@" data-id="@busId@" data-index="@index@" class="book-bus-card book-drop-shadow-sm book-transition-all book-ease-in-out book-overflow-hidden book-relative book-w-full book-flex book-h-[240px] book-mb-4">
+
+
+
+                                                  <div
+
+
+
+        class="book-translate-x-[105%] book-absolute book-first-menu book-flex book-flex-col book-gap-4 book-justify-center book-items-center book-top-0 book-left-0 book-w-full book-h-full book-rounded-2xl book-glass2 book-z-20 book-transition-all book-duration-200">
+
+
+
+        <a href=""
+
+
+
+          class="book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+
+
+
+          بلیط</a>
+
+
+
+        <a href=""
+
+
+
+          class="book-w-[330px] book-text-sm book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-700 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+
+
+
+          اطلاعات ترمینال (@originTerminal@ - @destinationTerminal@)</a>
+
+
+
+        <button type="button"
+
+
+
+          class="book-clode-menu book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+
+
+
+          بستـن
+
+
+
+        </button>
+
+
+
+      </div>
+
+
+
+      <div
+
+
+
+        class="book-translate-x-[105%] book-absolute book-second-menu book-flex book-flex-col book-gap-4 book-justify-center book-items-center book-top-0 book-left-0 book-w-full book-h-full book-rounded-2xl book-glass2 book-z-20 book-transition-all book-duration-200">
+
+
+
+        <a href=""
+
+
+
+          class="book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+
+
+
+          بلیط</a>
+
+
+
+        <a href=""
+
+
+
+          class="book-w-[330px] book-text-sm book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-700 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+
+
+
+          اطلاعات ترمینال (@originTerminal@)</a>
+
+
+
+        <button type="button"
+
+
+
+          class="book-clode-menu book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+
+
+
+          بستـن
+
+
+
+        </button>
+
+
+
+      </div>
+
+
+
+      <div
+
+
+
+        class="book-translate-x-[105%] book-absolute book-third-menu book-flex book-flex-col book-gap-4 book-justify-center book-items-center book-top-0 book-left-0 book-w-full book-h-full book-rounded-2xl book-glass2 book-z-20 book-transition-all book-duration-200">
+
+
+
+        <a href=""
+
+
+
+          class="book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+
+
+
+          بلیط</a>
+
+
+
+        <a href=""
+
+
+
+          class="book-w-[330px] book-text-sm book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-700 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+
+
+
+          @carrierName@</a>
+
+
+
+        <button type="button"
+
+
+
+          class="book-clode-menu book-w-[330px] book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+
+
+
+          بستـن
+
+
+
+        </button>
+
+
+
+      </div>
+
+
+
+      <div class="book-absolute book-top-[-22.3px] book-rotate-[270deg] book-right-[71.5%]">
+
+
+
+        <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+
+
+          <g clip-path="url(#clip0_1_69)">
+
+
+
+            <g mask="url(#mask0_1_69)">
+
+
+
+              <path
+
+
+
+                d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
+
+
+
+                fill="white" stroke="transparent" stroke-width="2"></path>
+
+
+
+            </g>
+
+
+
+          </g>
+
+
+
+          <defs>
+
+
+
+            <clipPath id="clip0_1_69">
+
+
+
+              <rect width="21" height="63" fill="white"></rect>
+
+
+
+            </clipPath>
+
+
+
+          </defs>
+
+
+
+        </svg>
+
+
+
+      </div>
+
+
+
+      <div class="book-absolute book-bottom-[-22px] book-rotate-90 book-right-[71.5%]">
+
+
+
+        <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+
+
+          <g clip-path="url(#clip0_1_69)">
+
+
+
+            <g mask="url(#mask0_1_69)">
+
+
+
+              <path
+
+
+
+                d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
+
+
+
+                fill="white" stroke="transparent" stroke-width="2"></path>
+
+
+
+            </g>
+
+
+
+          </g>
+
+
+
+          <defs>
+
+
+
+            <clipPath id="clip0_1_69">
+
+
+
+              <rect width="21" height="63" fill="white"></rect>
+
+
+
+            </clipPath>
+
+
+
+          </defs>
+
+
+
+        </svg>
+
+
+
+      </div>
+
+
+
+      <div
+
+
+
+        class="book-rounded-r-2xl book-px-9 book-p-3 book-flex book-flex-col book-justify-center book-gap-6 book-rounded-l-[32px] book-h-full book-w-[73%] book-bg-white">
+
+
+
+        <div
+
+
+
+          class="book-flex book-items-center book-cursor-pointer book-open-third-menu book-gap-2 book-text-sm book-text-zinc-700">
+
+
+
+          <img class="book-w-12 book-h-12" src="[##cms.cms.cdn##]/@carrierImage@"
+
+
+
+            alt="@carrierName@" />
+
+
+
+          @carrierName@
+
+
+
+        </div>
+
+
+
+        <div class="book-w-full book-flex book-justify-between book-items-center">
+
+
+
+          <div
+
+
+
+            class="book-flex book-open-first-menu book-cursor-pointer book-items-center book-gap-1 book-whitespace-nowrap">
+
+
+
+            <p class="book-font-bold book-text-lg">@originCity@</p>
+
+
+
+            <p class="book-text-zinc-700 book-text-sm">( @originTerminal@ )</p>
+
+
+
+          </div>
+
+
+
+          <div
+
+
+
+            class="book-w-[40%] book-set-before-after book-relative book-h-[1px] book-border-t book-border-dashed book-border-zinc-800">
+
+
+
+            <span></span><span></span>
+
+
+
+          </div>
+
+
+
+          <div
+
+
+
+            class="book-flex book-items-center book-cursor-pointer book-open-second-menu book-gap-1 book-whitespace-nowrap">
+
+
+
+            <p class="book-font-bold book-text-lg">@destinationCity@</p>
+
+
+
+            <p class="book-text-zinc-700 book-text-sm">( @destinationTerminal@ )</p>
+
+
+
+          </div>
+
+
+
+        </div>
+
+
+
+        <div class="book-flex book-gap-2 book-items-center book-text-sm book-text-zinc-700">
+
+
+
+          <img src="[##cms.cms.cdn##]/booking/images/bus.svg" alt="bus" />
+
+
+
+          @busType@
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class=" book-hidden-elements book-hidden book-w-full book-flex book-flex-col book-gap-3 book-seat__container__rendering">
+
+
+
+
+
+
+
+
+
+
+
+          <div class="book-flex book-w-full book-relative book-h-[240px]">
+
+
+
+<div
+
+
+
+  class="book-w-full book-group book-overflow-hidden book-relative book-px-5 book-py-6 book-flex book-flex-col book-justify-between book-z-0 book-rounded-r-xl book--translate-x-[2.08rem] book-h-full book-bg-[#E9E9E9]">
+
+
+
+  <div
+
+
+
+      class="book-absolute book-z-10 book-transition-all book-duration-300 book-hidden book-top-0 book-left-0 book-h-full book-w-full book-glass3 book-rounded-xl group-hover:book-!flex book-flex-col book-justify-center book-items-center book-gap-6">
+
+
+
+      <a href=""
+
+
+
+          class="book-w-[150px] book-h-10 book-flex hover:book-bg-primary-950 hover:book-shadow-lg book-justify-center book-items-center book-text-white book-bg-primary-800 book-rounded-lg">خرید</a><button
+
+
+
+          type="button"
+
+
+
+          class="book-w-[150px] book-closeCard book-h-10 book-flex hover:book-bg-primary-950 hover:book-shadow-lg book-justify-center book-items-center book-text-white book-bg-zinc-800 book-rounded-lg">بسـتن
+
+
+
+      </button>
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div dir="ltr" class="seat-id-@busId@  book-flex book-dir-ltr">
+
+
+
+                      <!-- seat  -->
+
+
+
+
+
+
+
+  </div>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div><img class="book-z-10" src="[##cms.cms.cdn##]/booking/images/bus-inner.svg" alt="inner-bus" />
+
+
+
+</div>
+
+
+
+<div class="book-w-full book-flex book-justify-center book-items-center book-gap-4">
+
+
+
+<div class="book-flex book-gap-2 book-items-center"><span
+
+
+
+      class="book-size-4 book-rounded book-border book-border-zinc-900"></span>
+
+
+
+  <p class="book-text-zinc-900 book-text-sm">قابل خرید</p>
+
+
+
+</div>
+
+
+
+<div class="book-flex book-gap-2 book-items-center"><span class="book-size-4 book-rounded book-bg-[#00cbff]"></span>
+
+
+
+  <p class="book-text-zinc-900 book-text-sm">خریداری شده برای آقایان </p>
+
+
+
+</div>
+
+
+
+<div class="book-flex book-gap-2 book-items-center"><span class="book-size-4 book-rounded book-bg-[#ff98e7]"></span>
+
+
+
+  <p class="book-text-zinc-900 book-text-sm">خریداری شده برای بانوان </p>
+
+
+
+</div>
+
+
+
+<div class="book-flex book-gap-2 book-items-center"><span class="book-size-4 book-rounded book-bg-zinc-400"></span>
+
+
+
+  <p class="book-text-zinc-900 book-text-sm">غیر قابل خرید</p>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+      </div>
+
+
+
+      <div
+
+
+
+        class="book-rounded-l-2xl book-p-3 book-flex book-flex-col book-justify-between book-items-center book-rounded-r-[29px] book-translate-x-1 book-h-full book-w-[27%] book-bg-white">
+
+
+
+        <div class="book-flex book-items-center book-gap-2 book-font-bold book-text-lg book-text-primary-700">
+
+
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+
+
+
+            class="book-size-6">
+
+
+
+            <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
+
+
+
+              class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+
+
+
+            </path>
+
+
+
+            <path d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1" class="book-stroke-primary-700"
+
+
+
+              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+
+
+
+          </svg>
+
+
+
+          @departureTime@
+
+
+
+        </div>
+
+
+
+        <div class="book-text-zinc-800">@availableSeats@ صندلی خالی</div>
+
+
+
+        <div class="book-flex book-items-center book-gap-2 book-text-primary-700 book-font-bold">
+
+
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+
+
+
+            class="book-size-6">
+
+
+
+            <path
+
+
+
+              d="M18.5 12.65v3.7c0 3.12-2.91 5.65-6.5 5.65s-6.5-2.53-6.5-5.65v-3.7C5.5 15.77 8.41 18 12 18s6.5-2.23 6.5-5.35Z"
+
+
+
+              class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+
+
+
+            </path>
+
+
+
+            <path
+
+
+
+              d="M18.5 7.65c0 .91-.25 1.75-.69 2.47C16.74 11.88 14.54 13 12 13c-2.54 0-4.74-1.12-5.81-2.88-.44-.72-.69-1.56-.69-2.47 0-1.56.73-2.97 1.9-3.99C8.58 2.63 10.2 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
+
+
+
+              class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+
+
+
+            </path>
+
+
+
+            <path
+
+
+
+              d="M18.5 7.65v5c0 3.12-2.91 5.35-6.5 5.35s-6.5-2.23-6.5-5.35v-5C5.5 4.53 8.41 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
+
+
+
+              class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+
+
+
+            </path>
+
+
+
+          </svg>
+
+
+
+          @formattedPrice@
+
+
+
+        </div>
+
+
+
+        <button type="button" onclick='initializeBusCards(  "@busId@")'
+
+
+
+          class=" book-w-[90%] book-see-and-buy-ticket book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
+
+
+
+مشاهده صندلی های خالی
+
+
+
+        </button>
+
+
+
+        <div
+
+
+
+          class="rule-id-@busId@ book-hidden-elements book-hidden book-flex book-flex-col book-gap-3 book-w-full book-items-center">
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <button type="button" data-run="0" data-id="@busId@" onclick="{{return `submitCard(this,'${$data.busId}')`}}" class="book-card__btn   book-mt-8 book-w-[90%] book-h-10 book-bg-primary-900 book-text-white book-justify-center book-items-center book-flex book-rounded-lg hover:book-book-bg-primary-200 hover:book-book-text-primary-950 hover:book-book-shadow-lg">خرید</button>
+
+
+
+
+
+
+
+            
+
+
+
+      </div>
+
+
+
+                                  </div>
+
+
+
+                              </script>
+
+
+
+                                    </face>
+
+
+
+                                </basis>
+
+
+
+
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+                            <!-- paging -->
+
+
+
+                            <div
+
+
+
+                                class="book-paging__cards__container book-text-center book-my-10 book-ltr book-justify-center book-gap-1 book-flex">
+
+
+
+                                <button
+
+
+
+                                    class="book-paging__container book-leading-9 book-prevpage book-border book-border-solid book-border-zinc-200 book-rounded-lg book-w-8 book-h-8 book-hidden book-bg-white"
+
+
+
+                                    type="button" bc-value bc-name="cms.prevpage" bc-triggers="click">
+
+
+
+                                    <svg width="32" height="24">
+
+
+
+                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#prev-page-icon">
+
+
+
+                                        </use>
+
+
+
+                                    </svg>
+
+
+
+                                </button>
+
+
+
+                                <basis core="print" datamembername="bus.paging" run="atclient">
+
+
+
+                                    <layout>
+
+
+
+                                        <script type="text/template">@child</script>
+
+
+
+                                    </layout>
+
+
+
+                                    <face>
+
+
+
+                                        <script type="text/template">
+
+
+
+          {{
+
+
+
+              return await renderPaging($data)
+
+
+
+          }}
+
+
+
+      </script>
+
+
+
+                                    </face>
+
+
+
+                                </basis>
+
+
+
+                                <button
+
+
+
+                                    class="book-paging__container book-leading-9 book-nextpage book-border book-border-solid book-border-zinc-200 book-rounded-lg book-w-8 book-h-8 book-hidden book-bg-white"
+
+
+
+                                    type="button" bc-value bc-name="cms.nextpage" bc-triggers="click">
+
+
+
+                                    <svg width="32" height="24">
+
+
+
+                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#next-page-icon">
+
+
+
+                                        </use>
+
+
+
+                                    </svg>
+
+
+
+                                </button>
+
+
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+                    </section>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+    </main>
+
+
+
+
+
+
+
+    <!-- footer -->
+
+
+
+    <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+
+
+
+
+
+
+
+</body>
+
+
+
+<script src="https://cdn.basiscore.net/basisfly.com/js/swiper-bundle.min.js"></script>
+
+
+
+<script src="[##cms.cms.cdn##]/booking/js/bus-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+    /**
+
+
+
+     * Global state for session management and UI updates.
+
+
+
+     */
+
+
+
+
+
+
+
+    const isMobile = document.querySelector('main')?.dataset.mob === "true";
+
+
+
+    const tripNames = ["اول", "دوم", "سوم", "چهارم"];
+
+
+
+    let providerDataList = [];
+
+
+
+    let isClosing = false;
+
+
+
+    let totalTime = 20 * 60; // 20 minutes in seconds
+
+
+
+    let warningShown = false;
+
+
+
+    let progressTimer;
+
+
+
+    let progress = 10;
+
+
+
+
+
+
+
+// Global variables to maintain data state
+
+
+
+let globalBusProposals = []; // جهانی کردن برای نگهداری همه داده‌ها
+
+
+
+let globalListData = null; // برای نگهداری ساختار اصلی
+
+
+
+
+
+
+
+
+
+
+
+    // متغیرهای گلوبال برای مدیریت اسلایدر قیمت
+
+
+
+    let userHasChangedPriceRange = false;
+
+
+
+    let lastUserMinPrice = 0;
+
+
+
+    let lastUserMaxPrice = 0;
+
+
+
+    let isDragging = false;
+
+
+
+    let dragStartTime = 0;
+
+
+
+    const DEBOUNCE_DELAY = 150; // کاهش تأخیر به 150ms
+
+
+
+
+
+
+
+    // Cached DOM elements
+
+
+
+    const progressBar = document.querySelector(".book-progress__bar");
+
+
+
+    const modalContainer = document.querySelector(".book-expire__message__modal__container");
+
+
+
+    const someTime = modalContainer?.querySelector(".book-some__time");
+
+
+
+    const noTime = modalContainer?.querySelector(".book-no__time");
+
+
+
+    let inboundMinPercent = 0;
+
+
+
+    let inboundMaxPercent = 100;
+
+
+
+    let outboundMinPercent = 0;
+
+
+
+    let outboundMaxPercent = 100;
+
+
+
+
+
+
+
+    let listData;
+
+
+
+
+
+
+
+    let sessionSearchStorage = sessionStorage.getItem("sessionSearch") ? JSON.parse(sessionStorage.getItem("sessionSearch")) : {};
+
+
+
+
+
+
+
+    console.log(sessionSearchStorage);
+
+
+
+    console.log(typeof sessionSearchStorage);
+
+
+
+    let schemaId = 0;
+
+
+
+    const cookieValue = `; ${document.cookie}`;
+
+
+
+    const cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
+
+
+
+
+
+
+
+    const setSession = async (args) => {
+
+
+
+        console.log("args:", args);
+
+
+
+        if (!sessionSearchStorage) return;
+
+
+
+
+
+
+
+        // Update session data
+
+
+
+        schemaId = sessionSearchStorage.Schemaid;
+
+
+
+        sessionSearchStorage.SessionId = args.source._rows[0].sessionId;
+
+
+
+        sessionSearchStorage.rkey = cookieParts[1];
+
+
+
+        sessionStorage.setItem("sessionSearch", JSON.stringify(sessionSearchStorage));
+
+
+
+
+
+
+
+        let cleanTripGroup = [];
+
+
+
+
+
+
+
+        if (Array.isArray(sessionSearchStorage.tripGroup)) {
+
+
+
+            cleanTripGroup = sessionSearchStorage.tripGroup.map(item => {
+
+
+
+                const { destinationName, originName, ...rest } = item;
+
+
+
+                return rest;
+
+
+
+            });
+
+
+
+        }
+
+
+
+
+
+
+
+        // استفاده صحیح از $bc.setSource
+
+
+
+        if (typeof $bc !== 'undefined' && $bc.setSource) {
+
+
+
+            $bc.setSource("cms.rule", {
+
+
+
+                type: "upselling",
+
+
+
+                TripGroup: JSON.stringify(cleanTripGroup),
+
+
+
+                dmnid: sessionSearchStorage.dmnid || 0,
+
+
+
+                Type: sessionSearchStorage.Type || "",
+
+
+
+                lid: sessionSearchStorage.lid || 1,
+
+
+
+                SessionId: sessionSearchStorage.SessionId || "",
+
+
+
+                run: true
+
+
+
+            });
+
+
+
+        }
+
+
+
+
+
+
+
+        // Set session expiry (20 minutes)
+
+
+
+        const now = new Date();
+
+
+
+        const ttl = 20 * 60 * 1000; // 20 minutes in milliseconds
+
+
+
+        sessionSearchStorage = { ...sessionSearchStorage, Expiry: now.getTime() + ttl };
+
+
+
+
+
+
+
+        // Fetch provider data for client users
+
+
+
+        if (cookieParts.length === 2) {
+
+
+
+            try {
+
+
+
+                const userResponse = await fetch('/Client_User_Type.inc');
+
+
+
+                const user = await userResponse.text();
+
+
+
+                if (user === "1") {
+
+
+
+                    const providerResponse = await fetch('/Client_Provider_Library.bc');
+
+
+
+                    providerDataList = await providerResponse.json();
+
+
+
+                }
+
+
+
+            } catch (error) {
+
+
+
+                console.error("setSession: Failed to fetch provider data - " + error.message);
+
+
+
+            }
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    /**
+
+
+
+     * Generates a 30-day calendar with Gregorian and Persian (Shamsi) dates
+
+
+
+     * @param {Object} args - Arguments containing source data and context
+
+
+
+     * @returns {void}
+
+
+
+     */
+
+
+
+    const setCalendarLookUp = async (args) => {
+
+
+
+        try {
+
+
+
+            const result = [];
+
+
+
+            const today = new Date();
+
+
+
+
+
+
+
+            // بررسی وجود args.source و args.source.rows
+
+
+
+            if (!args.source || !args.source.rows || !Array.isArray(args.source.rows)) {
+
+
+
+                console.error("setCalendarLookUp: Invalid source data structure");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const prices = args.source.rows.slice(0, 30).map(row => row.min_price);
+
+
+
+
+
+
+
+            // This code is for the mobile version
+
+
+
+            const unitFull = document.querySelectorAll(".book-currency")[0]?.textContent?.trim();
+
+
+
+            const unit = unitFull ? unitFull.charAt(0) : "";
+
+
+
+            const now = new Date();
+
+
+
+
+
+
+
+            const month = new Intl.DateTimeFormat("fa-IR", {
+
+
+
+                calendar: "persian",
+
+
+
+                month: "long"
+
+
+
+            }).format(now);
+
+
+
+
+
+
+
+            const year = new Intl.DateTimeFormat("fa-IR", {
+
+
+
+                calendar: "persian",
+
+
+
+                year: "numeric"
+
+
+
+            }).format(now);
+
+
+
+
+
+
+
+            const todayDateElement = document.querySelector(".book_today__date");
+
+
+
+            if (todayDateElement) {
+
+
+
+                todayDateElement.textContent = `${month} ${year}`;
+
+
+
+            }
+
+
+
+
+
+
+
+            for (let i = 0; i < 30; i++) {
+
+
+
+                const date = new Date(today);
+
+
+
+                date.setDate(today.getDate() + i);
+
+
+
+
+
+
+
+                // Format Gregorian date (YYYY-MM-DD)
+
+
+
+                const gregorian = date.toISOString().split("T")[0];
+
+
+
+
+
+
+
+                // Format Shamsi full date (DD/MM/YYYY)
+
+
+
+                const shamsi = new Intl.DateTimeFormat("fa-IR", {
+
+
+
+                    calendar: "persian",
+
+
+
+                    year: "numeric",
+
+
+
+                    month: "2-digit",
+
+
+
+                    day: "2-digit"
+
+
+
+                }).format(date).replace(/‏/g, "");
+
+
+
+
+
+
+
+                // Extract weekday in Persian (e.g. "Saturday")
+
+
+
+                // This code is for the mobile version
+
+
+
+                const weekdayFull = new Intl.DateTimeFormat("fa-IR", {
+
+
+
+                    calendar: "persian",
+
+
+
+                    weekday: "long"
+
+
+
+                }).format(date);
+
+
+
+                const weekday = weekdayFull.charAt(0);
+
+
+
+
+
+
+
+                // Extract month name in Persian (e.g. "Ordibehesht")
+
+
+
+                const monthName = new Intl.DateTimeFormat("fa-IR", {
+
+
+
+                    calendar: "persian",
+
+
+
+                    month: "long"
+
+
+
+                }).format(date);
+
+
+
+
+
+
+
+                // Extract month number in Persian (e.g. "02")
+
+
+
+                const monthNumber = new Intl.DateTimeFormat("fa-IR", {
+
+
+
+                    calendar: "persian",
+
+
+
+                    month: "2-digit"
+
+
+
+                }).format(date);
+
+
+
+
+
+
+
+                // Extract day of the month (e.g. "02")
+
+
+
+                const day = new Intl.DateTimeFormat("fa-IR", {
+
+
+
+                    calendar: "persian",
+
+
+
+                    day: "2-digit"
+
+
+
+                }).format(date);
+
+
+
+
+
+
+
+                const price = prices[i] ?? null;
+
+
+
+
+
+
+
+                result.push({
+
+
+
+                    gregorian,
+
+
+
+                    shamsi,
+
+
+
+                    weekday,
+
+
+
+                    monthName,
+
+
+
+                    monthNumber,
+
+
+
+                    day,
+
+
+
+                    price,
+
+
+
+                    unit
+
+
+
+                });
+
+
+
+            }
+
+
+
+
+
+
+
+            // استفاده صحیح از args.context.setAsSource
+
+
+
+            if (args.context && typeof args.context.setAsSource === 'function') {
+
+
+
+                args.context.setAsSource("bus.calendar", result);
+
+
+
+            } else {
+
+
+
+                console.error("setCalendarLookUp: context.setAsSource is not available");
+
+
+
+            }
+
+
+
+        } catch (error) {
+
+
+
+            console.error("setCalendarLookUp: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    /**
+
+
+
+     * Constructs the request body for API calls using bus search data
+
+
+
+     * @param {Object} context - The context object
+
+
+
+     * @param {string} sourceId - The source ID
+
+
+
+     * @param {Object} params - Additional parameters
+
+
+
+     * @returns {Object} The constructed request body
+
+
+
+     */
+
+
+
+    const bodyMakerFunction = (context, sourceId, params) => {
+
+
+
+        try {
+
+
+
+            const sessionSearchData = JSON.parse(sessionStorage.getItem("sessionSearch")) || {};
+
+
+
+            const cleanedData = { ...sessionSearchData };
+
+
+
+
+
+
+
+            // Remove unnecessary fields
+
+
+
+            delete cleanedData.Schemaid;
+
+
+
+            delete cleanedData.Type;
+
+
+
+            delete cleanedData.Expiry;
+
+
+
+
+
+
+
+            if (cleanedData.TripGroup && Array.isArray(cleanedData.TripGroup)) {
+
+
+
+                cleanedData.TripGroup.forEach(trip => {
+
+
+
+                    delete trip.OriginName;
+
+
+
+                    delete trip.DestinationName;
+
+
+
+                });
+
+
+
+            }
+
+
+
+
+
+
+
+            // Add domain ID and merge with params
+
+
+
+            const mainElement = document.querySelector("main");
+
+
+
+            if (mainElement) {
+
+
+
+                cleanedData.dmnid = mainElement.getAttribute("data-dmnid");
+
+
+
+            }
+
+
+
+
+
+
+
+            return Object.assign({}, params, cleanedData);
+
+
+
+        } catch (error) {
+
+
+
+            console.error("bodyMakerFunction: " + error.message);
+
+
+
+            return params || {};
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    /**
+
+
+
+     * Handles connection closure, updating UI based on success or failure
+
+
+
+     * @param {Object} param - Parameters containing context and error status
+
+
+
+     * @returns {void}
+
+
+
+     */
+
+
+
+    const onCloseConnectionBus = (param) => {
+
+
+
+        try {
+
+
+
+            if (!param || !param.context) return;
+
+
+
+
+
+
+
+            if (!param.withError) {
+
+
+
+                isClosing = true;
+
+
+
+                executeTimer();
+
+
+
+
+
+
+
+                const renderedContainers = document.querySelectorAll(".book-rendered__container");
+
+
+
+                renderedContainers.forEach(e => e.classList.remove("book-hidden"));
+
+
+
+
+
+
+
+                const renderingContainer = document.querySelector(".book-rendering__container");
+
+
+
+                if (renderingContainer) {
+
+
+
+                    renderingContainer.remove();
+
+
+
+                }
+
+
+
+
+
+
+
+                completeProgressBar();
+
+
+
+                // setupBookCardButtons();
+
+
+
+
+
+
+
+                // Trigger calendar lookup if enabled
+
+
+
+                const mainElement = document.querySelector("main");
+
+
+
+                if (mainElement && mainElement.getAttribute("data-calendarLookUp") === 'true') {
+
+
+
+                    if (sessionSearchStorage && sessionSearchStorage.TripGroup && sessionSearchStorage.TripGroup[0]) {
+
+
+
+                        const { Origin, Destination } = sessionSearchStorage.TripGroup[0];
+
+
+
+
+
+
+
+                        if (typeof $bc !== 'undefined' && $bc.setSource) {
+
+
+
+                            $bc.setSource("cms.calendarLookUp", {
+
+
+
+                                origin: Origin,
+
+
+
+                                destination: Destination,
+
+
+
+                                run: true
+
+
+
+                            });
+
+
+
+                        }
+
+
+
+                    }
+
+
+
+
+
+
+
+                    const priceSelectionContainer = document.querySelector(".book-card__price__selection__container");
+
+
+
+                    if (priceSelectionContainer) {
+
+
+
+                        priceSelectionContainer.classList.remove('book-hidden');
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            } else {
+
+
+
+                const mainContainer = document.querySelector(".book-main__container");
+
+
+
+                const noDataContainer = document.querySelector(".book-nodata__container");
+
+
+
+
+
+
+
+                if (mainContainer) {
+
+
+
+                    mainContainer.classList.add("book-hidden");
+
+
+
+                }
+
+
+
+                if (noDataContainer) {
+
+
+
+                    noDataContainer.classList.remove("book-hidden");
+
+
+
+                }
+
+
+
+            }
+
+
+
+        } catch (error) {
+
+
+
+            console.error("onCloseConnection: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    /**
+
+
+
+     * Sets up event listeners for book card buttons
+
+
+
+     * @returns {void}
+
+
+
+     */
+
+
+
+    // const setupBookCardButtons = () => {
+
+
+
+    //     try {
+
+
+
+    //         const cardButtons = document.querySelectorAll(".book-card__btn");
+
+
+
+    //         cardButtons.forEach(btn => {
+
+
+
+    //             btn.classList.remove("book-card__btn__not__active");
+
+
+
+    //             btn.onclick = function () {
+
+
+
+    //                 const busId = this.getAttribute("data-id");
+
+
+
+    //                 if (busId && typeof selectModalContainer === 'function') {
+
+
+
+    //                     selectModalContainer(this, busId);
+
+
+
+    //                 }
+
+
+
+    //             };
+
+
+
+    //         });
+
+
+
+    //     } catch (error) {
+
+
+
+    //         console.error("setupBookCardButtons: " + error.message);
+
+
+
+    //     }
+
+
+
+    // };
+
+
+
+
+
+
+
+    /**
+
+
+
+     * Runs a timer for session expiry, showing warnings at 6 minutes and on expiry
+
+
+
+     * @returns {void}
+
+
+
+     */
+
+
+
+    const executeTimer = () => {
+
+
+
+        try {
+
+
+
+            if (totalTime <= 0) {
+
+
+
+                if (modalContainer) {
+
+
+
+                    modalContainer.classList.remove("book-hidden");
+
+
+
+                }
+
+
+
+                if (someTime) {
+
+
+
+                    someTime.classList.add("book-hidden");
+
+
+
+                }
+
+
+
+                if (noTime) {
+
+
+
+                    noTime.classList.remove("book-hidden");
+
+
+
+                }
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            totalTime--;
+
+
+
+
+
+
+
+            if (totalTime === 360 && !warningShown) {
+
+
+
+                warningShown = true;
+
+
+
+                if (modalContainer) {
+
+
+
+                    modalContainer.classList.remove("book-hidden");
+
+
+
+                }
+
+
+
+                if (someTime) {
+
+
+
+                    someTime.classList.remove("book-hidden");
+
+
+
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+            setTimeout(executeTimer, 1000);
+
+
+
+        } catch (error) {
+
+
+
+            console.error("executeTimer: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    /**
+
+
+
+     * Starts the progress bar animation, incrementing up to 95%
+
+
+
+     * @param {number} [interval=500] - The interval in milliseconds
+
+
+
+     * @returns {void}
+
+
+
+     */
+
+
+
+    const startProgressBar = (interval = 500) => {
+
+
+
+        try {
+
+
+
+            if (progressTimer) {
+
+
+
+                clearInterval(progressTimer);
+
+
+
+            }
+
+
+
+            progressTimer = setInterval(() => {
+
+
+
+                if (isClosing) return;
+
+
+
+                progress = Math.min(progress + 1, 95);
+
+
+
+                if (progressBar) {
+
+
+
+                    progressBar.style.width = `${progress}%`;
+
+
+
+                }
+
+
+
+            }, interval);
+
+
+
+        } catch (error) {
+
+
+
+            console.error("startProgressBar: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    /**
+
+
+
+     * Completes the progress bar animation, reaching 100%
+
+
+
+     * @returns {void}
+
+
+
+     */
+
+
+
+    const completeProgressBar = () => {
+
+
+
+        try {
+
+
+
+            if (progressTimer) {
+
+
+
+                clearInterval(progressTimer);
+
+
+
+            }
+
+
+
+            const finalInterval = setInterval(() => {
+
+
+
+                progress = Math.min(progress + 10, 100);
+
+
+
+                if (progressBar) {
+
+
+
+                    progressBar.style.width = `${progress}%`;
+
+
+
+                }
+
+
+
+                if (progress >= 100) {
+
+
+
+                    clearInterval(finalInterval);
+
+
+
+                }
+
+
+
+            }, 20);
+
+
+
+        } catch (error) {
+
+
+
+            console.error("completeProgressBar: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    /**
+
+
+
+     * Global state for bus filtering, sorting, and pagination
+
+
+
+     */
+
+
+
+    let carrierNames = []; // اصلاح شده: این متغیر در کد اصلی تعریف نشده بود
+
+
+
+    let terminalNames = []; // اصلاح شده: این متغیر در کد اصلی تعریف نشده بود
+
+
+
+    let originTerminalNames = []; // جدید: برای ترمینال‌های مبدا
+
+
+
+    let destinationTerminalNames = []; // جدید: برای ترمینال‌های مقصد
+
+
+
+
+
+
+
+    let stopNames = [];
+
+
+
+    let busTypeNames = [];
+
+
+
+    let departureTimeNames = [];
+
+
+
+    let durationRange = [0, Infinity];
+
+
+
+    let maxDuration = 0;
+
+
+
+    let minDuration = 0;
+
+
+
+    let durationMinValueLabel = document.querySelector(".book-duration__content .book-min__value");
+
+
+
+    let durationMaxValueLabel = document.querySelector(".book-duration__content .book-max__value");
+
+
+
+
+
+
+
+    let formattedPriceCard;
+
+
+
+    // متغیرهای دیگر که در کد اصلی وجود داشتند
+
+
+
+    let outboundAirlineList = [];
+
+
+
+    let inboundAirlineList = [];
+
+
+
+    let airlineList = [];
+
+
+
+    let outboundAirportList = [];
+
+
+
+    let inboundAirportList = [];
+
+
+
+    let airportList = [];
+
+
+
+    let outboundStopList = [];
+
+
+
+    let inboundStopList = [];
+
+
+
+    let outboundBaggageList = [];
+
+
+
+    let inboundBaggageList = [];
+
+
+
+    let baggageList = [];
+
+
+
+    let outboundAirlineNames = [];
+
+
+
+    let inboundAirlineNames = [];
+
+
+
+    let airlineNames = [];
+
+
+
+    let outboundAirportNames = [];
+
+
+
+    let inboundAirportNames = [];
+
+
+
+    let airportNames = [];
+
+
+
+    let outboundStopNames = [];
+
+
+
+    let inboundStopNames = [];
+
+
+
+    let outboundBaggageNames = [];
+
+
+
+    let inboundBaggageNames = [];
+
+
+
+    let baggageNames = [];
+
+
+
+    let outboundbusNumberNames = [];
+
+
+
+    let inboundbusNumberNames = [];
+
+
+
+    let busNumberNames = [];
+
+
+
+    let outboundDepartureTimeNames = [];
+
+
+
+    let inboundDepartureTimeNames = [];
+
+
+
+    let currency = "";
+
+
+
+
+
+
+
+    // Cached DOM elements for hour range sliders
+
+
+
+    const outboundHourMinValueLabel = document.querySelector(".book-outboundhour__content .book-filter__hour__container .book-min__value");
+
+
+
+    const outboundHourMaxValueLabel = document.querySelector(".book-outboundhour__content .book-filter__hour__container .book-max__value");
+
+
+
+    let outboundMinHour = 0;
+
+
+
+    let outboundMaxHour = 0;
+
+
+
+    let outboundHourRange = [0, Infinity];
+
+
+
+
+
+
+
+    const inboundHourMinValueLabel = document.querySelector(".book-inboundhour__content .book-filter__hour__container .book-min__value");
+
+
+
+    const inboundHourMaxValueLabel = document.querySelector(".book-inboundhour__content .book-filter__hour__container .book-max__value");
+
+
+
+    let inboundMinHour = 0;
+
+
+
+    let inboundMaxHour = 0;
+
+
+
+    let inboundHourRange = [0, Infinity];
+
+
+
+
+
+
+
+    const hourMinValueLabel = document.querySelector(".book-hour__content .book-filter__hour__container .book-min__value");
+
+
+
+    const hourMaxValueLabel = document.querySelector(".book-hour__content .book-filter__hour__container .book-max__value");
+
+
+
+    let minHour = 0;
+
+
+
+    let maxHour = 0;
+
+
+
+    let hourRange = [0, Infinity];
+
+
+
+
+
+
+
+    // Additional filter and UI state
+
+
+
+    let systembusNames = [];
+
+
+
+    let fareFamilyNames = [];
+
+
+
+    let selectedBusId = null; // اصلاح شده: selectedbusId به selectedBusId تغییر یافت
+
+
+
+    let dictionaries = [];
+
+
+
+    let BusProposalsSource = []; // اصلاح شده: busProposalsSource به BusProposalsSource تغییر یافت برای consistency
+
+
+
+    let mustUpdate = true;
+
+
+
+    let newDataCame = false;
+
+
+
+    let InUpdateUIProcess = false;
+
+
+
+    let InUpdatePaging = true;
+
+
+
+    let InUpdateFiltering = true;
+
+
+
+    let allDataProcessed = false;
+
+
+
+
+
+
+
+    // Cached DOM elements for price slider
+
+
+
+    const priceSlider = document.querySelector(".book-filter__price__container .book-slider__content");
+
+
+
+    const priceTrack = document.querySelector(".book-filter__price__container .book-slider__track");
+
+
+
+    const priceThumbMin = document.querySelector(".book-filter__price__container .book-thumb__min");
+
+
+
+    const priceThumbMax = document.querySelector(".book-filter__price__container .book-thumb__max");
+
+
+
+    let priceMinValueLabel = document.querySelector(".book-filter__price__container .book-min__value");
+
+
+
+    let priceMaxValueLabel = document.querySelector(".book-filter__price__container .book-max__value");
+
+
+
+    let minPrice = 0;
+
+
+
+    let maxPrice = 0;
+
+
+
+    let priceRange = [0, Infinity];
+
+
+
+    let minPercent = 0;
+
+
+
+    let maxPercent = 100;
+
+
+
+    let currentSort = { value: "default", order: "" };
+
+
+
+    let elseExecuted = false;
+
+
+
+    let allBusProposals = [];
+
+
+
+    let originalBusProposals = [];
+
+
+
+    const filterContent = document.querySelector(".book-aside__filter__content");
+
+
+
+
+
+
+
+    startProgressBar(1000);
+
+
+
+    const pagingContainer = document.querySelector(".book-paging__cards__container");
+
+
+
+
+
+
+
+// 🔥 تابع اصلاح شده busManipulation - جایگزین کردن کامل
+
+
+
+const busManipulation = async (args) => {
+
+
+
+    try {
+
+
+
+        // بررسی وجود args و args.source
+
+
+
+        if (!args || !args.source) {
+
+
+
+            console.error("busManipulation: Invalid arguments structure");
+
+
+
+            return;
+
+
+
+        }
+
+
+
+
+
+
+
+        // ⭐ ذخیره listData در متغیر جهانی برای استفاده در سایر فانکشن‌ها
+
+
+
+        globalListData = args;
+
+
+
+
+
+
+
+        // ⭐ ذخیره داده‌های اصلی در صورت وجود
+
+
+
+        if (args.source.id === "bus.search" && args.source._rows && Array.isArray(args.source._rows)) {
+
+
+
+            const existingBusIds = new Set(globalBusProposals.map(bus => bus.busId));
+
+
+
+            args.source._rows.forEach(row => {
+
+
+
+                if (Array.isArray(row.busProposals)) {
+
+
+
+                    const newBuses = row.busProposals.filter(bus => !existingBusIds.has(bus.busId));
+
+
+
+                    globalBusProposals.push(...newBuses);
+
+
+
+                    newBuses.forEach(bus => existingBusIds.add(bus.busId));
+
+
+
+                }
+
+
+
+            });
+
+
+
+        }
+
+
+
+
+
+
+
+        listData = args; // حفظ سازگاری با کد موجود
+
+
+
+
+
+
+
+        // مقداردهی اولیه متغیرهای صفحه‌بندی و به‌روزرسانی UI
+
+
+
+        let currentIndex = 0;
+
+
+
+        let start = 0;
+
+
+
+        let end = 30;
+
+
+
+        let dynamicBusProposalsCount = 0;
+
+
+
+        elseExecuted = false;
+
+
+
+        startProgressBar();
+
+
+
+
+
+
+
+        /**
+
+
+
+         * مدیریت صفحه‌بندی، فیلترگذاری و مرتب‌سازی بر اساس شناسه منبع
+
+
+
+         */
+
+
+
+
+
+
+
+        console.log(args.source.id);
+
+
+
+        if (args.source.id === 'cms.page') {
+
+
+
+            // مقداردهی اولیه وضعیت صفحه‌بندی
+
+
+
+            mustUpdate = true;
+
+
+
+            InUpdatePaging = false;
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            selectedBusId = null;
+
+
+
+
+
+
+
+            // بررسی وجود args.source.rows
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.page");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const currentValue = parseInt(args.source.rows[0].value);
+
+
+
+            const prevButton = document.querySelector(".book-prevpage");
+
+
+
+            const nextButton = document.querySelector(".book-nextpage");
+
+
+
+
+
+
+
+            if (!pagingContainer) {
+
+
+
+                console.error("busManipulation: Paging container not found");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            // به‌روزرسانی استایل صفحه فعال
+
+
+
+            const activeButton = document.querySelector(".book-active__paging");
+
+
+
+            if (activeButton) {
+
+
+
+                activeButton.classList.remove("book-active__paging");
+
+
+
+                activeButton.classList.add("bg-white");
+
+
+
+            }
+
+
+
+
+
+
+
+            const newActive = pagingContainer.querySelector(`[bc-value="${currentValue}"]`);
+
+
+
+            if (newActive) {
+
+
+
+                newActive.classList.add("book-active__paging");
+
+
+
+                newActive.classList.remove("bg-white");
+
+
+
+            }
+
+
+
+
+
+
+
+            // محاسبه محدوده صفحه‌بندی
+
+
+
+            start = currentValue * 30;
+
+
+
+            end = start + 30;
+
+
+
+
+
+
+
+            // تغییر وضعیت نمایش دکمه قبلی
+
+
+
+            if (prevButton) {
+
+
+
+                prevButton.classList.toggle("book-hidden", currentValue === 0);
+
+
+
+            }
+
+
+
+
+
+
+
+            // تغییر وضعیت نمایش دکمه بعدی
+
+
+
+            const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
+
+
+
+            const lastButton = allButtons[allButtons.length - 1];
+
+
+
+            if (nextButton) {
+
+
+
+                nextButton.classList.toggle("book-hidden", newActive === lastButton);
+
+
+
+            }
+
+
+
+        }
+
+
+
+        else if (args.source.id === 'cms.nextpage') {
+
+
+
+            // مدیریت ناوبری صفحه بعدی
+
+
+
+            mustUpdate = true;
+
+
+
+            InUpdatePaging = false;
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            selectedBusId = null;
+
+
+
+
+
+
+
+            const prevButton = document.querySelector(".book-prevpage");
+
+
+
+            const nextButton = document.querySelector(".book-nextpage");
+
+
+
+            const activeButton = document.querySelector(".book-active__paging");
+
+
+
+
+
+
+
+            if (!activeButton) {
+
+
+
+                console.error("busManipulation: Active paging button not found");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const currentValue = parseInt(activeButton.getAttribute("bc-value"));
+
+
+
+            const nextValue = currentValue + 1;
+
+
+
+            const nextPage = document.querySelector(`.book-paging__cards__container [bc-value="${nextValue}"]`);
+
+
+
+
+
+
+
+            if (nextPage) {
+
+
+
+                // به‌روزرسانی استایل صفحه فعال
+
+
+
+                activeButton.classList.remove("book-active__paging");
+
+
+
+                activeButton.classList.add("bg-white");
+
+
+
+                nextPage.classList.add("book-active__paging");
+
+
+
+                nextPage.classList.remove("bg-white");
+
+
+
+
+
+
+
+                // نمایش صفحه بعدی در صورت مخفی بودن
+
+
+
+                if (nextPage.classList.contains("book-hidden")) {
+
+
+
+                    nextPage.classList.remove("book-hidden");
+
+
+
+                    const firstVisible = document.querySelector(".book-paging__container:not(.hidden):not(.book-prevpage):not(.book-nextpage)");
+
+
+
+                    if (firstVisible) firstVisible.classList.add("book-hidden");
+
+
+
+                }
+
+
+
+
+
+
+
+                // نمایش دکمه قبلی در صورت عدم قرارگیری در صفحه اول
+
+
+
+                if (prevButton) {
+
+
+
+                    prevButton.classList.toggle("book-hidden", nextValue === 0);
+
+
+
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+            // تغییر وضعیت نمایش دکمه بعدی
+
+
+
+            const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
+
+
+
+            const lastButton = allButtons[allButtons.length - 1];
+
+
+
+            if (nextButton) {
+
+
+
+                nextButton.classList.toggle("book-hidden", nextPage === lastButton);
+
+
+
+            }
+
+
+
+
+
+
+
+            // به‌روزرسانی محدوده صفحه‌بندی
+
+
+
+            start = nextValue * 30;
+
+
+
+            end = start + 30;
+
+
+
+        }
+
+
+
+        else if (args.source.id === 'cms.prevpage') {
+
+
+
+            // مدیریت ناوبری صفحه قبلی
+
+
+
+            mustUpdate = true;
+
+
+
+            InUpdatePaging = false;
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            selectedBusId = null;
+
+
+
+
+
+
+
+            const prevButton = document.querySelector(".book-prevpage");
+
+
+
+            const nextButton = document.querySelector(".book-nextpage");
+
+
+
+            const activeButton = document.querySelector(".book-active__paging");
+
+
+
+
+
+
+
+            if (!activeButton) {
+
+
+
+                console.error("busManipulation: Active paging button not found");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const currentValue = parseInt(activeButton.getAttribute("bc-value"));
+
+
+
+            const prevValue = currentValue - 1;
+
+
+
+            const prevPage = document.querySelector(`.book-paging__cards__container [bc-value="${prevValue}"]`);
+
+
+
+
+
+
+
+            if (prevPage) {
+
+
+
+                // به‌روزرسانی استایل صفحه فعال
+
+
+
+                activeButton.classList.remove("book-active__paging");
+
+
+
+                activeButton.classList.add("bg-white");
+
+
+
+                prevPage.classList.add("book-active__paging");
+
+
+
+                prevPage.classList.remove("bg-white");
+
+
+
+
+
+
+
+                // نمایش صفحه قبلی در صورت مخفی بودن
+
+
+
+                if (prevPage.classList.contains("book-hidden")) {
+
+
+
+                    prevPage.classList.remove("book-hidden");
+
+
+
+                    const allButtons = Array.from(document.querySelectorAll(".book-paging__container:not(.book-prevpage):not(.book-nextpage)"));
+
+
+
+                    const lastVisible = allButtons.reverse().find(btn => !btn.classList.contains("book-hidden"));
+
+
+
+                    if (lastVisible) lastVisible.classList.add("book-hidden");
+
+
+
+                }
+
+
+
+
+
+
+
+                // تغییر وضعیت نمایش دکمه‌های قبلی و بعدی
+
+
+
+                if (prevButton) {
+
+
+
+                    prevButton.classList.toggle("book-hidden", prevValue === 0);
+
+
+
+                }
+
+
+
+                if (nextButton) {
+
+
+
+                    nextButton.classList.remove("book-hidden");
+
+
+
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+            // به‌روزرسانی محدوده صفحه‌بندی
+
+
+
+            start = prevValue * 30;
+
+
+
+            end = start + 30;
+
+
+
+        }
+
+
+
+        else if (args.source.id === "cms.carrier") {
+
+
+
+            // مدیریت فیلتر شرکت حمل‌ونقل
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+            selectedBusId = null;
+
+
+
+            console.log("carrier:", args.source);
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.carrier");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const value = args.source.rows[0].value;
+
+
+
+            const index = carrierNames.indexOf(value);
+
+
+
+            if (index !== -1) {
+
+
+
+                carrierNames.splice(index, 1);
+
+
+
+                toggleFilterCheckbox(".book-carrier__content", value, false);
+
+
+
+            } else {
+
+
+
+                carrierNames.push(value);
+
+
+
+                toggleFilterCheckbox(".book-carrier__content", value, true);
+
+
+
+            }
+
+
+
+        } else if (args.source.id === "cms.originterminal") {
+
+
+
+            // مدیریت فیلتر ترمینال مبدا
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+            selectedBusId = null;
+
+
+
+
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.originterminal");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const value = args.source.rows[0].value;
+
+
+
+            const index = originTerminalNames.indexOf(value);
+
+
+
+            if (index !== -1) {
+
+
+
+                originTerminalNames.splice(index, 1);
+
+
+
+                toggleFilterCheckbox(".book-originterminal__content", value, false);
+
+
+
+            } else {
+
+
+
+                originTerminalNames.push(value);
+
+
+
+                toggleFilterCheckbox(".book-originterminal__content", value, true);
+
+
+
+            }
+
+
+
+        } else if (args.source.id === "cms.destinationterminal") {
+
+
+
+            // مدیریت فیلتر ترمینال مقصد
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+            selectedBusId = null;
+
+
+
+            console.log(args.source);
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.destinationterminal");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const value = args.source.rows[0].value;
+
+
+
+            const index = destinationTerminalNames.indexOf(value);
+
+
+
+            if (index !== -1) {
+
+
+
+                destinationTerminalNames.splice(index, 1);
+
+
+
+                toggleFilterCheckbox(".book-destinationterminal__content", value, false);
+
+
+
+            } else {
+
+
+
+                destinationTerminalNames.push(value);
+
+
+
+                toggleFilterCheckbox(".book-destinationterminal__content", value, true);
+
+
+
+            }
+
+
+
+        }
+
+
+
+        else if (args.source.id === "cms.bustype") {
+
+
+
+            // مدیریت فیلتر نوع اتوبوس
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+            selectedBusId = null;
+
+
+
+
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.bustype");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const busTypeValue = args.source.rows[0].value.trim();
+
+
+
+            if (busTypeValue === "") {
+
+
+
+                busTypeNames = [];
+
+
+
+                if (isMobile) {
+
+
+
+                    removeFilterDiv("bus-type");
+
+
+
+                }
+
+
+
+            } else {
+
+
+
+                busTypeNames = busTypeValue
+
+
+
+                    .split(",")
+
+
+
+                    .map(item => item.trim().toLowerCase())
+
+
+
+                    .filter(item => item !== "");
+
+
+
+                // این کد برای نسخه موبایل است
+
+
+
+                if (isMobile) {
+
+
+
+                    removeFilterDiv("bus-type");
+
+
+
+                    addFilterDiv("bus-type", "cms.bustype", busTypeValue);
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+
+
+        else if (args.source.id === "cms.departuretime") {
+
+
+
+            // مدیریت فیلتر زمان حرکت
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+            const content = document.querySelector(".book-departuretime__content");
+
+
+
+            if (!content) return;
+
+
+
+
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.departuretime");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const value = args.source.rows[0].value;
+
+
+
+            const selectedEl = content.querySelector(`[bc-value="${value}"]`);
+
+
+
+            if (!selectedEl) return;
+
+
+
+
+
+
+
+            const timePeriod = selectedEl.dataset.timePeriod || "";
+
+
+
+            const timeRange = selectedEl.dataset.timeRange || "";
+
+
+
+            const flexContainer = content.querySelector(".book-times__content");
+
+
+
+
+
+
+
+            const index = departureTimeNames.indexOf(value);
+
+
+
+            if (index !== -1) {
+
+
+
+                departureTimeNames.splice(index, 1);
+
+
+
+                toggleFilterCheckbox(".book-departuretime__content", value, false, "");
+
+
+
+                const existingElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+
+
+
+                if (existingElement) existingElement.remove();
+
+
+
+
+
+
+
+                // بازگردانی محتوای زمان پیش‌فرض در صورت عدم وجود
+
+
+
+                if (!content.querySelector(".book-time__content")) {
+
+
+
+                    const defaultTimeContent = document.createElement("div");
+
+
+
+                    defaultTimeContent.className = "book-time__content";
+
+
+
+                    defaultTimeContent.setAttribute("data-value", "time");
+
+
+
+                    defaultTimeContent.innerHTML = `
+
+
+
+                    <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">صبح</div>
+
+
+
+                    <div class="book-text-zinc-900 book-text-xs book-mb-4">
+
+
+
+                        ساعت از: <span class="book-hour">5:00 تا 11:59</span>
+
+
+
+                    </div>
+
+
+
+                `;
+
+
+
+                    content.insertBefore(defaultTimeContent, flexContainer);
+
+
+
+                }
+
+
+
+            } else {
+
+
+
+                departureTimeNames.push(value);
+
+
+
+                toggleFilterCheckbox(".book-departuretime__content", value, true, "");
+
+
+
+                const existingTimeContents = content.querySelectorAll(".book-time__content");
+
+
+
+
+
+
+
+                if (existingTimeContents.length === 1 && departureTimeNames.length === 1) {
+
+
+
+                    const defaultTimeContent = existingTimeContents[0];
+
+
+
+                    defaultTimeContent.setAttribute("data-value", value);
+
+
+
+                    defaultTimeContent.innerHTML = `
+
+
+
+                    <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+
+
+
+                    <div class="book-text-zinc-900 book-text-xs book-mb-4">
+
+
+
+                        ساعت از: <span class="book-hour">${timeRange}</span>
+
+
+
+                    </div>
+
+
+
+                `;
+
+
+
+                } else {
+
+
+
+                    const duplicateElement = content.querySelector(`.book-time__content[data-value="${value}"]`);
+
+
+
+                    if (duplicateElement) duplicateElement.remove();
+
+
+
+
+
+
+
+                    const newTimeContent = document.createElement("div");
+
+
+
+                    newTimeContent.className = "book-time__content";
+
+
+
+                    newTimeContent.setAttribute("data-value", value);
+
+
+
+                    newTimeContent.innerHTML = `
+
+
+
+                    <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+
+
+
+                    <div class="book-text-zinc-900 book-text-xs book-mb-4">
+
+
+
+                        ساعت از: <span class="book-hour">${timeRange}</span>
+
+
+
+                    </div>
+
+
+
+                `;
+
+
+
+                    content.insertBefore(newTimeContent, flexContainer);
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+
+
+        else if (args.source.id === "cms.price") {
+
+
+
+            // مدیریت فیلتر قیمت
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+            selectedBusId = null;
+
+
+
+
+
+
+
+            if (!priceSlider) {
+
+
+
+                console.error("busManipulation: Price slider not found");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.price");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const sliderRect = priceSlider.getBoundingClientRect();
+
+
+
+            let isDragging = false;
+
+
+
+
+
+
+
+            /**
+
+
+
+             * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
+
+
+
+             */
+
+
+
+            const onMouseMove = (e) => {
+
+
+
+                if (!isDragging) return;
+
+
+
+
+
+
+
+                const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
+
+
+
+                const percent = (x / sliderRect.width) * 100;
+
+
+
+
+
+
+
+                if (args.source.rows[0].value === "min" && percent <= maxPercent) {
+
+
+
+                    minPercent = percent;
+
+
+
+                } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
+
+
+
+                    maxPercent = percent;
+
+
+
+                }
+
+
+
+
+
+
+
+                // به‌روزرسانی فوری UI و priceRange
+
+
+
+                updatePriceSlider();
+
+
+
+            };
+
+
+
+
+
+
+
+            /**
+
+
+
+             * پایان drag - اعمال فیلتر فوری
+
+
+
+             */
+
+
+
+            const onMouseUp = () => {
+
+
+
+                if (!isDragging) return;
+
+
+
+
+
+
+
+                isDragging = false;
+
+
+
+                const dragDuration = Date.now() - dragStartTime;
+
+
+
+
+
+
+
+                document.removeEventListener("mousemove", onMouseMove);
+
+
+
+                document.removeEventListener("mouseup", onMouseUp);
+
+
+
+
+
+
+
+                // 🔥 علامت‌گذاری که کاربر محدوده را تغییر داده
+
+
+
+                userHasChangedPriceRange = true;
+
+
+
+                lastUserMinPrice = priceRange[0];
+
+
+
+                lastUserMaxPrice = priceRange[1];
+
+
+
+
+
+
+
+                // اعمال فیلتر با تأخیر کمتر
+
+
+
+                clearTimeout(window.priceFilterTimeout);
+
+
+
+
+
+
+
+                const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
+
+
+
+
+
+
+
+                window.priceFilterTimeout = setTimeout(() => {
+
+
+
+                    triggerPriceFilter();
+
+
+
+                }, delay);
+
+
+
+
+
+
+
+                console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
+
+
+
+            };
+
+
+
+
+
+
+
+            // شروع drag
+
+
+
+            isDragging = true;
+
+
+
+            document.addEventListener("mousemove", onMouseMove);
+
+
+
+            document.addEventListener("mouseup", onMouseUp);
+
+
+
+        }
+
+
+
+        else if (args.source.id === "cms.price.update") {
+
+
+
+            // مدیریت به‌روزرسانی فیلتر قیمت (internal trigger)
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+            selectedBusId = null;
+
+
+
+            mustUpdate = true;
+
+
+
+
+
+
+
+            console.log("🔄 Price filter update triggered");
+
+
+
+        }
+
+
+
+        else if (args.source.id === "cms.duration") {
+
+
+
+            // مدیریت فیلتر مدت زمان سفر
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+            selectedBusId = null;
+
+
+
+            const durationContainer = document.querySelector(".book-duration__content .book-filter__duration__container");
+
+
+
+
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.duration");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            initializeSlider(
+
+
+
+                durationContainer,
+
+
+
+                args.source.rows[0].value,
+
+
+
+                maxDuration,
+
+
+
+                minDuration,
+
+
+
+                durationMinValueLabel,
+
+
+
+                durationMaxValueLabel,
+
+
+
+                durationRange,
+
+
+
+                'duration',
+
+
+
+                'duration-range'
+
+
+
+            );
+
+
+
+        }
+
+
+
+        else if (args.source.id === "cms.sort") {
+
+
+
+            // مدیریت فیلتر مرتب‌سازی
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+            selectedBusId = null;
+
+
+
+            console.log("hour", args.source.rows);
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.sort");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const sortValue = args.source.rows[0].value;
+
+
+
+            console.log("sortValue", sortValue);
+
+
+
+            const sortItem = document.querySelector(`[bc-value="${sortValue}"]`);
+
+
+
+            console.log("sortItem", sortItem);
+
+
+
+
+
+
+
+            if (!sortItem) {
+
+
+
+                console.error("busManipulation: Sort item not found");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const sortOrder = sortItem.getAttribute('data-sort');
+
+
+
+            const listItems = document.querySelectorAll(".book-sort__cards__container .book-sort__item__content");
+
+
+
+            console.log(listItems);
+
+
+
+            listItems.forEach(item => {
+
+
+
+                if (item.getAttribute('data-sort')) {
+
+
+
+                    item.setAttribute('data-sort', 'descend');
+
+
+
+                }
+
+
+
+                const svg = item.querySelector('svg');
+
+
+
+                if (svg) {
+
+
+
+                    svg.innerHTML = '<use xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon"></use>';
+
+
+
+                }
+
+
+
+                item.classList.remove('book-sorting__active');
+
+
+
+            });
+
+
+
+
+
+
+
+            if (sortValue === "default") {
+
+
+
+                currentSort = { value: "default", order: "" };
+
+
+
+            } else {
+
+
+
+                const newOrder = sortOrder === "ascend" ? "descend" : "ascend";
+
+
+
+                sortItem.setAttribute('data-sort', newOrder);
+
+
+
+                sortItem.classList.add('book-sorting__active');
+
+
+
+                toggleSvg(sortItem.querySelector('svg'), newOrder === "ascend");
+
+
+
+                currentSort = { value: sortValue, order: newOrder };
+
+
+
+            }
+
+
+
+            mustUpdate = true;
+
+
+
+        }
+
+
+
+        else if (args.source.id === "cms.bus") {
+
+
+
+            // مدیریت انتخاب اتوبوس
+
+
+
+            InUpdateFiltering = false;
+
+
+
+            InUpdatePaging = true;
+
+
+
+
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.bus");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            selectedBusId = args.source.rows[0].value;
+
+
+
+        }
+
+
+
+        else if (args.source.id === "bus.search") {
+
+
+
+            // مدیریت داده‌های جدید اتوبوس
+
+
+
+            newDataCame = true;
+
+
+
+            allDataProcessed = false;
+
+
+
+        }
+
+
+
+
+
+
+
+        /**
+
+
+
+         * 🔥 بخش اصلی به‌روزرسانی UI که در کد شما حذف شده بود
+
+
+
+         */
+
+
+
+        if (mustUpdate && !InUpdateUIProcess) {
+
+
+
+            InUpdateUIProcess = true;
+
+
+
+
+
+
+
+            // جمع‌آوری پیشنهادات جدید اتوبوس و بازنشانی برای جستجوهای جدید
+
+
+
+            if (newDataCame) {
+
+
+
+                let source;
+
+
+
+                if (args.context && typeof args.context.tryToGetSource === 'function') {
+
+
+
+                    source = args.context.tryToGetSource("bus.search");
+
+
+
+                } else {
+
+
+
+                    console.error("busManipulation: context.tryToGetSource is not available");
+
+
+
+                    InUpdateUIProcess = false;
+
+
+
+                    return;
+
+
+
+                }
+
+
+
+
+
+
+
+                if (!source || !source.rows || !Array.isArray(source.rows)) {
+
+
+
+                    console.error("busManipulation: Invalid bus.search source");
+
+
+
+                    InUpdateUIProcess = false;
+
+
+
+                    return;
+
+
+
+                }
+
+
+
+
+
+
+
+                // بازنشانی داده‌ها برای جستجوهای جدید
+
+
+
+                if (source.rows[0]?.isNewSearch) {
+
+
+
+                    allBusProposals = [];
+
+
+
+                    globalBusProposals = []; // ⭐ بازنشانی داده‌های جهانی
+
+
+
+                    dictionaries = [];
+
+
+
+                }
+
+
+
+
+
+
+
+                const existingBusIds = new Set(allBusProposals.map(bus => bus.busId));
+
+
+
+                source.rows.forEach(row => {
+
+
+
+                    if (Array.isArray(row.busProposals)) {
+
+
+
+                        const newBuses = row.busProposals.filter(bus => !existingBusIds.has(bus.busId));
+
+
+
+                        allBusProposals.push(...newBuses);
+
+
+
+                        originalBusProposals = [...allBusProposals];
+
+
+
+                        newBuses.forEach(bus => existingBusIds.add(bus.busId));
+
+
+
+                    }
+
+
+
+                });
+
+
+
+
+
+
+
+                if (source.rows[source.rows.length - 1]?.dictionaries) {
+
+
+
+                    dictionaries.push(source.rows[source.rows.length - 1].dictionaries);
+
+
+
+                }
+
+
+
+                newDataCame = false;
+
+
+
+                allDataProcessed = true;
+
+
+
+            }
+
+
+
+
+
+
+
+            // اعمال مرتب‌سازی در صورت عدم پیش‌فرض بودن و پردازش شدن تمام داده‌ها
+
+
+
+            if (allDataProcessed) {
+
+
+
+                if (currentSort.value === "default") {
+
+
+
+                    allBusProposals = [...originalBusProposals];  // برگرد به ترتیب اصلی
+
+
+
+                } else {
+
+
+
+                    allBusProposals.sort((a, b) => {
+
+
+
+                        let fieldA, fieldB;
+
+
+
+                        if (currentSort.value === "price") {
+
+
+
+                            fieldA = a.priceInfo?.totalCommission ? parseFloat(a.priceInfo.totalCommission) : Infinity;
+
+
+
+                            fieldB = b.priceInfo?.totalCommission ? parseFloat(b.priceInfo.totalCommission) : Infinity;
+
+
+
+                        }
+
+
+
+
+
+
+
+                        else if (currentSort.value === "hour") {
+
+
+
+                            fieldA = convertToMinutes(a.busGroup?.[0]?.departureTime || "");
+
+
+
+                            fieldB = convertToMinutes(b.busGroup?.[0]?.departureTime || "");
+
+
+
+                        }
+
+
+
+
+
+
+
+
+
+
+
+                        else if (currentSort.value === "departure") {
+
+
+
+                            fieldA = convertToMinutes(a.busGroup?.[0]?.departureTime || "");
+
+
+
+                            fieldB = convertToMinutes(b.busGroup?.[0]?.departureTime || "");
+
+
+
+                        }
+
+
+
+
+
+
+
+                        if (fieldA !== undefined && fieldB !== undefined) {
+
+
+
+                            return currentSort.order === "ascend" ? fieldA - fieldB : fieldB - fieldA;
+
+
+
+                        }
+
+
+
+                        return 0;
+
+
+
+                    });
+
+
+
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+            // تعریف فیلترها برای پیشنهادات اتوبوس
+
+
+
+            const filters = [
+
+
+
+                // فیلتر شرکت حمل‌ونقل
+
+
+
+                item => !carrierNames.length || item.busGroup.some(bus =>
+
+
+
+                    bus.routesInfo && bus.routesInfo.some(route => carrierNames.includes(route.busOperatorCode))
+
+
+
+                ),
+
+
+
+
+
+
+
+                // فیلتر ترمینال مبدا
+
+
+
+                item => !originTerminalNames.length || item.busGroup.some(bus =>
+
+
+
+                    originTerminalNames.includes(bus.originTerminal)
+
+
+
+                ),
+
+
+
+
+
+
+
+                // فیلتر ترمینال مقصد
+
+
+
+                item => !destinationTerminalNames.length || item.busGroup.some(bus =>
+
+
+
+                    destinationTerminalNames.includes(bus.destinationTerminal)
+
+
+
+                ),
+
+
+
+
+
+
+
+                // فیلتر تعداد توقف‌ها
+
+
+
+                item => !stopNames.length || item.busGroup.some(bus =>
+
+
+
+                    stopNames.includes(parseInt(bus.numberOfStops))
+
+
+
+                ),
+
+
+
+
+
+
+
+                // فیلتر نوع اتوبوس
+
+
+
+                item => !busTypeNames.length || busTypeNames.every(bt =>
+
+
+
+                    item.busGroup.some(bus =>
+
+
+
+                        bus.routesInfo && bus.routesInfo.some(route =>
+
+
+
+                            route.busType?.toLowerCase().includes(bt)
+
+
+
+                        )
+
+
+
+                    )
+
+
+
+                ),
+
+
+
+
+
+
+
+                // فیلتر زمان حرکت
+
+
+
+                item => {
+
+
+
+                    if (!departureTimeNames.length) return true;
+
+
+
+                    return item.busGroup.some(bus => {
+
+
+
+                        const [hour, minute] = bus.departureTime?.split(":")?.map(Number) || [];
+
+
+
+                        if (hour == null || minute == null) return false;
+
+
+
+                        return departureTimeNames.some(range => {
+
+
+
+                            const [start, end] = range.split("-").map(Number);
+
+
+
+                            return hour >= start && hour <= end;
+
+
+
+                        });
+
+
+
+                    });
+
+
+
+                },
+
+
+
+
+
+
+
+                // فیلتر محدوده مدت زمان (در صورت وجود duration)
+
+
+
+                item => {
+
+
+
+                    return item.busGroup.some(bus => {
+
+
+
+                        const duration = bus.duration;
+
+
+
+                        if (!duration) return true; // رد کردن فیلتر در صورت عدم وجود مدت زمان
+
+
+
+                        const durationInMinutes = convertToMinutes(duration);
+
+
+
+                        return durationInMinutes >= durationRange[0] && durationInMinutes <= durationRange[1];
+
+
+
+                    });
+
+
+
+                },
+
+
+
+
+
+
+
+                // فیلتر قیمت
+
+
+
+                item => {
+
+
+
+                    const price = item.priceInfo?.totalCommission ? parseFloat(item.priceInfo.totalCommission) : Infinity;
+
+
+
+                    return price >= priceRange[0] && price <= priceRange[1];
+
+
+
+                }
+
+
+
+            ];
+
+
+
+
+
+
+
+            // فیلتر کردن پیشنهادات اتوبوس
+
+
+
+            const newSource = allBusProposals.filter(item => filters.every(filter => filter(item)));
+
+
+
+
+
+
+
+            // به‌روزرسانی نمایش تعداد اتوبوس
+
+
+
+            dynamicBusProposalsCount = newSource.length;
+
+
+
+            const countElement = document.querySelector(".book-count__api__content");
+
+
+
+            if (countElement) {
+
+
+
+                countElement.textContent = dynamicBusProposalsCount;
+
+
+
+            }
+
+
+
+
+
+
+
+            // افزودن شاخص و وضعیت انتخاب و فرمت‌دهی داده‌ها
+
+
+
+            const locationDict = dictionaries[0]?.location || {};
+
+
+
+            const carrierDict = dictionaries[0]?.carriers || {};
+
+
+
+            const currencyDict = dictionaries[0]?.currency || {};
+
+
+
+            console.log(currencyDict);
+
+
+
+            const indexedSource = newSource.map((item, i) => {
+
+
+
+                const busGroup = item.busGroup?.[0] || {};
+
+
+
+                const routeInfo = busGroup.routesInfo?.[0] || {};
+
+
+
+                const price = item.priceInfo?.total || 0;
+
+
+
+                const totalCommission = item.priceInfo?.totalCommission || 0;
+
+
+
+                const currencyCode = item.priceInfo?.currency || '';
+
+
+
+                const originId = busGroup.origin;
+
+
+
+                const destinationId = busGroup.destination;
+
+
+
+                const carrierCode = routeInfo.busOperatorCode;
+
+
+
+                return {
+
+
+
+                    // داده‌های اصلی
+
+
+
+                    ...item,
+
+
+
+                    SelectedBus: item.busId === selectedBusId,
+
+
+
+                    index: currentIndex + i,
+
+
+
+
+
+
+
+                    // داده‌های فرمت شده برای نمایش
+
+
+
+                    rowNumber: i + 1,
+
+
+
+
+
+
+
+                    // اطلاعات مبدا
+
+
+
+                    origin: originId,
+
+
+
+                    originTerminal: busGroup.originTerminal || '',
+
+
+
+                    originCity: locationDict[originId]?.city || '',
+
+
+
+                    originCountry: locationDict[originId]?.country || '',
+
+
+
+
+
+
+
+                    // اطلاعات مقصد
+
+
+
+                    destination: destinationId,
+
+
+
+                    destinationTerminal: busGroup.destinationTerminal || '',
+
+
+
+                    destinationCity: locationDict[destinationId]?.city || '',
+
+
+
+                    destinationCountry: locationDict[destinationId]?.country || '',
+
+
+
+
+
+
+
+                    // اطلاعات زمانی
+
+
+
+                    departureDate: busGroup.departureDate || '',
+
+
+
+                    departureTime: busGroup.departureTime || '',
+
+
+
+                    arrivalDate: busGroup.arrivalDate || '',
+
+
+
+                    arrivalTime: busGroup.arrivalTime || '',
+
+
+
+                    duration: busGroup.duration || '',
+
+
+
+
+
+
+
+                    // اطلاعات اتوبوس
+
+
+
+                    busType: routeInfo.busType || '',
+
+
+
+                    numberOfStops: busGroup.numberOfStops || 0,
+
+
+
+                    availableSeats: busGroup.availableSeats || 0,
+
+
+
+
+
+
+
+                    // اطلاعات بازپرداخت
+
+
+
+                    refundable: busGroup.refundable || false,
+
+
+
+                    refundableText: busGroup.refundable ? 'بله' : 'خیر',
+
+
+
+
+
+
+
+                    // اطلاعات قیمت
+
+
+
+                    baseFare: item.priceInfo?.baseFare || 0,
+
+
+
+                    tax: item.priceInfo?.tax || 0,
+
+
+
+                    providerFare: item.priceInfo?.providerFare || 0,
+
+
+
+                    price: price,
+
+
+
+                    totalCommission: totalCommission,
+
+
+
+                    formattedPriceCard: price,
+
+
+
+                    formattedPrice: formatPrice(price, currencyDict[currencyCode] || ''),
+
+
+
+                    formattedTotalCommission: formatPrice(totalCommission, currencyDict[currencyCode] || ''),
+
+
+
+                    currency: currencyDict[currencyCode] || '',
+
+
+
+                    currencyCode: currencyCode,
+
+
+
+
+
+
+
+                    // اطلاعات شرکت حمل‌ونقل
+
+
+
+                    carrierCode: carrierCode,
+
+
+
+                    carrierName: carrierDict[carrierCode]?.name || '',
+
+
+
+                    carrierImage: carrierDict[carrierCode]?.image || '',
+
+
+
+
+
+
+
+                    // اطلاعات ارائه‌دهنده
+
+
+
+                    providerId: item.Provider?.ProviderId || '',
+
+
+
+                    dmnid: item.Provider?.Dmnid || '',
+
+
+
+
+
+
+
+                    // اطلاعات توضیحات
+
+
+
+                    description: busGroup.description || '',
+
+
+
+
+
+
+
+                    // اطلاعات مسیر
+
+
+
+                    segmentId: routeInfo.SegmentId || 1,
+
+
+
+                    originRoute: routeInfo.originRoute || originId,
+
+
+
+                    destinationRoute: routeInfo.destinationRoute || destinationId,
+
+
+
+                };
+
+
+
+            });
+
+
+
+
+
+
+
+            currentIndex += newSource.length;
+
+
+
+
+
+
+
+            // مدیریت اسکرول اتوبوس انتخاب شده
+
+
+
+            const selectedIndex = indexedSource.findIndex(item => item.SelectedBus);
+
+
+
+            if (selectedIndex !== -1) {
+
+
+
+                const page = Math.floor(selectedIndex / 30);
+
+
+
+                start = page * 30;
+
+
+
+                end = start + 30;
+
+
+
+                setTimeout(() => {
+
+
+
+                    const targetElement = document.getElementById(`bus__${selectedIndex}`);
+
+
+
+                    if (targetElement) {
+
+
+
+                        targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+
+
+
+                    }
+
+
+
+                }, 100);
+
+
+
+            }
+
+
+
+
+
+
+
+            console.log(indexedSource, "indexedSource");
+
+
+
+            // اعمال صفحه‌بندی
+
+
+
+            const pagedSource = indexedSource.slice(start, end);
+
+
+
+            BusProposalsSource = pagedSource;
+
+
+
+            console.log("pagedSourceeeeeeeeeeeeeeeeee", pagedSource);
+
+
+
+            if (pagedSource.length > 0) {
+
+
+
+                // به‌روزرسانی محدوده قیمت با قیمت‌های تجزیه شده
+
+
+
+                const pricesSource = allBusProposals.map(item =>
+
+
+
+                    item.priceInfo?.totalCommission ? parseFloat(item.priceInfo.totalCommission) : null
+
+
+
+                ).filter(Boolean);
+
+
+
+
+
+
+
+                // 🔥 تنها در اولین بار یا هنگام دریافت داده‌های جدید، حداقل/حداکثر را به‌روزرسانی کنید
+
+
+
+                const shouldUpdateMinMax = newDataCame || (minPrice === 0 && maxPrice === 0);
+
+
+
+
+
+
+
+                if (shouldUpdateMinMax) {
+
+
+
+                    minPrice = pricesSource.length ? Math.min(...pricesSource) : 0;
+
+
+
+                    maxPrice = pricesSource.length ? Math.max(...pricesSource) : 0;
+
+
+
+
+
+
+
+                    // تنها در صورت عدم تنظیم قبلی، درصدها را اولیه‌سازی کنید
+
+
+
+                    if (minPercent === 0 && maxPercent === 100 && priceRange[0] === 0 && priceRange[1] === Infinity) {
+
+
+
+                        priceRange = [minPrice, maxPrice];
+
+
+
+                    }
+
+
+
+                }
+
+
+
+
+
+
+
+                // 🔥 همیشه لیبل‌ها را با مقادیر انتخاب شده به‌روزرسانی کنید، نه حداقل/حداکثر اصلی
+
+
+
+                const currentMinPrice = priceRange[0] || minPrice;
+
+
+
+                const currentMaxPrice = priceRange[1] || maxPrice;
+
+
+
+
+
+
+
+                // در بخش به‌روزرسانی لیبل‌ها:
+
+
+
+                if (priceMaxValueLabel) {
+
+
+
+                    const displayMaxPrice = userHasChangedPriceRange ? lastUserMaxPrice : maxPrice;
+
+
+
+                    priceMaxValueLabel.textContent = new Intl.NumberFormat().format(displayMaxPrice);
+
+
+
+                }
+
+
+
+                if (priceMinValueLabel) {
+
+
+
+                    const displayMinPrice = userHasChangedPriceRange ? lastUserMinPrice : minPrice;
+
+
+
+                    priceMinValueLabel.textContent = new Intl.NumberFormat().format(displayMinPrice);
+
+
+
+                }
+
+
+
+
+
+
+
+                // به‌روزرسانی UI صفحه‌بندی
+
+
+
+                if (InUpdatePaging) {
+
+
+
+                    const container = document.querySelector(".book-paging__cards__container");
+
+
+
+                    if (container) {
+
+
+
+                        const nextPage = container.querySelector(".book-nextpage");
+
+
+
+                        const prevPage = container.querySelector(".book-prevpage");
+
+
+
+
+
+
+
+                        if (prevPage) {
+
+
+
+                            prevPage.classList.add("book-hidden");
+
+
+
+                        }
+
+
+
+
+
+
+
+                        const roundedNumber = Math.ceil(currentIndex / 30);
+
+
+
+                        const activePage = selectedIndex !== -1 ? Math.floor(selectedIndex / 30) : 0;
+
+
+
+                        const maxVisiblePages = 5;
+
+
+
+                        const startPage = Math.max(0, activePage - Math.floor(maxVisiblePages / 2));
+
+
+
+                        const endPage = Math.min(roundedNumber, startPage + maxVisiblePages);
+
+
+
+                        const adjustedStartPage = endPage - startPage < maxVisiblePages ? Math.max(0, endPage - maxVisiblePages) : startPage;
+
+
+
+
+
+
+
+                        const arrayPaging = Array.from({ length: roundedNumber }, (_, i) => ({
+
+
+
+                            index: i,
+
+
+
+                            page: i + 1,
+
+
+
+                            isActive: i === activePage,
+
+
+
+                            isVisible: i >= adjustedStartPage && i < endPage
+
+
+
+                        }));
+
+
+
+
+
+
+
+                        console.log("arrayPaging", arrayPaging);
+
+
+
+
+
+
+
+                        if (nextPage) {
+
+
+
+                            nextPage.classList.toggle("book-hidden", arrayPaging.length <= 1);
+
+
+
+                        }
+
+
+
+
+
+
+
+                        if (args.context && typeof args.context.setAsSource === 'function') {
+
+
+
+                            args.context.setAsSource("bus.paging", arrayPaging);
+
+
+
+                        }
+
+
+
+                    }
+
+
+
+                }
+
+
+
+
+
+
+
+                // به‌روزرسانی فیلترهای اتوبوس
+
+
+
+                if (InUpdateFiltering) {
+
+
+
+                    const filteringSource = allBusProposals;
+
+
+
+
+
+
+
+                    // ترکیب دیکشنری‌ها برای شرکت‌ها، ارز و مکان‌ها
+
+
+
+                    const mergedCarriers = {};
+
+
+
+                    const mergedCurrency = {};
+
+
+
+                    const mergedLocation = {};
+
+
+
+                    dictionaries.forEach(item => {
+
+
+
+                        Object.assign(mergedCarriers, item.carriers || {});
+
+
+
+                        Object.assign(mergedCurrency, item.currency || {});
+
+
+
+                        Object.assign(mergedLocation, item.location || {});
+
+
+
+                    });
+
+
+
+
+
+
+
+                    // بازنشانی لیست‌های شرکت
+
+
+
+                    let allCarrierItems = [];
+
+
+
+
+
+
+
+                    // جمع‌آوری آیتم‌های شرکت با قیمت‌های تجزیه شده
+
+
+
+                    filteringSource.forEach(item => {
+
+
+
+                        const carrierItems = (item.busGroup || []).flatMap(bus =>
+
+
+
+                            (bus.routesInfo || []).map(value => ({
+
+
+
+                                Name: mergedCarriers[value.busOperatorCode]?.name || "",
+
+
+
+                                Logo: mergedCarriers[value.busOperatorCode]?.image || "",
+
+
+
+                                Code: value.busOperatorCode || "",
+
+
+
+                                NumberOfStops: bus.numberOfStops || 0,
+
+
+
+                                BusId: item.busId || "",
+
+
+
+                                Price: item.priceInfo?.total ? parseFloat(item.priceInfo.total) : Infinity,
+
+
+
+                                Unit: mergedCurrency[item.priceInfo?.currency] || ""
+
+
+
+                            }))
+
+
+
+                        ).filter(item => item.Name && item.Code && item.Price !== Infinity);
+
+
+
+
+
+
+
+                        allCarrierItems.push(...carrierItems);
+
+
+
+                    });
+
+
+
+
+
+
+
+                    // حذف تکراری شرکت‌ها و انتخاب کمترین قیمت
+
+
+
+                    const nameToMinPrice = {};
+
+
+
+                    allCarrierItems.forEach(item => {
+
+
+
+                        if (!nameToMinPrice[item.Name] || nameToMinPrice[item.Name].Price > item.Price) {
+
+
+
+                            nameToMinPrice[item.Name] = item;
+
+
+
+                        }
+
+
+
+                    });
+
+
+
+                    const carrierListResult = Object.values(nameToMinPrice).sort((a, b) => a.Price - b.Price);
+
+
+
+
+
+
+
+                    if (args.context && typeof args.context.setAsSource === 'function') {
+
+
+
+                        args.context.setAsSource("bus.carriers", carrierListResult);
+
+
+
+                    }
+
+
+
+
+
+
+
+                    // فیلتر ترمینال مبدا
+
+
+
+                    const uniqueOriginTerminals = filteringSource.flatMap(item =>
+
+
+
+                        (item.busGroup || []).map(bus => ({
+
+
+
+                            Name: bus.originTerminal || "",
+
+
+
+                            Code: bus.originTerminal || ""
+
+
+
+                        }))
+
+
+
+                    ).filter(item => item.Name && item.Code);
+
+
+
+
+
+
+
+                    const originTerminalListResult = uniqueOriginTerminals.filter((item, index, self) =>
+
+
+
+                        index === self.findIndex(t => t.Name === item.Name)
+
+
+
+                    );
+
+
+
+
+
+
+
+                    if (args.context && typeof args.context.setAsSource === 'function') {
+
+
+
+                        args.context.setAsSource("bus.originterminals", originTerminalListResult);
+
+
+
+                    }
+
+
+
+
+
+
+
+                    // فیلتر ترمینال مقصد
+
+
+
+                    const uniqueDestinationTerminals = filteringSource.flatMap(item =>
+
+
+
+                        (item.busGroup || []).map(bus => ({
+
+
+
+                            Name: bus.destinationTerminal || "",
+
+
+
+                            Code: bus.destinationTerminal || ""
+
+
+
+                        }))
+
+
+
+                    ).filter(item => item.Name && item.Code);
+
+
+
+
+
+
+
+                    const destinationTerminalListResult = uniqueDestinationTerminals.filter((item, index, self) =>
+
+
+
+                        index === self.findIndex(t => t.Name === item.Name)
+
+
+
+                    );
+
+
+
+
+
+
+
+                    if (args.context && typeof args.context.setAsSource === 'function') {
+
+
+
+                        args.context.setAsSource("bus.destinationterminals", destinationTerminalListResult);
+
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+                    // فیلتر توقف
+
+
+
+                    const uniqueStop = filteringSource.flatMap(item =>
+
+
+
+                        (item.busGroup || []).map(bus => ({ Name: bus.numberOfStops }))
+
+
+
+                    ).filter(item => item.Name != null);
+
+
+
+
+
+
+
+                    const stopListResult = uniqueStop.filter((item, index, self) =>
+
+
+
+                        index === self.findIndex(t => t.Name === item.Name)
+
+
+
+                    );
+
+
+
+
+
+
+
+                    if (args.context && typeof args.context.setAsSource === 'function') {
+
+
+
+                        args.context.setAsSource("bus.stops", stopListResult);
+
+
+
+                    }
+
+
+
+
+
+
+
+                    // فیلتر نوع اتوبوس
+
+
+
+                    const uniqueBusTypes = filteringSource.flatMap(item =>
+
+
+
+                        (item.busGroup || []).flatMap(bus =>
+
+
+
+                            (bus.routesInfo || []).map(route => ({
+
+
+
+                                Name: route.busType || "",
+
+
+
+                                Code: route.busType || ""
+
+
+
+                            }))
+
+
+
+                        )
+
+
+
+                    ).filter(item => item.Name && item.Code);
+
+
+
+
+
+
+
+                    const busTypeListResult = uniqueBusTypes.filter((item, index, self) =>
+
+
+
+                        index === self.findIndex(t => t.Name === item.Name)
+
+
+
+                    );
+
+
+
+
+
+
+
+                    if (args.context && typeof args.context.setAsSource === 'function') {
+
+
+
+                        args.context.setAsSource("bus.bustypes", busTypeListResult);
+
+
+
+                    }
+
+
+
+
+
+
+
+                    // به‌روزرسانی محدوده‌های مدت زمان (در صورت وجود duration در اتوبوس‌ها)
+
+
+
+                    const durationsSource = allBusProposals.map(item =>
+
+
+
+                        item.busGroup?.[0]?.duration
+
+
+
+                    ).filter(Boolean);
+
+
+
+
+
+
+
+                    if (durationsSource.length > 0) {
+
+
+
+                        const uniqueDurationsSource = [...new Set(durationsSource)];
+
+
+
+                        const timesInMinutes = uniqueDurationsSource.map(convertToMinutes);
+
+
+
+                        minDuration = timesInMinutes.length ? Math.min(...timesInMinutes) : 0;
+
+
+
+                        maxDuration = timesInMinutes.length ? Math.max(...timesInMinutes) : 0;
+
+
+
+
+
+
+
+                        if (durationMaxValueLabel) {
+
+
+
+                            durationMaxValueLabel.textContent = convertToTime(maxDuration);
+
+
+
+                        }
+
+
+
+                        if (durationMinValueLabel) {
+
+
+
+                            durationMinValueLabel.textContent = convertToTime(minDuration);
+
+
+
+                        }
+
+
+
+                    }
+
+
+
+                }
+
+
+
+
+
+
+
+                // به‌روزرسانی لیست اتوبوس
+
+
+
+                if (args.context && typeof args.context.setAsSource === 'function') {
+
+
+
+                    args.context.setAsSource("bus.updated", pagedSource, { keyFieldName: "busId" });
+
+
+
+                }
+
+
+
+                setTimeout(() => {
+
+
+
+                    preservePriceLabels();
+
+
+
+                }, 10); // تأخیر کوتاه برای اطمینان از کامل شدن به‌روزرسانی
+
+
+
+
+
+
+
+                InUpdateUIProcess = false;
+
+
+
+            } else {
+
+
+
+                InUpdateUIProcess = false;
+
+
+
+                const listContainer = document.querySelector(".book-list__cards__container");
+
+
+
+                if (listContainer) {
+
+
+
+                    listContainer.innerHTML = `
+
+
+
+                    <div class="book-text-center">
+
+
+
+                        <div>هیچ اتوبوسی مطابق با فیلترهای شما وجود ندارد.</div>
+
+
+
+                        <div class="book-text-zinc-900 book-text-xs book-mt-2">برای مشاهده نتایج، فیلترهای خود را پاک کنید.</div>
+
+
+
+                    </div>
+
+
+
+                `;
+
+
+
+                }
+
+
+
+
+
+
+
+                const container = document.querySelector(".book-paging__cards__container");
+
+
+
+                if (container) {
+
+
+
+                    const buttons = container.querySelectorAll(".book-paging__container:not(.book-nextpage):not(.book-prevpage)");
+
+
+
+                    const nextPage = container.querySelector(".book-nextpage");
+
+
+
+                    const prevPage = container.querySelector(".book-prevpage");
+
+
+
+
+
+
+
+                    if (prevPage) prevPage.classList.add("book-hidden");
+
+
+
+                    if (nextPage) nextPage.classList.add("book-hidden");
+
+
+
+                    buttons.forEach(button => button.remove());
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+        // پایان نوار پیشرفت
+
+
+
+        endProgressBar();
+
+
+
+
+
+
+
+    } catch (error) {
+
+
+
+        console.error("busManipulation: " + error.message);
+
+
+
+        InUpdateUIProcess = false;
+
+
+
+        endProgressBar();
+
+
+
+    }
+
+
+
+};
+
+
+
+    // توابع کمکی مورد نیاز
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+
+
+
+     * Renders a pagination button for flight search results.
+
+
+
+     * @param {Object} element - Pagination data with index, page, isActive, and isVisible properties
+
+
+
+     * @returns {string} HTML string for the pagination button
+
+
+
+     */
+
+
+
+    const renderPaging = async (element) => {
+
+
+
+        try {
+
+
+
+            console.log(element, "paging");
+
+
+
+            const { index, page, isActive, isVisible } = element;
+
+
+
+            const nextPage = pagingContainer?.querySelector(".book-nextpage");
+
+
+
+            const prevPage = pagingContainer?.querySelector(".book-prevpage");
+
+
+
+
+
+
+
+            // Show next button if there are more than 5 pages
+
+
+
+            if (index >= 5 && nextPage?.classList.contains("book-hidden")) {
+
+
+
+                nextPage.classList.remove("book-hidden");
+
+
+
+            }
+
+
+
+
+
+
+
+            // Show previous button if not on the first active page
+
+
+
+            if (index > 0 && isActive && prevPage?.classList.contains("book-hidden")) {
+
+
+
+                prevPage.classList.remove("book-hidden");
+
+
+
+            }
+
+
+
+
+
+
+
+            // Render button with active/visible styling
+
+
+
+            // This code is for the mobile version
+
+
+
+            return `<button class="book-paging__container book-leading-9 book-border book-border-solid book-border-zinc-200 book-rounded-lg book-w-8 book-h-8${isActive ? ' book-active__paging' : ' book-bg-white'} ${isVisible ? '' : ' book-hidden'}" type="button" bc-value="${index}" bc-name="cms.page" bc-triggers="click">${page}</button>`;
+
+
+
+        } catch (error) {
+
+
+
+            console.error(`renderPaging: ${error.message}`);
+
+
+
+            return "";
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+    /**
+
+
+
+     * تبدیل زمان به دقیقه
+
+
+
+     * @param {string} timeString - رشته زمان (مثل "02:30")
+
+
+
+     * @returns {number} - زمان برحسب دقیقه
+
+
+
+     */
+
+
+
+    function convertToMinutes(timeString) {
+
+
+
+        if (!timeString || typeof timeString !== 'string') return 0;
+
+
+
+        const parts = timeString.split(':');
+
+
+
+        if (parts.length !== 2) return 0;
+
+
+
+        const hours = parseInt(parts[0]) || 0;
+
+
+
+        const minutes = parseInt(parts[1]) || 0;
+
+
+
+        return hours * 60 + minutes;
+
+
+
+    }
+
+
+
+
+
+
+
+    /**
+
+
+
+     * تبدیل دقیقه به فرمت زمان
+
+
+
+     * @param {number} minutes - زمان برحسب دقیقه
+
+
+
+     * @returns {string} - رشته زمان (مثل "02:30")
+
+
+
+     */
+
+
+
+    function convertToTime(minutes) {
+
+
+
+        if (typeof minutes !== 'number' || minutes < 0) return "00:00";
+
+
+
+        const hours = Math.floor(minutes / 60);
+
+
+
+        const mins = minutes % 60;
+
+
+
+        return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function formatPrice(price, currency) {
+
+
+
+        // تبدیل قیمت به عدد در صورت رشته بودن
+
+
+
+        const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+
+
+
+
+
+
+
+        if (typeof numericPrice !== 'number' || isNaN(numericPrice)) {
+
+
+
+            console.warn("formatPrice: Invalid price value:", price);
+
+
+
+            return '0';
+
+
+
+        }
+
+
+
+
+
+
+
+        // فرمت کردن عدد با جداکننده هزارگان فارسی
+
+
+
+        const formattedNumber = new Intl.NumberFormat('fa-IR').format(numericPrice);
+
+
+
+
+
+
+
+        // اضافه کردن واحد پول
+
+
+
+        const currencyUnit = currency || 'ریال';
+
+
+
+        return `${formattedNumber} ${currencyUnit}`;
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // function toggleFilterCheckbox(containerSelector, value, isChecked, suffix = "") {
+
+
+
+    //     try {
+
+
+
+    //       console.log("toggleFilterCheckbox::::::::::::::::::::::::::::::::",containerSelector, value, isChecked, suffix);
+
+
+
+    //         const container = document.querySelector(containerSelector);
+
+
+
+    //         if (!container) return;
+
+
+
+
+
+
+
+    //         const checkbox = container.querySelector(`[bc-value="${value}"]`);
+
+
+
+    //         if (checkbox) {
+
+
+
+    //             if (isChecked) {
+
+
+
+    //                 checkbox.closest(".book-filter__item").classList.add('book-checked');
+
+
+
+    //             } else {
+
+
+
+    //                 checkbox.closest(".book-filter__item").classList.remove('book-checked');
+
+
+
+    //             }
+
+
+
+    //         }
+
+
+
+    //     } catch (error) {
+
+
+
+    //         console.error("toggleFilterCheckbox: " + error.message);
+
+
+
+    //     }
+
+
+
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const toggleFilterCheckbox = (selector, value, isChecked, itemSelector = ".book-filter__item") => {
+
+
+
+        try {
+
+
+
+
+
+
+
+            const part = selector.match(/\.book-([a-zA-Z0-9_-]+?)__/)[1];
+
+
+
+            const element = document.querySelector(selector)?.querySelector(`[bc-value="${value}"]`);
+
+
+
+            const target = itemSelector ? element?.closest(itemSelector) : element;
+
+
+
+            const isSpecialCase =
+
+
+
+                selector.includes("book-departuretime__content");
+
+
+
+
+
+
+
+            if (isSpecialCase && element) {
+
+
+
+                // For specific selectors, toggle class directly on element
+
+
+
+                if (isChecked) {
+
+
+
+                    element.classList.add("book-checked");
+
+
+
+                } else {
+
+
+
+                    element.classList.remove("book-checked");
+
+
+
+                }
+
+
+
+
+
+
+
+                // Handle mobile add/remove filter
+
+
+
+                if (isMobile) {
+
+
+
+                    if (isChecked) {
+
+
+
+                        addFilterDiv(value, `cms.${part}`, '', element.dataset.textshow);
+
+
+
+                    } else {
+
+
+
+                        removeFilterDiv(value);
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            } else {
+
+
+
+
+
+
+
+                // Default behavior for all other selectors
+
+
+
+                if (target) {
+
+
+
+                    target.classList.toggle("book-checked", isChecked);
+
+
+
+                }
+
+
+
+                if (isMobile) {
+
+
+
+                    if (isChecked) {
+
+
+
+                        addFilterDiv(value, `cms.${part}`, '', element?.dataset.textshow);
+
+
+
+                    } else {
+
+
+
+                        removeFilterDiv(value);
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            }
+
+
+
+        } catch (error) {
+
+
+
+            console.error("toggleFilterCheckbox: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function initializeSlider(container, sliderType, maxValue, minValue, minLabel, maxLabel, range, rangeId, rangeClass) {
+
+
+
+        try {
+
+
+
+            if (!container) return;
+
+
+
+
+
+
+
+            // پیاده‌سازی منطق اسلایدر بر اساس نیاز
+
+
+
+            console.log(`Initializing slider: ${sliderType}`, {
+
+
+
+                maxValue, minValue, range, rangeId, rangeClass
+
+
+
+            });
+
+
+
+        } catch (error) {
+
+
+
+            console.error("initializeSlider: " + error.message);
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    function toggleSvg(svgElement, isAscending) {
+
+
+
+        try {
+
+
+
+            if (!svgElement) return;
+
+
+
+
+
+
+
+            const iconName = isAscending ? 'sort-up-icon' : 'sort-down-icon';
+
+
+
+            svgElement.innerHTML = `<use xlink:href="/booking/images/sprite-booking-icons.svg#${iconName}"></use>`;
+
+
+
+        } catch (error) {
+
+
+
+            console.error("toggleSvg: " + error.message);
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+    /**
+
+
+
+     * پایان نوار پیشرفت
+
+
+
+     */
+
+
+
+    function endProgressBar() {
+
+
+
+        try {
+
+
+
+            const progressBarElement = document.querySelector('.book-progress-bar');
+
+
+
+            if (progressBarElement) {
+
+
+
+                progressBarElement.style.display = 'none';
+
+
+
+            }
+
+
+
+
+
+
+
+            // اضافی: پاک کردن timer در صورت وجود
+
+
+
+            if (progressTimer) {
+
+
+
+                clearInterval(progressTimer);
+
+
+
+                progressTimer = null;
+
+
+
+            }
+
+
+
+        } catch (error) {
+
+
+
+            console.error("endProgressBar: " + error.message);
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+
+
+
+     * به‌روزرسانی اسلایدر قیمت
+
+
+
+     */
+
+
+
+    const updatePriceSlider = () => {
+
+
+
+        try {
+
+
+
+            const totalRange = maxPrice - minPrice;
+
+
+
+            const priceMinValue = Math.round((minPercent / 100) * totalRange + minPrice);
+
+
+
+            const priceMaxValue = Math.round((maxPercent / 100) * totalRange + minPrice);
+
+
+
+
+
+
+
+            // به‌روزرسانی فوری priceRange در همین لحظه
+
+
+
+            priceRange = [priceMinValue, priceMaxValue];
+
+
+
+
+
+
+
+            // 🔥 به‌روزرسانی نمایش قیمت‌ها با مقادیر انتخاب شده (نه حداقل/حداکثر اصلی)
+
+
+
+            if (priceMinValueLabel) {
+
+
+
+                priceMinValueLabel.textContent = new Intl.NumberFormat().format(priceMinValue);
+
+
+
+            }
+
+
+
+            if (priceMaxValueLabel) {
+
+
+
+                priceMaxValueLabel.textContent = new Intl.NumberFormat().format(priceMaxValue);
+
+
+
+            }
+
+
+
+
+
+
+
+            // به‌روزرسانی UI اسلایدر
+
+
+
+            if (priceThumbMin) {
+
+
+
+                priceThumbMin.style.left = `${minPercent}%`;
+
+
+
+            }
+
+
+
+            if (priceThumbMax) {
+
+
+
+                priceThumbMax.style.left = `${maxPercent}%`;
+
+
+
+            }
+
+
+
+            if (priceTrack) {
+
+
+
+                priceTrack.style.left = `${minPercent}%`;
+
+
+
+                priceTrack.style.right = `${100 - maxPercent}%`;
+
+
+
+            }
+
+
+
+
+
+
+
+            // فراخوانی updateFilterDisplay برای موبایل (اگر موجود باشد)
+
+
+
+            if (typeof updateFilterDisplay === 'function') {
+
+
+
+                updateFilterDisplay(
+
+
+
+                    "price",
+
+
+
+                    "price-range",
+
+
+
+                    priceMinValue,
+
+
+
+                    priceMaxValue,
+
+
+
+                    minPrice,
+
+
+
+                    maxPrice,
+
+
+
+                    null,
+
+
+
+                    null
+
+
+
+                );
+
+
+
+            }
+
+
+
+
+
+
+
+            console.log(`💰 Price Range Updated: ${priceMinValue} - ${priceMaxValue}`);
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error(`updatePriceSlider: ${error.message}`);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    const preservePriceLabels = () => {
+
+
+
+        try {
+
+
+
+            // محاسبه مقادیر فعلی بر اساس درصدها
+
+
+
+            const totalRange = maxPrice - minPrice;
+
+
+
+            const currentMinPrice = Math.round((minPercent / 100) * totalRange + minPrice);
+
+
+
+            const currentMaxPrice = Math.round((maxPercent / 100) * totalRange + minPrice);
+
+
+
+
+
+
+
+            // به‌روزرسانی لیبل‌ها با مقادیر فعلی
+
+
+
+            if (priceMinValueLabel) {
+
+
+
+                priceMinValueLabel.textContent = new Intl.NumberFormat().format(currentMinPrice);
+
+
+
+            }
+
+
+
+            if (priceMaxValueLabel) {
+
+
+
+                priceMaxValueLabel.textContent = new Intl.NumberFormat().format(currentMaxPrice);
+
+
+
+            }
+
+
+
+
+
+
+
+            console.log(`🏷️ Labels preserved: ${currentMinPrice} - ${currentMaxPrice}`);
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("preservePriceLabels: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    function triggerPriceFilter() {
+
+
+
+        try {
+
+
+
+            // تنظیم flag برای به‌روزرسانی
+
+
+
+            mustUpdate = true;
+
+
+
+
+
+
+
+            // استفاده از BasisCore برای تریگر کردن فیلتر
+
+
+
+            if (typeof $bc !== 'undefined' && $bc.setSource) {
+
+
+
+                $bc.setSource("cms.price", {
+
+
+
+                    value: "range",
+
+
+
+                    minPrice: priceRange[0],
+
+
+
+                    maxPrice: priceRange[1],
+
+
+
+                    run: true
+
+
+
+                });
+
+
+
+            } else {
+
+
+
+                // fallback در صورت عدم دسترسی به $bc
+
+
+
+                busManipulation({
+
+
+
+                    source: {
+
+
+
+                        id: 'cms.price.update',
+
+
+
+                        rows: [{
+
+
+
+                            value: 'range',
+
+
+
+                            minPrice: priceRange[0],
+
+
+
+                            maxPrice: priceRange[1]
+
+
+
+                        }]
+
+
+
+                    },
+
+
+
+                    context: {
+
+
+
+                        setAsSource: function (sourceId, data) {
+
+
+
+                            console.log(`Setting source ${sourceId}:`, data);
+
+
+
+                        },
+
+
+
+                        tryToGetSource: function (sourceId) {
+
+
+
+                            if (sourceId === "bus.search") {
+
+
+
+                                return listData?.source || null;
+
+
+
+                            }
+
+
+
+                            return null;
+
+
+
+                        }
+
+
+
+                    }
+
+
+
+                });
+
+
+
+            }
+
+
+
+
+
+
+
+            console.log(`🎯 Price Filter Triggered: ${priceRange[0]} - ${priceRange[1]}`);
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("triggerPriceFilter: " + error.message);
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    function handlePriceDrag(args) {
+
+
+
+        try {
+
+
+
+            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+
+
+
+                console.error("busManipulation: Invalid source rows for cms.price");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            if (!priceSlider) {
+
+
+
+                console.error("busManipulation: Price slider not found");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const sliderRect = priceSlider.getBoundingClientRect();
+
+
+
+            isDragging = true;
+
+
+
+            dragStartTime = Date.now();
+
+
+
+
+
+
+
+            /**
+
+
+
+             * به‌روزرسانی موقعیت اسلایدر قیمت در حرکت ماوس
+
+
+
+             */
+
+
+
+            const onMouseMove = (e) => {
+
+
+
+                if (!isDragging) return;
+
+
+
+
+
+
+
+                const x = Math.min(Math.max(e.clientX - sliderRect.left, 0), sliderRect.width);
+
+
+
+                const percent = (x / sliderRect.width) * 100;
+
+
+
+
+
+
+
+                if (args.source.rows[0].value === "min" && percent <= maxPercent) {
+
+
+
+                    minPercent = percent;
+
+
+
+                } else if (args.source.rows[0].value === "max" && percent >= minPercent) {
+
+
+
+                    maxPercent = percent;
+
+
+
+                }
+
+
+
+
+
+
+
+                // به‌روزرسانی فوری UI (بدون تأخیر)
+
+
+
+                updatePriceSlider();
+
+
+
+            };
+
+
+
+
+
+
+
+            /**
+
+
+
+             * پایان drag - اعمال فیلتر با تأخیر کم
+
+
+
+             */
+
+
+
+            const onMouseUp = () => {
+
+
+
+                if (!isDragging) return;
+
+
+
+
+
+
+
+                isDragging = false;
+
+
+
+                const dragDuration = Date.now() - dragStartTime;
+
+
+
+
+
+
+
+                document.removeEventListener("mousemove", onMouseMove);
+
+
+
+                document.removeEventListener("mouseup", onMouseUp);
+
+
+
+
+
+
+
+                // اعمال فیلتر با تأخیر کمتر
+
+
+
+                clearTimeout(window.priceFilterTimeout);
+
+
+
+
+
+
+
+                // تأخیر کمتر برای drag های سریع
+
+
+
+                const delay = dragDuration < 500 ? 50 : DEBOUNCE_DELAY;
+
+
+
+
+
+
+
+                window.priceFilterTimeout = setTimeout(() => {
+
+
+
+                    triggerPriceFilter();
+
+
+
+                }, delay);
+
+
+
+
+
+
+
+                console.log(`🖱️ Price Drag Ended: Duration ${dragDuration}ms, Delay ${delay}ms`);
+
+
+
+            };
+
+
+
+
+
+
+
+            document.addEventListener("mousemove", onMouseMove);
+
+
+
+            document.addEventListener("mouseup", onMouseUp);
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("handlePriceDrag: " + error.message);
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function initializePriceSlider() {
+
+
+
+        try {
+
+
+
+            if (!priceSlider || !priceThumbMin || !priceThumbMax) {
+
+
+
+                console.error("Price slider elements not found");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            // حذف event listener های قبلی
+
+
+
+            priceThumbMin.removeEventListener("mousedown", handlePriceSliderMouseDown);
+
+
+
+            priceThumbMax.removeEventListener("mousedown", handlePriceSliderMouseDown);
+
+
+
+
+
+
+
+            // اضافه کردن event listener های جدید
+
+
+
+            priceThumbMin.addEventListener("mousedown", (e) => {
+
+
+
+                e.preventDefault();
+
+
+
+                handlePriceDrag({
+
+
+
+                    source: {
+
+
+
+                        id: "cms.price",
+
+
+
+                        rows: [{ value: "min" }]
+
+
+
+                    }
+
+
+
+                });
+
+
+
+            });
+
+
+
+
+
+
+
+            priceThumbMax.addEventListener("mousedown", (e) => {
+
+
+
+                e.preventDefault();
+
+
+
+                handlePriceDrag({
+
+
+
+                    source: {
+
+
+
+                        id: "cms.price",
+
+
+
+                        rows: [{ value: "max" }]
+
+
+
+                    }
+
+
+
+                });
+
+
+
+            });
+
+
+
+
+
+
+
+            console.log("✅ Price slider initialized successfully");
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("initializePriceSlider: " + error.message);
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    const resetPriceFilter = () => {
+
+
+
+        try {
+
+
+
+            minPercent = 0;
+
+
+
+            maxPercent = 100;
+
+
+
+            priceRange = [minPrice, maxPrice];
+
+
+
+
+
+
+
+            // 🔥 بازنشانی وضعیت تغییرات کاربر
+
+
+
+            userHasChangedPriceRange = false;
+
+
+
+            lastUserMinPrice = minPrice;
+
+
+
+            lastUserMaxPrice = maxPrice;
+
+
+
+
+
+
+
+            updatePriceSlider();
+
+
+
+
+
+
+
+            // اعمال فیلتر
+
+
+
+            mustUpdate = true;
+
+
+
+            if (typeof busManipulation === 'function') {
+
+
+
+                busManipulation({
+
+
+
+                    source: {
+
+
+
+                        id: 'cms.price.update',
+
+
+
+                        rows: [{ value: 'reset' }]
+
+
+
+                    },
+
+
+
+                    context: {
+
+
+
+                        setAsSource: function () { },
+
+
+
+                        tryToGetSource: function () { return null; }
+
+
+
+                    }
+
+
+
+                });
+
+
+
+            }
+
+
+
+
+
+
+
+            console.log("🔄 Price filter reset");
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("resetPriceFilter: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const debugPriceFilter = () => {
+
+
+
+        console.group("🔍 Price Filter Debug Info");
+
+
+
+        console.log("Min Price:", minPrice);
+
+
+
+        console.log("Max Price:", maxPrice);
+
+
+
+        console.log("Min Percent:", minPercent);
+
+
+
+        console.log("Max Percent:", maxPercent);
+
+
+
+        console.log("Price Range:", priceRange);
+
+
+
+        console.log("mustUpdate:", mustUpdate);
+
+
+
+        console.log("InUpdateFiltering:", InUpdateFiltering);
+
+
+
+        console.log("InUpdatePaging:", InUpdatePaging);
+
+
+
+        console.groupEnd();
+
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+    /**
+
+
+
+     * افزودن div فیلتر (برای موبایل)
+
+
+
+     * @param {string} filterId - شناسه فیلتر
+
+
+
+     * @param {string} sourceId - شناسه منبع
+
+
+
+     * @param {string} value - مقدار
+
+
+
+     */
+
+
+
+    function addFilterDiv(filterId, sourceId, value) {
+
+
+
+        try {
+
+
+
+            const filterContainer = document.querySelector('.book-mobile-filters');
+
+
+
+            if (!filterContainer) return;
+
+
+
+
+
+
+
+            const filterDiv = document.createElement('div');
+
+
+
+            filterDiv.className = 'book-filter-tag';
+
+
+
+            filterDiv.setAttribute('data-filter-id', filterId);
+
+
+
+            filterDiv.innerHTML = `
+
+
+
+            <span>${value}</span>
+
+
+
+            <button onclick="removeFilterDiv('${filterId}')" class="book-filter-remove">×</button>
+
+
+
+        `;
+
+
+
+            filterContainer.appendChild(filterDiv);
+
+
+
+        } catch (error) {
+
+
+
+            console.error("addFilterDiv: " + error.message);
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    const updateHourSlider = (type, label, minHour, maxHour, hourContainer, hourRange) => {
+
+
+
+        try {
+
+
+
+            // Get current percentages based on type
+
+
+
+            let currentMinPercent = type === "outboundhour" ? (outboundMinPercent || 0) : type === "inboundhour" ? (inboundMinPercent || 0) : (minPercent || 0);
+
+
+
+            let currentMaxPercent = type === "outboundhour" ? (outboundMaxPercent || 100) : type === "inboundhour" ? (inboundMaxPercent || 100) : (maxPercent || 100);
+
+
+
+
+
+
+
+            // Get slider elements
+
+
+
+            const hourMinValueLabel = hourContainer.querySelector(".book-min__value");
+
+
+
+            const hourMaxValueLabel = hourContainer.querySelector(".book-max__value");
+
+
+
+            const hourThumbMin = hourContainer.querySelector(".book-thumb__min");
+
+
+
+            const hourThumbMax = hourContainer.querySelector(".book-thumb__max");
+
+
+
+            const hourTrack = hourContainer.querySelector(".book-slider__track");
+
+
+
+
+
+
+
+            // Calculate values
+
+
+
+            const totalRange = maxHour - minHour;
+
+
+
+            const hourMinValue = Math.round((currentMinPercent / 100) * totalRange + minHour);
+
+
+
+            const hourMaxValue = Math.round((currentMaxPercent / 100) * totalRange + minHour);
+
+
+
+
+
+
+
+            // Update labels
+
+
+
+            hourMinValueLabel.textContent = `${Math.floor(hourMinValue / 60)} ساعت ${hourMinValue % 60} دقیقه`;
+
+
+
+            hourMaxValueLabel.textContent = `${Math.floor(hourMaxValue / 60)} ساعت ${hourMaxValue % 60} دقیقه`;
+
+
+
+
+
+
+
+            // Update range array
+
+
+
+            hourRange[0] = hourMinValue;
+
+
+
+            hourRange[1] = hourMaxValue;
+
+
+
+
+
+
+
+            // Update slider UI
+
+
+
+            hourThumbMin.style.left = `${currentMinPercent}%`;
+
+
+
+            hourThumbMax.style.left = `${currentMaxPercent}%`;
+
+
+
+            hourTrack.style.left = `${currentMinPercent}%`;
+
+
+
+            hourTrack.style.right = `${100 - currentMaxPercent}%`;
+
+
+
+
+
+
+
+            // Update filter display
+
+
+
+            updateFilterDisplay(type, label, hourMinValue, hourMaxValue, minHour, maxHour, hourContainer, hourRange);
+
+
+
+        } catch (error) {
+
+
+
+            console.error(`updateHourSlider (${type}): ${error.message}`);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+    /**
+
+
+
+     * حذف div فیلتر (برای موبایل)
+
+
+
+     * @param {string} filterId - شناسه فیلتر
+
+
+
+     */
+
+
+
+    function removeFilterDiv(filterId) {
+
+
+
+        try {
+
+
+
+            const filterDiv = document.querySelector(`[data-filter-id="${filterId}"]`);
+
+
+
+            if (filterDiv) {
+
+
+
+                filterDiv.remove();
+
+
+
+            }
+
+
+
+        } catch (error) {
+
+
+
+            console.error("removeFilterDiv: " + error.message);
+
+
+
+        }
+
+
+
+    }
+
+
+
+// ⭐ تابع کمکی برای پیدا کردن داده‌ها از منابع مختلف
+
+
+
+function findBusData(idToFind) {
+
+
+
+    const cleanId = String(idToFind).trim();
+
+
+
+    
+
+
+
+    // جستجو در داده‌های جهانی
+
+
+
+    let foundObject = globalBusProposals.find(item =>
+
+
+
+        item && item.busId && String(item.busId).trim() === cleanId
+
+
+
+    );
+
+
+
+    
+
+
+
+    if (foundObject) {
+
+
+
+        return { object: foundObject, source: 'global' };
+
+
+
+    }
+
+
+
+
+
+
+
+    // جستجو در allBusProposals
+
+
+
+    foundObject = allBusProposals.find(item =>
+
+
+
+        item && item.busId && String(item.busId).trim() === cleanId
+
+
+
+    );
+
+
+
+    
+
+
+
+    if (foundObject) {
+
+
+
+        return { object: foundObject, source: 'allBusProposals' };
+
+
+
+    }
+
+
+
+
+
+
+
+    // جستجو در listData
+
+
+
+    if (globalListData && globalListData.source && Array.isArray(globalListData.source._rows)) {
+
+
+
+        const rows = globalListData.source._rows;
+
+
+
+        if (rows.length && Array.isArray(rows[0].busProposals)) {
+
+
+
+            foundObject = rows[0].busProposals.find(item =>
+
+
+
+                item && item.busId && String(item.busId).trim() === cleanId
+
+
+
+            );
+
+
+
+            if (foundObject) {
+
+
+
+                return { object: foundObject, source: 'listData' };
+
+
+
+            }
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+    // جستجو در BusProposalsSource (داده‌های فیلتر شده)
+
+
+
+    if (Array.isArray(BusProposalsSource)) {
+
+
+
+        foundObject = BusProposalsSource.find(item =>
+
+
+
+            item && item.busId && String(item.busId).trim() === cleanId
+
+
+
+        );
+
+
+
+        if (foundObject) {
+
+
+
+            return { object: foundObject, source: 'BusProposalsSource' };
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+    return null;
+
+
+
+}
+
+
+
+
+
+
+
+// ⭐ تابع اصلاح شده initializeBusCards
+
+
+
+// function initializeBusCards(idToFind) {
+
+
+
+//     try {
+
+
+
+//         const cleanId = String(idToFind).trim().replace(/[^a-zA-Z0-9]/g, '');
+
+
+
+//         console.log("🔍 Searching for bus ID:", cleanId);
+
+
+
+
+
+
+
+//         // استفاده از تابع کمکی برای پیدا کردن داده
+
+
+
+//         const result = findBusData(cleanId);
+
+
+
+        
+
+
+
+//         if (!result) {
+
+
+
+//             console.warn("⚠️ آیتم مورد نظر با busId پیدا نشد:", cleanId);
+
+
+
+            
+
+
+
+//             // ⭐ تلاش مجدد با ID اصلی (بدون پاکسازی)
+
+
+
+//             const originalResult = findBusData(idToFind);
+
+
+
+//             if (!originalResult) {
+
+
+
+//                 console.error("❌ هیچ داده‌ای برای busId یافت نشد:", idToFind);
+
+
+
+//                 return;
+
+
+
+//             }
+
+
+
+//             result.object = originalResult.object;
+
+
+
+//             result.source = originalResult.source;
+
+
+
+//         }
+
+
+
+
+
+
+
+//         console.log("✅ داده پیدا شد از منبع:", result.source);
+
+
+
+
+
+
+
+//         const foundObject = result.object;
+
+
+
+
+
+
+
+//         // استخراج busGroup
+
+
+
+//         let busGroupArray = [];
+
+
+
+//         if (Array.isArray(foundObject.busGroup)) {
+
+
+
+//             busGroupArray = foundObject.busGroup;
+
+
+
+//         } else if (typeof foundObject.busGroup === 'object' && foundObject.busGroup !== null) {
+
+
+
+//             busGroupArray = Object.values(foundObject.busGroup);
+
+
+
+//         }
+
+
+
+
+
+
+
+//         console.log("🚌 busGroupArray:", busGroupArray);
+
+
+
+
+
+
+
+//         // تنظیم $bc.setSource
+
+
+
+//         if (typeof $bc !== 'undefined' && $bc.setSource) {
+
+
+
+//             $bc.setSource("cms.seat", {
+
+
+
+//                 type: "upselling",
+
+
+
+//                 busId: cleanId,
+
+
+
+//                 busGroup: JSON.stringify(busGroupArray),
+
+
+
+//                 run: true
+
+
+
+//             });
+
+
+
+//         }
+
+
+
+
+
+
+
+//         // مدیریت رویدادهای کلیک
+
+
+
+//         const container = document.querySelector(".book-bus-cards-container");
+
+
+
+//         if (!container) {
+
+
+
+//             console.error("❌ کانتینر .book-bus-cards-container پیدا نشد");
+
+
+
+//             return;
+
+
+
+//         }
+
+
+
+
+
+
+
+//         // ⭐ حذف event listener قبلی برای جلوگیری از تداخل
+
+
+
+//         const existingHandler = container.getAttribute('data-event-attached');
+
+
+
+//         if (!existingHandler) {
+
+
+
+//             container.setAttribute('data-event-attached', 'true');
+
+
+
+            
+
+
+
+//             container.addEventListener("click", (event) => {
+
+
+
+//                 const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
+
+
+
+//                 const closeCardBtn = event.target.closest(".book-closeCard");
+
+
+
+//                 const openFirstMenu = event.target.closest(".book-open-first-menu");
+
+
+
+//                 const closeFirstMenu = event.target.closest(".book-first-menu .book-clode-menu");
+
+
+
+//                 const openSecondMenu = event.target.closest(".book-open-second-menu");
+
+
+
+//                 const closeSecondMenu = event.target.closest(".book-second-menu .book-clode-menu");
+
+
+
+//                 const openThirdMenu = event.target.closest(".book-open-third-menu");
+
+
+
+//                 const closeThirdMenu = event.target.closest(".book-third-menu .book-clode-menu");
+
+
+
+
+
+
+
+//                 const card = event.target.closest(".book-bus-card");
+
+
+
+//                 if (!card) return;
+
+
+
+
+
+
+
+//                 // باز کردن کارت
+
+
+
+//                 if (seeMoreBtn) {
+
+
+
+//                     seeMoreBtn.classList.add("book-hidden");
+
+
+
+//                     card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.remove("book-hidden"));
+
+
+
+//                     card.classList.remove("book-h-[240px]");
+
+
+
+//                     card.classList.add("book-h-[482px]");
+
+
+
+//                 }
+
+
+
+
+
+
+
+//                 // بستن کارت
+
+
+
+//                 if (closeCardBtn) {
+
+
+
+//                     const seeMore = card.querySelector(".book-see-and-buy-ticket");
+
+
+
+//                     if (seeMore) seeMore.classList.remove("book-hidden");
+
+
+
+//                     card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.add("book-hidden"));
+
+
+
+//                     card.classList.add("book-h-[240px]");
+
+
+
+//                     card.classList.remove("book-h-[482px]");
+
+
+
+//                 }
+
+
+
+
+
+
+
+//                 // منوهای مختلف
+
+
+
+//                 if (openFirstMenu) {
+
+
+
+//                     const firstMenu = card.querySelector(".book-first-menu");
+
+
+
+//                     if (firstMenu) firstMenu.classList.remove("book-translate-x-[105%]");
+
+
+
+//                 }
+
+
+
+//                 if (closeFirstMenu) {
+
+
+
+//                     const firstMenu = card.querySelector(".book-first-menu");
+
+
+
+//                     if (firstMenu) firstMenu.classList.add("book-translate-x-[105%]");
+
+
+
+//                 }
+
+
+
+
+
+
+
+//                 if (openSecondMenu) {
+
+
+
+//                     const secondMenu = card.querySelector(".book-second-menu");
+
+
+
+//                     if (secondMenu) secondMenu.classList.remove("book-translate-x-[105%]");
+
+
+
+//                 }
+
+
+
+//                 if (closeSecondMenu) {
+
+
+
+//                     const secondMenu = card.querySelector(".book-second-menu");
+
+
+
+//                     if (secondMenu) secondMenu.classList.add("book-translate-x-[105%]");
+
+
+
+//                 }
+
+
+
+
+
+
+
+//                 if (openThirdMenu) {
+
+
+
+//                     const thirdMenu = card.querySelector(".book-third-menu");
+
+
+
+//                     if (thirdMenu) thirdMenu.classList.remove("book-translate-x-[105%]");
+
+
+
+//                 }
+
+
+
+//                 if (closeThirdMenu) {
+
+
+
+//                     const thirdMenu = card.querySelector(".book-third-menu");
+
+
+
+//                     if (thirdMenu) thirdMenu.classList.add("book-translate-x-[105%]");
+
+
+
+//                 }
+
+
+
+//             });
+
+
+
+//         }
+
+
+
+
+
+
+
+//         console.log("✅ initializeBusCards تکمیل شد");
+
+
+
+
+
+
+
+//     } catch (error) {
+
+
+
+//         console.error("❌ initializeBusCards: " + error.message);
+
+
+
+//     }
+
+
+
+// }
+
+
+
+
+
+
+
+
+
+
+
+// 🔥 فقط این تابع را جایگزین کنید - باقی کد همان قبلی باشد
+
+
+
+function initializeBusCards(idToFind) {
+
+
+
+    try {
+
+
+
+        const cleanId = String(idToFind).trim().replace(/[^a-zA-Z0-9]/g, '');
+
+
+
+        console.log("🔍 Searching for bus ID:", cleanId);
+
+
+
+
+
+
+
+        // استفاده از تابع کمکی برای پیدا کردن داده
+
+
+
+        const result = findBusData(cleanId);
+
+
+
+        
+
+
+
+        if (!result) {
+
+
+
+            console.warn("⚠️ آیتم مورد نظر با busId پیدا نشد:", cleanId);
+
+
+
+            
+
+
+
+            // تلاش مجدد با ID اصلی (بدون پاکسازی)
+
+
+
+            const originalResult = findBusData(idToFind);
+
+
+
+            if (!originalResult) {
+
+
+
+                console.error("❌ هیچ داده‌ای برای busId یافت نشد:", idToFind);
+
+
+
+                return;
+
+
+
+            }
+
+
+
+            result.object = originalResult.object;
+
+
+
+            result.source = originalResult.source;
+
+
+
+        }
+
+
+
+
+
+
+
+        console.log("✅ داده پیدا شد از منبع:", result.source);
+
+
+
+
+
+
+
+        const foundObject = result.object;
+
+
+
+
+
+
+
+        // استخراج busGroup
+
+
+
+        let busGroupArray = [];
+
+
+
+        if (Array.isArray(foundObject.busGroup)) {
+
+
+
+            busGroupArray = foundObject.busGroup;
+
+
+
+        } else if (typeof foundObject.busGroup === 'object' && foundObject.busGroup !== null) {
+
+
+
+            busGroupArray = Object.values(foundObject.busGroup);
+
+
+
+        }
+
+
+
+
+
+
+
+        console.log("🚌 busGroupArray:", busGroupArray);
+
+
+
+
+
+
+
+        // تنظیم $bc.setSource
+
+
+
+        if (typeof $bc !== 'undefined' && $bc.setSource) {
+
+
+
+            $bc.setSource("cms.seat", {
+
+
+
+                type: "upselling",
+
+
+
+                busId: cleanId,
+
+
+
+                busGroup: JSON.stringify(busGroupArray),
+
+
+
+                run: true
+
+
+
+            });
+
+
+
+        }
+
+
+
+
+
+
+
+        // 🔥 مدیریت رویدادهای کلیک - بدون تداخل
+
+
+
+        const container = document.querySelector(".book-bus-cards-container");
+
+
+
+        if (!container) {
+
+
+
+            console.error("❌ کانتینر .book-bus-cards-container پیدا نشد");
+
+
+
+            return;
+
+
+
+        }
+
+
+
+
+
+
+
+        // 🔥 فقط حذف و اضافه مجدد event listener برای این container
+
+
+
+        // حذف listener قبلی اگر وجود دارد
+
+
+
+        if (container._busCardHandler) {
+
+
+
+            container.removeEventListener("click", container._busCardHandler);
+
+
+
+        }
+
+
+
+
+
+
+
+        // تعریف handler جدید
+
+
+
+        const busCardHandler = (event) => {
+
+
+
+            const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
+
+
+
+            const closeCardBtn = event.target.closest(".book-closeCard");
+
+
+
+            const openFirstMenu = event.target.closest(".book-open-first-menu");
+
+
+
+            const closeFirstMenu = event.target.closest(".book-first-menu .book-clode-menu");
+
+
+
+            const openSecondMenu = event.target.closest(".book-open-second-menu");
+
+
+
+            const closeSecondMenu = event.target.closest(".book-second-menu .book-clode-menu");
+
+
+
+            const openThirdMenu = event.target.closest(".book-open-third-menu");
+
+
+
+            const closeThirdMenu = event.target.closest(".book-third-menu .book-clode-menu");
+
+
+
+
+
+
+
+            const card = event.target.closest(".book-bus-card");
+
+
+
+            if (!card) return;
+
+
+
+
+
+
+
+            // باز کردن کارت
+
+
+
+            if (seeMoreBtn) {
+
+
+
+                seeMoreBtn.classList.add("book-hidden");
+
+
+
+                card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.remove("book-hidden"));
+
+
+
+                card.classList.remove("book-h-[240px]");
+
+
+
+                card.classList.add("book-h-[482px]");
+
+
+
+            }
+
+
+
+
+
+
+
+            // بستن کارت
+
+
+
+            if (closeCardBtn) {
+
+
+
+                const seeMore = card.querySelector(".book-see-and-buy-ticket");
+
+
+
+                if (seeMore) seeMore.classList.remove("book-hidden");
+
+
+
+                card.querySelectorAll(".book-hidden-elements").forEach(el => el.classList.add("book-hidden"));
+
+
+
+                card.classList.add("book-h-[240px]");
+
+
+
+                card.classList.remove("book-h-[482px]");
+
+
+
+            }
+
+
+
+
+
+
+
+            // منوهای مختلف
+
+
+
+            if (openFirstMenu) {
+
+
+
+                const firstMenu = card.querySelector(".book-first-menu");
+
+
+
+                if (firstMenu) firstMenu.classList.remove("book-translate-x-[105%]");
+
+
+
+            }
+
+
+
+            if (closeFirstMenu) {
+
+
+
+                const firstMenu = card.querySelector(".book-first-menu");
+
+
+
+                if (firstMenu) firstMenu.classList.add("book-translate-x-[105%]");
+
+
+
+            }
+
+
+
+
+
+
+
+            if (openSecondMenu) {
+
+
+
+                const secondMenu = card.querySelector(".book-second-menu");
+
+
+
+                if (secondMenu) secondMenu.classList.remove("book-translate-x-[105%]");
+
+
+
+            }
+
+
+
+            if (closeSecondMenu) {
+
+
+
+                const secondMenu = card.querySelector(".book-second-menu");
+
+
+
+                if (secondMenu) secondMenu.classList.add("book-translate-x-[105%]");
+
+
+
+            }
+
+
+
+
+
+
+
+            if (openThirdMenu) {
+
+
+
+                const thirdMenu = card.querySelector(".book-third-menu");
+
+
+
+                if (thirdMenu) thirdMenu.classList.remove("book-translate-x-[105%]");
+
+
+
+            }
+
+
+
+            if (closeThirdMenu) {
+
+
+
+                const thirdMenu = card.querySelector(".book-third-menu");
+
+
+
+                if (thirdMenu) thirdMenu.classList.add("book-translate-x-[105%]");
+
+
+
+            }
+
+
+
+        };
+
+
+
+
+
+
+
+        // ذخیره reference و اضافه کردن listener جدید
+
+
+
+        container._busCardHandler = busCardHandler;
+
+
+
+        container.addEventListener("click", busCardHandler);
+
+
+
+
+
+
+
+        console.log("✅ initializeBusCards تکمیل شد");
+
+
+
+
+
+
+
+    } catch (error) {
+
+
+
+        console.error("❌ initializeBusCards: " + error.message);
+
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+    const onProcessedRenderSeatMap = async (args) => {
+
+
+
+        try {
+
+
+
+            if (!args || !args.response) {
+
+
+
+                console.error("onProcessedRenderSeatMap: Invalid arguments");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const { response } = args;
+
+
+
+            if (response.status !== 200) return;
+
+
+
+
+
+
+
+            const responseJson = await response.json();
+
+
+
+
+
+
+
+            // استفاده از CSS.escape برای حل مشکل selector
+
+
+
+            const busId = responseJson.busId;
+
+
+
+            const escapedBusId = CSS.escape(busId);
+
+
+
+            const renderingContainer = document.querySelector(`.seat-id-${escapedBusId}`);
+
+
+
+
+
+
+
+            if (!renderingContainer) return;
+
+
+
+
+
+
+
+            const { layout, col, row } = responseJson;
+
+
+
+            const columns = parseInt(col, 10); // Number of seats/gaps per row
+
+
+
+            const rows = parseInt(row, 10); // Number of rows
+
+
+
+
+
+
+
+            const createSeatButton = (seat, indexInRow) => {
+
+
+
+                const btn = document.createElement('button');
+
+
+
+                btn.type = 'button';
+
+
+
+                btn.textContent = seat.number;
+
+
+
+
+
+
+
+                btn.className = `book-bg-center book-bg-cover book-w-[30px] book-h-[34px] book-flex book-justify-center book-items-center`;
+
+
+
+
+
+
+
+                // Add margin to the second seat (index 1) in each row
+
+
+
+                if (indexInRow === 1) {
+
+
+
+                    btn.classList.add('book-mb-[50px]'); // Add right margin for spacing
+
+
+
+                }
+
+
+
+
+
+
+
+                if (seat.status === 'reserved') {
+
+
+
+                    if (seat.gender === 'Female') {
+
+
+
+                        btn.classList.add('book-seat-ladies', 'book-text-[#c60055]');
+
+
+
+                        btn.title = 'Ladies';
+
+
+
+                    } else {
+
+
+
+                        btn.classList.add('book-seat-by-for-gentlemans', 'book-text-primary-900');
+
+
+
+                        btn.title = 'Gentleman';
+
+
+
+                    }
+
+
+
+                    btn.disabled = true;
+
+
+
+                } else if (seat.status === 'available') {
+
+
+
+                    btn.classList.add('book-seat-available', 'book-text-zinc-900');
+
+
+
+                    btn.title = 'Available';
+
+
+
+                }
+
+
+
+
+
+
+
+                return btn;
+
+
+
+            };
+
+
+
+
+
+
+
+            const createGap = (indexInRow) => {
+
+
+
+                const span = document.createElement('span');
+
+
+
+                span.className = `book-w-[30px] book-h-[34px]`;
+
+
+
+                // Add margin to the gap if it's at index 1
+
+
+
+                if (indexInRow === 1) {
+
+
+
+                    span.classList.add('book-mb-[50px]');
+
+
+
+                }
+
+
+
+                return span;
+
+
+
+            };
+
+
+
+
+
+
+
+            renderingContainer.innerHTML = '';
+
+
+
+            let currentRow = null;
+
+
+
+            let seatCountInRow = 0;
+
+
+
+            let rowCount = 0;
+
+
+
+
+
+
+
+            for (let i = 0; i < layout.length; i++) {
+
+
+
+                if (seatCountInRow === 0) {
+
+
+
+                    // Start a new row
+
+
+
+                    currentRow = document.createElement('div');
+
+
+
+                    currentRow.className = 'book-w-full book-flex book-items-center book-gap-2 book-justify-between book-flex-col';
+
+
+
+                    currentRow.setAttribute('dir', 'ltr');
+
+
+
+                }
+
+
+
+
+
+
+
+                const item = layout[i];
+
+
+
+
+
+
+
+                if (item.type === 'seat') {
+
+
+
+                    const btn = createSeatButton(item, seatCountInRow);
+
+
+
+                    currentRow.appendChild(btn);
+
+
+
+                    seatCountInRow++;
+
+
+
+                } else if (item.type === 'gap') {
+
+
+
+                    const gap = createGap(seatCountInRow);
+
+
+
+                    currentRow.appendChild(gap);
+
+
+
+                    seatCountInRow++;
+
+
+
+                }
+
+
+
+
+
+
+
+                // Complete the row when it reaches the column limit
+
+
+
+                if (seatCountInRow === columns) {
+
+
+
+                    renderingContainer.appendChild(currentRow);
+
+
+
+                    seatCountInRow = 0;
+
+
+
+                    rowCount++;
+
+
+
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+            // Append the last row if it contains items and hasn't been appended
+
+
+
+            if (seatCountInRow > 0 && currentRow) {
+
+
+
+                // Fill remaining spaces in the last row with gaps if needed
+
+
+
+                while (seatCountInRow < columns) {
+
+
+
+                    const gap = createGap(seatCountInRow);
+
+
+
+                    currentRow.appendChild(gap);
+
+
+
+                    seatCountInRow++;
+
+
+
+                }
+
+
+
+                renderingContainer.appendChild(currentRow);
+
+
+
+                rowCount++;
+
+
+
+            }
+
+
+
+
+
+
+
+            // Ensure the total number of rows matches the specified 'row' count
+
+
+
+            while (rowCount < rows) {
+
+
+
+                const emptyRow = document.createElement('div');
+
+
+
+                emptyRow.className = 'book-w-full book-flex book-items-center book-gap-2 book-justify-between book-flex-col';
+
+
+
+                emptyRow.setAttribute('dir', 'ltr');
+
+
+
+                for (let i = 0; i < columns; i++) {
+
+
+
+                    const gap = createGap(i);
+
+
+
+                    emptyRow.appendChild(gap);
+
+
+
+                }
+
+
+
+                renderingContainer.appendChild(emptyRow);
+
+
+
+                rowCount++;
+
+
+
+            }
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("onProcessedRenderSeatMap: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    const onProcessedRenderBusRules = async (args) => {
+
+
+
+        try {
+
+
+
+            if (!args || !args.response) {
+
+
+
+                console.error("onProcessedRenderBusRules: Invalid arguments");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const { response } = args;
+
+
+
+            if (response.status !== 200) return;
+
+
+
+
+
+
+
+            const responseJson = await response.json();
+
+
+
+
+
+
+
+            if (!Array.isArray(responseJson) || responseJson.length === 0) {
+
+
+
+                console.error("onProcessedRenderBusRules: Invalid response format");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            // استفاده از CSS.escape برای حل مشکل
+
+
+
+            const busId = responseJson[0].busId;
+
+
+
+            const escapedBusId = CSS.escape(busId);
+
+
+
+            const renderingContainer = document.querySelector(`.rule-id-${escapedBusId}`);
+
+
+
+
+
+
+
+            if (!renderingContainer) {
+
+
+
+                console.warn(`Container with class rule-id-${escapedBusId} not found`);
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const busRules = responseJson[0].busRules;
+
+
+
+            if (!Array.isArray(busRules)) {
+
+
+
+                console.error("onProcessedRenderBusRules: busRules is not an array");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            renderingContainer.innerHTML = ''; // Clear existing content
+
+
+
+
+
+
+
+            // Create header for cancellation rules
+
+
+
+            const headerDiv = document.createElement('div');
+
+
+
+            headerDiv.className = 'book-flex book-mb-3 book-mt-9 book-items-center book-gap-3';
+
+
+
+            headerDiv.innerHTML = `
+
+
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+
+
+
+                <path d="M22 6v2.42C22 10 21 11 19.42 11H16V4.01C16 2.9 16.91 2 18.02 2c1.09.01 2.09.45 2.81 1.17C21.55 3.9 22 4.9 22 6Z" stroke="#FF0000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+
+
+
+                <path d="M2 7v14c0 .83.94 1.3 1.6.8l1.71-1.28c.4-.3.96-.26 1.32.1l1.66 1.67c.39.39 1.03.39 1.42 0l1.68-1.68c.35-.35.91-.39 1.3-.09l1.71 1.28c.66.49 1.6.02 1.6-.8V4c0-1.1.9-2 2-2H6C3 2 2 3.79 2 6v1Z" stroke="#FF0000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+
+
+
+                <path d="M6.25 10h5.5" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+
+
+
+            </svg>
+
+
+
+            <p class="book-text-zinc-900 book-font-bold">شرایط استرداد</p>
+
+
+
+        `;
+
+
+
+            renderingContainer.appendChild(headerDiv);
+
+
+
+
+
+
+
+            let rulesItem = 0;
+
+
+
+            const currentRow = document.createElement('div');
+
+
+
+            currentRow.className = 'book-flex book-flex-col book-gap-3 book-w-full book-items-center';
+
+
+
+
+
+
+
+            for (let i = 0; i < busRules.length; i++) {
+
+
+
+                const item = busRules[i];
+
+
+
+                if (!Array.isArray(item.rule)) continue;
+
+
+
+
+
+
+
+                for (let j = 0; j < item.rule.length; j++) {
+
+
+
+                    const rule = item.rule[j];
+
+
+
+                    if (rule.title === 'cancel rule') {
+
+
+
+                        // Split the rule text to extract conditions
+
+
+
+                        const conditions = rule.text.split('.');
+
+
+
+                        for (let condition of conditions) {
+
+
+
+                            if (condition.trim() === '') continue;
+
+
+
+                            // Extract percentage and time
+
+
+
+                            const percentageMatch = condition.match(/(\d+ درصد)/);
+
+
+
+                            const percentage = percentageMatch ? percentageMatch[0] : '';
+
+
+
+                            const timeText = condition.replace(/با کسر \d+ درصد/, '').trim();
+
+
+
+                            const bgColor = percentage === '10 درصد' ? '#ff8a4c' : '#ff5656';
+
+
+
+
+
+
+
+                            const ruleDiv = document.createElement('div');
+
+
+
+                            ruleDiv.className = 'book-w-[90%] book-h-10 book-flex book-justify-center book-items-center book-text-sm book-text-zinc-700 book-p-1 book-relative book-bg-transparent book-border book-border-zinc-500 book-rounded-lg';
+
+
+
+                            ruleDiv.innerHTML = `
+
+
+
+                            <div class="book-absolute book-p-[2px] book-h-full book-top-0 book-right-0">
+
+
+
+                                <span class="book-h-full book-w-10 book-flex book-justify-center book-items-center book-text-white book-bg-[${bgColor}] book-rounded-md">${percentage}</span>
+
+
+
+                            </div>
+
+
+
+                            <span class="book-mr-5">${timeText}</span>
+
+
+
+                        `;
+
+
+
+                            currentRow.appendChild(ruleDiv);
+
+
+
+                            rulesItem++;
+
+
+
+                        }
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+            if (rulesItem > 0) {
+
+
+
+                renderingContainer.appendChild(currentRow);
+
+
+
+            }
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("onProcessedRenderBusRules: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+    const onProcessedRenderBusRules_Alternative1 = async (args) => {
+
+
+
+        try {
+
+
+
+            if (!args || !args.response) {
+
+
+
+                console.error("onProcessedRenderBusRules: Invalid arguments");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const { response } = args;
+
+
+
+            if (response.status !== 200) return;
+
+
+
+
+
+
+
+            const responseJson = await response.json();
+
+
+
+
+
+
+
+            if (!Array.isArray(responseJson) || responseJson.length === 0) {
+
+
+
+                console.error("onProcessedRenderBusRules: Invalid response format");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            // 🔥 راه‌حل 2: استفاده از data attribute
+
+
+
+            const busId = responseJson[0].busId;
+
+
+
+            const renderingContainer = document.querySelector(`[data-rule-id="${busId}"]`);
+
+
+
+
+
+
+
+            if (!renderingContainer) {
+
+
+
+                console.warn(`Container with data-rule-id="${busId}" not found`);
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            // بقیه کد مشابه راه‌حل اول...
+
+
+
+            // ...
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("onProcessedRenderBusRules: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    const onProcessedRenderBusRules_Alternative2 = async (args) => {
+
+
+
+        try {
+
+
+
+            if (!args || !args.response) {
+
+
+
+                console.error("onProcessedRenderBusRules: Invalid arguments");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const { response } = args;
+
+
+
+            if (response.status !== 200) return;
+
+
+
+
+
+
+
+            const responseJson = await response.json();
+
+
+
+
+
+
+
+            if (!Array.isArray(responseJson) || responseJson.length === 0) {
+
+
+
+                console.error("onProcessedRenderBusRules: Invalid response format");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            // 🔥 راه‌حل 3: پاک کردن کاراکترهای غیرمجاز
+
+
+
+            const busId = responseJson[0].busId;
+
+
+
+            const cleanBusId = busId.replace(/[^a-zA-Z0-9_-]/g, ''); // فقط حروف، اعداد، - و _ نگه داشته می‌شود
+
+
+
+            const renderingContainer = document.querySelector(`.rule-id-${cleanBusId}`);
+
+
+
+
+
+
+
+            if (!renderingContainer) {
+
+
+
+                console.warn(`Container with class rule-id-${cleanBusId} not found`);
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            // بقیه کد مشابه راه‌حل اول...
+
+
+
+            // ...
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("onProcessedRenderBusRules: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    const onProcessedRenderBusRules_Alternative3 = async (args) => {
+
+
+
+        try {
+
+
+
+            if (!args || !args.response) {
+
+
+
+                console.error("onProcessedRenderBusRules: Invalid arguments");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            const { response } = args;
+
+
+
+            if (response.status !== 200) return;
+
+
+
+
+
+
+
+            const responseJson = await response.json();
+
+
+
+
+
+
+
+            if (!Array.isArray(responseJson) || responseJson.length === 0) {
+
+
+
+                console.error("onProcessedRenderBusRules: Invalid response format");
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            // 🔥 راه‌حل 4: استفاده از ID به جای class
+
+
+
+            const busId = responseJson[0].busId;
+
+
+
+            const renderingContainer = document.getElementById(`rule-id-${busId}`);
+
+
+
+
+
+
+
+            if (!renderingContainer) {
+
+
+
+                console.warn(`Container with id="rule-id-${busId}" not found`);
+
+
+
+                return;
+
+
+
+            }
+
+
+
+
+
+
+
+            // بقیه کد مشابه راه‌حل اول...
+
+
+
+            // ...
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("onProcessedRenderBusRules: " + error.message);
+
+
+
+        }
+
+
+
+    };
+
+
+
+
+
+
+
+    function escapeCSSSelector(str) {
+
+
+
+        // اگر CSS.escape موجود است (مرورگرهای جدید)
+
+
+
+        if (typeof CSS !== 'undefined' && CSS.escape) {
+
+
+
+            return CSS.escape(str);
+
+
+
+        }
+
+
+
+
+
+
+
+        // fallback برای مرورگرهای قدیمی
+
+
+
+        return str.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, '\\$&');
+
+
+
+    }
+
+
+
+
+
+
+
+    function cleanCSSClassName(str) {
+
+
+
+        // فقط حروف انگلیسی، اعداد، خط تیره و زیرخط مجاز هستند
+
+
+
+        return str.replace(/[^a-zA-Z0-9_-]/g, '');
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 🔥 تابع اصلاح شده submitCard - جایگزین کردن کامل
+
+
+
+const submitCard = (element, idToFind) => {
+
+
+
+    try {
+
+
+
+        console.log("🎫 شروع submitCard برای ID:", idToFind);
+
+
+
+
+
+
+
+        // استفاده از تابع کمکی برای پیدا کردن داده
+
+
+
+        const result = findBusData(idToFind);
+
+
+
+        
+
+
+
+        if (!result) {
+
+
+
+            console.error("❌ submitCard: هیچ آبجکتی با busId پیدا نشد:", idToFind);
+
+
+
+            
+
+
+
+            // نمایش اطلاعات debug برای کمک به عیب‌یابی
+
+
+
+            console.log("📊 Debug Info:");
+
+
+
+            console.log("- globalBusProposals length:", globalBusProposals.length);
+
+
+
+            console.log("- allBusProposals length:", allBusProposals?.length || 0);
+
+
+
+            console.log("- BusProposalsSource length:", BusProposalsSource?.length || 0);
+
+
+
+            console.log("- globalListData exists:", !!globalListData);
+
+
+
+            
+
+
+
+            if (globalListData?.source?._rows?.[0]?.busProposals) {
+
+
+
+                console.log("- listData busProposals length:", globalListData.source._rows[0].busProposals.length);
+
+
+
+            }
+
+
+
+            
+
+
+
+            return;
+
+
+
+        }
+
+
+
+
+
+
+
+        console.log("✅ داده پیدا شد از منبع:", result.source);
+
+
+
+
+
+
+
+        const foundObject = result.object;
+
+
+
+
+
+
+
+        // اضافه کردن dictionaries در صورت وجود
+
+
+
+        if (!foundObject.dictionaries) {
+
+
+
+            // جستجو در منابع مختلف برای dictionaries
+
+
+
+            if (globalListData?.source?._rows?.[0]?.dictionaries) {
+
+
+
+                foundObject.dictionaries = globalListData.source._rows[0].dictionaries;
+
+
+
+            } else if (dictionaries && dictionaries.length > 0) {
+
+
+
+                foundObject.dictionaries = dictionaries[0];
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+        // ذخیره در sessionStorage و redirect
+
+
+
+        sessionStorage.setItem('sessionBook', JSON.stringify(foundObject));
+
+
+
+        console.log("💾 داده در sessionStorage ذخیره شد");
+
+
+
+        
+
+
+
+        window.location.href = '/bus/book?url=test';
+
+
+
+        console.log("🔄 در حال انتقال به صفحه booking...");
+
+
+
+
+
+
+
+    } catch (error) {
+
+
+
+        console.error("❌ submitCard: " + error.message);
+
+
+
+        console.log("📊 Error Debug Info:");
+
+
+
+        console.log("- idToFind:", idToFind);
+
+
+
+        console.log("- element:", element);
+
+
+
+        console.log("- globalBusProposals:", globalBusProposals);
+
+
+
+        console.log("- globalListData:", globalListData);
+
+
+
+    }
+
+
+
+};
+
+
+
+
+
+
+
+// ⭐ تابع کمکی برای debug کردن وضعیت داده‌ها
+
+
+
+function debugDataState() {
+
+
+
+    console.group("🔍 Data State Debug");
+
+
+
+    console.log("globalBusProposals:", globalBusProposals?.length || 0);
+
+
+
+    console.log("allBusProposals:", allBusProposals?.length || 0);
+
+
+
+    console.log("BusProposalsSource:", BusProposalsSource?.length || 0);
+
+
+
+    console.log("globalListData exists:", !!globalListData);
+
+
+
+    console.log("dictionaries:", dictionaries?.length || 0);
+
+
+
+    
+
+
+
+    if (globalListData?.source?._rows?.[0]?.busProposals) {
+
+
+
+        console.log("listData busProposals:", globalListData.source._rows[0].busProposals.length);
+
+
+
+    }
+
+
+
+    
+
+
+
+    console.groupEnd();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+
+
+
+    * Toggles the visibility of a content container and its arrow icon.
+
+
+
+    * @param {HTMLElement} element - The element triggering the toggle.
+
+
+
+    */
+
+
+
+    const toggleContent = (element) => {
+
+
+
+        try {
+
+
+
+            const selectorContainer = element.closest(".book-selector__container");
+
+
+
+            const content = selectorContainer.querySelector(".book-selector__content");
+
+
+
+            content.classList.toggle("book-hidden");
+
+
+
+            toggleArrowIcon(element.querySelector("svg use"));
+
+
+
+        } catch (error) {
+
+
+
+            console.error(`toggleContent: ${error.message}`);
+
+
+
+        }
+
+
+
+    };
+
+
+
+</script>
+
+
+
+
+
+
+
+</html>

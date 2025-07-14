@@ -29,7 +29,7 @@
                     <div id="route__template" class="book-w-full book-route__mob">
                         <div class="route__block book-relative">
                             <div class="book-w-full book-relative">
-                                <div class="book-relative  book-city__option__container book-mb-4">
+                                <div data-id="1" class="book-relative  book-city__option__container book-mb-4">
                                     <div class="book-flex book-items-center">
                                         <input type="text" onclick="handleCityListClick(this)"
                                             oninput="handleCitySearch(this)"
@@ -46,7 +46,7 @@
                                         </use>
                                     </svg>
                                 </div>
-                                <div class="book-relative  book-city__option__container book-mb-4">
+                                <div data-id="1" class="book-relative  book-city__option__container book-mb-4">
                                     <div class="book-flex book-items-center">
                                         <input type="text" onclick="handleCityListClick(this)"
                                             oninput="handleCitySearch(this)"
@@ -251,7 +251,7 @@
                     <div class="book-w-full book-route__mob">
                         <div class="route__block book-relative">
                             <div class="book-w-full book-relative">
-                                <div class="book-relative  book-city__option__container book-mb-4">
+                                <div data-id="2" class="book-relative  book-city__option__container book-mb-4">
                                     <div class="book-flex book-items-center">
                                         <input type="text" onclick="handleCityListClick(this)"
                                             oninput="handleCitySearch(this)"
@@ -268,7 +268,7 @@
                                         </use>
                                     </svg>
                                 </div>
-                                <div class="book-relative  book-city__option__container book-mb-4">
+                                <div data-id="2" class="book-relative  book-city__option__container book-mb-4">
                                     <div class="book-flex book-items-center">
                                         <input type="text" onclick="handleCityListClick(this)"
                                             oninput="handleCitySearch(this)"
@@ -295,7 +295,7 @@
                                         </div>
                                     </div>
                                     <div
-                                        class="arrival__date__container book-w-1/2  disabled__date__container book-pr-2 book-hidden">
+                                        class="arrival__date__container book-w-1/2  disabled__date__container book-pr-2">
                                         <div class="book-flex book-items-center">
                                             <p class="auto-fit clear-both text-base text-textColor book-hidden">
                                                 <span class="selected-day"></span><span class="selected-month"></span>
@@ -316,7 +316,7 @@
 
                     </div>
                     <div class="book-w-full">
-                        <button onclick="fetchApi(this)" type="button"
+                        <button onclick="fetchApi(this , 'bus')" type="button"
                             class="book-bg-primary-500 book-text-white book-px-2 book-py-3 book-w-full book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">جستجو</button>
                     </div>
 
