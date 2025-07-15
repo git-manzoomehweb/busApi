@@ -26,6 +26,61 @@ textarea:focus {
 }
 
 /* bus styles */
+.book-mb-4 {
+    margin-bottom: 1rem;
+  }
+  .book-mb-\[50px\] {
+    margin-bottom: 50px;
+  }
+  .book-flex {
+    display: flex;
+  }
+  .book-h-\[34px\] {
+    height: 34px;
+  }
+  .book-w-\[30px\] {
+    width: 30px;
+  }
+  .book-w-full {
+    width: 100%;
+  }
+  .book-flex-col {
+    flex-direction: column;
+  }
+  .book-items-center {
+    align-items: center;
+  }
+  .book-justify-center {
+    justify-content: center;
+  }
+  .book-justify-between {
+    justify-content: space-between;
+  }
+  .book-gap-2 {
+    gap: 0.5rem;
+  }
+  .book-bg-cover {
+    background-size: cover;
+  }
+  .book-bg-center {
+    background-position: center;
+  }
+  .book-text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .book-font-bold {
+    font-weight: 700;
+  }
+  .book-text-gray-700 {
+    --tw-text-opacity: 1;
+    color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+  }
+  .book-text-zinc-900 {
+    --tw-text-opacity: 1;
+    color: rgb(24 24 27 / var(--tw-text-opacity, 1));
+  }
+  
  .book-seat-by-for-gentlemans{background-image:url("../images/seat-men.svg");background-size:cover;background-repeat:no-repeat}.book-seat-available{background-image:url("../images/available.svg");background-size:cover;background-repeat:no-repeat}.book-seat-ladies{background-image:url("../images/seat-women.svg");background-size:cover;background-repeat:no-repeat}.book-aisle{background:#f0f0f0;height:40px}.book-seat-selected{background-image:url("../images/seat-selected.svg");background-size:cover;background-repeat:no-repeat;color:white!important}.seat-item{width:40px;height:40px;background-color:#6c757d;border-radius:8px 8px 4px 4px;position:relative;display:flex;align-items:center;justify-content:center;font-weight:bold;color:white;user-select:none;cursor:default;transition:background-color .3s ease}.seat-item.available{background-color:#4CAF50;cursor:pointer}.seat-item.available:hover{background-color:#388E3C}.seat-item::before{content:"";position:absolute;top:-10px;left:8px;width:24px;height:15px;background-color:#4CAF50;border-radius:12px 12px 0 0}.seat-item.unavailable{background-color:#b0b0b0;cursor:not-allowed}
 /* bus styles */
 

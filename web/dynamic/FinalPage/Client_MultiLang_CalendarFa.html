@@ -1,0 +1,214 @@
+<basis core="dbsource" source="basiscore" name="db" before="" after="1" cdate="[##cms.cms.date##]" startdate=""
+    enddate="2026-09-30">
+    <member name="en-calendar" type="tree" request="calendarM" preview="" />
+</basis>
+<basis core="dbsource" source="basiscore" name="db" before="" after="1" cdate="[##cms.cms.date##]" startdate=""
+    enddate="1405-06-31" tem="solar|lunar|gregorian">
+    <member name="fa-calendar" type="tree" request="calendar" preview="" />
+</basis>
+<basis core="tree" datamembername="db.en-calendar" idcol="id" parentidcol="parentid" nullvalue="0">
+    <layout>
+        <div class="Basis_Calendar_Box en-calendar" data-lang="en">
+            <div class="calendar-header">
+                <div class="calendar-switch" onclick="changeCalendar(this,'fa')">تقویم شمسی</div>
+                <div><button class="calendar-today" onclick="goToday(this,'en')">امروز</button></div>
+            </div>
+            <div class="Basis_Calendar">@child</div>
+            <div class="calendar-notif">
+                <svg viewBox="0 0 24 24" width="12px" height="12px" fill="currentColor" class="ml-2 align-middle"
+                    data-v-aea9c6b8="">
+                    <path
+                        d="M12 1.5c5.799 0 10.5 4.701 10.5 10.5S17.799 22.5 12 22.5 1.5 17.799 1.5 12 6.201 1.5 12 1.5ZM12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 6a.75.75 0 0 1 .745.663l.005.087v7.5a.75.75 0 0 1-1.495.087l-.005-.087v-7.5A.75.75 0 0 1 12 9Zm0-3a.75.75 0 0 1 .745.663l.005.087v.75a.75.75 0 0 1-1.495.087L11.25 7.5v-.75A.75.75 0 0 1 12 6Z">
+                    </path>
+                </svg> واحد قیمت میلیون تومان
+            </div>
+            <div class="calendar-footer">
+                <div><button type="button" class="calendar-apply-date" onclick="applyDate('confirm')">تایید</button></div>
+                <div>
+                    <div class="calendar-date-info">
+                        <div class="date-info"><input class="date-info-departure" type="text" placeholder="تاریخ رفت"
+                                readonly />
+                            <span onclick="emptySelectedDate(this,'en','dep')" data-type="des">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="calendar-date-info">
+                        <div class="date-info"><input class="date-info-destination" type="text"
+                                placeholder="تاریخ برگشت" readonly />
+                            <span onclick="emptySelectedDate(this,'en','des')" data-type="des">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </layout>
+    <face filter="name = 'year'">
+        <div class="year" data-year="@nyear">@child</div>
+    </face>
+    <face filter="name = 'month'">
+        <div class="month" data-month="@mmonth">
+            <div class="month_detail">
+                <div><span class="month_name">@mtext @nyear</span><input type="hidden" value='@mtext'
+                        class="show_month_selected"><span class="month_change">
+                        <div class="section_prev_month">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="prev_month">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                            </svg>
+
+
+                        </div>
+                        <div class="section_next_month">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            </svg>
+
+                        </div>
+                    </span></div>
+                <div class="month_name_gregorian" style="display: none;"></div>
+            </div>
+            <div class="month_week_day">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Mo</td>
+                            <td>Tu</td>
+                            <td>We</td>
+                            <td>Th</td>
+                            <td>Fr</td>
+                            <td>Sa</td>
+                            <td>Su</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="month_day_list">
+                <table>@Child</table>
+            </div>
+        </div>
+    </face>
+    <face filter="name = 'week'">
+        <tr class="week">@Child</tr>
+    </face>
+    <face filter="name = 'day'">
+        <td class="day" data-information="@dateid_@today_@weekday_@mstring_@sstring" data-day="@mdate"
+            onclick="Basis_Select_day(this,'en')">
+            <div class="basis_m_day" data-dd="@Mstring">@mdate</div>
+            <div class="basis_min_price"></div>
+        </td>
+    </face>
+</basis>
+<basis core="tree" datamembername="db.fa-calendar" idcol="id" parentidcol="parentid" nullvalue="0">
+    <layout>
+        <div class="Basis_Calendar_Box fa-calendar" data-lang="fa">
+            <div class="calendar-header">
+                <div class="calendar-switch" onclick="changeCalendar(this,'en')">تقویم میلادی</div>
+                <div><button class="calendar-today" onclick="goToday(this,'fa')">امروز</button></div>
+            </div>
+            <div class="Basis_Calendar">@child</div>
+            <div class="calendar-notif">
+                <svg viewBox="0 0 24 24" width="12px" height="12px" fill="currentColor" class="ml-2 align-middle"
+                    data-v-aea9c6b8="">
+                    <path
+                        d="M12 1.5c5.799 0 10.5 4.701 10.5 10.5S17.799 22.5 12 22.5 1.5 17.799 1.5 12 6.201 1.5 12 1.5ZM12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 6a.75.75 0 0 1 .745.663l.005.087v7.5a.75.75 0 0 1-1.495.087l-.005-.087v-7.5A.75.75 0 0 1 12 9Zm0-3a.75.75 0 0 1 .745.663l.005.087v.75a.75.75 0 0 1-1.495.087L11.25 7.5v-.75A.75.75 0 0 1 12 6Z">
+                    </path>
+                </svg> واحد قیمت میلیون تومان
+            </div>
+            <div class="calendar-footer">
+                <div><button type="button" class="calendar-apply-date" onclick="applyDate('confirm')">تایید</button></div>
+                <div>
+                    <div class="calendar-date-info">
+                        <div class="date-info"><input class="date-info-departure" type="text" placeholder="تاریخ رفت"
+                                readonly />
+                            <span onclick="emptySelectedDate(this,'fa','dep')" data-type="des">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="calendar-date-info">
+                        <div class="date-info"><input class="date-info-destination" type="text"
+                                placeholder="تاریخ برگشت" readonly />
+                            <span onclick="emptySelectedDate(this,'fa','des')" data-type="des">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </layout>
+    <face filter="name = 'year'">
+        <div class="year" data-year="@syear">@child</div>
+    </face>
+    <face filter="name = 'month'">
+        <div class="month" data-month="@smonth">
+            <div class="month_detail">
+                <div><span class="month_name">@stext @syear</span><input type="hidden" value='@stext'
+                        class="show_month_selected"><span class="month_change">
+                        <div class="section_prev_month">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="prev_month">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                            </svg>
+
+
+                        </div>
+                        <div class="section_next_month">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            </svg>
+
+                        </div>
+                    </span></div>
+                <div class="month_name_gregorian" style="display: none;"></div>
+            </div>
+            <div class="month_week_day">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>ش</td>
+                            <td>ی</td>
+                            <td>د</td>
+                            <td>س</td>
+                            <td>چ</td>
+                            <td>پ</td>
+                            <td>ج</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="month_day_list">
+                <table>@Child</table>
+            </div>
+        </div>
+    </face>
+    <face filter="name = 'week'">
+        <tr class="week">@Child</tr>
+    </face>
+    <face filter="name = 'day'">
+        <td class="day day-@solar_day-off-@lunar_day-off" data-information="@dateid_@today_@weekday_@mstring_@sstring"
+            data-day="@sdate" onclick="Basis_Select_day(this,'fa')">
+            <div class="basis_s_day" data-dd="@sstring">@sdate</div>
+            <div class="basis_min_price"></div>
+        </td>
+    </face>
+</basis>

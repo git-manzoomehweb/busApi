@@ -238,23 +238,9 @@ const manageCityLoader = (parent, action = "show") => {
 * @param {HTMLElement} parent - The container for the loader.
 * @returns {string|null} HTML content or null on error.
 */
-// const fetchCityList = async (url, parent , typeid) => {
-//     try {
-//         const res = await fetch(url);
-//         return await res.text();
-//     } catch (error) {
-//         console.error("fetchCityList: " + error.message);
-//         manageCityLoader(parent, "hide");
-//         return null;
-//     }
-// };
-
-const fetchCityList = async (url, parent, typeid) => {
+const fetchCityList = async (url, parent) => {
     try {
-        // افزودن typeid به query string
-        const fullUrl = `${url}?typeid=${encodeURIComponent(typeid)}`;
-        
-        const res = await fetch(fullUrl);
+        const res = await fetch(url);
         return await res.text();
     } catch (error) {
         console.error("fetchCityList: " + error.message);
@@ -262,6 +248,7 @@ const fetchCityList = async (url, parent, typeid) => {
         return null;
     }
 };
+
 
 
 /**
@@ -322,7 +309,7 @@ const handleCityListClick = async (element) => {
         // Fetch and append new list
         clearCityLists(parent);
         manageCityLoader(parent, "show");
-        const html = await fetchCityList("/module/retry/suggestedCity", parent , typeid);
+        const html = await fetchCityList(`/module/retry/suggestedCity?typeid=${typeid}`, parent);
         manageCityLoader(parent, "hide");
         if (html) {
             cachedSuggestedCityHTML = html;
@@ -381,7 +368,7 @@ const handleCitySearch = (element) => {
         if (searchTimeout) clearTimeout(searchTimeout);
         searchTimeout = setTimeout(async () => {
             manageCityLoader(parent, "show");
-            const html = await fetchCityList(`/module/retry/searchedCity?q=${encodeURIComponent(query)}`, parent , typeid);
+            const html = await fetchCityList(`/module/retry/searchedCity?q=${encodeURIComponent(query)}&typeid=${typeid}`, parent );
             manageCityLoader(parent, "hide");
             if (html) {
                 appendCityList(html, parent,
@@ -555,7 +542,7 @@ const fetchApi = (element , moduletype) => {
                 tripGroup,
                 rkey: getSearchCookie("rkey") || "",
                 dmnid: document.querySelector("main")?.dataset.dmnid || "",
-                SchemaId: schemaId || 291,
+                SchemaId: 391,
                 Type: "bus",
                 lid: "1"
             };
@@ -563,6 +550,7 @@ const fetchApi = (element , moduletype) => {
             sessionStorage.setItem('sessionSearch', JSON.stringify(busSearch));
             window.location.href = '/bus/search';
         }else{
+            sessionStorage.removeItem('sessionAmenities')
             const form = element.closest(".book-research__container");
             let errorBox = form.querySelector(".form-error-box");
             if (!errorBox) {

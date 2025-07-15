@@ -32,7 +32,7 @@
                                 <div data-id="1" class="book-relative  book-city__option__container book-mb-4">
                                     <div class="book-flex book-items-center">
                                         <input type="text" onclick="handleCityListClick(this)"
-                                            oninput="handleCitySearch(this)"
+                                            oninput="handleCitySearch(this , '1')"
                                             class="departure__location__name book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
                                             placeholder="مبدا" value>
                                     </div>
@@ -49,7 +49,7 @@
                                 <div data-id="1" class="book-relative  book-city__option__container book-mb-4">
                                     <div class="book-flex book-items-center">
                                         <input type="text" onclick="handleCityListClick(this)"
-                                            oninput="handleCitySearch(this)"
+                                            oninput="handleCitySearch(this , '1')"
                                             class="arrival__location__name book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
                                             placeholder="مقصد" value>
                                     </div>
@@ -254,7 +254,7 @@
                                 <div data-id="2" class="book-relative  book-city__option__container book-mb-4">
                                     <div class="book-flex book-items-center">
                                         <input type="text" onclick="handleCityListClick(this)"
-                                            oninput="handleCitySearch(this)"
+                                            oninput="handleCitySearch(this , '2')"
                                             class="departure__location__name book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
                                             placeholder="مبدا" value>
                                     </div>
@@ -271,7 +271,7 @@
                                 <div data-id="2" class="book-relative  book-city__option__container book-mb-4">
                                     <div class="book-flex book-items-center">
                                         <input type="text" onclick="handleCityListClick(this)"
-                                            oninput="handleCitySearch(this)"
+                                            oninput="handleCitySearch(this , '2')"
                                             class="arrival__location__name book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600"
                                             placeholder="مقصد" value>
                                     </div>
@@ -295,7 +295,7 @@
                                         </div>
                                     </div>
                                     <div
-                                        class="reserve-field arrival__date__container book-w-1/2  disabled__date__container book-pr-2">
+                                        class="reserve-field arrival__date__container book-w-1/2  disabled__date__container book-pr-2 book-hidden">
                                         <div class="book-flex book-items-center">
                                             <p class="auto-fit clear-both text-base text-textColor book-hidden">
                                                 <span class="selected-day"></span><span class="selected-month"></span>
@@ -331,5 +331,5 @@
 
 <link href="[##cms.cms.cdn##]/css/search-multicalendar-style-fa-ver.1.css?ver=1" type="text/css" rel="stylesheet" />
 <script src="[##cms.cms.cdn##]/js/search-multicalendar-scripts-fa-ver.1.js?ver=1"></script>
-<script src="[##cms.cms.cdn##]/booking/js/flight-retry-search.js?ver=1"></script>
+<script src="[##cms.cms.cdn##]/booking/js/retry-search.js?ver=1"></script>
 <basis core="call" file="Client_MultiLang_CalendarFa.inc" />

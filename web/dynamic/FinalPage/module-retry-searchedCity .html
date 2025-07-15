@@ -1,0 +1,115 @@
+<!-- Flight -->
+<basis core="group" name="search" if="[##cms.query.typeid##] = 1">
+    <basis core="external.fly.ws" source="cmsDbService2" procedurename="dbsource" name="db">
+        <member method="cms" name="citySearch" query='{ 
+                "name": "db", 
+                "mid": "20", 
+                "member":[ 
+                    { 
+                        "type":"list", 
+                        "name": "q", 
+                        "request": "citySearch", 
+                        "functype": "1", 
+                        "title": "[##cms.query.q##]",   
+                        "status": "flight",
+                        "lid":"[##cms.query.lid|(1)##]"
+                    }
+                ]
+            }' preview="" />
+    </basis>
+
+    <basis core="group" name="search">
+        <basis core="inlinesource" name="db">
+            <member name="citySearch-tree" format="json"
+                postsql="select Id,ParentId, case when trim(Field) is null then (select field from [db.citySearch-tree] where id=a.parentid) else field end as field,value,type, path from [db.citySearch-tree] as a">
+                {"root":[##db.citySearch.result##]}</member>
+        </basis>
+        <basis core="tree" datamembername="db.citySearch-tree" idcol="id" parentidcol="parentid" nullvalue="null">
+            <layout>
+                <div class="autocomplete__options__container book-text-sm">@child</div>
+            </layout>
+            <else-layout>
+                <div class="autocomplete__options__container book-text-sm">
+                    <span class="book-text-zinc-500 book-text-sm">نتیجه ای یافت نشد</span>
+                </div>
+            </else-layout>
+            <face filter="Field='root' and type='object'">
+                <div onclick="selectCityItem(this)"
+                    class="book-flex book-items-center book-gap-1 book-pt-2 book-pr-2 book-cursor-pointer hover:book-bg-primary-50 book-rounded">
+                    <svg width="17" height="18" class="book-shrink-0">
+                        <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                    </svg>
+                    <div class="book-mb-3">
+                        @Child
+                    </div>
+                </div>
+
+            </face>
+            <face filter="Field='id'">
+                <input type="hidden" value="@value" class="id" />
+            </face>
+            <face filter="Field='title'">
+                <p class="book-mb-1 city__option__content">@value</p>
+            </face>
+            <face filter="type in ('array','object')">@child</face>
+        </basis>
+    </basis>
+</basis>
+
+<!-- Hotel - Bus -->
+<basis core="group" name="search" if="[##cms.query.typeid##] = 2">
+    <basis core="external.fly.ws" source="cmsDbService2" procedurename="dbsource" name="db">
+        <member method="cms" name="citySearch" query='{ 
+            "name": "db", 
+            "mid": "20", 
+            "member":[ 
+                { 
+                    "type":"list", 
+                    "name": "q", 
+                    "request": "citySearch", 
+                    "functype": "1", 
+                    "title": "[##cms.query.q##]",   
+                    "status": "hotel",
+                    "lid":"[##cms.query.lid|(1)##]"
+                }
+            ]
+        }' preview="" />
+    </basis>
+
+    <basis core="group" name="search">
+        <basis core="inlinesource" name="db">
+            <member name="citySearch-tree" format="json"
+                postsql="select Id,ParentId, case when trim(Field) is null then (select field from [db.citySearch-tree] where id=a.parentid) else field end as field,value,type, path from [db.citySearch-tree] as a">
+                {"root":[##db.citySearch.result##]}</member>
+        </basis>
+        <basis core="tree" datamembername="db.citySearch-tree" idcol="id" parentidcol="parentid" nullvalue="null">
+            <layout>
+                <div class="autocomplete__options__container book-text-sm">@child</div>
+            </layout>
+            <else-layout>
+                <div class="autocomplete__options__container book-text-sm">
+                    <span class="book-text-zinc-500 book-text-sm">نتیجه ای یافت نشد</span>
+                </div>
+            </else-layout>
+            <face filter="Field='root' and type='object'">
+                <div onclick="selectCityItem(this)"
+                    class="book-flex book-items-center book-gap-1 book-pt-2 book-pr-2 book-cursor-pointer hover:book-bg-primary-50 book-rounded">
+                    <svg width="17" height="18" class="book-shrink-0">
+                        <use href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                    </svg>
+                    <div class="book-mb-3">
+                        @Child
+                    </div>
+                </div>
+
+            </face>
+            <face filter="Field='id'">
+                <input type="hidden" value="@value" class="id" />
+            </face>
+            <face filter="Field='title'">
+                <p class="book-mb-1 city__option__content">@value</p>
+            </face>
+            <face filter="type in ('array','object')">@child</face>
+        </basis>
+    </basis>
+</basis>

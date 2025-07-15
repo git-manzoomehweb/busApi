@@ -2,12 +2,9 @@
 <html lang="fa" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="index, nofollow" />
-    <title>[##cms.seo.title##]</title>
-
-    <link href="[##cms.cms.cdn##]/booking/css/bus-search.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
+    <basis core="call" file="book/taglist" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+    <title>رزرو پرواز</title>
+    <meta name="description" content="رزرو پرواز">
     <link href="[##cms.cms.cdn##]/booking/css/book.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
 </head>
 
@@ -17,7 +14,7 @@
     <!-- Main-->
     <main>
         <!-- Commands / Requests -->
-        <basis core="call" file="bus/book/commands" lid="1"></basis>
+        <basis core="call" file="flight/book/commands" lid="1"></basis>
         <basis core="call" file="book/commands" lid="1"></basis>
         <!-- Layout Section -->
         <div class="book-layout__main" data-dmnid="[##cms.cms.domainid##]" data-cmsdate="[##cms.cms.date##]">
@@ -38,10 +35,10 @@
                             بروز رسانی
                             کنید</div>
                         <div class="book-flex book-justify-between book-mt-6">
-                            <button onclick="window.location='/bus/search'" type="button"
+                            <button onclick="window.location='/flight/search'" type="button"
                                 class="book-research__btn__container book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-white hover:book-text-primary-400">بروز
                                 رسانی جستجو</button>
-                            <button onclick="window.location='/'" type="button"
+                            <button onclick="sessionStorage.removeItem('sessionBook'); window.location='/'" type="button"
                                 class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-primary-400 hover:book-text-white">بازگشت
                                 به صفحه اصلی</button>
                         </div>
@@ -49,7 +46,7 @@
                     <div class="book-some__time book-hidden">
                         <div class="book-text-2xl book-font-bold book-mt-6">نتایج جستجو تا 6 دقیقه دیگر معتبر می باشد.
                         </div>
-                        <div class="book-text-zinc-500 book-mt-3">بعد از به پایان رسیدن مدت اعتبار، اتوبوس دیگر در دسترس
+                        <div class="book-text-zinc-500 book-mt-3">بعد از به پایان رسیدن مدت اعتبار، پرواز دیگر در دسترس
                             نمی‌باشد.</div>
                         <div class="book-mt-6">
                             <button
@@ -71,17 +68,15 @@
                             data-step="passenger">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                                 stroke="currentColor" class="book-size-6 book-mx-auto">
-                                <use
-                                    xlink:href="/booking/images/sprite-booking-icons.svg#passenger-nav-icon">
+                                <use xlink:href="/booking/images/sprite-booking-icons.svg#passenger-nav-icon">
                                 </use>
                             </svg>
                             <div class="book-route__map__title book-bg-white book-relative">مشخصات مسافران</div>
                         </li>
                         <li class="book-route__map__item book-inline-block book-px-20" data-step="buyer">
-                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                                 stroke="currentColor" class="book-size-6 book-mx-auto">
-                                <use
-                                    xlink:href="/booking/images/sprite-booking-icons.svg#buyer-nav-icon">
+                                <use xlink:href="/booking/images/sprite-booking-icons.svg#buyer-nav-icon">
                                 </use>
                             </svg>
                             <div class="book-route__map__title book-bg-white book-relative">مشخصات خریدار</div>
@@ -89,8 +84,7 @@
                         <li class="book-route__map__item book-inline-block book-pr-20" data-step="summary">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                                 stroke="currentColor" class="book-size-6 book-mx-auto">
-                                <use
-                                    xlink:href="/booking/images/sprite-booking-icons.svg#invoice-nav-icon">
+                                <use xlink:href="/booking/images/sprite-booking-icons.svg#invoice-nav-icon">
                                 </use>
                             </svg>
                             <div class="book-route__map__title book-bg-white book-relative">پرداخت و صدور</div>
@@ -100,10 +94,14 @@
             </div>
             <div class="book-my-12">
                 <div class="book-max-w-7xl max-book-px-4 book-mx-auto">
-
+                    <!-- Research -->
+                    <basis core="call" run="atclient" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"
+                        file="/module/retry/search" triggers="cms.research" if=" {##cms.research##}" method="get"
+                        OnRendered="renderResearch">
+                    </basis>
                     <div class="book-main__container book-flex">
                         <aside class="book-aside__container book-w-2/5">
-                            <basis core="print" datamembername="bus.book" run="atclient">
+                            <basis core="print" datamembername="flight.book" run="atclient">
                                 <layout>
                                     <script type="text/template">
                                         <div class="book-overflow-hidden book-w-11/12 book-bg-white book-shadow-md book-rounded-2xl book-mb-10">
@@ -117,7 +115,7 @@
                                             <div
                                             class="book-tab__navigation__container book-flex book-justify-around book-gap-2 book-mb-4">
                                             <button
-                                                onclick="{{return `scrollModalContainerItem(this,'','book-bus__details','')`}}"
+                                                onclick="{{return `scrollModalContainerItem(this,'','book-flight__details','')`}}"
                                                 type="button"
                                                 class="book-tab__navigation__content book-min-w-20 book-active__tab__navigation book-p-3 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                                 <svg width="21" height="20">
@@ -126,10 +124,22 @@
                                                     </use>
                                                 </svg>
                                                 <h6 class="book-text-sm">جزئیات
-                                                    اتوبوس</h6>
+                                                    پرواز</h6>
                                             </button>
                                             <button
-                                                onclick="{{return `scrollModalContainerItem(this,'','book-bus__price','')`}}"
+                                                onclick="{{return `scrollModalContainerItem(this,'AirBaggage','book-flight__baggage')`}}"
+                                                type="button"
+                                                class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+                                                <svg width="21" height="20">
+                                                    <use
+                                                        href="/booking/images/sprite-booking-icons.svg#wheel-bag-icon">
+                                                    </use>
+                                                </svg>
+                                                <h6 class="book-text-sm">بار
+                                                    مجاز</h6>
+                                            </button>
+                                            <button
+                                                onclick="{{return `scrollModalContainerItem(this,'','book-flight__price','')`}}"
                                                 type="button"
                                                 class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                                 <svg width="21" height="20">
@@ -142,27 +152,29 @@
                                                     قیمت</h6>
                                             </button>
                                             <button
-                                                onclick="{{return `scrollModalContainerItem(this,'AirRules','book-bus__rule','${$data.BusId}')`}}"
+                                                onclick="{{return `scrollModalContainerItem(this,'AirRules','book-flight__rule')`}}"
                                                 type="button"
                                                 class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                                 <svg width="21" height="20">
                                                     <use
                                                         href="/booking/images/sprite-booking-icons.svg#flight-rule-icon">
                                                     </use>
-                                          </svg>
-                                          <h6 class="book-text-sm">قوانین و مقررات</h6>
+                                                </svg>
+                                                <h6 class="book-text-sm">قوانین
+                                                    و
+                                                    مقررات</h6>
                                             </button>
                                         </div>
                                         <div
-                                        class="book-bus__details book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                        class="book-flight__details book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
                                         <div class="book-border-b book-border-zinc-300 book-pb-7 book-mb-7">
                                             <div
                                                 class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-                                                onclick="{{return `toggleContentApi(this,'','book-bus__details','')`}}"
+                                                onclick="{{return `toggleContentApi(this,'','book-flight__details','')`}}"
                                                 data-run="1">
                                                 <h6 class="book-text-lg book-font-bold book-text-zinc-800">
                                                     جزئیات
-                                                    اتوبوس
+                                                    پرواز
                                                 </h6>
                                                 <svg class="book-api__container__arrow" width="24" height="24">
                                                     <use
@@ -177,11 +189,11 @@
                                 
                                     </div>
                                     <div
-                                    class="book-bus__baggage book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                    class="book-flight__baggage book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
                                     <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
                                         <div
                                             class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-                                            onclick="{{return `toggleContentApi(this,'AirBaggage','book-bus__baggage','${$data.BusId}')`}}"
+                                            onclick="{{return `toggleContentApi(this,'AirBaggage','book-flight__baggage')`}}"
                                             data-run="0">
                                             <h6 class="book-text-lg book-font-bold book-text-zinc-800">
                                                 بار
@@ -200,11 +212,11 @@
                             
                                 </div>
                                 <div
-                                    class="book-bus__price book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                    class="book-flight__price book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
                                     <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
                                         <div
                                             class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-                                            onclick="{{return `toggleContentApi(this,'','book-bus__price','')`}}"
+                                            onclick="{{return `toggleContentApi(this,'','book-flight__price')`}}"
                                             data-run="1">
                                             <h6 class="book-text-lg book-font-bold book-text-zinc-800">
                                                 گروه
@@ -222,11 +234,11 @@
                                 </div>
                                 
     <div
-    class="book-bus__rule book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl">
+    class="book-flight__rule book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl">
     <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
         <div
             class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-            onclick="{{return `toggleContentApi(this,'AirRules','book-bus__rule','${$data.BusId}')`}}"
+            onclick="{{return `toggleContentApi(this,'AirRules','book-flight__rule')`}}"
             data-run="0">
             <h6 class="book-text-lg book-font-bold book-text-zinc-800">
                 قوانین
@@ -251,21 +263,21 @@
     <div class="book-flex book-justify-between book-items-center">
         <div class="book-mb-2">
             {{
-            if(($data.priceInfo.total - $data.priceInfo.totalCommission) !== 0){
+            if($data.PriceInfo.Commission !== '0'){
             return `<div class="book-commission__container"><h6
                     class="book-text-zinc-500 book-mb-2">کمیسیون : </h6>
                 <div
                     class="book-text-2xl book-font-bold book-text-zinc-900">
                     <span class="book-commission__cost">${new
-                        Intl.NumberFormat().format($data.priceInfo.total - $data.priceInfo.totalCommission)}</span>${await
-                    renderCurrency($data.priceInfo.currency)}</div></div>
+                        Intl.NumberFormat().format($data.PriceInfo.Commission)}</span>${await
+                    renderCurrency($data.PriceInfo.Currency)}</div></div>
             <div class="book-total__container"><h6
                     class="book-text-zinc-500 book-mb-2">مبلغ : </h6>
                 <div
                     class="book-text-2xl book-font-bold book-text-zinc-900">
                     <span class="book-total__cost">${new
-                        Intl.NumberFormat().format($data.priceInfo.total)}</span>${await
-                    renderCurrency($data.priceInfo.currency)}</div></div>`
+                        Intl.NumberFormat().format($data.PriceInfo.Total)}</span>${await
+                    renderCurrency($data.PriceInfo.Currency)}</div></div>`
             }
             }}
             <div class="book-totalcom__container"></div>
@@ -275,12 +287,14 @@
                     پرداخت:
                 </h6>
                 {{
+
+                    console.log($data.PriceInfo.TotalCommission)
                 return `<div
                 class="book-text-2xl book-font-bold book-text-zinc-900"><span
                     class="book-firstpay__cost">${new
-                    Intl.NumberFormat().format($data.priceInfo.totalCommission)}</span>
+                    Intl.NumberFormat().format($data.PriceInfo.TotalCommission)}</span>
                 <span
-                    class="book-unit__content">${await renderCurrency($data.priceInfo.currency)}</span></div>`
+                    class="book-unit__content">${await renderCurrency($data.PriceInfo.Currency)}</span></div>`
             }}
         </div>
         </div>
@@ -298,14 +312,13 @@
                             <div
                                 class="book-bg-white book-shadow-md book-rounded-2xl book-p-5 book-mb-5 book-brief__container__title">
                                 <div class="book-flex book-justify-between">
-                                    <div class="book-current__route__map">انتخاب صندلی</div>
+                                    <div class="book-current__route__map">مشخصات مسافران</div>
                                     <div class="book-text-green-600">
                                         <span class="book-timer__left__container"></span>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             strokeWidth={1.5} stroke="currentColor"
                                             class="book-size-6 book-mr-2 book-inline-block">
-                                            <use
-                                                xlink:href="/booking/images/sprite-booking-icons.svg#clock-icon">
+                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#clock-icon">
                                             </use>
                                         </svg>
                                     </div>
@@ -315,20 +328,9 @@
                             <input type="hidden" value="-" class="book-bankIdentifier" />
                             <input type="hidden" value="" class="book-payType" />
                             <input type="hidden" value="" class="book-clear" />
-                        <div class="book-seat_selection__container">
-
-                            <div id="seat-count" class="mb-4 text-sm font-bold text-gray-700">تعداد صندلی‌های انتخاب
-                                شده: 0</div>
-                            <div dir="ltr" class="seat-selection-container  book-flex book-dir-ltr">
-                                <!-- seat  -->
-
-                            </div>
-
-                        </div>
-                            <div class="book-passengers__container book-hidden">
+                            <div class="book-passengers__container">
                                 <basis core="call" file="book/passenger"></basis>
                             </div>
-
                             <div class="book-buyers__container book-hidden" data-run="0">
                                 <div id="ballsWaveG">
                                     <div id="ballsWaveG_1" class="ballsWaveG"></div>
@@ -457,20 +459,22 @@
                             <div class="book-flex book-justify-between book-my-5">
                                 <button
                                     class="book-btn__content book-min-w-40 book-text-white book-rounded-2xl book-p-3 book-cursor-pointer book-text-center book-prev__btn book-bg-zinc-300 hover:book-bg-zinc-200 book-hidden"
-                                    data-step="seat" onclick="prevStep(this)">
+                                    data-step="" onclick="prevStep(this)">
                                     بازگشت به مرحله قبل
                                 </button>
                                 <button
                                     class="book-btn__content book-min-w-40 book-text-white book-rounded-2xl book-p-3 book-cursor-pointer book-text-center book-bg-primary-400 book-next__btn hover:book-bg-secondary-400"
-                                    data-step="passengers" onclick="nextStep(this)">
+                                    data-step="passenger" onclick="nextStep(this)">
                                     تایید و ادامه
                                 </button>
                             </div>
                             <div
                                 class="book-summary__content book-p-5 book-mb-5 book-border-slate-600 book-border-b-3 book-bg-white book-shadow-md book-rounded-2xl book-invoice__container book-hidden">
                                 <basis core="call" run="atclient" file="/book/bank/list" triggers="cms.bankList"
-                                    method="post" if="{##cms.bankList.run|(false)##}" selectedMode="{##cms.bankList.selectedMode##}" rkey="{##cms.bankList.rkey##}" bank="{##cms.bankList.bank##}"
-                                    OnRendered="renderBankList"></basis>
+                                    method="post" if="{##cms.bankList.run|(false)##}"
+                                    userCreditUrl="{##cms.bankList.userCreditUrl##}"
+                                    selectedMode="{##cms.bankList.selectedMode##}" rkey="{##cms.bankList.rkey##}"
+                                    bank="{##cms.bankList.bank##}" OnRendered="renderBankList"></basis>
                             </div>
                         </section>
                     </div>
@@ -484,14 +488,14 @@
                         </use>
                     </svg>
                 </div>
-                <div class="book-text-2xl book-font-bold book-mt-6">اتوبوس انتخاب شده شما قابل رزرو نیست.(کد
+                <div class="book-text-2xl book-font-bold book-mt-6">پرواز انتخاب شده شما قابل رزرو نیست.(کد
                     خطا
                     105)</div>
                 <div class="book-text-zinc-500 book-mt-3">لطفا با تیم پشتیبانی سایت تماس
                     ([##db.phone-company.Answer##]) بگیرید
                 </div>
                 <div class="book-mt-6">
-                    <button onclick="window.location='/'"
+                    <button onclick="sessionStorage.removeItem('sessionBook'); window.location='/'"
                         class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-primary-400 hover:book-text-white">بازگشت
                         به صفحه اصلی</button>
                 </div>
@@ -519,8 +523,7 @@
     </main>
     <!-- Footer -->
     <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
-
-    <script src="[##cms.cms.cdn##]/booking/js/book-functions.js?ver=1" type="text/javascript"></script>
+    <script src="[##cms.cms.cdn##]/booking/js/flight-book.js?ver=1" type="text/javascript"></script>
 </body>
 
 </html>
