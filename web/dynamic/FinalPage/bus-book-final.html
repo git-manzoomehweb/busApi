@@ -142,7 +142,7 @@
                                                     قیمت</h6>
                                             </button>
                                             <button
-                                                onclick="{{return `scrollModalContainerItem(this,'AirRules','book-bus__rule','${$data.BusId}')`}}"
+                                                onclick="{{return `scrollModalContainerItem(this,'bus-rules','book-bus__rule')`}}"
                                                 type="button"
                                                 class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                                 <svg width="21" height="20">
@@ -198,32 +198,28 @@
                                     </div>
                                 </div>
                                 
-    <div
-    class="book-bus__rule book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl">
-    <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
-        <div
-            class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
-            onclick="{{return `toggleContentApi(this,'AirRules','book-bus__rule','${$data.BusId}')`}}"
-            data-run="0">
-            <h6 class="book-text-lg book-font-bold book-text-zinc-800">
-                قوانین
-                کلی
-            </h6>
-            <svg class="book-api__container__arrow" width="24" height="24">
-                <use
-                    href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                </use>
-            </svg>
-        </div>
-    </div>
-    <div
-        class="book-api__container__content book-max-h-40 book-pl-2 book-overflow-y-auto book-mt-4 book-hidden">
-        <span
-            class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
-    </div>
-    <div>
-    </div>
-</div>
+                                <div class="book-bus__rule book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl">
+                                    <div class="book-border-b book-border-zinc-300 book-pb-4 book-mb-2">
+                                        <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"
+                                            onclick="{{return `toggleContentApi(this,'bus-rules','book-bus__rule','${$data.BusId}')`}}" data-run="0">
+                                            <h6 class="book-text-lg book-font-bold book-text-zinc-800">
+                                                قوانین
+                                                کلی
+                                            </h6>
+                                            <svg class="book-api__container__arrow" width="24" height="24">
+                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                </use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="book-api__container__content book-max-h-40 book-pl-2 book-overflow-y-auto book-mt-4 book-hidden">
+                                        <span
+                                            class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+                                    </div>
+                                </div>
+
+
+
 <div class="book-sticky book-bottom-0 book-bg-white book-p-4 book-z-10">
     <div class="book-flex book-justify-between book-items-center">
         <div class="book-mb-2">
@@ -871,12 +867,9 @@ const renderRoutesInfo = async (element) => {
                                 <h5 class="book-text-xl book-font-bold book-text-zinc-900 book-my-2">${item.departureTime}</h5>
                                 <p class="book-text-zinc-500 book-text-sm book-DepartureDate">${item.departureDate}</p>
                             </div>
-                            <div class="book-text-sm book-text-primary-400 book-my-10 book-w-40">
-                                <span class="book-ml-1">${item.duration || 'N/A'}</span>مدت سفر
-                            </div>
                             <div>
                                 <h5 class="book-text-xl book-font-bold book-text-zinc-900">${busGroup[index].destinationTerminal}</h5>
-                                <p class="book-text-zinc-500 book-text-sm">${item.arrivalDate || 'N/A'}</p>
+                                <p class="book-text-zinc-500 book-text-sm">${item.arrivalDate || ''}</p>
                             </div>
                         </div>
                     </div>
@@ -885,25 +878,25 @@ const renderRoutesInfo = async (element) => {
                             <div>
                                 <h6 class="book-text-xl book-text-zinc-900">${await renderLocation(item.originRoute)}</h6>
                                 <p class="book-text-zinc-600 book-text-sm book-my-2">
-                                    ${await renderLocation(item.originRoute)}, ${busData.dictionaries?.location?.[item.originRoute]?.country || 'N/A'}
+                                    ${await renderLocation(item.originRoute)}, ${busData.dictionaries?.location?.[item.originRoute]?.country || ''}
                                 </p>
-                                <div class="book-flex book-items-center book-gap-2">
+                                <div ss="book-flex book-items-center book-gap-2">
                                     <span class="book-text-zinc-900 book-text-sm">
                                         ${await renderCarrierName(item.busOperatorCode)}
                                     </span>
                                 </div>
                             </div>
                             <div class="book-text-sm book-my-5">
-                                <div class="book-grid book-grid-cols-2 book-gap-2">
-                                    ${renderBusInfo("bus-details-icon", "نوع اتوبوس", item.busType)}
-                                    ${renderBusInfo("seat-details-icon", "صندلی‌های موجود", busGroup[index].availableSeats)}
-                                    ${renderBusInfo("refund-details-icon", "قابلیت استرداد", busGroup[index].refundable ? "دارد" : "ندارد")}
+                                <div class="">
+                                    ${renderBusInfo("check-circle-icon", "نوع اتوبوس", item.busType)}
+                                    ${renderBusInfo("check-circle-icon", "صندلی‌های موجود", busGroup[index].availableSeats)}
+                                    ${renderBusInfo("check-circle-icon", "قابلیت استرداد", busGroup[index].refundable ? "دارد" : "ندارد")}
                                 </div>
                             </div>
                             <div>
                                 <h6 class="book-text-xl book-text-zinc-900">${await renderLocation(item.destinationRoute)}</h6>
                                 <p class="book-text-zinc-600 book-text-sm book-my-2">
-                                    ${await renderLocation(item.destinationRoute)}, ${busData.dictionaries?.location?.[item.destinationRoute]?.country || 'N/A'}
+                                    ${await renderLocation(item.destinationRoute)}, ${busData.dictionaries?.location?.[item.destinationRoute]?.country || ''}
                                 </p>
                             </div>
                         </div>
@@ -1978,464 +1971,102 @@ const toggleContentApi = (element, type, parent, fromScroll = false) => {
 
 
         // Process bus API rules for rendering bus rules, baggage, and services
+        // const onProcessedbusApiRule = async (args) => {
+        //     try {
+        //         // Validate response
+        //         const { response } = args;
+        //         if (!response || response.status !== 200) return;
+
+        //         // Parse JSON response
+        //         const responseJson = await response.json();
+        //         if (!responseJson) return;
+
+        //         // Get main rendering container
+        //         const renderingContainer = document.querySelector(".book-api__container__rendering");
+        //         if (!renderingContainer) return;
+
+        //         // Helper function to create container if it doesn't exist
+        //         const ensureContainer = (parent, className) => {
+        //             let container = parent.querySelector(`.${className}`);
+        //             if (!container) {
+        //                 container = document.createElement("div");
+        //                 container.className = className;
+        //                 parent.appendChild(container);
+        //             }
+        //             return container;
+        //         };
+
+        //         // Render bus rules if available
+        //         if (responseJson.busRules) {
+        //             if (responseJson.busRules.length > 0) {
+        //                 let output = "";
+        //                 for (const item of responseJson.busRules) {
+        //                     if (item.Rule?.length > 0) {
+        //                         output += `
+        //                     <div class="book-text-zinc-900 book-text-sm book-text-justify book-ltr">
+        //                 <div class="book-mb-2 book-flex book-gap-1">
+        //                     <span>${item.From}</span>
+        //                     <svg width="24" height="24">
+        //                         <use href="/booking/images/sprite-booking-icons.svg#right-arrow-icon"></use>
+        //                     </svg>
+        //                     <span>${item.To}</span>
+        //                 </div>
+        //                 <div>${await renderRule(item.Rule)}</div>
+        //             </div>`;
+        //                     } else {
+        //                         renderingContainer.innerHTML = "قوانینی در دسترس نیست";
+        //                     }
+        //                 }
+        //                 renderingContainer.innerHTML = output || "قوانینی در دسترس نیست";
+        //             } else {
+        //                 renderingContainer.innerHTML = "قوانینی در دسترس نیست";
+        //             }
+        //         }
+        //           // Create or get service containers dynamically
+        //             renderingContainer.querySelector(".book-api__container__loader")?.remove();
+
+        //     } catch (err) {
+        //         // Log error and show fallback message
+        //         console.error(`onProcessedbusApiRule: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        //     }
+        // };
+
         const onProcessedbusApiRule = async (args) => {
-            try {
-                // Validate response
-                const { response } = args;
-                if (!response || response.status !== 200) return;
+    try {
+        const { response } = args;
+        if (!response || response.status !== 200) return;
 
-                // Parse JSON response
-                const responseJson = await response.json();
-                if (!responseJson) return;
+        const responseJson = await response.json();
+        const busInfo = responseJson?.[0];
+        if (!busInfo || !busInfo.busRules) return;
 
-                // Get main rendering container
-                const renderingContainer = document.querySelector(".book-api__container__rendering");
-                if (!renderingContainer) return;
+        const renderingContainer = document.querySelector(".book-api__container__rendering");
+        if (!renderingContainer) return;
 
-                // Helper function to create container if it doesn't exist
-                const ensureContainer = (parent, className) => {
-                    let container = parent.querySelector(`.${className}`);
-                    if (!container) {
-                        container = document.createElement("div");
-                        container.className = className;
-                        parent.appendChild(container);
-                    }
-                    return container;
-                };
-
-                // Helper function to generate passenger table
-                const generatePassengerTable = (tableId, type) => {
-                    let rows = '';
-                    let passengerIndex = 1;
-                    const ordinals = ['اول', 'دوم', 'سوم', 'چهارم', 'پنجم', 'ششم', 'هفتم', 'هشتم', 'نهم'];
-                    const typeCounters = { Adult: 0, Child: 0, Infant: 0 };
-                    const typeMap = { Adult: "بزرگسال", Child: "کودک", Infant: "نوزاد" };
-
-                    const passengers = sessionBookStorage?.priceInfo?.passengerFare || [];
-                    const passengersData = document.querySelector('.book-passengers__content:not(.book-hidden)');
-                    const passengerContainers = passengersData?.querySelectorAll('.book-passenger__container') || [];
-
-                    passengers.forEach(p => {
-                        const count = Number(p.Count || 0);
-                        if (count <= 0) return;
-
-                        const passengerTypeFa = typeMap[p.passengerType] || p.passengerType;
-                        for (let i = 0; i < count; i++) {
-                            const ordinalIndex = typeCounters[p.passengerType]++;
-                            const ordinalText = ordinals[ordinalIndex] || `شماره ${ordinalIndex + 1}`;
-                            let fullTitle = `${passengerTypeFa} ${ordinalText}`;
-
-                            const container = passengerContainers[passengerIndex - 1];
-                            if (container) {
-                                const firstName = container.querySelector('.book-FirstName')?.value?.trim();
-                                const lastName = container.querySelector('.book-LastName')?.value?.trim();
-                                if (firstName && lastName) fullTitle = `${firstName} ${lastName}`;
-                            }
-                            rows += `
-<tr class="book-border book-passenger__row" data-index="${passengerIndex}">
-<td class="book-p-2">
-<span class="warning-icon book-h-5 book-leading-6 book-w-5 book-inline-block book-mr-2 book-rounded-full">
-    <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <use href="/booking/images/sprite-booking-icons.svg#check-icon"></use>
-    </svg>
-</span>
-${fullTitle}
-</td>
-<td class="book-p-2">انتخاب نشده</td>
-<td class="book-p-2">---</td>
-</tr>`;
-                            passengerIndex++;
-                        }
-                    });
-
-                    return `
-<table class="book-passenger__table book-text-center book-w-full book-text-sm book-border-collapse book-mt-2" id="${tableId}">
-<thead>
-<tr>
-    <th class="book-bg-zinc-100 book-border book-p-2 book-rounded-xl">مسافر</th>
-    <th class="book-bg-zinc-100 book-border book-p-2 book-rounded-xl">${type === 'baggage' ? 'بار' : type === 'meal' ? 'غذا' : type === 'seat' ? 'صندلی' : ''}</th>
-    <th class="book-bg-zinc-100 book-border book-p-2 book-rounded-xl">قیمت</th>
-</tr>
-</thead>
-<tbody>${rows}</tbody>
-</table>`;
-                };
-
-                // Helper function to generate service card
-                const generateServiceCard = async (service, tableId, extraParam = '') => {
-                    const currency = await renderCurrency(service.Currency);
-                    return `
-<div class="book-service__card book-p-2 book-border book-border-zinc-200 book-rounded-md book-text-center book-cursor-pointer book-bg-zinc-50 book-flex book-flex-col book-justify-center hover:book-border-primary-400"
-data-id="${service.ServiceId}" onclick="updatePassengerServices(this,'${tableId}', '${service.Description}', ${service.Price}, '${service.Currency}', '${extraParam}')">
-<div class="book-mb-2 book-font-arial book-ltr book-text-xs">${service.Description}</div>
-<div class="book-text-zinc-500">${new Intl.NumberFormat().format(service.Price)} ${currency}</div>
-</div>`;
-                };
-
-                // Helper function to generate route section
-                const generateRouteSection = (index, fromCity, toCity, fromCode, toCode, tableId, serviceCards, type) => {
-                    const gridClasses = type !== 'seat' ? 'book-grid book-grid-cols-3 book-gap-4' : '';
-                    return `
-<div class="book-mb-5 book-excessService__content">
-<div
-class="book-flex book-justify-between book-items-center book-mb-2 book-text-sm book-font-bold book-cursor-pointer${index === 1 ? ` book-active__roue__excessService` : ''}"
-onclick="toggleServiceTable(this,'book-route__service-${type}-${index}')">
-<div>
-    <span>${fromCity}<span class="book-mr-1">(${fromCode})</span></span>
-    <svg width="24" height="24" class="book-mx-1">
-        <use href="/booking/images/sprite-booking-icons.svg#left-arrow-icon"></use>
-    </svg>
-    <span>${toCity}<span class="book-mr-1">(${toCode})</span></span>
-</div>
-<div class="book-arrow__icon">
-    <svg width="24" height="24">
-        <use href="/booking/images/sprite-booking-icons.svg#${index === 1 ? 'down-arrow-icon' : 'up-arrow-icon'}"></use>
-    </svg>
-</div>
-</div>
-<div id="book-route__service-${type}-${index}" class="book-route__service book-flex book-gap-8 ${index === 1 ? '' : 'book-hidden'}">
-<div class="book-w-2/5">
-    ${generatePassengerTable(tableId, type)}
-</div>
-<div class="book-w-3/5 book-max-h-80 book-overflow-auto ${gridClasses}">
-   ${serviceCards.join('')}
-</div>
-</div>
-</div>`;
-                };
-
-                // Render bus rules if available
-                if (responseJson.busRules) {
-                    if (responseJson.busRules.length > 0) {
-                        let output = "";
-                        for (const item of responseJson.busRules) {
-                            if (item.Rule?.length > 0) {
-                                output += `
-                            <div class="book-text-zinc-900 book-text-sm book-text-justify book-ltr">
-                        <div class="book-mb-2 book-flex book-gap-1">
-                            <span>${item.From}</span>
-                            <svg width="24" height="24">
-                                <use href="/booking/images/sprite-booking-icons.svg#right-arrow-icon"></use>
-                            </svg>
-                            <span>${item.To}</span>
-                        </div>
-                        <div>${await renderRule(item.Rule)}</div>
-                    </div>`;
-                            } else {
-                                renderingContainer.innerHTML = "قوانینی در دسترس نیست";
-                            }
-                        }
-                        renderingContainer.innerHTML = output || "قوانینی در دسترس نیست";
-                    } else {
-                        renderingContainer.innerHTML = "قوانینی در دسترس نیست";
-                    }
-                }
-        // Render baggage details
-                else if (responseJson.Baggages) {
-                    if (responseJson.Baggages.length > 0) {
-                        let output = `
-                    <table class="book-w-full book-table-auto book-border-separate [border-spacing:0_8px]">
-                <thead>
-                    <tr>
-                        <th class="book-pt-2 book-pb-4 book-pr-2 book-text-right book-text-primary-400">مبدا</th>
-                        <th class="book-pt-2 book-pb-4 book-text-center book-text-primary-400">مقصد</th>
-                        <th class="book-pt-2 book-pb-4 book-pl-2 book-text-left book-text-primary-400">بار</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-                        for (const item of responseJson.Baggages) {
-                            output += `
-                        <tr>
-                    <td class="book-py-2 book-bg-zinc-100 book-rounded-s-lg book-pr-2 book-text-right">${item.Origin}</td>
-                    <td class="book-py-2 book-bg-zinc-100 book-text-center">${item.Destination}</td>
-                    <td class="book-py-2 book-bg-zinc-100 book-rounded-e-lg book-pl-2 book-text-left book-ltr">${item.Baggage} ${item.Unit}</td>
-                </tr>`;
-                        }
-                        output += `</tbody></table>`;
-                        renderingContainer.innerHTML = output;
-                    } else {
-                        renderingContainer.innerHTML = "قوانینی در دسترس نیست";
-                    }
-                } else if (responseJson.busServices) {
-                    // Create or get service containers dynamically
-                    renderingContainer.querySelector(".book-api__container__loader")?.remove();
-                    const renderingServiceContainer = ensureContainer(renderingContainer, "book-api__container__rendering__baggageService");
-                    const renderingMealContainer = ensureContainer(renderingContainer, "book-api__container__rendering__mealService");
-                    renderingServiceContainer.classList.add("book-services__content");
-                    renderingMealContainer.classList.add("book-services__content");
-                    renderingMealContainer.classList.add("book-hidden");
-
-                    // Excess Baggage
-                    let baggageOutput = `<div>`;
-                    let hasAnyBaggageService = false;
-
-                    for (const [index, item] of responseJson.busServices.entries()) {
-                        const baggageServices = item.Services?.filter(s => s.ServiceType === "Excess Baggage") || [];
-                        if (baggageServices.length === 0) continue;
-
-                        hasAnyBaggageService = true;
-                        const fromCity = await renderCity(item.From);
-                        const toCity = await renderCity(item.To);
-
-                        const baggageServiceCards = await Promise.all(
-                            baggageServices.map(service => generateServiceCard(service, `book-passenger__baggage__table-${index}`, ''))
-                        );
-
-                        baggageOutput += generateRouteSection(
-                            index + 1,
-                            fromCity,
-                            toCity,
-                            item.From,
-                            item.To,
-                            `book-passenger__baggage__table-${index}`,
-                            baggageServiceCards,
-                            'baggage'
-                        );
-                    }
-
-                    baggageOutput += `</div>`;
-                    renderingServiceContainer.innerHTML = hasAnyBaggageService ? baggageOutput : "سرویسی در دسترس نیست";
-
-                    // Meal Services
-                    let mealOutput = `<div>`;
-                    let hasAnyMealService = false;
-                    const routesInfo = sessionBookStorage?.busGroup?.flatMap(group => group.RoutesInfo) || [];
-                    const routeIds = [1, 2, 3, 4];
-
-                    for (const routeId of routeIds) {
-                        const routeInfo = routesInfo.find(route => route.SegmentId === routeId);
-                        if (!routeInfo) continue;
-
-                                                const fromCity = await renderCity(routeInfo.OriginAirport);
-                        const toCity = await renderCity(routeInfo.DestinationAirport);
-                        const fromAirport = routeInfo.OriginAirport;
-                        const toAirport = routeInfo.DestinationAirport;
-
-                        const mealServices = responseJson.busServices.flatMap(item =>
-                            item.Services.filter(s => s.ServiceType === "Meal" && s.routeID === routeId)
-                        );
-
-                        if (mealServices.length > 0) {
-                            hasAnyMealService = true;
-                            const mealServiceCards = await Promise.all(
-                                mealServices.map(service => generateServiceCard(service, `book-passenger__meal__table-${routeId}`))
-                            );
-
-                            mealOutput += generateRouteSection(
-                                routeId,
-                                fromCity,
-                                toCity,
-                                fromAirport,
-                                toAirport,
-                                `book-passenger__meal__table-${routeId}`,
-                                mealServiceCards,
-                                'meal'
-                            );
-                        } else {
-                            mealOutput += `
-<div class="book-mb-5 book-excessService__content">
-<div
-class="book-flex book-justify-between book-items-center book-mb-2 book-text-sm book-font-bold book-cursor-pointer${routeId === 1 ? ' book-active__roue__excessService' : ''}"
-onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
-<div>
-    <span>${fromCity}<span class="book-mr-1">(${fromAirport})</span></span>
-    <svg width="24" height="24" class="book-mx-1">
-        <use href="/booking/images/sprite-booking-icons.svg#left-arrow-icon"></use>
-    </svg>
-    <span>${toCity}<span class="book-mr-1">(${toAirport})</span></span>
-</div>
-<div class="book-arrow__icon">
-    <svg width="24" height="24">
-        <use href="/booking/images/sprite-booking-icons.svg#${routeId === 1 ? 'down-arrow-icon' : 'up-arrow-icon'}"></use>
-    </svg>
-</div>
-</div>
-<div id="book-route__service-meal-${routeId}" class="book-route__service book-flex book-gap-8 ${routeId === 1 ? '' : 'book-hidden'}">
-<div class="book-w-full book-text-center">غذایی برای این مسیر در دسترس نیست</div>
-</div>
-</div>`;
-                        }
-                    }
-
-                    mealOutput += `</div>`;
-                    renderingMealContainer.innerHTML = hasAnyMealService ? mealOutput : "غذایی در دسترس نیست";
-                }
-                // Render seats services
-                else if (responseJson[0].busSegmentRefID) {
-                    renderingContainer.querySelector(".book-api__container__loader")?.remove();
-                    const renderingServiceContainer = ensureContainer(renderingContainer, "book-api__container__rendering__seatService");
-                    renderingServiceContainer.classList.add("book-services__content");
-
-                    let seatOutput = `<div>`;
-                    let hasAnySeatService = false;
-
-                    const generateSeatSVG = async (seatLabel, isAvailable, seatId, priceRaw, currency, characteristicText, tableId) => {
-                        const currencyText = await renderCurrency(currency);
-                        const priceText = new Intl.NumberFormat().format(priceRaw) + " " + currencyText;
-
-                        const defaultFill = isAvailable ? "#3b82f6" : "#d1d5db";
-                        const hoverFill = isAvailable ? "#10b981" : "#d1d5db";
-
-                        return `
-<div class="book-relative book-group" style="width: 40px; height: 40px;">
-  <svg width="50" height="50" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"
-       style="cursor: ${isAvailable ? 'pointer' : 'not-allowed'};"  data-id="${seatId}"
-       ${isAvailable ? `onclick="updatePassengerTable(this,'${tableId}', '${seatLabel}', ${priceRaw}, '${currency}')"` : ""}
-       onmouseenter="this.querySelectorAll('.seat-part').forEach(el => el.setAttribute('fill', '${hoverFill}'))"
-     
-       onmouseleave="this.querySelectorAll('.seat-part').forEach(el => {
-  if (!this.classList.contains('book-seat__selected')) {
-    el.setAttribute('fill', '${defaultFill}');
-  }
-})"
-  >
-    <rect class="seat-part" x="10" y="2" width="16" height="14" rx="3" fill="${defaultFill}" stroke="#374151" stroke-width="1.2"/>
-    <path class="seat-part" d="M10 16 L26 16 L24 22 L12 22 Z" fill="${defaultFill}" stroke="#374151" stroke-width="1.2"/>
-    <line x1="8" y1="16" x2="10" y2="22" stroke="#374151" stroke-width="1.2"/>
-    <line x1="28" y1="16" x2="26" y2="22" stroke="#374151" stroke-width="1.2"/>
-    <text x="18" y="12" text-anchor="middle" fill="white" font-size="8" font-family="Arial" font-weight="bold">${seatLabel}</text>
-  </svg>
-  ${isAvailable ? `
-    <div class="book-absolute book-z-10 book-hidden book-group-hover:book-block book-w-44 book-top-full book-left-1/2 book--translate-x-1/2 book-bg-white book-shadow-md book-rounded book-text-xs book-p-2">
-        ${characteristicText ? `<div class="book-font-bold book-mb-2 book-pb-2 book-border-b-1 book-border-solid book-text-center book-font-arial">${characteristicText}</div>` : ""}
-        <div class="book-flex book-justify-between book-items-center">
-            <div class="book-font-arial">${seatLabel}</div> 
-            <div><span class="book-mr-1">قیمت:</span>${priceText}</div>
-        </div>
-    </div>
-  ` : ""}
-</div>
-`;
-                    };
-
-                    for (const [index, item] of responseJson.entries()) {
-                        hasAnySeatService = true;
-
-                        const fromCity = await renderCity(item.Route.Departure.AirportCode);
-                        const toCity = await renderCity(item.Route.Arrival.AirportCode);
-
-                        const seatMap = {};
-                        for (const seat of item.Seats || []) {
-                            const cabinType = seat.Cabin?.CabinTypeName || "OTHER";
-                            if (!seatMap[cabinType]) seatMap[cabinType] = [];
-                            seatMap[cabinType].push(seat);
-                        }
-
-                        const seatServiceCards = [];
-
-                        for (const [cabin, seats] of Object.entries(seatMap)) {
-                            seats.sort((a, b) => {
-                                const rowA = parseInt(a.Row, 10);
-                                const rowB = parseInt(b.Row, 10);
-                                if (rowA !== rowB) return rowA - rowB;
-
-                                const colA = a.Column.toLowerCase();
-                                const colB = b.Column.toLowerCase();
-                                if (colA < colB) return -1;
-                                if (colA > colB) return 1;
-                                return 0;
-                            });
-
-                            const layoutType = item.Aircraft?.LayoutType || "3-3";
-                            const [leftSeats, rightSeats] = layoutType.split("-").map(Number);
-                            const totalSeatsPerRow = leftSeats + rightSeats;
-
-                            const seatsByRow = {};
-                            for (const seat of seats) {
-                                const row = seat.Row;
-                                if (!seatsByRow[row]) seatsByRow[row] = [];
-                                seatsByRow[row].push(seat);
-                            }
-
-                            seatServiceCards.push(`<div><div class="book-font-bold book-mb-2">${cabin}</div>`);
-                            for (const [row, rowSeats] of Object.entries(seatsByRow)) {
-                                rowSeats.sort((a, b) => {
-                                    const colA = a.Column.toLowerCase();
-                                    const colB = b.Column.toLowerCase();
-                                    if (colA < colB) return -1;
-                                    if (colA > colB) return 1;
-                                    return 0;
-                                });
-
-                                const leftGroup = rowSeats.filter(seat => ["A", "B", "C"].includes(seat.Column.toUpperCase()));
-                                const rightGroup = rowSeats.filter(seat => ["D", "E", "F"].includes(seat.Column.toUpperCase()));
-
-                                const leftSeatSVGs = await Promise.all(leftGroup.map(seat => {
-                                    const seatId = seat.Seat_Id;
-                                    const seatLabel = seat.SeatID;
-                                    const isAvailable = seat.Available === "true";
-                                    const priceRaw = seat.Price?.Total || 0;
-                                    const currency = seat.Price?.Currency || "IRR";
-                                    const characteristic = seat.SeatCharacteristicCode?.[0] || '';
-                                    const characteristicMap = {
-                                        WN: "Window",
-                                        AS: "Aisle",
-                                        "Middle": "Middle",
-                                        EX: "ExitRow",
-                                        PR: "Premium",
-                                        PR2: "Premium",
-                                        FR: "FrontRow"
-                                    };
-                                    const characteristicText = characteristicMap[characteristic] || '';
-                                    return generateSeatSVG(seatLabel, isAvailable, seatId, priceRaw, currency, characteristicText, `book-passenger__seat__table-${index}`);
-                                }));
-
-                                const rightSeatSVGs = await Promise.all(rightGroup.map(seat => {
-                                    const seatId = seat.Seat_Id;
-                                    const seatLabel = seat.SeatID;
-                                    const isAvailable = seat.Available === "true";
-                                    const priceRaw = seat.Price?.Total || 0;
-                                    const currency = seat.Price?.Currency || "IRR";
-                                    const characteristic = seat.SeatCharacteristicCode?.[0] || '';
-                                    const characteristicMap = {
-                                        WN: "Window",
-                                        AS: "Aisle",
-                                        "Middle": "Middle",
-                                        EX: "ExitRow",
-                                        PR: "Premium",
-                                        PR2: "Premium",
-                                        FR: "FrontRow"
-                                    };
-                                    const characteristicText = characteristicMap[characteristic] || '';
-                                    return generateSeatSVG(seatLabel, isAvailable, seatId, priceRaw, currency, characteristicText, `book-passenger__seat__table-${index}`);
-                                }));
-
-                                seatServiceCards.push(`
-<div class="book-flex book-items-center book-mb-2">
-    <div class="book-flex book-gap-2" style="width: ${leftSeats * 48}px;">
-        ${leftSeatSVGs.join('')}
-    </div>
-    <div class="book-aisle book-bg-zinc-100 book-h-10 book-w-8 book-flex book-items-center book-justify-center book-text-sm book-font-bold book-bg-zinc-200">
-        ${row}
-    </div>
-    <div class="book-flex book-gap-2" style="width: ${rightSeats * 48}px;">
-        ${rightSeatSVGs.join('')}
-    </div>
-</div>`);
-                            }
-                            seatServiceCards.push(`</div>`);
-                        }
-
-                        seatOutput += generateRouteSection(
-                            index + 1,
-                            fromCity,
-                            toCity,
-                            item.Route.Departure.AirportCode,
-                            item.Route.Arrival.AirportCode,
-                            `book-passenger__seat__table-${index}`,
-                            seatServiceCards,
-                            'seat'
-                        );
-                    }
-
-                    seatOutput += `</div>`;
-                    renderingServiceContainer.innerHTML = hasAnySeatService ? seatOutput : "صندلی در دسترس نیست";
-                }
-            } catch (err) {
-                // Log error and show fallback message
-                console.error(`onProcessedbusApiRule: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+        let output = "";
+        for (const item of busInfo.busRules) {
+            if (item.rule?.length > 0) {
+                output += `
+                <div class="book-text-zinc-900 book-text-sm book-text-justify book-rtl">
+                    <div class="book-mb-2 book-flex book-gap-1">
+                        <span>${item.from}</span>
+                        <svg width="24" height="24">
+                            <use href="/booking/images/sprite-booking-icons.svg#right-arrow-icon"></use>
+                        </svg>
+                        <span>${item.to}</span>
+                    </div>
+                    <div>${await renderRule(item.rule)}</div>
+                </div>`;
             }
-        };
+        }
+
+        renderingContainer.innerHTML = output || "قوانینی در دسترس نیست";
+        renderingContainer.querySelector(".book-api__container__loader")?.remove();
+
+    } catch (err) {
+        console.error(`onProcessedbusApiRule: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
+    }
+};
 
 
         // Update passenger table with selected baggage
