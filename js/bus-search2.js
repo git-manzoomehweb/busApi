@@ -770,7 +770,6 @@ const busManipulation = async (args) => {
                 }
             }
         }
-        
         else if (args.source.id === "cms.price") {
             InUpdateFiltering = false;
             InUpdatePaging = true;
@@ -1508,8 +1507,6 @@ function endProgressBar() {
     }
 }
 
-// price
-
 const updatePriceSlider = () => {
     try {
         const totalRange = maxPrice - minPrice;
@@ -1741,7 +1738,6 @@ const resetPriceFilter = () => {
         console.error("resetPriceFilter: " + error.message);
     }
 };
-// price
 
 
 function addFilterDiv(filterId, sourceId, value) {

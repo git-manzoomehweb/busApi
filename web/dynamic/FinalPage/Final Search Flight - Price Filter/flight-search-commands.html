@@ -1,0 +1,36 @@
+<!-- Get Session -->
+<basis core="api" name="api.session" url="https://ota.basisfly.com/v2/api/flight/CreateSession" method="post"
+    content-type="application/json" run="atclient" body='{
+        "rkey": "[##cms.cookie.rkey##]",
+        "dmnid": "[##cms.cms.domainid##]"
+    }'>
+</basis>
+<basis core="callback" triggers="api.session" run="atclient" method="setSession"></basis>
+<!-- Get Cash Price -->
+<basis core="api" name="api.calendarLookUp" url="https://basisfly.com/apihub/flight/calendarLookUp" method="post"
+    content-type="application/json" run="atclient" if="{##cms.calendarLookUp##}" triggers="cms.calendarLookUp" body='{
+            "destination": "{##cms.calendarLookUp.destination##}",
+            "origin": "{##cms.calendarLookUp.origin##}",
+            "dmnid": "[##cms.cms.domainid##]"
+            }'>
+</basis>
+<basis core="callback" triggers="api.calendarLookUp" run="atclient" method="setCalendarLookUp"></basis>
+<!-- Get Flight List -->
+<basis core="dbsource" source="simple" name="flight" run="atclient" if="{##cms.session##}" triggers="cms.session">
+    <member name="list" />
+</basis>
+<basis core="callback" run="atclient"
+    triggers="flight.list cms.page cms.nextpage cms.prevpage cms.airline cms.outboundairline cms.inboundairline cms.airport cms.outboundairport cms.inboundairport cms.stop cms.outboundstop cms.inboundstop cms.flightnumber cms.outboundflightnumber cms.inboundflightnumber 
+  cms.departuretime cms.outbounddeparturetime cms.inbounddeparturetime  cms.price cms.price.update cms.outboundhour cms.inboundhour.update cms.outboundhour.update cms.inboundhour cms.hour cms.outboundbaggage cms.inboundbaggage cms.baggage cms.systemflight cms.farefamily  cms.sort cms.flight"
+    method="manipulation">
+</basis>
+<!-- Get Flight Rule -->
+<basis core="api" name="api.rule" url="https://ota.basisfly.com/v2/api/Flight/{##cms.rule.type##}" method="post"
+    content-type="application/json" run="atclient" triggers="cms.rule" if="{##cms.rule.run|(false)##}" body='{
+        "rkey": "[##cms.cookie.rkey##]",
+        "dmnid": "[##cms.cms.domainid##]",
+        "SessionId": "{##cms.rule.SessionId##}",
+        "FlightId": "{##cms.rule.FlightId##}",
+        "FlightGroup": {##cms.rule.FlightGroup##}
+    }' onprocessed='onProcessedFlightApiRule'>
+</basis>

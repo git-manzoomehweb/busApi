@@ -1,0 +1,1751 @@
+<html lang="fa" dir="rtl">
+
+<head>
+    <basis core="call" file="book/taglist" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+    <title>جستجو پرواز</title>
+    <meta name="description" content="جستجو پرواز">
+    <link href="[##cms.cms.cdn##]/booking/css/flight-search-mob.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
+    <link href="[##cms.cms.cdn##]/_css/swiper-bundle.min.css" type="text/css" rel="stylesheet" />
+<style>
+.book-slider__content,
+.book-thumb__min,
+.book-thumb__max {
+  touch-action: none;
+}
+
+</style>
+</head>
+
+<body class="book-bg-specialcolor-1">
+    <!-- Header -->
+    <basis core="call" file="header.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+    <!-- Main-->
+    <main data-dmnid="[##cms.cms.domainid##]" data-calendarLookUp="[##cms.host.calendar-lookUp|(true)##]"
+        data-mob="true">
+        <!-- Commands / Requests -->
+        <basis core="call" file="flight/search/commands" lid="1"></basis>
+        <!-- Layout Section -->
+        <section class="book-layout__main book-my-5">
+            <!-- Expire  Modal-->
+            <div
+                class="book-expire__message__modal__container book-modal__container book-fixed book-top-0 book-left-0 book-w-screen book-h-screen book-overflow-hidden book-z-50 book-hidden">
+                <div
+                    class="book-modal__content book-bg-white book-fixed book-inset-x-0 book-top-1.2 book--translate-y-1.2  book-w-11/12 book-rounded-2xl book-mx-auto book-p-5 book-text-center">
+                    <svg width="90" height="90" class="book-stroke-secondary-400 book-mx-auto">
+                        <use xlink:href="/booking/images/sprite-booking-icons.svg#hour-expire-icon">
+                        </use>
+                    </svg>
+                    <div class="book-no__time book-hidden">
+                        <div class="book-text-xl book-font-bold book-mt-6">اعتبار
+                            نتایج به پایان رسید</div>
+                        <div class="book-text-zinc-500 book-mt-3">لطفا برای
+                            نمایش جدیدترین اطلاعات و قیمت‌ها نتایج جستجو را
+                            بروز رسانی
+                            کنید</div>
+                        <div class="book-flex book-justify-between book-mt-6 book-gap-2">
+                            <button onclick="location.reload()" type="button"
+                                class="book-w-32 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-2 hover:book-bg-white hover:book-text-primary-400">بروز
+                                رسانی جستجو</button>
+                            <button onclick="sessionStorage.removeItem('searchSession'); window.location='/'"
+                                type="button"
+                                class="book-w-32 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-2 hover:book-bg-primary-400 hover:book-text-white">بازگشت
+                                به صفحه اصلی</button>
+                        </div>
+                    </div>
+                    <div class="book-some__time book-hidden">
+                        <div class="book-text-xl book-font-bold book-mt-6">نتایج جستجو تا 6 دقیقه دیگر معتبر می باشد.
+                        </div>
+                        <div class="book-text-zinc-500 book-mt-3">بعد از به پایان رسیدن مدت اعتبار، پرواز دیگر در دسترس
+                            نمی‌باشد.</div>
+                        <div class="book-mt-6">
+                            <button
+                                onclick="document.querySelector('.book-expire__message__modal__container').classList.add('book-hidden')"
+                                type="button"
+                                class="book-w-32 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-2 hover:book-bg-white hover:book-text-primary-400">
+                                متوجه شدم</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="book-max-w-7xl book-mx-auto">
+
+                <div class="book-bg-white book-mb-6">
+                    <div class="book-p-3">
+                        <!-- Retry Search -->
+                        <div class="book-retry__container">
+                            <div class="book-flex book-justify-between book-items-center">
+                                <div class="book-retry__info"></div>
+                                <div>
+                                    <button type="button"
+                                        class="book-bg-primary-600 book-h-12 book-w-12 book-rounded-lg hover:book-bg-secondary-600"
+                                        onclick="document.querySelector('.book-retry__content').classList.toggle('book-hidden')">
+                                        <svg width="24" height="24" class="book-mx-auto">
+                                            <use
+                                                xlink:href="/booking/images/sprite-booking-icons.svg#retry-search-icon">
+                                            </use>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="book-retry__content book-hidden">
+                                <basis core="call" file="/module/retry/search" method="post" selectedMode="flight"
+                                    run="atclient" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+                            </div>
+                        </div>
+                        <!-- Filter Sort Action -->
+                        <div
+                            class="book-rendered__container book-hidden book-selector__container book-my-5 book-text-sm">
+                            <div class="book-selector__content book-flex book-gap-2 ">
+                                <div class="book-cursor-pointer book-rounded-lg book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-text-zinc-500 book-border book-border-zinc-200 book-text-center book-text-xm book-p-3 book-min-w-28 "
+                                    onclick="toggleAside('filter')">
+                                    <svg width="20" height="20">
+                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#filter-search-icon">
+                                        </use>
+                                    </svg>
+                                    <h6>فیلتر</h6>
+                                </div>
+                                <div class="book-cursor-pointer book-rounded-lg book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-text-zinc-500 book-border book-border-zinc-200 book-text-center book-text-xm book-p-3 book-min-w-28"
+                                    onclick="toggleAside('sort')">
+                                    <svg width="20" height="20">
+                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon">
+                                        </use>
+                                    </svg>
+                                    <h6>مرتب سازی</h6>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <!-- Flight Price Options -->
+                        <div class="book-card__price__selection__container book-mb-5 book-relative book-hidden">
+                            <div class="book-flex book-justify-between book-items-center book-mb-3">
+                                <div class="book_today__date"></div>
+                                <div class="book-flex book-gap-5 book-flex-row-reverse book-hidden">
+                                    <div class="swiper-button-next book-mob__price__next__swiper book-top-14">
+                                        <svg width="24" height="24">
+                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#left-arrow-icon">
+                                            </use>
+                                        </svg>
+                                    </div>
+                                    <div class="swiper-button-prev book-mob__price__prev__swiper book-top-14">
+                                        <svg width="24" height="24">
+                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#right-arrow-icon">
+                                            </use>
+                                        </svg>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="swiper book-mob__price__swiper">
+                                <div class="swiper-wrapper">
+                                    <basis core="print" datamembername="flight.calendar" run="atclient">
+                                        <face>
+                                            <script type="text/template">
+                                    <div class="swiper-slide book-text-center" onclick="selectDatedFlight(this,'@gregorian@')">
+                                        <div
+                                            class="book-cursor-pointer book-w-11/12 book-p-1 book-bg-zinc-100 book-mx-auto book-rounded-xl book-text-zinc-600 hover:book-bg-primary-50 hover:book-text-zinc-900 book-transition-colors">
+                                            <div class="book-text-xs book-my-2 book-flex book-justify-center"><h6>
+                                                @monthNumber@<span class="book-mx-1">/</span><span>@day@</span></h6></div>
+                                            {{
+                                            return ` <div class="book-text-xs book-text-zinc-900">${new
+                                                Intl.NumberFormat().format($data.price)}<span
+                                                    class="book-mr-1">${$data.unit}</span></div>`
+                                            }}
+                                    
+                                        </div>
+                                    </div>
+                                </script>
+                                        </face>
+                                    </basis>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="book-main__container">
+                    <!-- Filters Sidebar -->
+                    <aside
+                        class="book-aside__container book-fixed book-h-full book-w-full book-top-0 book-bottom-0 book-transition book-z-100 book-bg-zinc-200 book-inset-x-0  book-overflow-auto book-hidden">
+                        <div class="book-aside__content book-w-full">
+                            <div class="book-aside__filter__container book-hidden">
+                                <div
+                                    class="book-aside__filter__header book-bg-zinc-200 book-px-2 book-py-2 book-sticky book-top-0 book-z-10">
+                                    <div class="book-flex book-justify-between book-items-center book-text-sm">
+                                        <span class="book-flex book-gap-1 book-items-center book-cursor-pointer"
+                                            onclick="document.querySelector('.book-aside__container')?.classList.add('book-hidden'); document.querySelector('.book-aside__filter__container')?.classList.add('book-hidden');"
+                                            class="book-cursor-pointer">
+                                            <svg width="28" height="28">
+                                                <use href="/booking/images/sprite-booking-icons.svg#close-icon">
+                                                </use>
+                                            </svg> <span class="book-text-base">فیلتر</span>
+                                        </span>
+                                        <button type="button"
+                                            onclick="document.querySelector('.book-aside__container')?.classList.add('book-hidden'); document.querySelector('.book-aside__filter__container')?.classList.add('book-hidden');"
+                                            class="book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-xl book-text-sm hover:book-bg-primary-400 hover:book-text-white book-transition-colors book-p-3">اعمال
+                                            فیلتر</button>
+
+                                    </div>
+                                </div>
+                                <div class="book-aside__filter__content">
+
+                                    <div class="book-relative book-bg-white book-rounded-2xl book-px-2 book-py-2">
+                                        <basis core="print" datamembername="flight.outboundairline" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                                    <div class="book-p-4">
+                                                    <div
+                                                        class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                        onclick="toggleContent(this)">
+                                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">ایرلاین ها
+                                                            (رفت)</h3>
+                                                            <svg width="24" height="24">
+                                                                <use
+                                                                   href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                </use>
+                                                            </svg>
+                                                    </div>
+                                                    <div class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                        <div class="book-filter__content book-outboundairline__content">
+                                                            @child
+                                                
+                                                        </div>
+                                                
+                                                    </div>
+                                                </div>
+                                                 </div>
+                                                </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                                    <div class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                        <div bc-value="@Code@" bc-name="cms.outboundairline" bc-triggers="click" data-textshow = "@Name@"
+                                                            class="book-custom__checkbox book-shrink-0 book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+                                                        </div>
+                                                        <div class="book-label__content book-w-11/12">
+                                                            <div
+                                                                class="book-flex book-justify-between book-items-center book-text-xs gap-1">
+                                                                <img src="[##cms.cms.cdn##]/@Logo@" width="50"
+                                                                    height="20" alt="@Name@" class="book-h-5 book-ml-1" />
+                                                                {{
+                                                                    return `<span><span class="book-ml-1">از</span><span>${new Intl.NumberFormat().format($data.Price)}</span><span
+                                                                    class="book-mr-1">${$data.Unit}</span></span>`
+                                                                }}
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </script>
+                                            </face>
+                                        </basis>
+                                        <basis core="print" datamembername="flight.inboundairline" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                                    <div class="book-p-4 ">
+                                                        <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                            onclick="toggleContent(this)">
+                                                            <h3 class="book-font-bold book-text-sm book-text-zinc-900">ایرلاین ها
+                                                                (برگشت)</h3>
+                                                            <svg width="24" height="24">
+                                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                </use>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                            <div class="book-filter__content book-inboundairline__content">
+                                                                @child
+                                                
+                                                            </div>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    
+                                                    
+                                                                                        
+                                                </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                                    <div class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                        <div bc-value="@Code@" bc-name="cms.inboundairline" bc-triggers="click" data-textshow = "@Name@"
+                                                            class="book-custom__checkbox book-shrink-0 book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+                                                        </div>
+                                                        <div class="book-label__content book-w-11/12">
+                                                            <div class="book-flex book-justify-between book-items-center book-text-xs gap-1">
+                                                                <img src="[##cms.cms.cdn##]/@Logo@" width="50"
+                                                                height="20" alt="@Name@" class="book-h-5 book-ml-1" />
+                                                                {{
+                                                                return `<span><span class="book-ml-1">از</span><span>${new
+                                                                        Intl.NumberFormat().format($data.Price)}</span><span
+                                                                        class="book-mr-1">${$data.Unit}</span></span>`
+                                                                }}
+                                                    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </script>
+                                            </face>
+                                        </basis>
+                                        <basis core="print" datamembername="flight.airline" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                                    <div class="book-p-4 ">
+                                                        <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                            onclick="toggleContent(this)">
+                                                            <h3 class="book-font-bold book-text-sm book-text-zinc-900">ایرلاین ها
+                                                            </h3>
+                                                            <svg width="24" height="24">
+                                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                </use>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                            <div class="book-filter__content book-airline__content">
+                                                                @child
+                                                
+                                                            </div>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>       
+                                                    
+                                                                                        
+                                                </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                                    <div class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                        <div bc-value="@Code@" bc-name="cms.airline" bc-triggers="click" data-textshow = "@Name@"
+                                                        class="book-custom__checkbox book-shrink-0 book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+                                                    </div>
+                                                    <div class="book-label__content book-w-11/12">
+                                                        <div
+                                                            class="book-flex book-justify-between book-items-center book-text-xs gap-1">
+                                                            <img src="[##cms.cms.cdn##]/@Logo@" width="50"
+                                                            height="20" alt="@Name@" class="book-h-5 book-ml-1" />
+                                                            {{
+                                                                return `<span><span class="book-ml-1">از</span><span>${new Intl.NumberFormat().format($data.Price)}</span><span
+                                                                class="book-mr-1">${$data.Unit}</span></span>`
+                                                            }}
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                                                       
+                                                </script>
+                                            </face>
+                                        </basis>
+
+                                        <basis core="print" datamembername="flight.outboundairport" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                                    <div class="book-p-4 ">
+                                                        <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                            onclick="toggleContent(this)">
+                                                            <h3 class="book-font-bold book-text-sm book-text-zinc-900">فرودگاه های مقصد
+                                                                (رفت)</h3>
+                                                            <svg width="24" height="24">
+                                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                </use>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                            <div class="book-filter__content book-outboundairport__content">
+                                                                @child
+                                                
+                                                            </div>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    
+                                                    
+                                                                                        
+                                                </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                                    <div class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                        <div bc-value="@Code@" bc-name="cms.outboundairport" bc-triggers="click" data-textshow = "@Name@"
+                                                            class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+                                                        </div>
+                                                        <div class="book-w-11/12">
+                                                            <div
+                                                                class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                <span class="book-label__content">@Name@</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                                </script>
+                                            </face>
+                                        </basis>
+                                        <basis core="print" datamembername="flight.inboundairport" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                                    <div class="book-p-4 ">
+                                                        <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                            onclick="toggleContent(this)">
+                                                            <h3 class="book-font-bold book-text-sm book-text-zinc-900">فرودگاه های مقصد
+                                                                (برگشت)</h3>
+                                                            <svg width="24" height="24">
+                                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                </use>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                            <div class="book-filter__content book-inboundairport__content">
+                                                                @child
+                                                
+                                                            </div>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                                                        
+                                                </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                                    <div class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                        <div bc-value="@Code@" bc-name="cms.inboundairport" bc-triggers="click" data-textshow = "@Name@"
+                                                            class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+                                                        </div>
+                                                        <div class="book-w-11/12">
+                                                            <div
+                                                                class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                <span class="book-label__content">@Name@</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                                </script>
+                                            </face>
+                                        </basis>
+                                        <basis core="print" datamembername="flight.airport" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                                    <div class="book-p-4 ">
+                                                        <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                            onclick="toggleContent(this)">
+                                                            <h3 class="book-font-bold book-text-sm book-text-zinc-900">فرودگاه های مقصد
+                                                            </h3>
+                                                            <svg width="24" height="24">
+                                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                </use>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                            <div class="book-filter__content book-airport__content">
+                                                                @child
+                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                                                                        
+                                                </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                                    <div class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                        <div bc-value="@Code@" bc-name="cms.airport" bc-triggers="click" data-textshow = "@Name@"
+                                                            class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+                                                        </div>
+                                                        <div class="book-w-11/12">
+                                                            <div
+                                                                class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                <span class="book-label__content">@Name@</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                                </script>
+                                            </face>
+                                        </basis>
+                                        <div
+                                            class="book-filter__container book-onewaytrip__content book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">شماره
+                                                        پرواز
+                                                        (رفت)</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                    <div
+                                                        class="book-filter__content book-outboundflightnumber__content">
+                                                        <div
+                                                            class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                            <div class="book-w-full">
+                                                                <input type="text" placeholder="123,456" bc-value
+                                                                    bc-name="cms.outboundflightnumber"
+                                                                    bc-triggers="keyup"
+                                                                    class="book-rounded-xl book-p-2 book-w-full book-text-xs focus:book-outline-none book-bg-zinc-200" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="book-filter__container book-selector__container  book-roundtrip__content book-hidden book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">شماره
+                                                        پرواز
+                                                        (برگشت)</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                    <div class="book-filter__content book-inboundflightnumber__content">
+                                                        <div
+                                                            class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                            <div class="book-w-full">
+                                                                <input type="text" placeholder="123,456" bc-value
+                                                                    bc-name="cms.inboundflightnumber"
+                                                                    bc-triggers="keyup"
+                                                                    class="book-rounded-xl book-p-2 book-w-full book-text-xs focus:book-outline-none book-bg-zinc-200" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="book-filter__container book-selector__container  book-multitrip__content book-hidden book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">شماره
+                                                        پرواز</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                    <div class="book-filter__content book-flightnumber__content">
+                                                        <div
+                                                            class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                            <div class="book-w-full">
+                                                                <input type="text" placeholder="123,456" bc-value
+                                                                    bc-name="cms.flightnumber" bc-triggers="keyup"
+                                                                    class="book-rounded-xl book-p-2 book-w-full book-text-xs focus:book-outline-none book-bg-zinc-200" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">نوع
+                                                        بلیط</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+                                                    <div
+                                                        class="book-filter__content book-systemflight__content book-flex book-justify-between book-gap-2">
+
+                                                        <div bc-value="false" bc-name="cms.systemflight"
+                                                            bc-triggers="click" data-textshow="چارتری"
+                                                            class="book-custom__checkbox book-button__content book-text-center book-cursor-pointer book-mt-3 book-w-1/2 book-py-3 book-rounded-lg book-border book-border-zinc-500 book-text-sm">
+                                                            <span>چارتری</span>
+                                                        </div>
+
+                                                        <div bc-value="true" bc-name="cms.systemflight"
+                                                            bc-triggers="click" data-textshow="سیستمی"
+                                                            class="book-custom__checkbox book-button__content book-text-center book-cursor-pointer book-mt-3 book-w-1/2 book-py-3 book-rounded-lg book-border book-border-zinc-500 book-text-sm">
+                                                            <span>سیستمی</span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">نرخ
+                                                        ویژه</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+                                                    <div
+                                                        class="book-filter__content book-farefamily__content book-flex book-justify-between book-gap-2">
+
+                                                        <div bc-value="farefamily" bc-name="cms.farefamily"
+                                                            data-textshow="پیشنهاد ویژه" bc-triggers="click"
+                                                            class="book-custom__checkbox book-button__content  book-text-center book-cursor-pointer book-mt-3 book-w-1/2 book-py-3 book-rounded-lg book-border book-border-zinc-500 book-text-sm">
+                                                            <span>پیشنهاد ویژه</span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="book-filter__container book-onewaytrip__content book-selector__container book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">ساعت
+                                                        حرکت (رفت)</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+
+                                                    <div
+                                                        class="book-filter__content book-outbounddeparturetime__content">
+                                                        <div class="book-time__content">
+                                                            <div
+                                                                class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">
+                                                                صبح</div>
+                                                            <div class="book-text-zinc-900 book-text-xs book-mb-4">ساعت
+                                                                فیلتر شده از
+                                                                <span class="book-hour">00:00 الی
+                                                                    00:00</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div
+                                                            class="book-times__content book-flex book-justify-between book-bg-zinc-200 book-rounded-lg">
+
+                                                            <div bc-value="0-4" data-time-period="صبح"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.outbounddeparturetime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content  book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sunrise-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                            <div bc-value="5-11" data-time-period="صبح"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.outbounddeparturetime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#morning-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                            <div bc-value="12-17" data-time-period="ظهر"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.outbounddeparturetime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sunset-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                            <div bc-value="18-23" data-time-period="شب"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.outbounddeparturetime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#moon-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="book-filter__container book-selector__container  book-roundtrip__content book-hidden book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">ساعت
+                                                        حرکت (برگشت)</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+
+                                                    <div
+                                                        class="book-filter__content book-inbounddeparturetime__content">
+                                                        <div class="book-time__content">
+                                                            <div
+                                                                class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">
+                                                                صبح</div>
+                                                            <div class="book-text-zinc-900 book-text-xs book-mb-4">ساعت
+                                                                فیلتر شده از
+                                                                <span class="book-hour">00:00 الی
+                                                                    00:00</span>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="book-times__content book-flex book-justify-between book-bg-zinc-200 book-rounded-lg">
+
+                                                            <div bc-value="0-4" data-time-period="صبح"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.inbounddeparturetime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content  book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sunrise-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                            <div bc-value="5-11" data-time-period="صبح"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.inbounddeparturetime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#morning-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                            <div bc-value="12-17" data-time-period="ظهر"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.inbounddeparturetime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sunset-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                            <div bc-value="18-23" data-time-period="شب"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.inbounddeparturetime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#moon-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="book-filter__container book-selector__container  book-multitrip__content book-hidden book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">ساعت
+                                                        حرکت</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+
+                                                    <div class="book-filter__content book-departuretime__content">
+                                                        <div class="book-time__content">
+                                                            <div
+                                                                class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">
+                                                                صبح</div>
+                                                            <div class="book-text-zinc-900 book-text-xs book-mb-4">ساعت
+                                                                فیلتر شده از
+                                                                <span class="book-hour">00:00 الی
+                                                                    00:00</span>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="book-times__content book-flex book-justify-between book-bg-zinc-200 book-rounded-lg">
+
+                                                            <div bc-value="0-4" data-time-period="صبح"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.departuretime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content  book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sunrise-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                            <div bc-value="5-11" data-time-period="صبح"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.departuretime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#morning-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                            <div bc-value="12-17" data-time-period="ظهر"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.departuretime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sunset-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                            <div bc-value="18-23" data-time-period="شب"
+                                                                data-time-range="4:59 الی 12:00"
+                                                                data-textshow="4:59 الی 12:00"
+                                                                bc-name="cms.departuretime" bc-triggers="click"
+                                                                class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
+                                                                <svg width="24" height="24" class="book-mx-auto">
+                                                                    <use
+                                                                        xlink:href="/booking/images/sprite-booking-icons.svg#moon-icon">
+                                                                    </use>
+                                                                </svg>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">بازه
+                                                        قیمت</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+
+                                                    <div class="book-filter__content book-price__content">
+                                                        <div class="book-my-1 book-ltr book-filter__price__container">
+                                                            <div class="book-slider__container book-mx-auto">
+                                                                <div
+                                                                    class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                    <div class="book-slider__value__container">
+                                                                        <span class="book-min__value"></span><span
+                                                                            class="book-mr-1 book-unit__value"></span>
+                                                                    </div>
+                                                                    <div class="book-slider__value__container">
+                                                                        <span class="book-max__value"></span>
+                                                                        <span class="book-mr-1 book-unit__value"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div
+                                                                    class="book-slider__content book-relative book-h-1 book-mx-2 book-rounded-sm book-bg-primary-50 book-mt-5">
+                                                                    <div
+                                                                        class="book-slider__track book-absolute book-rounded-sm book-h-full book-inset-x-0 book-z-[1] book-bg-primary-400">
+                                                                    </div>
+                                                                    <div class="book-thumb__min book-absolute book-left-0 book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+                                                                        bc-name="cms.price" bc-triggers="touchstart"
+                                                                        bc-value="min">
+                                                                    </div>
+                                                                    <div class="book-thumb__max book-absolute book-left-full book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+                                                                        bc-name="cms.price" bc-triggers="touchstart"
+                                                                        bc-value="max">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="book-filter__container book-selector__container book-onewaytrip__content book-border-zinc-200 book-border book-rounded-xl book-mb-4">
+                                            <div class="book-p-4">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">مدت
+                                                        پرواز (رفت)</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+
+                                                    <div class="book-filter__content book-outboundhour__content">
+                                                        <div class="book-my-1 book-ltr book-filter__hour__container">
+                                                            <div class="book-slider__container book-mx-auto">
+                                                                <div
+                                                                    class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                    <div class="book-slider__value__container">
+                                                                        <span
+                                                                            class="book-min__value book-rtl book-inline-block"></span>
+                                                                    </div>
+                                                                    <div class="book-slider__value__container">
+                                                                        <span
+                                                                            class="book-max__value book-rtl book-inline-block"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div
+                                                                    class="book-slider__content book-relative book-h-1 book-mx-2 book-rounded-sm book-bg-primary-50 book-mt-5">
+                                                                    <div
+                                                                        class="book-slider__track book-absolute book-rounded-sm book-h-full book-inset-x-0 book-z-[1] book-bg-primary-400">
+                                                                    </div>
+                                                                    <div class="book-thumb__min book-absolute book-left-0 book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+                                                                        bc-name="cms.outboundhour"
+                                                                        bc-triggers="touchstart" bc-value="min">
+                                                                    </div>
+                                                                    <div class="book-thumb__max book-absolute book-left-full book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+                                                                        bc-name="cms.outboundhour"
+                                                                        bc-triggers="touchstart" bc-value="max">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="book-filter__container book-selector__container  book-roundtrip__content book-hidden book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">مدت
+                                                        پرواز (برگشت)</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+
+                                                    <div class="book-filter__content book-inboundhour__content">
+                                                        <div class="book-my-1 book-ltr book-filter__hour__container">
+                                                            <div class="book-slider__container book-mx-auto">
+                                                                <div
+                                                                    class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                    <div class="book-slider__value__container">
+                                                                        <span
+                                                                            class="book-min__value book-rtl book-inline-block"></span>
+                                                                    </div>
+                                                                    <div class="book-slider__value__container">
+                                                                        <span
+                                                                            class="book-max__value book-rtl book-inline-block"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div
+                                                                    class="book-slider__content book-relative book-h-1 book-mx-2 book-rounded-sm book-bg-primary-50 book-mt-5">
+                                                                    <div
+                                                                        class="book-slider__track book-absolute book-rounded-sm book-h-full book-inset-x-0 book-z-[1] book-bg-primary-400">
+                                                                    </div>
+                                                                    <div class="book-thumb__min book-absolute book-left-0 book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+                                                                        bc-name="cms.inboundhour"
+                                                                        bc-triggers="touchstart" bc-value="min">
+                                                                    </div>
+                                                                    <div class="book-thumb__max book-absolute book-left-full book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+                                                                        bc-name="cms.inboundhour"
+                                                                        bc-triggers="touchstart" bc-value="max">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="book-filter__container book-selector__container  book-multitrip__content book-hidden book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                            <div class="book-p-4 ">
+                                                <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                    onclick="toggleContent(this)">
+                                                    <h3 class="book-font-bold book-text-sm book-text-zinc-900">مدت
+                                                        پرواز</h3>
+                                                    <svg width="24" height="24">
+                                                        <use
+                                                            xlink:href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                        </use>
+                                                    </svg>
+                                                </div>
+
+                                                <div
+                                                    class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+
+                                                    <div class="book-filter__content book-hour__content">
+                                                        <div class="book-my-1 book-ltr book-filter__hour__container">
+                                                            <div class="book-slider__container book-mx-auto">
+                                                                <div
+                                                                    class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                    <div class="book-slider__value__container">
+                                                                        <span
+                                                                            class="book-min__value book-rtl book-inline-block"></span>
+                                                                    </div>
+                                                                    <div class="book-slider__value__container">
+                                                                        <span
+                                                                            class="book-max__value book-rtl book-inline-block"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div
+                                                                    class="book-slider__content book-relative book-h-1 book-mx-2 book-rounded-sm book-bg-primary-50 book-mt-5">
+                                                                    <div
+                                                                        class="book-slider__track book-absolute book-rounded-sm book-h-full book-inset-x-0 book-z-[1] book-bg-primary-400">
+                                                                    </div>
+                                                                    <div class="book-thumb__min book-absolute book-left-0 book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+                                                                        bc-name="cms.hour" bc-triggers="touchstart"
+                                                                        bc-value="min">
+                                                                    </div>
+                                                                    <div class="book-thumb__max book-absolute book-left-full book-rounded-full book-cursor-pointer book-z-[2] book-bg-white book-border-2 book-border-primary-400 book-w-4 book-h-4 book-top-1.2"
+                                                                        bc-name="cms.hour" bc-triggers="touchstart"
+                                                                        bc-value="max">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <basis core="print" datamembername="flight.outboundstop" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                                    <div class="book-p-4 ">
+                                                    <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                        onclick="toggleContent(this)">
+                                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">توقف (رفت)</h3>
+                                                        <svg width="24" height="24">
+                                                            <use
+                                                                href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                            </use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+                                                        <div class="book-filter__content book-outboundstop__content">
+                                                           @child
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                            {{ return await renderStops($data,'outboundstop')}}
+                                            </script>
+                                            </face>
+                                        </basis>
+                                        <basis core="print" datamembername="flight.inboundstop" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                                    <div class="book-p-4 ">
+                                                    <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                        onclick="toggleContent(this)">
+                                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">توقف (برگشت)</h3>
+                                                        <svg width="24" height="24">
+                                                            <use
+                                                               href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                            </use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+                                                        <div class="book-filter__content book-inboundstop__content">
+                                                           @child
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                            {{ return await renderStops($data,'inboundstop')}}
+                                        </script>
+                                            </face>
+                                        </basis>
+                                        <basis core="print" datamembername="flight.stop" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                                    <div class="book-p-4 ">
+                                                    <div class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                        onclick="toggleContent(this)">
+                                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">توقف</h3>
+                                                        <svg width="24" height="24">
+                                                            <use
+                                                                href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                            </use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
+                                                        <div class="book-filter__content book-stop__content">
+                                                           @child
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                            {{ return await renderStops($data,'stop')}}
+                                        </script>
+                                            </face>
+                                        </basis>
+                                        <basis core="print" datamembername="flight.outboundbaggage" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                                    <div class="book-p-4 ">
+                                                    <div
+                                                        class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                        onclick="toggleContent(this)">
+                                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">بار پرواز
+                                                            (رفت)</h3>
+                                                            <svg width="24" height="24">
+                                                                <use
+                                                                    href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                </use>
+                                                            </svg>
+                                                    </div>
+                                                    <div class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                        <div class="book-filter__content book-outboundbaggage__content">
+                                                            @child
+                                                        </div>
+                                                    </div>
+                                                 </div> </div>
+                                                </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                                    <div class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                        <div bc-value="baggage-@Name@" bc-name="cms.outboundbaggage" bc-triggers="click"   data-textshow="{{
+                                                            if($data.Name == 0){
+                                                                return 'بدون بار'
+                                                            }else{
+                                                                return `${$data.Name} ${$data.Unit}`
+                                                            }
+                                                        }}"
+                                                            class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+                                                        </div>
+                                                        <div class="book-w-11/12">
+                                                            <div
+                                                                class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                {{
+                                                                    if($data.Name == 0){
+                                                                        return `<span class="book-label__content">بدون بار</span>`
+                                                                      }else{
+                                                                        return `<span class="book-label__content book-relative book-top-[3px]">${$data.Name}<span class="book-ml-1">${$data.Unit}</span></span>`
+                                                                      }
+                                                                  }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                                </script>
+                                            </face>
+                                        </basis>
+                                        <basis core="print" datamembername="flight.inboundbaggage" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                                    <div class="book-p-4 ">
+                                                    <div
+                                                        class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                        onclick="toggleContent(this)">
+                                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">بار پرواز
+                                                            (برگشت)</h3>
+                                                            <svg width="24" height="24">
+                                                                <use
+                                                                    href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                </use>
+                                                            </svg>
+                                                    </div>
+                                                    <div class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                        <div class="book-filter__content book-inboundbaggage__content">
+                                                            @child
+                                                        </div>
+                                                    </div>
+                                                 </div> </div>
+                                                </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                                    <div class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                        <div bc-value="baggage-@Name@" bc-name="cms.inboundbaggage" bc-triggers="click"
+                                                            class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+                                                        </div>
+                                                        <div class="book-w-11/12">
+                                                            <div
+                                                                class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                {{
+                                                                    if($data.Name == 0){
+                                                                        return `<span class="book-label__content">بدون بار</span>`
+                                                                      }else{
+                                                                        return `<span class="book-label__content book-relative book-top-[3px]">${$data.Name}<span class="book-ml-1">${$data.Unit}</span></span>`
+                                                                      }
+                                                                  }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                                </script>
+                                            </face>
+                                        </basis>
+                                        <basis core="print" datamembername="flight.baggage" run="atclient">
+                                            <layout>
+                                                <script type="text/template">
+                                                    <div
+                                                    class="book-filter__container book-selector__container  book-border-zinc-200 book-border book-rounded-xl book-mb-4 ">
+                                                    <div class="book-p-4 ">
+                                                    <div
+                                                        class="book-filter__title__container book-flex book-justify-between  book-cursor-pointer"
+                                                        onclick="toggleContent(this)">
+                                                        <h3 class="book-font-bold book-text-sm book-text-zinc-900">بار پرواز</h3>
+                                                            <svg width="24" height="24">
+                                                                <use
+                                                                    href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                </use>
+                                                            </svg>
+                                                   
+                                                    </div>
+                                                    <div class="book-space-y-2 book-selector__content book-text-zinc-600 book-hidden">
+                                                        <div class="book-filter__content book-baggage__content">
+                                                            @child
+                                                        </div>
+                                                    </div>
+                                                 </div> </div>
+                                                </script>
+                                            </layout>
+                                            <face>
+                                                <script type="text/template">
+                                                    <div class="book-filter__item book-mt-5 book-flex book-items-center">
+                                                        <div bc-value="baggage-@Name@" bc-name="cms.baggage" bc-triggers="click"
+                                                            class="book-custom__checkbox book-border-2/5 book-border-solid book-border-zinc-400 book-cursor-pointer book-relative book-transition book-w-5 book-h-5 book-rounded book-ml-2">
+                                                        </div>
+                                                        <div class="book-w-11/12">
+                                                            <div
+                                                                class="book-flex book-justify-between book-items-center book-text-xs">
+                                                                {{
+                                                                    if($data.Name == 0){
+                                                                        return `<span class="book-label__content">بدون بار</span>`
+                                                                      }else{
+                                                                        return `<span class="book-label__content book-relative book-top-[3px]">${$data.Name}<span class="book-ml-1">${$data.Unit}</span></span>`
+                                                                      }
+                                                                  }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        
+                                                </script>
+                                            </face>
+                                        </basis>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="book-aside__sort__container book-hidden">
+                                <div
+                                    class="book-aside__sort__header book-bg-zinc-200 book-px-2 book-py-2 book-sticky book-top-0 book-z-10">
+                                    <div class="book-flex book-justify-between book-items-center book-text-sm">
+                                        <span class="book-flex book-gap-1 book-items-center book-cursor-pointer"
+                                            onclick="document.querySelector('.book-aside__container')?.classList.add('book-hidden'); document.querySelector('.book-aside__sort__container')?.classList.add('book-hidden');"
+                                            class="book-cursor-pointer">
+                                            <svg width="28" height="28">
+                                                <use href="/booking/images/sprite-booking-icons.svg#close-icon">
+                                                </use>
+                                            </svg> <span class="book-text-base">مرتب سازی</span>
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <!-- Flight Sorting Options -->
+                                <div class="book-aside__sort__content">
+
+                                    <div class="book-sort__cards__container book-px-2 book-py-2">
+                                        <div class="book-sort__cards__content book-text-sm">
+
+                                            <div bc-triggers="click" bc-name="cms.sort" bc-value="default"
+                                                class="book-cursor-pointer book-sort__item__content book-sorting__active book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-my-1 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
+
+                                                <h6 class="book-text-sm">پیش فرض</ا>
+                                            </div>
+                                            <div bc-triggers="click" bc-name="cms.sort" bc-value="price"
+                                                data-sort="descend"
+                                                class="book-cursor-pointer book-sort__item__content book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-my-1 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
+
+                                                <svg width="24" height="25">
+                                                    <use
+                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon">
+                                                    </use>
+                                                </svg>
+
+                                                <h6 class="book-text-sm">قیمت</h6>
+                                            </div>
+                                            <div bc-triggers="click" bc-name="cms.sort" bc-value="stop"
+                                                data-sort="descend"
+                                                class="book-cursor-pointer book-sort__item__content book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-my-1 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
+
+                                                <svg width="24" height="25">
+                                                    <use
+                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon">
+                                                    </use>
+                                                </svg>
+
+                                                <h6 class="book-text-sm">توقف</h6>
+                                            </div>
+                                            <div bc-triggers="click" bc-name="cms.sort" bc-value="time"
+                                                data-sort="descend"
+                                                class="book-cursor-pointer book-sort__item__content book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-my-1 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
+
+                                                <svg width="24" height="25">
+                                                    <use
+                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon">
+                                                    </use>
+                                                </svg>
+
+                                                <h6 class="book-text-sm">زمان
+                                                    پرواز</h6>
+                                            </div>
+                                            <div bc-triggers="click" bc-name="cms.sort" bc-value="hour"
+                                                data-sort="descend"
+                                                class="book-cursor-pointer book-sort__item__content book-flex book-items-center hover:book-bg-primary-50 hover:book-text-zinc-900 book-gap-1 book-justify-center book-min-h-10 book-my-1 book-text-zinc-500 book-border book-border-zinc-200 book-bg-white book-rounded-full book-text-center">
+
+                                                <svg width="24" height="25">
+                                                    <use
+                                                        xlink:href="/booking/images/sprite-booking-icons.svg#sort-up-icon">
+                                                    </use>
+                                                </svg>
+
+                                                <h6 class="book-text-sm">ساعت
+                                                    پرواز</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </aside>
+                    <!-- Flight Listings -->
+                    <div class="book-main__content book-w-full book-px-2">
+                        <!-- Flight Loading -->
+                        <div class="book-flex book-justify-between book-items-center book-text-sm">
+                            <div class="book-rendering__container book-flex book-items-center book-gap-2 book-mb-1">
+                                در حال جستجو پرواز
+                                <span class="book-loading__spinner"></span>
+                            </div>
+                            <div class="book-count__api__container book-text-center"><span
+                                    class="book-count__api__content book-w-11 book-inline-block book-text-primary-400 book-font-bold">0</span>
+                                پرواز یافت شد
+                            </div>
+                        </div>
+                        <div
+                            class="book-progress__bar__container book-w-full book-rounded-md book-bg-zinc-300 book-my-3">
+                            <div
+                                class="book-progress__bar book-h-2 book-bg-gradient-special book-rounded-md book-relative">
+                            </div>
+                        </div>
+                        <div class="book-relative">
+                            <!-- Flight Advertisment -->
+                            <div class="book-advertisment__container book-rendered__container book-hidden book-my-6">
+                                <img src="[##cms.cms.cdn##]/booking/images/advertisment-hero.jpg"
+                                    class="book-w-full book-h-24 book-rounded-lg" width="930" height="100" alt />
+                            </div>
+                            <!-- Flight Card -->
+                            <div class="book-cards__container book-mb-4">
+                                <basis core="print" datamembername="flight.updated" run="atclient">
+                                    <layout>
+                                        <script type="text/template">
+                                            <div class="book-list__cards__container">
+                                                @child
+                                             </div>
+                                          </script>
+                                    </layout>
+                                    <face>
+                                        <script type="text/template">
+                                                <div id="flight__@index@" data-id="@FlightId@" data-index="@index@" class="book-card__container book-mb-4 transition{{ return await renderSelectedFlight($data.SelectedFlight)}}">
+                                                    <div class="book-bg-white book-rounded-2xl book-shadow-sm book-p-3">
+                                                        <div class="book-cart__container">
+                                                            {{ return await renderFlightGroupMob($data)}}
+                                                        </div>
+                                                        <div class="book-cart__cost__container book-relative book-mt-4">
+                                                            <div class="book-flex book-justify-between book-items-center">
+                                                                <div class="book-text-center">
+                                                                {{
+                                                                    if($data.PriceInfo.Commission !== '0'){
+                                                                        return `<div class="book-text-xs book-text-zinc-500 book-mb-2">قیمت با کمیسیون
+                                                                            برای هر نفر
+                                                                            :</div>` 
+                                                                      
+                                                                    }else{
+                                                                        return `<div class="book-text-xs book-text-zinc-500 book-mb-2">قیمت
+                                                                            برای هر نفر
+                                                                            :</div>`
+                                                                    }
+                                                                }}
+                                                                 
+                                                                    <h4 class="book-text-xl book-font-bold book-text-zinc-900">
+                                                                        {{
+                                                                        return `<span>${new Intl.NumberFormat().format($data.PriceInfo.TotalCommission)}</span>`
+                                                                        }}
+                                                                        {{ return await renderCurrency($data.PriceInfo.Currency)}}</h4>
+                                                                </div>
+                                                                <button data-run="0" data-id="@FlightId@" type="button"
+                                                                    class="book-card__btn book-card__btn__not__active book-text-primary-400 book-border book-border-solid book-border-primary-400  book-rounded-xl book-text-sm book-transition-colors book-p-3">
+                                                                    <svg width="24" height="24">
+                                                                        <use
+                                                                            href="/booking/images/sprite-booking-icons.svg#search-arrow-icon">
+                                                                        </use>
+                                                                    </svg></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="book-modal__container book-modal__mob__container book-fixed book-h-full book-w-full book-top-0 book-bottom-0 book-transition book-z-100 book-bg-zinc-200 book-inset-x-0  book-overflow-auto book-hidden">
+                                                        <div class="book-modal__content book-w-full">
+                                                            <div class="book-p-3">
+                                                                <span onclick="closeModalContainer(this,'book-card__container__selected')"
+                                                                    class="book-cursor-pointer book-flex book-gap-1 book-items-center">
+                                                                    <svg width="28" height="28">
+                                                                        <use href="/booking/images/sprite-booking-icons.svg#close-icon">
+                                                                        </use>
+                                                                    </svg> <span class="book-text-base">مشاهده
+                                                                        جزئیات</span>
+                                                                </span>
+                                                            </div>
+                                                            <div class="book-modal__card__content book-min-h-screen book-bg-white book-rounded-t-3xl book-p-3">
+                                                                <div class="book-flight__fareFamily book-api__container book-p-3 book-border book-border-zinc-300 book-rounded-2xl book-mb-4 book-hidden">
+                                                                    <div class="book-border-b book-border-zinc-300 book-pb-8 book-mb-7">
+                                                                        <div class="book-flex book-justify-between book-mb-2">
+                                                                            <h6 class="book-text-xm book-font-bold book-text-zinc-800">
+                                                                                جزئیات
+                                                                                نرخ:</h6>
+                                                                            <svg  class="book-api__container__arrow" width="24" height="24">
+                                                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                                </use>
+                                                                            </svg>
+                                                                        </div>
+                                                
+                                                                        <div class="book-text-zinc-600 book-text-sm ">اگر
+                                                                            تمایل به
+                                                                            دریافت خدمات
+                                                                            مازاد
+                                                                            دارید یکی
+                                                                            از پکیج
+                                                                            های زیر را
+                                                                            انتخاب
+                                                                            کنید.</div>
+                                                                    </div>
+                                                                    <div class="book-api__container__content">
+                                                                        <span class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+                                                                    </div>  
+                                                                </div>
+                                                                <div class="book-flight__details book-api__container book-p-3 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                                                    <div class="book-border-b book-border-zinc-300 book-pb-2 book-mb-2">
+                                                                        <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer" onclick="{{return `toggleContentApi(this,'','book-flight__details','')`}}" data-run="1">
+                                                                            <div class="book-flex book-gap-1 book-items-center">   <svg width="21" height="20">
+                                                                                <use href="/booking/images/sprite-booking-icons.svg#plane-rotate-icon">
+                                                                                </use>
+                                                                            </svg>   <h6 class="book-text-xm book-font-bold book-text-zinc-800">
+                                                                                جزئیات
+                                                                                پرواز
+                                                                            </h6></div>
+                                                                         
+                                                                            <svg class="book-api__container__arrow" width="24" height="24">
+                                                                                <use href="/booking/images/sprite-booking-icons.svg#up-arrow-icon">
+                                                                                </use>
+                                                                            </svg>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="book-api__container__content">
+                                                                        {{ return await renderRoutesInfoMob($data)}}
+                                                                    </div>
+                                                                   
+                                                                </div>
+                                                                <div class="book-flight__baggage book-api__container book-p-3 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                                                    <div class="book-border-b book-border-zinc-300 book-pb-2 book-mb-2">
+                                                                        <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer" onclick="{{return `toggleContentApi(this,'AirBaggage','book-flight__baggage','${$data.FlightId}')`}}"
+                                                                        data-run="0">
+                                                                        <div class="book-flex book-gap-1 book-items-center">   <svg width="21" height="20">
+                                                                            <use href="/booking/images/sprite-booking-icons.svg#wheel-bag-icon">
+                                                                            </use>
+                                                                        </svg><h6 class="book-text-xm book-font-bold book-text-zinc-800">
+                                                                            بار
+                                                                            مجاز</h6></div>   
+                                                                        
+                                                                            <svg class="book-api__container__arrow" width="24" height="24">
+                                                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                                </use>
+                                                                            </svg>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="book-api__container__content book-mt-4 book-hidden book-text-sm">
+                                                                        <span class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+                                                                    </div>
+        
+                                                                </div>
+                                                                <div class="book-flight__price book-api__container book-p-3 book-border book-border-zinc-300 book-rounded-2xl  book-mb-4">
+                                                                    <div class="book-border-b book-border-zinc-300 book-pb-2 book-mb-2">
+                                                                        <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer" onclick="{{return `toggleContentApi(this,'','book-flight__price','')`}}" data-run="1">
+                                                                            <div class="book-flex book-gap-1 book-items-center">    <svg width="21" height="20">
+                                                                                <use href="/booking/images/sprite-booking-icons.svg#class-icon">
+                                                        
+                                                                                </use>
+                                                                            </svg>    <h6 class="book-text-xm book-font-bold book-text-zinc-800">
+                                                                                جزئیات
+                                                                                نرخ</h6></div>
+                                                                        
+                                                                            <svg class="book-api__container__arrow" width="24" height="24">
+                                                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                                </use>
+                                                                            </svg>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="book-api__container__content book-mt-4 book-hidden book-text-sm">
+                                                                        {{ return await renderPassengerFare($data)}}
+                                                                      </div>
+                                                                    </div>
+                                                               
+                                                                    <div class="book-flight__rule book-api__container book-p-3 book-border book-border-zinc-300 book-rounded-2xl">
+                                                                        <div class="book-border-b book-border-zinc-300 book-pb-2 book-mb-2">
+                                                                            <div class="book-content__api book-flex book-justify-between book-items-center book-mb-2 book-cursor-pointer"  onclick="{{return `toggleContentApi(this,'AirRules','book-flight__rule','${$data.FlightId}')`}}" data-run="0">
+                                                                                <div class="book-flex book-gap-1 book-items-center">
+                                                                                    <svg width="21" height="20">
+                                                                                        <use href="/booking/images/sprite-booking-icons.svg#flight-rule-icon">
+                                                                                        </use>
+                                                                                    </svg>
+                                                                                    <h6 class="book-text-xm book-font-bold book-text-zinc-800">
+                                                                                        قوانین
+                                                                                        کلی
+                                                                                    </h6>
+                                                                                </div>
+                                                                             
+                                                                                <svg class="book-api__container__arrow" width="24" height="24">
+                                                                                    <use
+                                                                                        href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                                                                                    </use>
+                                                                                </svg>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="book-api__container__content book-max-h-40 book-pl-2 book-overflow-y-auto book-mt-4 book-hidden">
+                                                                            <span class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+                                                                          </div>
+                                                                        <div>
+                                                                        </div>
+                                                                    </div>
+                                                             
+                                                         
+                                                               
+                                                
+                                                                <div class="book-sticky book-bottom-0 book-bg-white book-py-3 book-z-10">
+                                                                        <div class="book-mb-3">
+                                                                            {{
+                                                                                if($data.PriceInfo.Commission !== '0'){
+                                                                                return `<div><h6 class="book-text-xs book-text-zinc-500 book-mb-2">کمیسیون : </h6>
+                                                                                <div class="book-text-lg book-font-bold book-text-zinc-900">${new
+                                                                                    Intl.NumberFormat().format($data.PriceInfo.Commission)}${await
+                                                                                  renderCurrency($data.PriceInfo.Currency)}</div></div>
+                                                                                  <div><h6 class="book-text-xs book-text-zinc-500 book-mb-2">مبلغ : </h6>
+                                                                                <div class="book-text-lg book-font-bold book-text-zinc-900">${new
+                                                                                    Intl.NumberFormat().format($data.PriceInfo.Total)}${await
+                                                                                  renderCurrency($data.PriceInfo.Currency)}</div></div>`
+                                                                                }
+                                                                            }}
+                                                                            <div><h6 class="book-text-xs book-text-zinc-500 book-mb-2">مبلغ
+                                                                                قابل
+                                                                                پرداخت:
+                                                                            </h6>
+                                                                            {{
+                                                                                return `<div class="book-text-xl book-font-bold book-text-zinc-900"><span class="book-cart__price__container">${new
+                                                                                    Intl.NumberFormat().format($data.PriceInfo.TotalCommission)}</span>${await
+                                                                                  renderCurrency($data.PriceInfo.Currency)}</div></div>`
+                                                                            }}
+                                                                        
+                                                                        </div>
+                                                                        <button type="button" onclick="{{return `submitCard(this,'${$data.FlightId}')`}}"
+                                                                            class="book-modal__btn__container book-bg-primary-800 book-text-white book-w-full book-h-12 book-rounded-lg book-font-bold hover:book-bg-secondary-800 book-transition-colors">
+                                                                            ادامه خرید
+                                                                        </button>
+                                                                    
+                                                
+                                                                </div>
+                                                
+                                                            </div>
+                                                
+                                                        </div>
+                                                
+                                                    </div>
+                                                </div>
+                                            </script>
+                                    </face>
+                                </basis>
+                            </div>
+                            <!-- paging -->
+                            <div
+                                class="book-paging__cards__container book-text-center book-my-10 book-ltr book-justify-center book-gap-1 book-flex">
+                                <button
+                                    class="book-paging__container book-leading-9 book-prevpage book-border book-border-solid book-border-zinc-200 book-rounded-lg book-w-8 book-h-8 book-hidden book-bg-white"
+                                    type="button" bc-value bc-name="cms.prevpage" bc-triggers="click">
+                                    <svg width="32" height="24">
+                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#prev-page-icon">
+                                        </use>
+                                    </svg>
+                                </button>
+                                <basis core="print" datamembername="flight.paging" run="atclient">
+                                    <layout>
+                                        <script type="text/template">@child</script>
+                                    </layout>
+                                    <face>
+                                        <script type="text/template">
+                        {{
+                            return await renderPaging($data)
+                        }}
+                    </script>
+                                    </face>
+                                </basis>
+                                <button
+                                    class="book-paging__container book-leading-9 book-nextpage book-border book-border-solid book-border-zinc-200 book-rounded-lg book-w-8 book-h-8 book-hidden book-bg-white"
+                                    type="button" bc-value bc-name="cms.nextpage" bc-triggers="click">
+                                    <svg width="32" height="24">
+                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#next-page-icon">
+                                        </use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nodat  Modal-->
+                <div class="book-nodata__container book-w-full book-text-center book-hidden">
+                    <div>
+                        <svg width="90" height="90" class="book-stroke-secondary-400 book-mx-auto">
+                            <use xlink:href="/booking/images/sprite-booking-icons.svg#calendare-icon">
+                            </use>
+                        </svg>
+                    </div>
+                    <div class="book-text-xl book-font-bold book-mt-6">پروازی
+                        در تاریخ انتخابی شما یافت نشد.
+                        تاریخ دیگری
+                        را امتحان کنید</div>
+                    <div class="book-text-zinc-500 book-mt-3">برای
+                        دریافت نتیجه لطفا تاریخ و یا مسیر خود را
+                        تغییر دهید
+                    </div>
+                    <div class="book-mt-6">
+                        <button onclick="sessionStorage.removeItem('searchSession'); window.location='/'"
+                            class="book-w-32 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-2 hover:book-bg-primary-400 hover:book-text-white">بازگشت
+                            به صفحه اصلی</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+    <!-- Footer-->
+    <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+    <script src="[##cms.cms.cdn##]/_js/swiper-bundle.11.2.5.min.js " type="text/javascript"></script>
+    <script src="[##cms.cms.cdn##]/booking/js/flight-search.js?ver=1" type="text/javascript"></script>
+
+</body>
+
+</html>
