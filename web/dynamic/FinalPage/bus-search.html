@@ -4,6 +4,8 @@
     <basis core="call" file="book/taglist" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
     <title>[##cms.seo.title|(سیستم رزرو بلیط اتوبوس)##]</title>
     <meta name="description" content="جستجو اتوبوس">
+
+
     <link href="[##cms.cms.cdn##]/booking/css/bus-search.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
 </head>
 
@@ -37,7 +39,7 @@
                             <button onclick="location.reload()" type="button"
                                 class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">بروز
                                 رسانی جستجو</button>
-                            <button onclick="window.location='/'" type="button"
+                            <button onclick="sessionStorage.removeItem('searchSession'); window.location='/'" type="button"
                                 class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-primary-400 hover:book-book-text-white">بازگشت
                                 به صفحه اصلی</button>
                         </div>
@@ -392,7 +394,7 @@
                             <div
                                 class="book-sort__cards__container book-rendered__container book-hidden book-selector__container book-my-6">
                                 <div
-                                    class="book-sort__cards__content book-selector__content book-flex book-flex-wrap book-justify-between book-items-center book-text-sm">
+                                    class="book-sort__cards__content book-selector__content book-flex book-flex-wrap book-justify-start book-gap-x-2 book-items-center book-text-sm">
                                     <div class="book-text-zinc-900">مرتب سازی بر
                                         اساس:</div>
                                     <div bc-triggers="click" bc-name="cms.sort" bc-value="default"
@@ -418,8 +420,7 @@
                                             </use>
                                         </svg>
 
-                                        <h6 class="book-text-sm">ساعت
-                                            اتوبوس</h6>
+                                        <h6 class="book-text-sm">ساعت حرکت</h6>
                                     </div>
                                 </div>
                             </div>
@@ -486,8 +487,11 @@
                                                     <p class="book-text-zinc-700 book-text-sm">( @originTerminal@ )</p>
                                                 </div>
                                                 <div
-                                                    class="book-w-[40%] book-set-before-after book-relative book-h-[1px] book-border-t book-border-dashed book-border-zinc-800">
-                                                    <span></span><span></span>
+                                                    class="book-w-[40%] book-set-before-after book-relative book-h-[1px] book-border-t book-border-dashed book-border-zinc-300">
+                                                    
+                                                    <span></span>
+                                                    <span></span>
+
                                                 </div>
                                                 <div
                                                     class="book-flex book-items-center book-cursor-pointer book-open-second-menu book-gap-1 book-whitespace-nowrap">
@@ -564,9 +568,13 @@
                                                 </svg>
                                                 @formattedPrice@
                                                 </div>
-                                                <button type="button" onclick='initializeBusCards(  "@busId@")'
-                                                class=" book-w-[90%] book-see-and-buy-ticket book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
+                                                <button type="button" onclick='initializeBusCards( "@busId@" , "seat")'
+                                                class=" book-w-[90%] book-see-and-buy-ticket book-mt-3 book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
                                                 مشاهده صندلی های خالی
+                                                </button>
+                                                <button type="button" onclick='initializeBusCards( "@busId@" , "rule")'
+                                                class=" book-w-[90%] book-see-and-buy-ticket book-mt-3 book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
+                                                قوانین استرداد
                                                 </button>
                                                 <div
                                                 class="rule-id-@busId@ book-hidden-elements book-hidden book-flex book-flex-col book-gap-3 book-w-full book-items-center">
@@ -616,6 +624,30 @@
                                     </svg>
                                 </button>
                             </div>
+
+
+                                            <div class="book-nodata__container book-w-full book-text-center book-hidden">
+                    <div>
+                        <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
+                            <use xlink:href="/booking/images/sprite-booking-icons.svg#calendare-icon">
+                            </use>
+                        </svg>
+                    </div>
+                    <div class="book-text-2xl book-font-bold book-mt-6">اتوبوسی
+                        در تاریخ انتخابی شما یافت نشد.
+                        تاریخ دیگری
+                        را امتحان کنید</div>
+                    <div class="book-text-zinc-500 book-mt-3">برای
+                        دریافت نتیجه لطفا تاریخ و یا مسیر خود را
+                        تغییر دهید
+                    </div>
+                    <div class="book-mt-6">
+                        <button onclick="sessionStorage.removeItem('searchSession'); window.location='/'"
+                            class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-primary-400 hover:book-text-white">بازگشت
+                            به صفحه اصلی</button>
+                    </div>
+                </div>
+
 
                         </div>
                     </section>

@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@import url("../../css/customized.ui.min.css");
+
 @font-face {
   font-family: "Dana";
   font-weight: 400;
@@ -28,7 +31,7 @@ html,
 body {
   background-color: #f8f8f8;
 }
-:root {
+/* :root {
   --primary: #428cd9;
   --primary-50: #D7DFFF;
   --primary-100: #B9C7FD;
@@ -56,7 +59,7 @@ body {
   --bookSpecial-1: #F8F8F8;
   --bookSpecial-2: #1084E3;
   --bookSpecial-3: #33FABB;
-}
+} */
 .book-glass {
   background-color: #ffffff9e;
   backdrop-filter: blur(5px);
@@ -166,6 +169,20 @@ body {
   border-radius: 50%;
 }
 .book-set-before-after::after {
+  content: ""; 
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: -8px;
+  right: -16px;
+  /* background-color: var(--primary-600); */
+  /* border-radius: 50%; */
+  background-image: url("../images/bus-icon.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* .book-set-before-after::after {
   content: "";
   width: 7px;
   height: 7px;
@@ -174,7 +191,7 @@ body {
   right: 0;
   background-color: var(--primary-600);
   border-radius: 50%;
-}
+} */
 
 .book-set-before-after span {
   width: 17px;
@@ -190,7 +207,8 @@ body {
   left: -6px;
 }
 .book-set-before-after span:last-child {
-  right: -6px;
+  /* right: -6px; */
+  display: none;
 }
 
 @keyframes animate-pals {

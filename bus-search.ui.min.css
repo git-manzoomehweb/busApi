@@ -1,4 +1,5 @@
-/* Bus CSS */
+@import url("../../css/customized.ui.min.css");
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -555,6 +556,14 @@ video {
   display: none;
 }
 
+.book-pointer-events-none {
+  pointer-events: none;
+}
+
+.book-pointer-events-auto {
+  pointer-events: auto;
+}
+
 .book-invisible {
   visibility: hidden;
 }
@@ -620,6 +629,10 @@ video {
   bottom: 1.25rem;
 }
 
+.book-bottom-6 {
+  bottom: 1.5rem;
+}
+
 .book-bottom-\[-22px\] {
   bottom: -22px;
 }
@@ -656,6 +669,10 @@ video {
   right: 0px;
 }
 
+.book-right-6 {
+  right: 1.5rem;
+}
+
 .book-right-\[16px\] {
   right: 16px;
 }
@@ -686,6 +703,10 @@ video {
 
 .book-top-5 {
   top: 1.25rem;
+}
+
+.book-top-6 {
+  top: 1.5rem;
 }
 
 .book-top-7 {
@@ -1181,6 +1202,10 @@ video {
   width: 2.5rem;
 }
 
+.book-w-11 {
+  width: 2.75rem;
+}
+
 .book-w-11\/12 {
   width: 91.666667%;
 }
@@ -1357,6 +1382,10 @@ video {
   max-width: 80rem;
 }
 
+.book-max-w-md {
+  max-width: 28rem;
+}
+
 .book-shrink-0 {
   flex-shrink: 0;
 }
@@ -1380,6 +1409,11 @@ video {
 
 .book--translate-x-\[2\.08rem\] {
   --tw-translate-x: -2.08rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.book--translate-y-2 {
+  --tw-translate-y: -0.5rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1521,6 +1555,12 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
+.book-space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
 
 .book-space-y-4 > :not([hidden]) ~ :not([hidden]) {
@@ -1693,6 +1733,11 @@ video {
   border-color: var(--primary-700);
 }
 
+.book-border-red-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(220 38 38 / var(--tw-border-opacity, 1));
+}
+
 .book-border-slate-600 {
   --tw-border-opacity: 1;
   border-color: rgb(71 85 105 / var(--tw-border-opacity, 1));
@@ -1809,6 +1854,11 @@ video {
 
 .book-bg-primary-900 {
   background-color: var(--primary-900);
+}
+
+.book-bg-red-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(252 165 165 / var(--tw-bg-opacity, 1));
 }
 
 .book-bg-red-500 {
@@ -2166,6 +2216,11 @@ video {
   color: rgb(16 185 129 / var(--tw-text-opacity, 1));
 }
 
+.book-text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+}
+
 .book-text-green-600 {
   --tw-text-opacity: 1;
   color: rgb(22 163 74 / var(--tw-text-opacity, 1));
@@ -2194,6 +2249,11 @@ video {
 .book-text-red-600 {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+}
+
+.book-text-red-900 {
+  --tw-text-opacity: 1;
+  color: rgb(127 29 29 / var(--tw-text-opacity, 1));
 }
 
 .book-text-secondary-600 {
@@ -2237,6 +2297,10 @@ video {
 
 .book-accent-primary-800 {
   accent-color: var(--primary-800);
+}
+
+.book-opacity-0 {
+  opacity: 0;
 }
 
 .book-opacity-40 {
@@ -2303,6 +2367,10 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.book-ease-out {
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
 .\[border-spacing\:0_8px\] {
   border-spacing: 0 8px;
 }
@@ -2346,7 +2414,7 @@ body {
   background-color: #f8f8f8;
 }
 
-:root {
+/* :root {
   --primary: #428cd9;
   --primary-50: #D7DFFF;
   --primary-100: #B9C7FD;
@@ -2374,7 +2442,7 @@ body {
   --bookSpecial-1: #F8F8F8;
   --bookSpecial-2: #1084E3;
   --bookSpecial-3: #33FABB;
-}
+} */
 
 .book-glass {
   background-color: #ffffff9e;
@@ -2508,6 +2576,20 @@ body {
 
 .book-set-before-after::after {
   content: "";
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: -8px;
+  right: -16px;
+  /* background-color: var(--primary-600); */
+  /* border-radius: 50%; */
+  background-image: url("../images/bus-icon.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* .book-set-before-after::after {
+  content: "";
   width: 7px;
   height: 7px;
   position: absolute;
@@ -2515,7 +2597,7 @@ body {
   right: 0;
   background-color: var(--primary-600);
   border-radius: 50%;
-}
+} */
 
 .book-set-before-after span {
   width: 17px;
@@ -2533,7 +2615,8 @@ body {
 }
 
 .book-set-before-after span:last-child {
-  right: -6px;
+  /* right: -6px; */
+  display: none;
 }
 
 @keyframes animate-pals {
