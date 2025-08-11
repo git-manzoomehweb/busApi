@@ -2265,6 +2265,9 @@ function initializeBusCards(idToFind, type) {
           busGroup: JSON.stringify(busGroupArray),
           run: true,
         });
+
+
+
       } else if (type === "rule") {
         $bc.setSource("cms.rule", {
           type: "upselling",
@@ -2277,6 +2280,9 @@ function initializeBusCards(idToFind, type) {
           SessionId: sessionSearchStorage.SessionId || "",
           run: true,
         });
+
+
+
       }
     }
 
@@ -2292,6 +2298,10 @@ function initializeBusCards(idToFind, type) {
 
     // تعریف handler جدید
     const busCardHandler = (event) => {
+
+
+
+
       const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
       const closeCardBtn = event.target.closest(".book-closeCard");
       const openFirstMenu = event.target.closest(".book-open-first-menu");
@@ -2307,8 +2317,32 @@ function initializeBusCards(idToFind, type) {
         ".book-third-menu .book-clode-menu"
       );
 
+
       const card = event.target.closest(".book-bus-card");
+
       if (!card) return;
+
+if (type === "seat") {
+  const seatBox = card.querySelector(".seat-box-visibility");
+  if (seatBox.classList.contains("book-hidden")) {
+    seatBox.classList.remove("book-hidden");
+  }
+
+  const seatguideBox = card.querySelector(".seatguide-box-visibility");
+  if (seatguideBox.classList.contains("book-hidden")) {
+    seatguideBox.classList.remove("book-hidden");
+  }
+} 
+else if (type === "rule") {
+  const rulesBox = card.querySelector(".rules-box-visibility");
+  if (rulesBox.classList.contains("book-hidden")) {
+    rulesBox.classList.remove("book-hidden");
+  }
+}
+
+
+
+
       if (seeMoreBtn) {
         event.stopPropagation();
         seeMoreBtn.classList.add("book-hidden");

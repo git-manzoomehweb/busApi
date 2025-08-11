@@ -33,6 +33,17 @@ let productGroupField = null;
 const urlParams = new URLSearchParams(window.location.search);
 const utmSource = urlParams.get("utm_source");
 
+const isMobile = document.querySelector("main").dataset.mob === "true";
+const domainId = document.querySelector("main").dataset.dmnid;
+const safarmarketIdCookie = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('safarmarketId='))
+    ?.split('=')[1] || '';
+
+let tripNames = [];
+
+
+
 const loadTranslations = async (lang = 'fa') => {
   try {
     const response = await fetch(`/json/translations`);
@@ -1941,55 +1952,37 @@ const onProcessedPreviousPassengers = async (args) => {
  * @param {Object} args - API response object containing status and data.
  */
 const onProcessedUserCredit = async (args) => {
-  try {
-    const response = args.response;
-    if (response.status === 200) {
-      const responseJson = await response.json();
-      if (responseJson) {
-        const userCredit = parseFloat(responseJson.user_credit);
-        const firstPay = parseFloat(
-          document.querySelector(".book-firstpay__cost").textContent
-        );
-        if (userCredit > firstPay) {
-          const container = document.querySelector(".book-invoice__container");
-          const currencyUnit = document.querySelector(
-            ".book-unit__content span"
-          ).textContent;
-          const isWallet =
-            document.querySelector(".book-buyers__container").dataset
-              .accounttype === "3";
-          const isMobile =
-            document.querySelector("main").dataset.mob === "true";
+    try {
+        const response = args.response;
+        console.log(response);
+        if (response.status === 200) {
+            const responseJson = await response.json();
+            if (responseJson) {
+                const userCredit = parseFloat(responseJson.user_credit);
+                const firstPay = parseFloat(document.querySelector(".book-firstpay__cost").textContent);
+                if (userCredit > firstPay) {
+                    const container = document.querySelector(".book-invoice__container");
+                    const currencyUnit = document.querySelector(".book-unit__content span").textContent;
+                    const isWallet = document.querySelector(".book-buyers__container").dataset.accounttype === "3";
 
-          const html = `
+
+                    const html = `
                         <div class="book-invoice__content book-cursor-pointer book-p-2" data-run="0" onclick="submitInvoice(this,'credit__Invoice')">
-                            <ul class="${
-                              isMobile
-                                ? "book-text-center"
-                                : "book-flex book-justify-between book-items-center"
-                            }">
-                                <li class="${isMobile ? "book-my-1" : ""}">${
-            isWallet ? translate("wallet_payment") : translate("credit_payment")
-          }</li>
-                                <li class="${isMobile ? "book-my-1" : ""}">
+                            <ul class="${isMobile ? 'book-text-center' : 'book-flex book-justify-between book-items-center'}">
+                                <li class="${isMobile ? 'book-my-1' : ''}">${isWallet ? translate("wallet_payment") : translate("credit_payment")}</li>
+                                <li class="${isMobile ? 'book-my-1' : ''}">
                                     <img src="/booking/images/credit-booking.png" alt="creditlogo" width="50" height="50" />
                                 </li>
-                                <li class="${isMobile ? "book-my-1" : ""}">
+                                <li class="${isMobile ? 'book-my-1' : ''}">
                                     <p>${translate("remaining_credit")} :</p>
-                                    <span class="book-price_remaining_of_credit">${new Intl.NumberFormat().format(
-                                      userCredit - firstPay
-                                    )}</span>
+                                    <span class="book-price_remaining_of_credit">${new Intl.NumberFormat().format(userCredit - firstPay)}</span>
                                     <span class="book-text-xs book-mx-1">${currencyUnit}</span>
                                 </li>
-                                <li class="${isMobile ? "book-my-2" : ""}">
-                                    <span class="book-totalcom__cost">${
-                                      document.querySelector(
-                                        ".book-firstpay__cost"
-                                      ).textContent
-                                    }</span>
+                                <li class="${isMobile ? 'book-my-2' : ''}">
+                                    <span class="book-totalcom__cost">${document.querySelector(".book-firstpay__cost").textContent}</span>
                                     <span class="book-text-xs book-mx-1">${currencyUnit}</span>
                                 </li>
-                                <li class="${isMobile ? "book-my-1" : ""}">
+                                <li class="${isMobile ? 'book-my-1' : ''}">
                                     <button type="button" class="book-btn__content book-text-white book-rounded-2xl book-p-3 book-cursor-pointer book-text-center book-bg-primary-400 book-next__btn hover:book-bg-secondary-400">
                                         ${translate("confirm_and_pay")}
                                     </button>
@@ -1997,13 +1990,13 @@ const onProcessedUserCredit = async (args) => {
                             </ul>
                         </div>`;
 
-          container?.insertAdjacentHTML("beforeend", html);
+                    container?.insertAdjacentHTML("beforeend", html);
+                }
+            }
         }
-      }
+    } catch (error) {
+        console.error("onProcessedUserCredit: " + error.message);
     }
-  } catch (error) {
-    console.error("onProcessedUserCredit: " + error.message);
-  }
 };
 
 /**
@@ -3082,7 +3075,7 @@ const updatePrices = async (totalcom, firstpay) => {
  */
 const updateStep = (stepName, element) => {
   try {
-    document.querySelector(".book-current__route__map").innerText = stepText;
+    document.querySelector(".book-current__route__map").innerText = stepName;
     if (typeof updateStepItems === "function") {
       // Extract step name from text for updateStepItems function
       const stepMap = {
@@ -3091,7 +3084,7 @@ const updateStep = (stepName, element) => {
         "مشخصات خریدار": "buyer",
         "خلاصه رزرو": "summary",
       };
-      const stepKey = stepMap[stepText] || stepText;
+      const stepKey = stepMap[stepName] || stepName;
       updateStepItems(stepKey);
     }
   } catch (err) {
@@ -5227,261 +5220,167 @@ const nextStep = (element) => {
         }
       }
     } else if (currentStep === "buyer") {
-      // Validate buyer information
-      let isExist = true;
-      let isValid = true;
-      let isVerify = true;
 
-      document
-        .querySelectorAll(".book-buyer__info__content")
-        .forEach((buyerContent) => {
-          buyerContent
-            .querySelectorAll(".book-info__item__container")
-            .forEach((e) => {
-              // Remove existing error messages
-              const description = e.querySelector(".book-alert__content");
-              if (description) description.remove();
+       // Validate buyer information
+        let isExist = true;
+        let isValid = true;
+        let isVerify = true;
 
-              // Validate required fields
-              const necessaryField = e.querySelector(".book-Required");
-              if (necessaryField) {
-                necessaryField
-                  .closest(".book-info__item__content")
-                  .classList.remove("book-invalid");
-                if (necessaryField.value === "") {
-                  necessaryField
-                    .closest(".book-info__item__content")
-                    .classList.add("book-invalid");
-                  bookToast("مشخصات خریدار را وارد کنید.");
+        document.querySelectorAll(".book-buyer__info__content").forEach(buyerContent => {
+            buyerContent.querySelectorAll(".book-info__item__container").forEach(e => {
+                // Remove existing error messages
+                const description = e.querySelector(".book-alert__content");
+                if (description) description.remove();
 
-                  // e.insertAdjacentHTML('beforeend', `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right">مشخصات خریدار را وارد کنید.</div>`);
-                  isExist = false;
-                }
-              }
-
-              // Validate number fields
-              e.querySelectorAll(".book-number__item__container").forEach(
-                (numberItem) => {
-                  const codeField = numberItem.querySelector(".book-code");
-                  if (codeField) {
-                    codeField
-                      .closest(".book-info__item__content")
-                      .classList.remove("book-invalid");
-                    if (codeField.value === "") {
-                      codeField
-                        .closest(".book-info__item__content")
-                        .classList.add("book-invalid");
-                      isExist = false;
+                // Validate required fields
+                const necessaryField = e.querySelector(".book-Required");
+                if (necessaryField) {
+                    necessaryField.closest(".book-info__item__content").classList.remove("book-invalid");
+                    if (necessaryField.value === "") {
+                        necessaryField.closest(".book-info__item__content").classList.add("book-invalid");
+                        e.insertAdjacentHTML('beforeend', `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("enter_buyer_info")}</div>`);
+                        isExist = false;
                     }
-                  }
                 }
-              );
-            });
-        });
 
-      if (isExist) {
-        // Validate agency selection
-        if (document.querySelector(".book-buyer-1")) {
-          const agencyContent = document.querySelector(
-            ".book-buyer__agency__content"
-          );
-          const selectedAgency = document.querySelector(
-            ".book-selected__agency"
-          );
-          if (
-            !agencyContent.classList.contains("book-hidden") &&
-            (!selectedAgency.getAttribute("data-id") ||
-              selectedAgency.getAttribute("data-id") === "")
-          ) {
-            isValid = false;
-            bookToast("آژانس موردنظر را از لیست پیشنهادی انتخاب کنید.");
-
-            // selectedAgency.closest(".book-info__item__container").insertAdjacentHTML('beforeend',
-            //     `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right">آژانس موردنظر را از لیست پیشنهادی انتخاب کنید.</div>`);
-          }
-        }
-
-        // Validate buyer fields
-        function validateField(element, className, regex, errorMessage) {
-          try {
-            const field = element.querySelector(className);
-            if (field?.classList.contains("book-Required")) {
-              if (!regex.test(field.value)) {
-                field
-                  .closest(".book-info__item__content")
-                  .classList.add("book-invalid");
-                bookToast(errorMessage);
-
-                // element.insertAdjacentHTML('beforeend',
-                //     `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right">${errorMessage}</div>`);
-                return false;
-              }
-              field
-                .closest(".book-info__item__content")
-                .classList.remove("book-invalid");
-              return true;
-            }
-            return true;
-          } catch (err) {
-            console.error(
-              `validateField: ${err.message}, Line: ${
-                err.lineNumber || "unknown"
-              }`
-            );
-            return false;
-          }
-        }
-
-        Array.from(
-          document.getElementsByClassName("book-buyer__info__content")
-        ).forEach((buyerInfo) => {
-          // Validate name
-          Array.from(buyerInfo.getElementsByClassName("book-name")).forEach(
-            (e) => {
-              if (
-                !validateField(
-                  e.closest(".book-info__item__container"),
-                  ".book-name",
-                  /^.{2,}$/,
-                  "حداقل تعداد کاراکتر 2 است ."
-                )
-              ) {
-                isValid = false;
-              }
-            }
-          );
-
-          // Validate email
-          Array.from(buyerInfo.getElementsByClassName("book-email")).forEach(
-            (e) => {
-              if (
-                !validateField(
-                  e.closest(".book-info__item__container"),
-                  ".book-email",
-                  /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
-                  "ایمیل صحیح نمی‌باشد."
-                )
-              ) {
-                isValid = false;
-              }
-            }
-          );
-
-          // Validate address
-          Array.from(buyerInfo.getElementsByClassName("book-address")).forEach(
-            (e) => {
-              if (
-                !validateField(
-                  e.closest(".book-info__item__container"),
-                  ".book-address",
-                  /^.{5,}$/,
-                  "حداقل تعداد کاراکتر 5 است."
-                )
-              ) {
-                isValid = false;
-              }
-            }
-          );
-
-          // Validate mobile
-          Array.from(
-            buyerInfo.getElementsByClassName("book-number__item__container")
-          ).forEach((e) => {
-            if (e.querySelector(".book-code__number")?.value === "+98") {
-              if (
-                !validateField(
-                  e,
-                  ".book-mobile",
-                  /^9([0123645789]{9})$/,
-                  "تلفن همراه باید با 9 شروع شده و بیش از 10 رقم نباشد."
-                )
-              ) {
-                isValid = false;
-              }
-            }
-          });
-        });
-
-        if (isValid) {
-          // Handle email/mobile verification
-          function handleVerification(e, type) {
-            try {
-              const verifyContainer =
-                type === "email"
-                  ? document.querySelector(".book-email-verify-container")
-                  : document.querySelector(".book-mobile-verify-container");
-              const verifyInput = verifyContainer.querySelector(
-                `.${type}-verify`
-              );
-              verifyContainer.classList.remove("book-hidden");
-              verifyInput.value = e.value;
-              if (type === "mobile") {
-                const codeContainer = verifyContainer.querySelector(
-                  ".book-code-verify-container"
-                );
-                const btnItem =
-                  verifyContainer.querySelector(".book-btn__content");
-                codeContainer.classList.add("book-hidden");
-                btnItem.dataset.type = "verifyrequest";
-                btnItem.innerHTML = "ارسال کد";
-              }
-            } catch (err) {
-              console.error(
-                `handleVerification: ${err.message}, Line: ${
-                  err.lineNumber || "unknown"
-                }`
-              );
-            }
-          }
-
-          document
-            .querySelector(".book-check__has__data")
-            .querySelectorAll("input")
-            .forEach((e) => {
-              if (e.dataset.verify && e.dataset.verify === "false") {
-                if (
-                  document
-                    .querySelector(".book-verify-request-container")
-                    .classList.contains("book-verify-request-container-toggle")
-                ) {
-                  document
-                    .querySelector(".book-verify-request-container")
-                    .classList.toggle("book-verify-request-container-toggle");
-                }
-                isVerify = false;
-                if (e.classList.contains("book-email")) {
-                  handleVerification(e, "email");
-                }
-                if (e.classList.contains("book-mobile")) {
-                  handleVerification(e, "mobile");
-                }
-              }
-            });
-
-          if (isVerify) {
-            // Set dash for empty fields
-            document
-              .querySelectorAll(".book-buyer__info__content")
-              .forEach((content) => {
-                content.querySelectorAll(".book-has-dash").forEach((input) => {
-                  if (input.value === "") {
-                    input.value = "-";
-                  }
+                // Validate number fields
+                e.querySelectorAll(".book-number__item__container").forEach(numberItem => {
+                    const codeField = numberItem.querySelector(".book-code");
+                    if (codeField) {
+                        codeField.closest(".book-info__item__content").classList.remove("book-invalid");
+                        if (codeField.value === "") {
+                            codeField.closest(".book-info__item__content").classList.add("book-invalid");
+                            isExist = false;
+                        }
+                    }
                 });
-              });
+            });
+        });
 
-            // Transition to summary step
-            const nextStepName = getNextStep(currentStep);
-            if (nextStepName) {
-              transitionToStep(currentStep, nextStepName, element);
-
-              if (typeof showSummaryContent === "function") {
-                showSummaryContent(element);
-              }
+        if (isExist) {
+            // Validate agency selection
+            if (document.querySelector(".book-buyer-1")) {
+                const agencyContent = document.querySelector(".book-buyer__agency__content");
+                const selectedAgency = document.querySelector(".book-selected__agency");
+                if (!agencyContent.classList.contains("book-hidden") &&
+                    (!selectedAgency.getAttribute("data-id") || selectedAgency.getAttribute("data-id") === '')) {
+                    isValid = false;
+                    selectedAgency.closest(".book-info__item__container").insertAdjacentHTML('beforeend',
+                        `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("select_suggested_agency")}</div>`);
+                }
             }
-          }
+
+            // Validate buyer fields
+            function validateField(element, className, regex, errorMessage) {
+                try {
+                    const field = element.querySelector(className);
+                    if (field?.classList.contains("book-Required")) {
+                        if (!regex.test(field.value)) {
+                            field.closest(".book-info__item__content").classList.add("book-invalid");
+                            element.insertAdjacentHTML('beforeend',
+                                `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${errorMessage}</div>`);
+                            return false;
+                        }
+                        field.closest(".book-info__item__content").classList.remove("book-invalid");
+                        return true;
+                    }
+                    return true;
+                } catch (error) {
+                    console.error("validateField: " + error.message);
+                    return false;
+                }
+            }
+
+            Array.from(document.getElementsByClassName("book-buyer__info__content")).forEach(buyerInfo => {
+                // Validate name
+                Array.from(buyerInfo.getElementsByClassName("book-name")).forEach(e => {
+                    if (!validateField(e.closest(".book-info__item__container"), ".book-name", /^.{2,}$/,
+                        `${translate("minimum_character_2")}`)) {
+                        isValid = false;
+                    }
+                });
+
+                // Validate email
+                Array.from(buyerInfo.getElementsByClassName("book-email")).forEach(e => {
+                    if (!validateField(e.closest(".book-info__item__container"), ".book-email",
+                        /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, `${translate("invalid_email")}`)) {
+                        isValid = false;
+                    }
+                });
+
+                // Validate address
+                Array.from(buyerInfo.getElementsByClassName("book-address")).forEach(e => {
+                    if (!validateField(e.closest(".book-info__item__container"), ".book-address", /^.{5,}$/,
+                        `${translate("minimum_character_5")}`)) {
+                        isValid = false;
+                    }
+                });
+
+                // Validate mobile
+                Array.from(buyerInfo.getElementsByClassName("book-number__item__container")).forEach(e => {
+                    if (e.querySelector(".book-code__number")?.value === '+98') {
+                        if (!validateField(e, ".book-mobile", /^9([0123645789]{9})$/,
+                            `${translate("invalid_mobile_format")}`)) {
+                            isValid = false;
+                        }
+                    }
+                });
+            });
+
+            if (isValid) {
+                // Handle email/mobile verification
+                function handleVerification(e, type) {
+                    try {
+                        const verifyContainer = type === 'email'
+                            ? document.querySelector(".book-email-verify-container")
+                            : document.querySelector(".book-mobile-verify-container");
+                        const verifyInput = verifyContainer.querySelector(`.${type}-verify`);
+                        verifyContainer.classList.remove("book-hidden");
+                        verifyInput.value = e.value;
+                        if (type === 'mobile') {
+                            const codeContainer = verifyContainer.querySelector(".book-code-verify-container");
+                            const btnItem = verifyContainer.querySelector(".book-btn__content");
+                            codeContainer.classList.add("book-hidden");
+                            btnItem.dataset.type = 'verifyrequest';
+                            btnItem.innerHTML = `${translate("send_code")}`;
+                        }
+                    } catch (error) {
+                        console.error("handleVerification: " + error.message);
+                    }
+                }
+
+                document.querySelector(".book-check__has__data").querySelectorAll("input").forEach(e => {
+                    if (e.dataset.verify && e.dataset.verify === 'false') {
+                        if (document.querySelector(".book-verify-request-container").classList.contains("book-verify-request-container-toggle")) {
+                            document.querySelector(".book-verify-request-container").classList.toggle("book-verify-request-container-toggle");
+                        }
+                        isVerify = false;
+                        if (e.classList.contains("book-email")) {
+                            handleVerification(e, 'email');
+                        }
+                        if (e.classList.contains("book-mobile")) {
+                            handleVerification(e, 'mobile');
+                        }
+                    }
+                });
+
+                if (isVerify) {
+                    // Set dash for empty fields
+                    document.querySelectorAll(".book-buyer__info__content").forEach(content => {
+                        content.querySelectorAll(".book-has-dash").forEach(input => {
+                            if (input.value === '') {
+                                input.value = '-';
+                            }
+                        });
+                    });
+
+                    // Transition to summary step
+                    document.querySelector(".book-buyers__container").classList.add("book-hidden");
+                    showSummaryContent(element);
+                }
+            }
         }
-      }
+
     } else if (currentStep === "summary") {
       // Validate summary step
       let isValid = true;
@@ -5517,59 +5416,112 @@ const nextStep = (element) => {
         }
       }
 
-      if (isValid) {
-        // Transition to invoice step
-        const invoiceContainer = document.querySelector(
-          ".book-invoice__container"
-        );
-        invoiceContainer.classList.remove("book-hidden");
-        if (invoiceContainer.querySelectorAll(".book-invoice__content")[0]) {
-          invoiceContainer
-            .querySelectorAll(".book-invoice__content")
-            .forEach((e) => {
-              e.remove();
-            });
-        }
-        if (invoiceContainer.querySelector(".book-api__container__loader")) {
-          invoiceContainer
-            .querySelector(".book-api__container__loader")
-            .remove();
-        }
-        invoiceContainer.insertAdjacentHTML(
-          "beforeend",
-          `<span
-                                                  class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-m-3"></span>`
-        );
+       if (isValid) {
+            // Transition to invoice step
+            const invoiceContainer = document.querySelector(".book-invoice__container");
+            invoiceContainer.classList.remove("book-hidden");
+            if (invoiceContainer.querySelectorAll(".book-invoice__content")[0]) {
+                invoiceContainer.querySelectorAll(".book-invoice__content").forEach(e => {
+                    e.remove()
+                })
+            };
+            if (invoiceContainer.querySelector(".book-api__container__loader")) {
+                invoiceContainer.querySelector(".book-api__container__loader").remove()
+            };
+            invoiceContainer.insertAdjacentHTML('beforeend', `<span
+                                                  class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-m-3"></span>`);
 
-        // Handle invoice rendering based on account type
-        const accountType = document.querySelector(".book-buyers__container")
-          .dataset.accounttype;
-        // Commented out as per original code
-        const share = sessionSearchStorage.share;
-        if (Number(share) === 1) {
-          invoiceContainer.innerHTML = `<div class="book-invoice__content book-pre__Invoice" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">جهت ثبت قرارداد کلیک کنید</div>`;
-          document.querySelector(".book-bankIdentifier").value = -1;
-        } else if (Number(accountType) === 1) {
-          invoiceContainer.innerHTML = `<div class="book-invoice__content book-pre__Invoice book-text-xl book-text-center book-cursor-pointer" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">جهت ثبت پیش قرارداد و ارسال به حسابداری کلیک کنید</div>`;
-        } else {
-          let cookieValue = `; ${document.cookie}`;
-          let match = cookieValue.match(/(?:^|;\s*)rkey=([^;]*)/);
-          let rkey = match ? match[1] : null;
-          const { requests, productGroupField, productIdField } =
-            getServiceMappingInfo(selectedMode);
-          const userCreditUrl = requests.userCredit;
-          $bc.setSource("cms.bankList", [
-            {
-              bank: utmSource === "safarmarket" ? "safarmarket" : "",
-              rkey: rkey,
-              selectedMode: selectedMode,
-              userCreditUrl: userCreditUrl,
-              run: true,
-            },
-          ]);
+            // Handle invoice rendering based on account type
+            const accountType = document.querySelector(".book-buyers__container").dataset.accounttype;
+            // Commented out as per original code
+            const share = sessionSearchStorage.share;
+            if (Number(share) === 1) {
+                invoiceContainer.innerHTML =
+                    `<div class="book-invoice__content book-pre__Invoice book-my-2" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">${translate("click_to_register_contract")}</div>`;
+                document.querySelector(".book-bankIdentifier").value = -1;
+            } else if (Number(accountType) === 1) {
+                invoiceContainer.innerHTML =
+                    `<div class="book-invoice__content book-pre__Invoice book-my-2 book-text-xl book-text-center book-cursor-pointer" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">${translate("click_to_register_pre_invoice")}</div>`;
+            } else {
+                let cookieValue = `; ${document.cookie}`;
+                let match = cookieValue.match(/(?:^|;\s*)rkey=([^;]*)/);
+                let rkey = match ? match[1] : null;
+                const {
+                    requests,
+                    productGroupField,
+                    productIdField
+                } = getServiceMappingInfo(selectedMode);
+                const userCreditUrl = requests.userCredit;
+                console.log(userCreditUrl , "userrrrrrrrrrrrrrrrrrrrrrrrrcreditttttttttttttttttttttt");
+                $bc.setSource("cms.bankList", [{
+                    engine: (
+                        (utmSource === "safarmarket")
+                            ? 2
+                            : ""
+                    ),
+                    rkey: rkey,
+                    selectedMode: selectedMode,
+                    userCreditUrl: userCreditUrl,
+                    run: true
+                }]);
+
+            }
+            /* } */
         }
-        /* } */
-      }
+
+      // if (isValid) {
+      //   // Transition to invoice step
+      //   const invoiceContainer = document.querySelector(
+      //     ".book-invoice__container"
+      //   );
+      //   invoiceContainer.classList.remove("book-hidden");
+      //   if (invoiceContainer.querySelectorAll(".book-invoice__content")[0]) {
+      //     invoiceContainer
+      //       .querySelectorAll(".book-invoice__content")
+      //       .forEach((e) => {
+      //         e.remove();
+      //       });
+      //   }
+      //   if (invoiceContainer.querySelector(".book-api__container__loader")) {
+      //     invoiceContainer
+      //       .querySelector(".book-api__container__loader")
+      //       .remove();
+      //   }
+      //   invoiceContainer.insertAdjacentHTML(
+      //     "beforeend",
+      //     `<span
+      //                                             class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-m-3"></span>`
+      //   );
+
+      //   // Handle invoice rendering based on account type
+      //   const accountType = document.querySelector(".book-buyers__container")
+      //     .dataset.accounttype;
+      //   // Commented out as per original code
+      //   const share = sessionSearchStorage.share;
+      //   if (Number(share) === 1) {
+      //     invoiceContainer.innerHTML = `<div class="book-invoice__content book-pre__Invoice" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">جهت ثبت قرارداد کلیک کنید</div>`;
+      //     document.querySelector(".book-bankIdentifier").value = -1;
+      //   } else if (Number(accountType) === 1) {
+      //     invoiceContainer.innerHTML = `<div class="book-invoice__content book-pre__Invoice book-text-xl book-text-center book-cursor-pointer" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">جهت ثبت پیش قرارداد و ارسال به حسابداری کلیک کنید</div>`;
+      //   } else {
+      //     let cookieValue = `; ${document.cookie}`;
+      //     let match = cookieValue.match(/(?:^|;\s*)rkey=([^;]*)/);
+      //     let rkey = match ? match[1] : null;
+      //     const { requests, productGroupField, productIdField } =
+      //       getServiceMappingInfo(selectedMode);
+      //     const userCreditUrl = requests.userCredit;
+      //     $bc.setSource("cms.bankList", [
+      //       {
+      //         bank: utmSource === "safarmarket" ? "safarmarket" : "",
+      //         rkey: rkey,
+      //         selectedMode: selectedMode,
+      //         userCreditUrl: userCreditUrl,
+      //         run: true,
+      //       },
+      //     ]);
+      //   }
+      //   /* } */
+      // }
     }
   } catch (err) {
     console.error(
@@ -5592,36 +5544,71 @@ const prevStep = (element) => {
     }
 
     // Handle special cases for going back
-    if (currentStep === "summary") {
-      // Reset coupon if applicable
-      const couponResponse = document.querySelector(
-        ".book-coupon__container .book-response-code"
-      );
-      if (couponResponse && couponResponse.classList.contains("book-true")) {
-        const couponCode = document.querySelector(".book-coupon__code");
-        const couponButton = document.querySelector(
-          ".book-coupon__container button"
-        );
-        if (couponCode) couponCode.value = "";
-        if (couponButton) couponButton.click();
-      }
+    // if (currentStep === "summary") {
+    //   // Reset coupon if applicable
+    //   const couponResponse = document.querySelector(
+    //     ".book-coupon__container .book-response-code"
+    //   );
+    //   if (couponResponse && couponResponse.classList.contains("book-true")) {
+    //     const couponCode = document.querySelector(".book-coupon__code");
+    //     const couponButton = document.querySelector(
+    //       ".book-coupon__container button"
+    //     );
+    //     if (couponCode) couponCode.value = "";
+    //     if (couponButton) couponButton.click();
+    //   }
 
-      // Hide invoice container if visible
-      const summaryInvoice = document.querySelector(".book-invoice__container");
-      if (summaryInvoice && !summaryInvoice.classList.contains("book-hidden")) {
-        summaryInvoice.classList.add("book-hidden");
-      }
+    //   // Hide invoice container if visible
+    //   const summaryInvoice = document.querySelector(".book-invoice__container");
+    //   if (summaryInvoice && !summaryInvoice.classList.contains("book-hidden")) {
+    //     summaryInvoice.classList.add("book-hidden");
+    //   }
 
-      // Remove error messages
-      ["book-company__rule__container", "book-counter__container"].forEach(
-        (className) => {
-          const description = document.querySelector(
-            `.${className} .book-alert__content`
-          );
-          if (description) description.remove();
+    //   // Remove error messages
+    //   ["book-company__rule__container", "book-counter__container"].forEach(
+    //     (className) => {
+    //       const description = document.querySelector(
+    //         `.${className} .book-alert__content`
+    //       );
+    //       if (description) description.remove();
+    //     }
+    //   );
+    // }
+
+            if (currentStep === "buyer") {
+            // Transition from buyer to passenger step
+            toggleVisibility(".book-passengers__container", ".book-buyers__container");
+            document.querySelector(".book-current__route__map").innerText = `${translate("passengerInfo")}`;
+            element.classList.add("book-hidden");
+            updateStep(`${translate("passengerInfo")}`, element);
+        } else if (currentStep === "summary") {
+            // Transition from summary to buyer step
+            // Reset coupon if applicable
+            const couponResponse = document.querySelector('.book-coupon__container .book-response-code');
+            if (couponResponse && couponResponse.classList.contains('book-true')) {
+                const couponCode = document.querySelector(".book-coupon__code");
+                const couponButton = document.querySelector(".book-coupon__container button");
+                couponCode.value = "";
+                couponButton.click();
+            }
+
+            // Hide invoice container if visible
+            const summaryInvoice = document.querySelector(".book-invoice__container");
+            if (!summaryInvoice.classList.contains("book-hidden")) {
+                summaryInvoice.classList.add("book-hidden");
+            }
+
+            // Remove error messages from rule and counter containers
+            ["book-rule__container", "book-counter__container"].forEach(className => {
+                const description = document.querySelector(`.${className} .book-description`);
+                if (description) description.remove();
+            });
+
+            // Show buyer container and hide summary
+            toggleVisibility(".book-buyers__container", ".book-summary__container");
+            element.classList.remove("book-hidden");
+            updateStep(`${translate("buyer_info")}`, element);
         }
-      );
-    }
 
     // Special handling for bus seat selection
     const bookingType = detectBookingType();
@@ -5684,9 +5671,7 @@ const onProcessedRenderSeatMapSelection = async (args) => {
     if (response.status !== 200) return;
 
     const responseJson = await response.json();
-    const renderingContainer = document.querySelector(
-      ".seat-selection-container"
-    );
+    const renderingContainer = document.querySelector(".seat-selection-container .seat-load");
     if (!renderingContainer) return;
 
     const { layout, col, row } = responseJson;

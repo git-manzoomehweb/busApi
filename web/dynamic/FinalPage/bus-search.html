@@ -13,6 +13,7 @@
     <!-- header -->
     <basis core="call" file="header.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
     <span class="book-hidden book-rotate-180 book-h-[482px]"></span>
+    
     <!-- main -->
     <main data-dmnid="[##cms.cms.domainid##]" class="book-py-6 book-flex book-justify-center">
 
@@ -505,18 +506,17 @@
                                                 </div>
 
                                                 <div
-                                                class=" book-hidden-elements book-hidden book-w-full book-flex book-flex-col book-gap-3 book-seat__container__rendering">
+                                                class="book-hidden-elements book-hidden book-w-full book-flex book-flex-col book-gap-3 book-seat__container__rendering">
 
 
-                                                <div class="book-flex book-w-full book-relative book-h-[240px]">
-                                                    <div
-                                                    class="book-w-full book-group book-overflow-hidden book-relative book-px-5 book-py-6 book-flex book-flex-col book-justify-between book-z-0 book-rounded-r-xl book--translate-x-[2.08rem] book-h-full book-bg-[#E9E9E9]">
+                                                <div class="seat-box-visibility book-hidden book-flex book-w-full book-relative book-h-[240px]">
+                                                    <div class="book-w-full book-group book-overflow-hidden book-relative book-px-5 book-py-6 book-flex book-flex-col book-justify-between book-z-0 book-rounded-r-xl book--translate-x-[2.08rem] book-h-full book-bg-[#E9E9E9]">
                                                     <div dir="ltr" class="seat-id-@busId@  book-flex book-dir-ltr">
                                                         <!-- seat  -->
                                                     </div>
                                                     </div><img class="book-z-10" src="[##cms.cms.cdn##]/booking/images/bus-inner.svg" alt="inner-bus" />
                                                 </div>
-                                                <div class="book-w-full book-flex book-justify-center book-items-center book-gap-4">
+                                                <div class="seatguide-box-visibility book-hidden book-w-full book-flex book-justify-center book-items-center book-gap-4">
                                                     <div class="book-flex book-gap-2 book-items-center"><span
                                                         class="book-size-4 book-rounded book-border book-border-zinc-900"></span>
                                                     <p class="book-text-zinc-900 book-text-sm">قابل خرید</p>
@@ -576,10 +576,12 @@
                                                 class=" book-w-[90%] book-see-and-buy-ticket book-mt-3 book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
                                                 قوانین استرداد
                                                 </button>
-                                                <div
-                                                class="rule-id-@busId@ book-hidden-elements book-hidden book-flex book-flex-col book-gap-3 book-w-full book-items-center">
-                                                </div>
+                                                <div class="book-hidden-elements book-hidden">
 
+                                                <div
+                                                class="rule-id-@busId@ rules-box-visibility book-hidden  book-flex book-flex-col book-gap-3 book-w-full book-items-center">
+                                                </div>
+                                            </div>
                                                 <button type="button" data-run="0" data-id="@busId@" onclick="{{return `submitCard(this,'${$data.busId}')`}}"
                                                 class="book-card__btn   book-mt-8 book-w-[90%] book-h-10 book-bg-primary-900 book-text-white book-justify-center book-items-center book-flex book-rounded-lg hover:book-book-bg-primary-200 hover:book-book-text-primary-950 hover:book-book-shadow-lg">خرید</button>
                                             </div>
@@ -626,7 +628,7 @@
                             </div>
 
 
-                                            <div class="book-nodata__container book-w-full book-text-center book-hidden">
+                <div class="book-nodata__container book-w-full book-text-center book-hidden">
                     <div>
                         <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
                             <use xlink:href="/booking/images/sprite-booking-icons.svg#calendare-icon">
@@ -657,6 +659,7 @@
 
         </div>
     </main>
+
     <!-- footer -->
     <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
     <script src="[##cms.cms.cdn##]/booking/js/bus-search.js?ver=1" type="text/javascript"></script>

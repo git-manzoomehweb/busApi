@@ -98,6 +98,58 @@
 }
 
 
+.book-relative {
+  position: relative;
+}
+.book-z-0 {
+  z-index: 0;
+}
+.book-z-10 {
+  z-index: 10;
+}
+.book-flex {
+  display: flex;
+}
+.book-h-\[240px\] {
+  height: 240px;
+}
+.book-h-full {
+  height: 100%;
+}
+.book-w-full {
+  width: 100%;
+}
+.book--translate-x-\[2\.08rem\] {
+  --tw-translate-x: -2.08rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.book-flex-col {
+  flex-direction: column;
+}
+.book-justify-between {
+  justify-content: space-between;
+}
+.book-overflow-hidden {
+  overflow: hidden;
+}
+.book-rounded-r-xl {
+  border-top-right-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+}
+.book-bg-\[\#E9E9E9\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(233 233 233 / var(--tw-bg-opacity, 1));
+}
+.book-px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.book-py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+
     </style>
 </head>
 
@@ -379,13 +431,24 @@
                             <input type="hidden" value="-" class="book-bankIdentifier" />
                             <input type="hidden" value="" class="book-payType" />
                             <input type="hidden" value="" class="book-clear" />
+
+
+
+
                         <div class="book-seat_selection__container">
                         <div id="seat-count" class="book-mb-4 book-text-sm book-font-bold book-text-gray-700 book-my-2">تعداد صندلی‌های انتخاب شده: <span class="book-mx-2 book-text-base" id="seat-countnum">0</span>
                         </div>
-                            <div dir="ltr" class="seat-selection-container  book-flex book-dir-ltr">
-                                <!-- seat  -->
 
+
+                        <div  dir="ltr" class="seat-selection-container  book-flex book-dir-ltr book-w-full book-relative book-h-[240px]">
+                            <img class="book-z-10" src="[##cms.cms.cdn##]/booking/images/bus-inner.svg" alt="inner-bus" />
+                            <div
+                                class="book-w-full book-group book-overflow-hidden book-relative book-px-5 book-py-6 book-flex book-flex-col book-justify-between book-z-0 book-rounded-r-xl book--translate-x-[2.08rem] book-h-full book-bg-[#E9E9E9]">
+                                <div dir="ltr" class="seat-load book-flex book-dir-ltr">
+                                    <!-- seat  -->
+                                </div>
                             </div>
+                        </div>
 
                         </div>
                             <div class="book-passengers__container book-hidden">
@@ -532,8 +595,12 @@
                             <div
                                 class="book-summary__content book-p-5 book-mb-5 book-border-slate-600 book-border-b-3 book-bg-white book-shadow-md book-rounded-2xl book-invoice__container book-hidden">
                                 <basis core="call" run="atclient" file="/book/bank/list" triggers="cms.bankList"
-                                    method="post" if="{##cms.bankList.run|(false)##}" selectedMode="{##cms.bankList.selectedMode##}" rkey="{##cms.bankList.rkey##}" bank="{##cms.bankList.bank##}"
-                                    OnRendered="renderBankList"></basis>
+                                    method="post" if="{##cms.bankList.run|(false)##}"
+                                    userCreditUrl="{##cms.bankList.userCreditUrl##}"
+                                    selectedMode="{##cms.bankList.selectedMode##}" rkey="{##cms.bankList.rkey##}"
+                                    engine="{##cms.bankList.engine|()##}" 
+                                    OnRendered="renderBankList" lid="1"
+                                    pageindex="[##cms.cms.pageindex|(1)##]"></basis>
                             </div>
                         </section>
                     </div>
