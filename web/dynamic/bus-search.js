@@ -2350,7 +2350,7 @@ else if (type === "rule") {
           el.classList.remove("book-hidden");
         });
         card.classList.remove("book-h-[240px]");
-        card.classList.add("book-h-[506px]");
+        card.classList.add("book-h-[482px]");
       }
 
       if (closeCardBtn) {
@@ -2361,7 +2361,7 @@ else if (type === "rule") {
           el.classList.add("book-hidden");
         });
         card.classList.add("book-h-[240px]");
-        card.classList.remove("book-h-[506px]");
+        card.classList.remove("book-h-[482px]");
       }
 
       if (openFirstMenu) {
@@ -2566,7 +2566,7 @@ const onProcessedRenderBusRules = async (args) => {
 
     const headerDiv = document.createElement("div");
     headerDiv.className =
-      "book-flex book-mb-3 book-mt-3 book-items-center book-gap-3";
+      "book-flex book-mb-3 book-mt-9 book-items-center book-gap-3";
     headerDiv.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M22 6v2.42C22 10 21 11 19.42 11H16V4.01C16 2.9 16.91 2 18.02 2c1.09.01 2.09.45 2.81 1.17C21.55 3.9 22 4.9 22 6Z" stroke="#FF0000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>

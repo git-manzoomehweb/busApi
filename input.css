@@ -60,6 +60,15 @@ body {
   --bookSpecial-2: #1084E3;
   --bookSpecial-3: #33FABB;
 } */
+ :root{
+      --bookSpecial-1: #F8F8F8;
+    --bookSpecial-2: #1084E3;
+    --bookSpecial-3: #33FABB;
+ }
+
+ .book-bg-specialcolor-1 {
+    background-color: var(--bookSpecial-1);
+}
 .book-glass {
   background-color: #ffffff9e;
   backdrop-filter: blur(5px);
@@ -303,6 +312,17 @@ body {
   font-size: 14px;
   color: white;
   font-weight: bold;
+}
+
+.book-checked .book-custom__checkbox::after {
+    content: '✔';
+    color: var(--primary-400);
+    font-size: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 0.1rem;
 }
 
 .book-filtering-box input[type="checkbox"] ~ label:hover::before {

@@ -6,6 +6,10 @@ export default {
     "./mobile/dynamic/**/*.html",
     "./web/static/**/*.html",
     "./web/dynamic/**/*.html",
+    "./mobile/static/**/*.js",
+    "./mobile/dynamic/**/*.js",
+    "./web/static/**/*.js",
+    "./web/dynamic/**/*.js",
   ],
   theme: {
     extend: {
@@ -35,6 +39,11 @@ export default {
           800: "var(--secondary-800)",
           900: "var(--secondary-900)",
           950: "var(--secondary-950)",
+        },
+        specialcolor:{
+          1:"var(--bookSpecial-1)" ,
+          2:"var(--bookSpecial-2)",
+          3:"var(--bookSpecial-3)"
         }
       },
     },

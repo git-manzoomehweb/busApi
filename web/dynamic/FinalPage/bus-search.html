@@ -7,9 +7,11 @@
 
 
     <link href="[##cms.cms.cdn##]/booking/css/bus-search.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
+
+
 </head>
 
-<body class="book-bg-zinc-50 book-bg-specialcolor-1">
+<body class="book-bg-specialcolor-1 book-rtl" >
     <!-- header -->
     <basis core="call" file="header.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
     <span class="book-hidden book-rotate-180 book-h-[482px]"></span>
@@ -474,16 +476,33 @@
                                                 </defs>
                                                 </svg>
                                             </div>
-                                            <div
-                                                class="book-rounded-r-2xl book-px-9 book-p-3 book-flex book-flex-col book-justify-center book-gap-6 book-rounded-l-[32px] book-h-full book-w-[73%] book-bg-white">
+
+
+                                            
+                                                                                        <div
+                                                                                            class="book-rounded-r-2xl book-px-9 book-p-3 book-flex book-flex-col book-justify-between book-gap-6 book-rounded-l-[32px] book-h-full book-w-[73%] book-bg-white">
+                                                                                            
+                                            <div class="book-flex book-flex-col book-justify-between book-gap-6  book-h-60 book-w-full book-bg-white">
                                                 <div
-                                                class="book-flex book-items-center book-cursor-pointer book-open-third-menu book-gap-2 book-text-sm book-text-zinc-700">
+                                                class="book-flex book-items-center book-open-third-menu book-gap-2 book-text-sm book-text-zinc-700">
                                                 <img class="book-w-12 book-h-12" src="[##cms.cms.cdn##]/@carrierImage@" alt="@carrierName@" />
                                                 @carrierName@
                                                 </div>
                                                 <div class="book-w-full book-flex book-justify-between book-items-center">
+                                                                                                    <div class="book-flex book-items-center book-gap-2 book-font-bold book-text-lg book-text-primary-700">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                                    class="book-size-6">
+                                                    <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z" class="book-stroke-primary-700"
+                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                    </path>
+                                                    <path d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1" class="book-stroke-primary-700"
+                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                @departureTime@
+                                                </div>
+
                                                 <div
-                                                    class="book-flex book-open-first-menu book-cursor-pointer book-items-center book-gap-1 book-whitespace-nowrap">
+                                                    class="book-flex book-flex-col book-open-first-menu book-items-center book-gap-1 book-whitespace-nowrap">
                                                     <p class="book-font-bold book-text-lg">@originCity@</p>
                                                     <p class="book-text-zinc-700 book-text-sm">( @originTerminal@ )</p>
                                                 </div>
@@ -495,15 +514,27 @@
 
                                                 </div>
                                                 <div
-                                                    class="book-flex book-items-center book-cursor-pointer book-open-second-menu book-gap-1 book-whitespace-nowrap">
+                                                    class="book-flex book-flex-col book-items-center book-open-second-menu book-gap-1 book-whitespace-nowrap">
                                                     <p class="book-font-bold book-text-lg">@destinationCity@</p>
                                                     <p class="book-text-zinc-700 book-text-sm">( @destinationTerminal@ )</p>
                                                 </div>
                                                 </div>
+                                                <div class="book-flex book-gap-2 book-items-center book-justify-between">
                                                 <div class="book-flex book-gap-2 book-items-center book-text-sm book-text-zinc-700">
                                                 <img src="[##cms.cms.cdn##]/booking/images/bus.svg" alt="bus" />
                                                 @busType@
                                                 </div>
+
+                                                <div class="book-text-zinc-800">@availableSeats@ صندلی خالی</div>
+
+
+
+                                            </div>
+                                            </div>
+
+
+
+
 
                                                 <div
                                                 class="book-hidden-elements book-hidden book-w-full book-flex book-flex-col book-gap-3 book-seat__container__rendering">
@@ -538,42 +569,14 @@
                                             </div>
                                             <div
                                                 class="book-rounded-l-2xl book-p-3 book-flex book-flex-col book-justify-between book-items-center book-rounded-r-[29px] book-translate-x-1 book-h-full book-w-[27%] book-bg-white">
-                                                <div class="book-flex book-items-center book-gap-2 book-font-bold book-text-lg book-text-primary-700">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-                                                    class="book-size-6">
-                                                    <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z" class="book-stroke-primary-700"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                                    </path>
-                                                    <path d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1" class="book-stroke-primary-700"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
-                                                @departureTime@
-                                                </div>
-                                                <div class="book-text-zinc-800">@availableSeats@ صندلی خالی</div>
-                                                <div class="book-flex book-items-center book-gap-2 book-text-primary-700 book-font-bold">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    class="book-size-6">
-                                                    <path
-                                                    d="M18.5 12.65v3.7c0 3.12-2.91 5.65-6.5 5.65s-6.5-2.53-6.5-5.65v-3.7C5.5 15.77 8.41 18 12 18s6.5-2.23 6.5-5.35Z"
-                                                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                                    </path>
-                                                    <path
-                                                    d="M18.5 7.65c0 .91-.25 1.75-.69 2.47C16.74 11.88 14.54 13 12 13c-2.54 0-4.74-1.12-5.81-2.88-.44-.72-.69-1.56-.69-2.47 0-1.56.73-2.97 1.9-3.99C8.58 2.63 10.2 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
-                                                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                                    </path>
-                                                    <path
-                                                    d="M18.5 7.65v5c0 3.12-2.91 5.35-6.5 5.35s-6.5-2.23-6.5-5.35v-5C5.5 4.53 8.41 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
-                                                    class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                                    </path>
-                                                </svg>
-                                                @formattedPrice@
-                                                </div>
+
+
                                                 <button type="button" onclick='initializeBusCards( "@busId@" , "seat")'
-                                                class=" book-w-[90%] book-see-and-buy-ticket book-mt-3 book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
+                                                class=" book-w-[90%] book-see-and-buy-ticket book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
                                                 مشاهده صندلی های خالی
                                                 </button>
                                                 <button type="button" onclick='initializeBusCards( "@busId@" , "rule")'
-                                                class=" book-w-[90%] book-see-and-buy-ticket book-mt-3 book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
+                                                class=" book-w-[90%] book-see-and-buy-ticket book-h-10 book-flex book-justify-center book-items-center book-bg-transparent book-border book-border-primary-700 book-rounded-lg book-text-primary-700 hover:book-bg-primary-700 hover:book-text-white">
                                                 قوانین استرداد
                                                 </button>
                                                 <div class="book-hidden-elements book-hidden">
@@ -582,8 +585,32 @@
                                                 class="rule-id-@busId@ rules-box-visibility book-hidden  book-flex book-flex-col book-gap-3 book-w-full book-items-center">
                                                 </div>
                                             </div>
-                                                <button type="button" data-run="0" data-id="@busId@" onclick="{{return `submitCard(this,'${$data.busId}')`}}"
-                                                class="book-card__btn   book-mt-8 book-w-[90%] book-h-10 book-bg-primary-900 book-text-white book-justify-center book-items-center book-flex book-rounded-lg hover:book-book-bg-primary-200 hover:book-book-text-primary-950 hover:book-book-shadow-lg">خرید</button>
+
+
+                                            <div class="book-flex book-flex-col book-justify-between book-gap-y-2 book-items-center book-w-full">
+                                                <div class="book-mt-8 book-flex book-items-center book-gap-2 book-text-primary-700 book-font-bold">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        class="book-size-6">
+                                                        <path
+                                                        d="M18.5 12.65v3.7c0 3.12-2.91 5.65-6.5 5.65s-6.5-2.53-6.5-5.65v-3.7C5.5 15.77 8.41 18 12 18s6.5-2.23 6.5-5.35Z"
+                                                        class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                        </path>
+                                                        <path
+                                                        d="M18.5 7.65c0 .91-.25 1.75-.69 2.47C16.74 11.88 14.54 13 12 13c-2.54 0-4.74-1.12-5.81-2.88-.44-.72-.69-1.56-.69-2.47 0-1.56.73-2.97 1.9-3.99C8.58 2.63 10.2 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
+                                                        class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                        </path>
+                                                        <path
+                                                        d="M18.5 7.65v5c0 3.12-2.91 5.35-6.5 5.35s-6.5-2.23-6.5-5.35v-5C5.5 4.53 8.41 2 12 2c1.8 0 3.42.63 4.6 1.65 1.17 1.03 1.9 2.44 1.9 4Z"
+                                                        class="book-stroke-primary-700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                        </path>
+                                                    </svg>
+                                                    @formattedPrice@
+                                                    </div>
+
+                                                    <button type="button" data-run="0" data-id="@busId@" onclick="{{return `submitCard(this,'${$data.busId}')`}}"
+                                                    class="book-card__btn book-w-[90%] book-h-10  book-bg-primary-500 book-text-white book-px-2  book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">خرید</button>
+                                            </div>
+
                                             </div>
                                             </div>
                                         </script>

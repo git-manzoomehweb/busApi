@@ -2805,6 +2805,8 @@ const scrollModalContainerItem = (element, type, parent) => {
     }
 };
 
+
+
 /**
  * Sets up the session data and updates the UI based on flight search parameters.
  * @param {Object} args - Arguments containing source data with SessionId.
@@ -5134,17 +5136,18 @@ const nextStep = (element) => {
                     productIdField
                 } = getServiceMappingInfo(selectedMode);
                 const userCreditUrl = requests.userCredit;
-                $bc.setSource("cms.bankList", [{
-                    engine: (
-                        (utmSource === "safarmarket" || (safarmarketIdCookie && domainId.includes("4869")))
-                            ? 2
-                            : ""
-                    ),
+                const bankListData = {
                     rkey: rkey,
                     selectedMode: selectedMode,
                     userCreditUrl: userCreditUrl,
                     run: true
-                }]);
+                };
+
+                if (utmSource === "safarmarket" || (safarmarketIdCookie && domainId.includes("4869"))) {
+                    bankListData.engine = 2;
+                }
+
+                $bc.setSource("cms.bankList", [bankListData]);
 
             }
             /* } */

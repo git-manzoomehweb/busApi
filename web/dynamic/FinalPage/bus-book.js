@@ -228,151 +228,319 @@ const loadRequestMapping = async () => {
   return data;
 };
 
+// const busData = JSON.parse(sessionStorage.getItem("sessionBook")) || {};
+// const busGroup = busData.busGroup || [];
+
+// const renderRoutesInfo = async (element) => {
+//   try {
+//     // Fetch bus data from localStorage
+
+//     const renderBusInfo = (icon, label, value) => {
+//       if (value && value !== "") {
+//         return `
+//                 <div class="book-flex book-items-center book-mb-2">
+//                     <div class="book-w-10 book-h-10 book-bg-primary-50 book-flex book-items-center book-justify-center book-rounded book-ml-2">
+//                         <svg width="25" height="24">
+//                             <use href="/booking/images/sprite-booking-icons.svg#${icon}"></use>
+//                         </svg>
+//                     </div>
+//                     <div>
+//                         <p class="book-text-zinc-500 book-my-2">${label}:</p>
+//                         <p class="book-text-zinc-900">${value}</p>
+//                     </div>
+//                 </div>`;
+//       }
+//       return "";
+//     };
+
+//     const routeHtml = async (item, index) => {
+//       // Helper functions to resolve location and carrier details
+//       // checkk
+//       const renderLocation = async (locationId) => {
+//         const location = busData.dictionaries?.location?.[locationId] || {};
+//         return location.city || "Unknown";
+//       };
+
+//       const renderCarrierName = async (carrierCode) => {
+//         return busData.dictionaries?.carriers?.[carrierCode]?.name || "Unknown";
+//       };
+
+//       return `
+//             <div class="book-route__info">
+//                 <div class="book-flex book-mb-4">
+//                     <div class="book-flex">
+//                         <div class="book-bus__details__progress__line book-ml-3 book-mr-3 book-relative">
+//                             <svg width="26" height="40" class="book-absolute book--right-3 book-z-10">
+//                                 <use href="/booking/images/sprite-booking-icons.svg#path-icon"></use>
+//                             </svg>
+//                             <svg width="26" height="40" class="book-absolute book--right-3 book--bottom-3 book-z-10">
+//                                 <use href="/booking/images/sprite-booking-icons.svg#tag-details-icon"></use>
+//                             </svg>
+//                         </div>
+//                         <div class="book-flex book-flex-col book-justify-between book-border-l book-border-zinc-300 book-px-2 book-ml-3">
+//                             <div>
+//                                 <h5 class="book-text-xl book-font-bold book-text-zinc-900">${
+//                                   busGroup[index].originTerminal
+//                                 }</h5>
+//                                 <h5 class="book-text-xl book-font-bold book-text-zinc-900 book-my-2">${
+//                                   item.departureTime
+//                                 }</h5>
+//                                 <p class="book-text-zinc-500 book-text-sm book-DepartureDate">${
+//                                   item.departureDate
+//                                 }</p>
+//                             </div>
+//                             <div>
+//                                 <h5 class="book-text-xl book-font-bold book-text-zinc-900">${
+//                                   busGroup[index].destinationTerminal
+//                                 }</h5>
+//                                 <p class="book-text-zinc-500 book-text-sm">${
+//                                   item.arrivalDate || ""
+//                                 }</p>
+//                             </div>
+//                         </div>
+//                     </div>
+//                     <div class="book-flex">
+//                         <div class="book-flex book-flex-col">
+//                             <div>
+//                                 <h6 class="book-text-xl book-text-zinc-900">${await renderLocation(
+//                                   item.originRoute
+//                                 )}</h6>
+//                                 <p class="book-text-zinc-600 book-text-sm book-my-2">
+//                                     ${await renderLocation(
+//                                       item.originRoute
+//                                     )}, ${
+//         busData.dictionaries?.location?.[item.originRoute]?.country || ""
+//       }
+//                                 </p>
+//                                 <div ss="book-flex book-items-center book-gap-2">
+//                                     <span class="book-text-zinc-900 book-text-sm">
+//                                         ${await renderCarrierName(
+//                                           item.busOperatorCode
+//                                         )}
+//                                     </span>
+//                                 </div>
+//                             </div>
+//                             <div class="book-text-sm book-my-5">
+//                                 <div class="">
+//                                     ${renderBusInfo(
+//                                       "check-circle-icon",
+//                                       "نوع اتوبوس",
+//                                       item.busType
+//                                     )}
+//                                     ${renderBusInfo(
+//                                       "check-circle-icon",
+//                                       "صندلی‌های موجود",
+//                                       busGroup[index].availableSeats
+//                                     )}
+//                                     ${renderBusInfo(
+//                                       "check-circle-icon",
+//                                       "قابلیت استرداد",
+//                                       busGroup[index].refundable
+//                                         ? "دارد"
+//                                         : "ندارد"
+//                                     )}
+//                                 </div>
+//                             </div>
+//                             <div>
+//                                 <h6 class="book-text-xl book-text-zinc-900">${await renderLocation(
+//                                   item.destinationRoute
+//                                 )}</h6>
+//                                 <p class="book-text-zinc-600 book-text-sm book-my-2">
+//                                     ${await renderLocation(
+//                                       item.destinationRoute
+//                                     )}, ${
+//         busData.dictionaries?.location?.[item.destinationRoute]?.country || ""
+//       }
+//                                 </p>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>`;
+//     };
+
+//     let output = "";
+//     for (const bus of busGroup) {
+//       const routeHtmls = await Promise.all(
+//         (bus.routesInfo || []).map((item, i) => routeHtml(item, i))
+//       );
+//       output += routeHtmls.join("");
+//     }
+
+//     return output;
+//   } catch (error) {
+//     console.error("renderRoutesInfo: " + error.message);
+//     return "";
+//   }
+// };
+
+
+// --- NEW BUS (aligned with flight UI) ---
+
 const busData = JSON.parse(sessionStorage.getItem("sessionBook")) || {};
 const busGroup = busData.busGroup || [];
 
 const renderRoutesInfo = async (element) => {
   try {
-    // Fetch bus data from localStorage
+    const t = (key, fallback = "") => (typeof translate === "function" ? translate(key) : fallback || key);
 
-    const renderBusInfo = (icon, label, value) => {
-      if (value && value !== "") {
-        return `
-                <div class="book-flex book-items-center book-mb-2">
-                    <div class="book-w-10 book-h-10 book-bg-primary-50 book-flex book-items-center book-justify-center book-rounded book-ml-2">
-                        <svg width="25" height="24">
-                            <use href="/booking/images/sprite-booking-icons.svg#${icon}"></use>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="book-text-zinc-500 book-my-2">${label}:</p>
-                        <p class="book-text-zinc-900">${value}</p>
-                    </div>
-                </div>`;
+    // هم‌رفتار با renderAirlineInfo در پرواز
+    const renderBusInfo = (icon, labelKey, value) => {
+      try {
+        if (value && value !== "") {
+          return `
+            <div class="">
+              <div class="book-w-10 book-h-10 book-bg-primary-50 book-flex book-items-center book-justify-center book-rounded book-ml-2">
+                <svg width="25" height="24" class="book-fill-primary-400">
+                  <use href="/booking/images/sprite-booking-icons.svg#${icon}"></use>
+                </svg>
+              </div>
+              <div>
+                <p class="book-text-zinc-500 book-my-2">${t(labelKey)}:</p>
+                <p class="book-text-zinc-900">${value}</p>
+              </div>
+            </div>`;
+        }
+        return "";
+      } catch (e) {
+        console.error("renderBusInfo:", e.message);
+        return "";
       }
-      return "";
     };
 
-    const routeHtml = async (item, index) => {
-      // Helper functions to resolve location and carrier details
-      // checkk
-      const renderLocation = async (locationId) => {
-        const location = busData.dictionaries?.location?.[locationId] || {};
-        return location.city || "Unknown";
-      };
+    // Helper ها
+    const renderLocation = async (locationId) => {
+      const location = busData?.dictionaries?.location?.[locationId] || {};
+      return location.city || t("unknown_city", "Unknown");
+    };
 
-      const renderCarrierName = async (carrierCode) => {
-        return busData.dictionaries?.carriers?.[carrierCode]?.name || "Unknown";
-      };
+    const renderCountry = async (locationId) => {
+      return busData?.dictionaries?.location?.[locationId]?.country || "";
+    };
 
+    const renderCarrierName = async (carrierCode) => {
+      return busData?.dictionaries?.carriers?.[carrierCode]?.name || t("unknown_carrier", "Unknown");
+    };
+
+    // اگر لازم دارید تاریخ/مدت‌زمان را فرمت کنید، از همان توابع پرواز استفاده کنید
+    const formatDate = async (val) =>
+      typeof renderFormatterDate === "function" ? await renderFormatterDate(val) : (val || "");
+    const formatDuration = async (mins) =>
+      typeof renderFormatterDuration === "function" ? await renderFormatterDuration(mins) : (mins || "");
+
+    // اگر برای اتوبوس مدت‌زمان ندارید، می‌توانیم از اختلاف زمان رسیدن/حرکت محاسبه کنیم (اختیاری):
+    const getDurationLabel = async (item) => {
+      if (item?.durationMinutes) return await formatDuration(item.durationMinutes);
+      return ""; // در صورت نیاز محاسبه کنید
+    };
+
+    const routeHtml = async (bus, routeItem, index, isFirstInGroup, groupIndex) => {
+      // عنوان مشابه پرواز – اگر مسیر رفت/برگشت دارید
+      // let titleDiv = "";
+      // if (isFirstInGroup && index === 0) {
+      //   const titleKey = groupIndex === 0 ? "bus_outbound" : "bus_inbound";
+      //   titleDiv = `
+      //     <div class="book-route__title book-text-lg book-font-bold book-mb-4">
+      //       ${t(titleKey, groupIndex === 0 ? "مسیر رفت" : "مسیر برگشت")}
+      //     </div>`;
+      // }
+
+      // دیتای ترمینال‌ها
+      const originTerminal = bus?.originTerminal || "";
+      const destinationTerminal = bus?.destinationTerminal || "";
+
+      // برچسب‌ها را با سیستم ترجمه همسو کردیم
+      const busTypeLabelKey = "نوع اتوبوس";            // نوع اتوبوس
+      const seatAvailLabelKey = "صندلی های موجود";   // صندلی‌های موجود
+      const refundableLabelKey = "قابلیت استرداد";       // قابلیت استرداد
+      const yesLabel = "دارد";
+      const noLabel  = "ندارد";
+
+      // محاسبه‌ی شهر/کشور
+      const originCity = await renderLocation(routeItem.originRoute);
+      const originCountry = await renderCountry(routeItem.originRoute);
+      const destinationCity = await renderLocation(routeItem.destinationRoute);
+      const destinationCountry = await renderCountry(routeItem.destinationRoute);
+
+      // نام شرکت/اپراتور
+      const carrierName = await renderCarrierName(routeItem.busOperatorCode);
+
+      // مدت‌زمان (اگر وجود داشته باشد)
+      const durationLabel = await getDurationLabel(routeItem);
+
+                  //       <h5 class="book-text-xl book-font-bold book-text-zinc-900 book-my-2">${routeItem.arrivalTime || ""}</h5>
+                  // <p class="book-text-zinc-500 book-text-sm">${await formatDate(routeItem.arrivalDate || "")}</p>
       return `
-            <div class="book-route__info">
-                <div class="book-flex book-mb-4">
-                    <div class="book-flex">
-                        <div class="book-bus__details__progress__line book-ml-3 book-mr-3 book-relative">
-                            <svg width="26" height="40" class="book-absolute book--right-3 book-z-10">
-                                <use href="/booking/images/sprite-booking-icons.svg#path-icon"></use>
-                            </svg>
-                            <svg width="26" height="40" class="book-absolute book--right-3 book--bottom-3 book-z-10">
-                                <use href="/booking/images/sprite-booking-icons.svg#tag-details-icon"></use>
-                            </svg>
-                        </div>
-                        <div class="book-flex book-flex-col book-border-l book-border-zinc-300 book-px-2 book-ml-3">
-                            <div>
-                                <h5 class="book-text-xl book-font-bold book-text-zinc-900">${
-                                  busGroup[index].originTerminal
-                                }</h5>
-                                <h5 class="book-text-xl book-font-bold book-text-zinc-900 book-my-2">${
-                                  item.departureTime
-                                }</h5>
-                                <p class="book-text-zinc-500 book-text-sm book-DepartureDate">${
-                                  item.departureDate
-                                }</p>
-                            </div>
-                            <div>
-                                <h5 class="book-text-xl book-font-bold book-text-zinc-900">${
-                                  busGroup[index].destinationTerminal
-                                }</h5>
-                                <p class="book-text-zinc-500 book-text-sm">${
-                                  item.arrivalDate || ""
-                                }</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="book-flex">
-                        <div class="book-flex book-flex-col">
-                            <div>
-                                <h6 class="book-text-xl book-text-zinc-900">${await renderLocation(
-                                  item.originRoute
-                                )}</h6>
-                                <p class="book-text-zinc-600 book-text-sm book-my-2">
-                                    ${await renderLocation(
-                                      item.originRoute
-                                    )}, ${
-        busData.dictionaries?.location?.[item.originRoute]?.country || ""
-      }
-                                </p>
-                                <div ss="book-flex book-items-center book-gap-2">
-                                    <span class="book-text-zinc-900 book-text-sm">
-                                        ${await renderCarrierName(
-                                          item.busOperatorCode
-                                        )}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="book-text-sm book-my-5">
-                                <div class="">
-                                    ${renderBusInfo(
-                                      "check-circle-icon",
-                                      "نوع اتوبوس",
-                                      item.busType
-                                    )}
-                                    ${renderBusInfo(
-                                      "check-circle-icon",
-                                      "صندلی‌های موجود",
-                                      busGroup[index].availableSeats
-                                    )}
-                                    ${renderBusInfo(
-                                      "check-circle-icon",
-                                      "قابلیت استرداد",
-                                      busGroup[index].refundable
-                                        ? "دارد"
-                                        : "ندارد"
-                                    )}
-                                </div>
-                            </div>
-                            <div>
-                                <h6 class="book-text-xl book-text-zinc-900">${await renderLocation(
-                                  item.destinationRoute
-                                )}</h6>
-                                <p class="book-text-zinc-600 book-text-sm book-my-2">
-                                    ${await renderLocation(
-                                      item.destinationRoute
-                                    )}, ${
-        busData.dictionaries?.location?.[item.destinationRoute]?.country || ""
-      }
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="book-route__info">
+          <div class="book-flex md:book-flex-row book-mb-4">
+            <!-- ستون زمان‌ها و کدها (هم‌شکل پرواز) -->
+            <div class="book-flex book-mb-4 md:book-mb-0 md:book-mr-6">
+<div class="book-flight__details__progress__line book-ml-3 book-mr-3 book-relative"><svg width="26" height="40" class="book-fill-primary-400 book-absolute book--right-3 book-z-10"><use href="/booking/images/sprite-booking-icons.svg#path-icon"></use></svg><svg width="26" height="40" class="book-fill-primary-400 book-absolute book--right-3 book--bottom-3 book-z-10"><use href="/booking/images/sprite-booking-icons.svg#tag-details-icon"></use></svg></div>
+              <div class="book-flex book-flex-col book-border-l book-border-zinc-300 book-px-2 book-ml-3 book-justify-between">
+                <div>
+                  <h5 class="book-text-xl book-font-bold book-text-zinc-900">${originTerminal}</h5>
+                  <h5 class="book-text-xl book-font-bold book-text-zinc-900 book-my-2">${routeItem.departureTime || ""}</h5>
+                  <p class="book-text-zinc-500 book-text-sm">${await formatDate(routeItem.departureDate)}</p>
                 </div>
-            </div>`;
+
+                <div>
+                  <h5 class="book-text-xl book-font-bold book-text-zinc-900">${destinationTerminal}</h5>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- ستون جزئیات (هم‌شکل پرواز) -->
+            <div class="book-flex">
+              <div class="book-flex book-flex-col">
+                <!-- مبدأ -->
+                <div>
+                  <h6 class="book-text-lg book-text-zinc-900">${originCity}</h6>
+                  <p class="book-text-zinc-600 book-text-sm book-my-2">${originCity}${originCountry ? `, ${originCountry}` : ""}</p>
+                  <div class="book-flex book-items-center book-gap-2">
+                    <span class="book-text-zinc-900 book-text-sm">${carrierName}</span>
+                  </div>
+                </div>
+
+                <!-- Grid دو ستونه شبیه پرواز -->
+                <div class="book-text-sm book-my-5">
+                  <div class="book-grid book-grid-cols-2 sm:book-grid-cols-2 book-gap-2">
+                    ${renderBusInfo("check-circle-icon", busTypeLabelKey, routeItem.busType)}
+                    ${renderBusInfo("check-circle-icon", seatAvailLabelKey, String(bus?.availableSeats ?? ""))}
+                    ${renderBusInfo("check-circle-icon", refundableLabelKey, bus?.refundable ? yesLabel : noLabel)}
+                    <!-- اگر آیتم دیگری خواستید اضافه کنید در همین Grid بگذارید -->
+                  </div>
+                </div>
+
+                <!-- مقصد -->
+                <div>
+                  <h6 class="book-text-lg book-text-zinc-900">${destinationCity}</h6>
+                  <p class="book-text-zinc-600 book-text-sm book-my-2">${destinationCity}${destinationCountry ? `, ${destinationCountry}` : ""}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>`;
     };
 
     let output = "";
-    for (const bus of busGroup) {
+    for (let groupIndex = 0; groupIndex < (busGroup || []).length; groupIndex++) {
+      const bus = busGroup[groupIndex];
       const routeHtmls = await Promise.all(
-        (bus.routesInfo || []).map((item, i) => routeHtml(item, i))
+        (bus?.routesInfo || []).map((item, i) => routeHtml(bus, item, i, true, groupIndex))
       );
       output += routeHtmls.join("");
     }
 
     return output;
   } catch (error) {
-    console.error("renderRoutesInfo: " + error.message);
+    console.error("renderRoutesInfo:", error.message);
     return "";
   }
 };
+
+
 /**
  * Formats a date to Persian (Shamsi) format with weekday, day, and month.
  * @param {string} element - The date string to format.
@@ -722,7 +890,7 @@ const renderPassengerFare = async (element) => {
         )}</span>
                 </li>
                 <li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
-                    <span>مجموع ${passengerType}</span>
+                    <span>مجموع </span>
                     <span>${new Intl.NumberFormat("fa-IR")
                       .format(item.total)
                       .replace(/,/g, "/")}${await renderCurrency(
@@ -2161,7 +2329,9 @@ const setbusGroup = async () => {
     }
 
     // Set booking data source if search data exists
+    console.log("bus.book :" , sessionBookStorage)
     $bc.setSource("bus.book", sessionBookStorage);
+
     sessionSearchStorage = sessionStorage.getItem("sessionSearch")
       ? JSON.parse(sessionStorage.getItem("sessionSearch"))
       : null;
@@ -2247,29 +2417,326 @@ const renderAmenities = async (element) => {
  * @param {string} type - The type of content to toggle.
  * @param {string} parent - The parent container class.
  */
-const scrollModalContainerItem = (element, type, parent) => {
+
+// اسکرول هوشمند: هم کانتینر، هم در صورت نیاز خود صفحه
+// const scrollModalContainerItem = async (element, type, parent, opts = {}) => {
+//   const options = {
+//     pad: 12,              // فاصله از لبه‌ها داخل کانتینر
+//     stickyOffset: 0,      // اگر هدر چسبان داری، ارتفاعش رو اینجا بده (px)
+//     alignTop: true,       // اگر true: سر باکس به لبه بالای مرورگر بچسبد
+//     openWaitMs: 300,      // زمان انتظار برای باز شدن آکاردئون (اگر transition داری هماهنگ کن)
+//     ...opts
+//   };
+
+//   try {
+//     const container = element.closest(".book-aside__content");
+//     if (!container) return;
+
+//     const target = container.querySelector(`.${parent}`);
+//     if (!target) return;
+
+//     // 1) بازکردن آکاردئون (در صورت بسته بودن)
+//     const header = target.querySelector(".book-content__api");
+//     const content = target.querySelector(".book-api__container__content");
+//     if (header) {
+//       const isCollapsed = content && (
+//         getComputedStyle(content).display === "none" ||
+//         content.clientHeight === 0
+//       );
+//       if (isCollapsed) {
+//         if (typeof toggleContentApi === "function") {
+//           toggleContentApi(header, type, parent, true);
+//         } else if (content) {
+//           content.style.display = "block";
+//         }
+//         await waitForOpen(content, options.openWaitMs);
+//       }
+//     }
+
+//     // 2) اسکرول داخل کانتینر تا جایی که کل باکس دیده شود
+//     const shortfall = scrollSectionIntoContainer(container, target, options.pad);
+
+//     // 3) اگر هنوز کامل دیده نمی‌شود (کمبود فضا در کانتینر)، صفحه را هم اسکرول بده
+//     if (shortfall > 0) {
+//       // مقدار مورد نیاز برای آوردن کامل باکس داخل viewport
+//       const tRect = target.getBoundingClientRect();
+//       const need = Math.max(shortfall, tRect.bottom - (window.innerHeight - options.stickyOffset) + options.pad);
+
+//       // اگر alignTop خواستی: سر باکس به بالای viewport بچسبد
+//       let topAlignDelta = 0;
+//       if (options.alignTop) {
+//         const tRect2 = target.getBoundingClientRect();
+//         topAlignDelta = tRect2.top - options.stickyOffset - options.pad; // اگر مثبت است یعنی باید بالا برویم
+//       }
+
+//       const delta = options.alignTop ? topAlignDelta : need;
+
+//       if (Math.abs(delta) > 1) {
+//         window.scrollBy({ top: delta, behavior: "smooth" });
+//       }
+
+//       // بعد از اسکرول صفحه، اگر خود content اسکرول داخلی دارد، تا ته اسکرول بده تا کامل دیده شود
+//       if (content && content.scrollHeight > content.clientHeight) {
+//         content.scrollTo({ top: content.scrollHeight, behavior: "smooth" });
+//       }
+//     } else {
+//       // اگر داخل کانتینر کامل دیده می‌شود ولی alignTop=true است،
+//       // می‌توانیم سر باکس را به لبه‌ی بالای مرورگر بچسبانیم (اختیاری)
+//       if (options.alignTop) {
+//         const tRect = target.getBoundingClientRect();
+//         const deltaTop = tRect.top - options.stickyOffset - options.pad;
+//         if (Math.abs(deltaTop) > 1) {
+//           window.scrollBy({ top: deltaTop, behavior: "smooth" });
+//         }
+//       }
+//     }
+
+//     // 4) تب فعال
+//     container.querySelectorAll(".book-tab__navigation__content")
+//       .forEach(tab => tab.classList.remove("book-active__tab__navigation"));
+//     element.classList.add("book-active__tab__navigation");
+
+//   } catch (err) {
+//     console.error("scrollModalContainerItem:", err.message);
+//   }
+// };
+
+// // --- Helpers ---
+
+// function waitForOpen(content, fallbackMs = 300) {
+//   return new Promise((resolve) => {
+//     if (!content) return resolve();
+//     // اگر همین الان باز است
+//     if (getComputedStyle(content).display !== "none" && content.clientHeight > 0) {
+//       requestAnimationFrame(() => setTimeout(resolve, 0));
+//       return;
+//     }
+//     // اگر transition داریم
+//     const onEnd = () => {
+//       content.removeEventListener("transitionend", onEnd);
+//       requestAnimationFrame(() => setTimeout(resolve, 0));
+//     };
+//     content.addEventListener("transitionend", onEnd, { once: true });
+//     // fallback
+//     setTimeout(() => {
+//       content.removeEventListener("transitionend", onEnd);
+//       resolve();
+//     }, fallbackMs);
+//   });
+// }
+
+
+const scrollModalContainerItem = async (element, type, parent, opts = {}) => {
+  const options = {
+    pad: 12,
+    stickyOffsetTop: 0,       // هدر چسبان بالا (px)
+    stickyOffsetBottom: 0,    // فوتر/استیکی پایین که می‌پوشاند (px)
+    alignTop: true,
+    openWaitMs: 300,
+    ...opts
+  };
+
   try {
-    const cardContainer = element.closest(".book-aside__content");
-    const target = cardContainer.querySelector(`.${parent}`);
+    const container = element.closest(".book-aside__content");
+    if (!container) return;
 
-    // Smooth scroll to target
-    cardContainer.scroll({ top: target.offsetTop, behavior: "smooth" });
+    const target = container.querySelector(`.${parent}`);
+    if (!target) return;
 
-    // Update tab navigation
-    cardContainer
-      .querySelectorAll(".book-tab__navigation__content")
-      .forEach((tab) => tab.classList.remove("book-active__tab__navigation"));
+    // 1) باز کردن آکاردئون (در صورت نیاز)
+    const header = target.querySelector(".book-content__api");
+    const content = target.querySelector(".book-api__container__content");
+    if (header) {
+      const collapsed = content && (
+        getComputedStyle(content).display === "none" || content.clientHeight === 0
+      );
+      if (collapsed) {
+        if (typeof toggleContentApi === "function") {
+          toggleContentApi(header, type, parent, true);
+        } else if (content) {
+          content.style.display = "block";
+        }
+        await waitForOpen(content, options.openWaitMs);
+      }
+    }
+
+    // 2) اسکرول داخلی کانتینر را "آنـی" انجام بده تا اندازه‌گیری دقیق بشه
+    const { shortfall } = scrollSectionIntoContainer(container, target, options.pad, /*instant*/ true);
+
+    // 3) دو فریم صبر کن تا layout تثبیت بشه
+    await nextFrame(); await nextFrame();
+
+    // 4) اگر هنوز جا کم داریم یا می‌خوایم بچسبونیم به بالا، اسکرول صفحه
+    const rect = target.getBoundingClientRect();
+    const viewportH = window.innerHeight - options.stickyOffsetTop - options.stickyOffsetBottom;
+
+    let delta = 0;
+    if (options.alignTop) {
+      // بچسبون به بالای viewport (با لحاظ هدر چسبان و pad)
+      delta = rect.top - options.stickyOffsetTop - options.pad;
+    } else if (shortfall > 0 || rect.bottom > window.innerHeight - options.stickyOffsetBottom) {
+      // به اندازه نیاز بیار تا کامل دیده بشه
+      const need = Math.max(
+        shortfall,
+        rect.bottom - (window.innerHeight - options.stickyOffsetBottom) + options.pad
+      );
+      delta = need;
+    }
+
+    if (Math.abs(delta) > 1) {
+      window.scrollBy({ top: delta, behavior: "smooth" });
+    }
+
+    // 5) اگر خود content اسکرول داخلی دارد و هنوز بخشی دیده نمی‌شود، تا ته اسکرولش بده
+    if (content && content.scrollHeight > content.clientHeight) {
+      // یک فریم بعد از اسکرول صفحه
+      await nextFrame();
+      content.scrollTop = content.scrollHeight;
+    }
+
+    // 6) تب فعال
+    container.querySelectorAll(".book-tab__navigation__content")
+      .forEach(tab => tab.classList.remove("book-active__tab__navigation"));
     element.classList.add("book-active__tab__navigation");
-    toggleContentApi(
-      target.querySelector(".book-content__api"),
-      type,
-      parent,
-      true
-    );
-  } catch (error) {
-    console.error("scrollModalContainerItem: " + error.message);
+
+  } catch (err) {
+    console.error("scrollModalContainerItem:", err.message);
   }
 };
+
+// --- Helpers ---
+
+function waitForOpen(content, fallbackMs = 300) {
+  return new Promise((resolve) => {
+    if (!content) return resolve();
+    // اگر همین الان باز و دارای ارتفاع است
+    if (getComputedStyle(content).display !== "none" && content.clientHeight > 0) {
+      requestAnimationFrame(() => setTimeout(resolve, 0));
+      return;
+    }
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      requestAnimationFrame(() => setTimeout(resolve, 0));
+    };
+    const onEnd = (e) => finish();
+    content.addEventListener("transitionend", onEnd, { once: true });
+    content.addEventListener("animationend", onEnd, { once: true });
+    setTimeout(finish, fallbackMs); // فالبک
+  });
+}
+
+/**
+ * target را داخل container کاملاً نشان می‌دهد.
+ * اگر به انتهای اسکرول container برسیم، shortfall برمی‌گرداند.
+ * @param instant اگر true باشد اسکرول داخلی "آنـی" ست می‌شود (برای دقت اندازه‌گیری توصیه می‌شود)
+ */
+function scrollSectionIntoContainer(container, target, pad = 0, instant = true) {
+  const targetTopInContainer = getOffsetTopWithin(target, container);
+  const currentTop = container.scrollTop;
+  const containerH = container.clientHeight;
+  const targetH = target.offsetHeight;
+
+  const topRel = targetTopInContainer - currentTop;
+  const bottomRel = topRel + targetH;
+
+  let newTop = currentTop;
+
+  if (topRel < pad) {
+    newTop = targetTopInContainer - pad;
+  } else if (bottomRel > containerH - pad) {
+    newTop = targetTopInContainer - (containerH - targetH) + pad;
+  } else {
+    return { shortfall: 0 };
+  }
+
+  const maxScroll = container.scrollHeight - container.clientHeight;
+  newTop = Math.max(0, Math.min(maxScroll, newTop));
+
+  const neededDelta = newTop - currentTop;
+  const canDelta = neededDelta > 0 ? (maxScroll - currentTop) : currentTop;
+  const shortfall = Math.max(0, Math.abs(neededDelta) - canDelta);
+
+  if (instant) {
+    container.scrollTop = newTop; // بدون smooth → اندازه‌ها دقیق می‌شوند
+  } else {
+    container.scrollTo({ top: newTop, behavior: "smooth" });
+  }
+  return { shortfall };
+}
+
+function getOffsetTopWithin(el, ancestor) {
+  let top = 0, node = el;
+  while (node && node !== ancestor) {
+    top += node.offsetTop;
+    node = node.offsetParent;
+  }
+  return top;
+}
+
+function nextFrame() {
+  return new Promise(r => requestAnimationFrame(() => r()));
+}
+
+
+/**
+ * تلاش می‌کند target را کاملاً داخل container نشان دهد.
+ * اگر به انتهای اسکرول container برسیم و هنوز بخشی از target دیده نشود،
+ * میزانی که کم آورده‌ایم (shortfall) را برمی‌گرداند تا با window جبران کنیم.
+ * @returns {number} shortfall (px) — 0 یعنی کامل دیده شد
+ */
+function scrollSectionIntoContainer(container, target, pad = 0) {
+  // موقعیت target نسبت به container
+  const targetTopInContainer = getOffsetTopWithin(target, container);
+  const currentTop = container.scrollTop;
+  const containerHeight = container.clientHeight;
+  const targetHeight = target.offsetHeight;
+
+  // فاصله نسبی target نسبت به نمای فعلی container
+  const topRel = targetTopInContainer - currentTop;
+  const bottomRel = topRel + targetHeight;
+
+  let newTop = currentTop;
+
+  if (topRel < pad) {
+    // بالای دید → بیار بالا
+    newTop = targetTopInContainer - pad;
+  } else if (bottomRel > containerHeight - pad) {
+    // پایین دید → بیار پایین تا کامل دیده شود
+    newTop = targetTopInContainer - (containerHeight - targetHeight) + pad;
+  } else {
+    // همین الان کامل داخل دید است
+    return 0;
+  }
+
+  // clamp در محدوده اسکرول
+  const maxScroll = container.scrollHeight - container.clientHeight;
+  newTop = Math.max(0, Math.min(maxScroll, newTop));
+
+  // اگر نمی‌توانیم به اندازه لازم اسکرول کنیم، shortfall حساب کنیم
+  const neededDelta = newTop - currentTop;
+  const canDelta = Math.sign(neededDelta) > 0
+    ? (maxScroll - currentTop)            // ظرفیت اسکرول رو به پایین
+    : currentTop;                          // ظرفیت اسکرول رو به بالا
+
+  const shortfall = Math.max(0, Math.abs(neededDelta) - canDelta);
+
+  container.scrollTo({ top: newTop, behavior: "smooth" });
+  return shortfall;
+}
+
+function getOffsetTopWithin(el, ancestor) {
+  let top = 0;
+  let node = el;
+  while (node && node !== ancestor) {
+    top += node.offsetTop;
+    node = node.offsetParent;
+  }
+  return top;
+}
+
+
 
 /**
  * Sets up the session data and updates the UI based on flight search parameters.
