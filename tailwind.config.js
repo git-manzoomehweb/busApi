@@ -6,6 +6,7 @@ export default {
     "./mobile/dynamic/**/*.html",
     "./web/static/**/*.html",
     "./web/dynamic/**/*.html",
+    "./web/dynamic/Dynamic Pages/Common Files/**/*.html",
     "./mobile/static/**/*.js",
     "./mobile/dynamic/**/*.js",
     "./web/static/**/*.js",

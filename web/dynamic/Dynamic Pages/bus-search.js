@@ -2,8 +2,14 @@
  * Global state for session management and UI updates.
  */
 
+let translations = {};
+let currentLanguage = document.documentElement.lang || 'fa';
+let isRTL = document.documentElement.dir === 'rtl' || currentLanguage === 'fa' || currentLanguage === 'ar';
+
+
+
 const isMobile = document.querySelector("main")?.dataset.mob === "true";
-const tripNames = ["اول", "دوم", "سوم", "چهارم"];
+let tripNames = [];
 let providerDataList = [];
 let isClosing = false;
 let totalTime = 20 * 60;
@@ -38,58 +44,228 @@ let sessionSearchStorage = sessionStorage.getItem("sessionSearch")
 let schemaId = 0;
 const cookieValue = `; ${document.cookie}`;
 const cookieParts = cookieValue.split(`; rkey=`);
-  let cleanTripGroup = [];
-const setSession = async (args) => {
-  if (!sessionSearchStorage) return;
-  // Update session data
-  schemaId = sessionSearchStorage.Schemaid;
-  sessionSearchStorage.SessionId = args.source._rows[0].sessionId;
-  sessionSearchStorage.rkey = cookieParts[1];
-  sessionStorage.setItem("sessionSearch", JSON.stringify(sessionSearchStorage));
+let cleanTripGroup = [];
 
-  if (Array.isArray(sessionSearchStorage.tripGroup)) {
-    cleanTripGroup = sessionSearchStorage.tripGroup.map((item) => {
-      const { destinationName, originName, ...rest } = item;
-      return rest;
-    });
-  }
 
-  if (typeof $bc !== "undefined" && $bc.setSource) {
-    $bc.setSource("cms.list", {
-      type: "upselling",
-      TripGroup: JSON.stringify(cleanTripGroup),
-      dmnid: sessionSearchStorage.dmnid || 0,
-      Type: sessionSearchStorage.Type || "",
-      lid: sessionSearchStorage.lid || 1,
-      SessionId: sessionSearchStorage.SessionId || "",
-      run: true,
-    });
-  }
 
-  // Set session expiry (20 minutes)
-  const now = new Date();
-  const ttl = 20 * 60 * 1000; // 20 minutes in milliseconds
-  sessionSearchStorage = {
-    ...sessionSearchStorage,
-    Expiry: now.getTime() + ttl,
-  };
 
-  // Fetch provider data for client users
-  if (cookieParts.length === 2) {
+
+const loadTranslations = async (lang = 'fa') => {
     try {
-      const userResponse = await fetch("/Client_User_Type.inc");
-      const user = await userResponse.text();
-      if (user === "1") {
-        const providerResponse = await fetch("/Client_Provider_Library.bc");
-        providerDataList = await providerResponse.json();
-      }
+        const response = await fetch(`/json/translations`);
+        const allTranslations = await response.json();
+        translations = allTranslations;
+        tripNames = [translate("first_route"), translate("second_route"), translate("third_route"), translate("fourth_route")];
     } catch (error) {
-      console.error(
-        "setSession: Failed to fetch provider data - " + error.message
+        console.error('loadTranslations:', error);
+    }
+}
+
+// Function to translate text
+const translate = (text) => {
+    try {
+        return translations[text] ? translations[text][currentLanguage] : text;
+    } catch (error) {
+        console.error('translate:', error);
+    }
+};
+// Function to apply direction-specific styles
+const applyDirectionStyles = async () => {
+    try {
+        const direction = isRTL ? 'rtl' : 'ltr';
+        document.documentElement.dir = direction;
+        document.documentElement.lang = currentLanguage;
+
+        // Use existing book-rtl and book-ltr classes
+        document.body.classList.toggle('book-rtl', isRTL);
+        document.body.classList.toggle('book-ltr', !isRTL);
+    } catch (error) {
+        console.error('applyDirectionStyles:', error);
+    }
+};
+
+document.addEventListener("DOMContentLoaded", async function () {
+
+    // Initialize translation
+    await loadTranslations();
+    // Initialize direction styles
+    await applyDirectionStyles();
+    sessionStorage.removeItem('sessionAmenities');
+    fetch("/booking/images/sprite-booking-icons.svg")
+        .then((res) => res.text())
+        .then((svgText) => {
+            const div = document.createElement("div");
+            div.style.display = "none"; // Hide the container from view
+            div.innerHTML = svgText;
+            document.body.insertBefore(div, document.body.firstChild); // Inject the SVG sprite at the beginning of <body>
+        })
+        .catch((err) => {
+            console.error(translate("SVG sprite load error") + ":", err);
+        });
+
+});
+
+
+async function setSession(args) {
+  try {
+
+    console.log("setsession:" , args)
+    if (!sessionSearchStorage) return;
+
+    // --- ثابت‌ها/حالت‌ها
+    const MODE = 'bus';
+
+    // --- به‌روزرسانی داده‌های سشن
+
+      sessionSearchStorage.SessionId = args.source.rows[0].sessionId;
+
+    sessionSearchStorage.rkey = cookieParts?.[1];
+    sessionSearchStorage.selectedMode = MODE;
+
+    // TTL (20 دقیقه)
+    const ttl = 20 * 60 * 1000;
+    sessionSearchStorage.Expiry = Date.now() + ttl;
+
+    sessionStorage.setItem(
+      'sessionSearch',
+      JSON.stringify(sessionSearchStorage)
+    );
+    if (typeof $bc !== 'undefined' && $bc.setSource)
+      $bc.setSource('cms.session');
+
+    // --- TripGroup تمیز برای ارسال به سرویس‌های بعدی (حذف نام‌ها)
+    let cleanTripGroup = sessionSearchStorage.tripGroup;
+    if (Array.isArray(cleanTripGroup)) {
+      cleanTripGroup = cleanTripGroup.map(
+        ({ destinationName, originName, ...rest }) => rest
       );
     }
+
+    // --- ست‌کردن سورس لیست
+    if (typeof $bc !== 'undefined' && $bc.setSource) {
+      $bc.setSource('cms.list', {
+        type: 'upselling',
+        TripGroup: JSON.stringify(cleanTripGroup || []),
+        dmnid: sessionSearchStorage.dmnid || 0,
+        Type: sessionSearchStorage.Type || '',
+        lid: sessionSearchStorage.lid || 1,
+        SessionId: sessionSearchStorage.SessionId || '',
+        run: true,
+        mode: MODE
+      });
+    }
+
+    // --- گرفتن provider برای یوزرهای «کلاینت»
+    if (cookieParts?.length === 2) {
+      const user = await (await fetch('/Client_User_Type.inc')).text();
+      if (user === '1') {
+        const providerResponse = await fetch('/Client_Provider_Library.bc');
+        providerDataList = await providerResponse.json();
+      }
+    }
+
+const tripGroup = Array.isArray(sessionSearchStorage.tripGroup)
+  ? sessionSearchStorage.tripGroup
+  : [];
+
+    console.log("testtttttttttttttttttt1111t::::",tripGroup);
+    console.log("testttttttttttttttttttt::::",cleanTripGroup);
+
+    // --- باکس «تلاش مجدد/Retry info» (Bus یک‌طرفه)
+    const retryInfoContainer = document.querySelector(
+      '.formbus .book-retry__info, .book-retry__info'
+    );
+
+    const createTripInfo = (title, trip) => {
+      const tripDiv = document.createElement('div');
+      tripDiv.classList.add('book-text-sm', 'book-mb-2');
+
+      const fromTo = `${trip.originName} ${translate(
+        'to_destination'
+      )} ${trip.destinationName}`;
+      const dateTxt = convertToPersianDate(trip.departureDate);
+
+      tripDiv.innerHTML = `
+        <div class="book-mb-2 book-text-zinc-800">${fromTo}</div>
+        <div class="book-text-xs book-text-zinc-500">${title}: ${dateTxt}</div>
+      `;
+      return tripDiv;
+    };
+
+    if (retryInfoContainer) {
+      retryInfoContainer.innerHTML = '';
+      if (tripGroup.length >= 1) {
+        retryInfoContainer.appendChild(
+          createTripInfo('تاریخ', tripGroup[0])
+        );
+      }
+    }
+
+    // --- ست‌کردن فیلدهای فرم Bus (یک‌طرفه)
+    if (tripGroup.length > 0) {
+      const departureLocationName = document.querySelector(
+        '.formbus .departure__location__name'
+      );
+      const arrivalLocationName = document.querySelector(
+        '.formbus .arrival__location__name'
+      );
+      const departureDate = document.querySelector(
+        '.formbus .departure__date'
+      );
+      const arrivalDateContainer = document.querySelector(
+        '.formbus .arrival__date__container'
+      ); // معمولا غیرفعاله
+
+      const raw = tripGroup[0] || {};
+      const trip = {
+        originName:
+          raw.originName ??
+          raw.originCityName ??
+          '',
+        destinationName:
+          raw.destinationName ??
+          raw.destinationCityName ??
+          '',
+        departureDate:
+          raw.departureDate ??
+          raw.Date ??
+          raw.GoDate ??
+          '',
+        origin:
+          raw.origin ??
+          raw.FromId ??
+          raw.originCityId ??
+          '',
+        destination:
+          raw.destination ??
+          raw.ToId ??
+          raw.destinationCityId ??
+          ''
+      };
+
+      if (departureLocationName) {
+        departureLocationName.value = trip.originName;
+        departureLocationName.dataset.id = trip.origin;
+      }
+      if (arrivalLocationName) {
+        arrivalLocationName.value = trip.destinationName;
+        arrivalLocationName.dataset.id = trip.destination;
+      }
+      if (departureDate) {
+        let dateformatted = convertToPersianDate(trip.departureDate);
+        departureDate.value = dateformatted ;
+        departureDate.dataset.date = trip.departureDate;
+      }
+
+      if (arrivalDateContainer)
+        arrivalDateContainer.classList.add('disabled__date__container');
+    }
+  } catch (error) {
+    console.error('setSessionBus: ' + error.message);
   }
-};
+}
+
+
 
 /**
  * Generates a 30-day calendar with Gregorian and Persian (Shamsi) dates
@@ -2265,9 +2441,6 @@ function initializeBusCards(idToFind, type) {
           busGroup: JSON.stringify(busGroupArray),
           run: true,
         });
-
-
-
       } else if (type === "rule") {
         $bc.setSource("cms.rule", {
           type: "upselling",
@@ -2280,9 +2453,6 @@ function initializeBusCards(idToFind, type) {
           SessionId: sessionSearchStorage.SessionId || "",
           run: true,
         });
-
-
-
       }
     }
 
@@ -2298,10 +2468,6 @@ function initializeBusCards(idToFind, type) {
 
     // تعریف handler جدید
     const busCardHandler = (event) => {
-
-
-
-
       const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
       const closeCardBtn = event.target.closest(".book-closeCard");
       const openFirstMenu = event.target.closest(".book-open-first-menu");
@@ -2317,31 +2483,26 @@ function initializeBusCards(idToFind, type) {
         ".book-third-menu .book-clode-menu"
       );
 
-
       const card = event.target.closest(".book-bus-card");
 
       if (!card) return;
 
-if (type === "seat") {
-  const seatBox = card.querySelector(".seat-box-visibility");
-  if (seatBox.classList.contains("book-hidden")) {
-    seatBox.classList.remove("book-hidden");
-  }
+      if (type === "seat") {
+        const seatBox = card.querySelector(".seat-box-visibility");
+        if (seatBox.classList.contains("book-hidden")) {
+          seatBox.classList.remove("book-hidden");
+        }
 
-  const seatguideBox = card.querySelector(".seatguide-box-visibility");
-  if (seatguideBox.classList.contains("book-hidden")) {
-    seatguideBox.classList.remove("book-hidden");
-  }
-} 
-else if (type === "rule") {
-  const rulesBox = card.querySelector(".rules-box-visibility");
-  if (rulesBox.classList.contains("book-hidden")) {
-    rulesBox.classList.remove("book-hidden");
-  }
-}
-
-
-
+        const seatguideBox = card.querySelector(".seatguide-box-visibility");
+        if (seatguideBox.classList.contains("book-hidden")) {
+          seatguideBox.classList.remove("book-hidden");
+        }
+      } else if (type === "rule") {
+        const rulesBox = card.querySelector(".rules-box-visibility");
+        if (rulesBox.classList.contains("book-hidden")) {
+          rulesBox.classList.remove("book-hidden");
+        }
+      }
 
       if (seeMoreBtn) {
         event.stopPropagation();

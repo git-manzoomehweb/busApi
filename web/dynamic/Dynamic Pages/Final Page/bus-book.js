@@ -1717,25 +1717,43 @@ const toggleDropItem = (element, type, load) => {
  * Toggles company rules modal visibility and triggers data load if needed.
  * @param {HTMLElement} element - Element triggering the toggle (e.g., checkbox).
  */
+// const toggleCompanyRule = (element) => {
+//   try {
+//     const ruleContainer = element.closest(".book-company__rule__container");
+//     // Toggle modal visibility if it exists
+//     ruleContainer
+//       .querySelector(".book-modal__container")
+//       ?.classList.toggle("book-hidden");
+//     const checkbox = ruleContainer.querySelector("input[type=checkbox]");
+//     // Trigger API call if not yet run
+//     if (checkbox.getAttribute("data-run") === "0") {
+//       $bc.setSource("cms.companyRules", true);
+//       checkbox.setAttribute("data-run", "1");
+//     }
+//   } catch (err) {
+//     console.error(
+//       `toggleCompanyRule: ${err.message}, Line: ${err.lineNumber || "unknown"}`
+//     );
+//   }
+// };
+
+
 const toggleCompanyRule = (element) => {
-  try {
-    const ruleContainer = element.closest(".book-company__rule__container");
-    // Toggle modal visibility if it exists
-    ruleContainer
-      .querySelector(".book-modal__container")
-      ?.classList.toggle("book-hidden");
-    const checkbox = ruleContainer.querySelector("input[type=checkbox]");
-    // Trigger API call if not yet run
-    if (checkbox.getAttribute("data-run") === "0") {
-      $bc.setSource("cms.companyRules", true);
-      checkbox.setAttribute("data-run", "1");
+    try {
+        const ruleContainer = element.closest(".book-company__rule__container");
+        // Toggle modal visibility if it exists
+        ruleContainer.querySelector(".book-modal__container")?.classList.toggle("book-hidden");
+        const checkbox = ruleContainer.querySelector("input[type=checkbox]");
+        // Trigger API call if not yet run
+        if (checkbox.getAttribute("data-run") === "0") {
+            $bc.setSource("cms.companyRules", true);
+            checkbox.setAttribute("data-run", "1");
+        }
+    } catch (err) {
+        console.error(`toggleCompanyRule: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
     }
-  } catch (err) {
-    console.error(
-      `toggleCompanyRule: ${err.message}, Line: ${err.lineNumber || "unknown"}`
-    );
-  }
 };
+
 /**
  * Toggles the visibility of a select item content element.
  * @param {HTMLElement} element - The element triggering the toggle (e.g., a button or link).

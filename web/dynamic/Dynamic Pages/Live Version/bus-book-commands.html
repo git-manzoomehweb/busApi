@@ -1,0 +1,22 @@
+<!-- available-seat -->
+<basis core="api" name="bus.available-seat" url="https://www.basisfly.com/api/bus/available-seat" method="post"
+    if="{##cms.seat.run|(false)##} " triggers="cms.seat" content-type="application/json" run="atclient" body='{
+                "busId": "{##cms.seat.busId##}",
+                "busGroup": {##cms.seat.busGroup##},
+                "rKey": "[##cms.cookie.rkey##]", 
+                "dmnid":  {##cms.seat.dmnid##},
+                "sessionId": "{##cms.seat.SessionId##}",
+                "lid": "{##cms.seat.lid##}"
+            }' onprocessed='onProcessedRenderSeatMapSelection'>
+</basis>
+
+<basis core="api" name="bus.rules" url="https://www.basisfly.com/api/bus/bus-rules" method="post"
+    if="{##cms.rule.run|(false)##}" triggers="cms.rule" content-type="application/json" run="atclient" body='{
+    "busId": "{##cms.rule.busId##}",
+    "busGroup": {##cms.rule.busGroup##},
+    "rKey": "[##cms.cookie.rkey##]", 
+    "dmnid":  {##cms.rule.dmnid##},
+    "sessionId": "{##cms.rule.SessionId##}",
+    "lid": "{##cms.rule.lid##}"
+}' onprocessed='onProcessedbusApiRule'>
+</basis>
