@@ -475,7 +475,7 @@ const renderRoutesInfo = async (element) => {
           <div class="book-flex md:book-flex-row book-mb-4">
             <!-- ستون زمان‌ها و کدها (هم‌شکل پرواز) -->
             <div class="book-flex book-mb-4 md:book-mb-0 md:book-mr-6">
-<div class="book-flight__details__progress__line book-ml-3 book-mr-3 book-relative"><svg width="26" height="40" class="book-fill-primary-400 book-absolute book--right-3 book-z-10"><use href="/booking/images/sprite-booking-icons.svg#path-icon"></use></svg><svg width="26" height="40" class="book-fill-primary-400 book-absolute book--right-3 book--bottom-3 book-z-10"><use href="/booking/images/sprite-booking-icons.svg#tag-details-icon"></use></svg></div>
+<div class="book-flight__details__progress__line book-ml-3 book-mr-3 book-relative"><svg width="26" height="40" class="book-fill-primary-400 book-absolute book--right-3 book-z-10"><use href="/booking/images/sprite-booking-icons.svg#bus-icon"></use></svg><svg width="26" height="40" class="book-fill-primary-400 book-absolute book--right-3 book--bottom-3 book-z-10"><use href="/booking/images/sprite-booking-icons.svg#tag-details-icon"></use></svg></div>
               <div class="book-flex book-flex-col book-border-l book-border-zinc-300 book-px-2 book-ml-3 book-justify-between">
                 <div>
                   <h5 class="book-text-xl book-font-bold book-text-zinc-900">${originTerminal}</h5>
@@ -505,9 +505,9 @@ const renderRoutesInfo = async (element) => {
                 <!-- Grid دو ستونه شبیه پرواز -->
                 <div class="book-text-sm book-my-5">
                   <div class="book-grid book-grid-cols-2 sm:book-grid-cols-2 book-gap-2">
-                    ${renderBusInfo("check-circle-icon", busTypeLabelKey, routeItem.busType)}
-                    ${renderBusInfo("check-circle-icon", seatAvailLabelKey, String(bus?.availableSeats ?? ""))}
-                    ${renderBusInfo("check-circle-icon", refundableLabelKey, bus?.refundable ? yesLabel : noLabel)}
+                    ${renderBusInfo("bus-type-icon", busTypeLabelKey, routeItem.busType)}
+                    ${renderBusInfo("seat-available-bus-icon", seatAvailLabelKey, String(bus?.availableSeats ?? ""))}
+                    ${renderBusInfo("refund-bus-icon", refundableLabelKey, bus?.refundable ? yesLabel : noLabel)}
                     <!-- اگر آیتم دیگری خواستید اضافه کنید در همین Grid بگذارید -->
                   </div>
                 </div>

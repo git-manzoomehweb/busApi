@@ -1,748 +1,571 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bus-api</title>
-    <link rel="stylesheet" href="../../output.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.basiscore.net/basisfly.com/css/swiper-bundle.min.css"
-    />
-  </head>
-  <body class="book-relative book-bg-zinc-50">
-    <div class="book-fixed book-z-[50] book-w-full book-px-4 book-bottom-2 book-left-0">
-      <div
-        class="book-flex book-w-full book-border-2 book-border-white book-justify-between book-px-6 book-shadow6 book-items-center book-h-12 book-bg-primary-900 book-rounded-lg"
-      >
-        <button
-          class="book-flex book-gap-1 book-items-center book-open-filter-menu book-text-white"
-          type="button"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M19 22V11M19 7V2M12 22v-5M12 13V2M5 22V11M5 7V2M3 11h4M17 11h4M10 13h4"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></path>
-          </svg>
-          فیلتر ها
-        </button>
 
-        <button
-          class="book-flex book-gap-1 book-items-center book-open-chang-route-menu book-text-white"
-          type="button"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-miterlimit="10"
-              stroke-width="1.5"
-              d="M20.5 14.99l-5.01 5.02M3.5 14.99h17M3.5 9.01l5.01-5.02M20.5 9.01h-17"
-            ></path>
-          </svg>
-          تغییر مسیر سفر
-        </button>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bus-api</title>
+  <!-- <link rel="stylesheet" href="../../output.css" /> -->
+  <link rel="stylesheet" href="../../bus-search-mob.ui.min.css" />
+  <link rel="stylesheet" href="https://cdn.basiscore.net/basisfly.com/css/swiper-bundle.min.css" />
+</head>
+
+<body class="book-relative book-bg-zinc-50">
+  <div class="book-fixed book-z-[50] book-w-full book-px-4 book-bottom-2 book-left-0">
+    <div
+      class="book-flex book-w-full book-border-2 book-border-white book-justify-between book-px-6 book-shadow6 book-items-center book-h-12 book-bg-primary-900 book-rounded-lg">
+      <button class="book-flex book-gap-1 book-items-center book-open-filter-menu book-text-white" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M19 22V11M19 7V2M12 22v-5M12 13V2M5 22V11M5 7V2M3 11h4M17 11h4M10 13h4" stroke="currentColor"
+            stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        فیلتر ها
+      </button>
+
+      <button class="book-flex book-gap-1 book-items-center book-open-chang-route-menu book-text-white" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+            stroke-width="1.5" d="M20.5 14.99l-5.01 5.02M3.5 14.99h17M3.5 9.01l5.01-5.02M20.5 9.01h-17"></path>
+        </svg>
+        تغییر مسیر سفر
+      </button>
+    </div>
+  </div>
+  <div
+    class="book-w-screen book-h-screen book-translate-y-[160%] book-overflow-scroll book-flex book-flex-col book-items-center book-transition-all book-duration-300 book-ease-in-out book-fixed book-top-0 book-filtering-menu book-left-0 book-bg-white book-z-[1000]">
+    <div
+      class="book-w-full book-h-[120px] book-z-0 book-flex book-items-center book-p-5 book-absolute book-top-0 book-left-0 book-bg-gradient-to-b book-from-primary-500 book-to-primary-900 book-rounded-b-[30px]">
+      <button
+        class="book-close-filtering-menu book-glass5 book-size-10 book-rounded-lg book-flex book-justify-center book-items-center"
+        type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path class="book-stroke-primary-900" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+            stroke-width="1.5" d="M8.91 19.92l6.52-6.52c.77-.77.77-2.03 0-2.8L8.91 4.08"></path>
+        </svg>
+      </button>
+      <h2 class="book-text-white book-font-bold book-mr-14 book-text-lg">فیلتر کردن سرویس</h2>
     </div>
     <div
-      class="book-w-screen book-h-screen book-translate-y-[160%] book-overflow-scroll book-flex book-flex-col book-items-center book-transition-all book-duration-300 book-ease-in-out book-fixed book-top-0 book-filtering-menu book-left-0 book-bg-white book-z-[1000]"
-    >
-      <div
-        class="book-w-full book-h-[120px] book-z-0 book-flex book-items-center book-p-5 book-absolute book-top-0 book-left-0 book-bg-gradient-to-b book-from-primary-500 book-to-primary-900 book-rounded-b-[30px]"
-      >
-        <button
-          class="book-close-filtering-menu book-glass5 book-size-10 book-rounded-lg book-flex book-justify-center book-items-center"
-          type="button"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              class="book-stroke-primary-900"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-miterlimit="10"
-              stroke-width="1.5"
-              d="M8.91 19.92l6.52-6.52c.77-.77.77-2.03 0-2.8L8.91 4.08"
-            ></path>
-          </svg>
-        </button>
-        <h2 class="book-text-white book-font-bold book-mr-14 book-text-lg">فیلتر کردن سرویس</h2>
-      </div>
-      <div
-        class="book-w-[85%] book-z-[2] book-!h-11 book-rounded-xl book-absolute book-top-[100px] book-left-[7.5%] book-bg-white book-drop-shadow-lg book-flex book-justify-between book-px-3 book-items-center book-text-zinc-900 book-text-sm"
-      >
-        <p>بلیط اتوبوس تهران به مشهد</p>
-        <p>چهارشنبه10اردیبهشت</p>
-      </div>
-      <form
-        class="book-w-full book-flex book-flex-col book-justify-between book-h-full book-gap-5 book-items-center book-mt-[170px] book-pb-12"
-      >
-        <div class="book-w-full book-flex book-flex-col book-gap-5 book-pb-14 book-items-center">
+      class="book-w-[85%] book-z-[2] book-!h-11 book-rounded-xl book-absolute book-top-[100px] book-left-[7.5%] book-bg-white book-drop-shadow-lg book-flex book-justify-between book-px-3 book-items-center book-text-zinc-900 book-text-sm">
+      <p>بلیط اتوبوس تهران به مشهد</p>
+      <p>چهارشنبه10اردیبهشت</p>
+    </div>
+    <form
+      class="book-w-full book-flex book-flex-col book-justify-between book-h-full book-gap-5 book-items-center book-mt-[170px] book-pb-12">
+      <div class="book-w-full book-flex book-flex-col book-gap-5 book-pb-14 book-items-center">
+        <div
+          class="book-filtering-box book-px-4 book-w-[85%] book-flex book-flex-col book-gap-5 book-py-5 book-rounded-xl book-shadow2">
+          <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
+            <p class="book-text-zinc-900">مرتب سازی بر اساس</p>
+            <span class="book-arrow book-transition-all book-duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path class="book-stroke-zinc-400" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                  stroke-width="1.5" d="M19.92 8.95l-6.52 6.52c-.77.77-2.03.77-2.8 0L4.08 8.95"></path>
+              </svg>
+            </span>
+          </div>
           <div
-            class="book-filtering-box book-px-4 book-w-[85%] book-flex book-flex-col book-gap-5 book-py-5 book-rounded-xl book-shadow2"
-          >
+            class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
+            <div class="book-w-full book-flex book-gap-2 book-items-center">
+              <input type="radio" name="sortBy" id="asc" class="book-accent-primary-800 book-size-3" />
+              <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="asc">زودترین زمان حرکت</label>
+            </div>
+            <div class="book-w-full book-flex book-gap-2 book-items-center">
+              <input type="radio" name="sortBy" id="desc" class="book-accent-primary-800 book-size-3" />
+              <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="desc">دیرترین زمان حرکت</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="book-flex book-flex-col book-w-[85%] book-items-center book-rounded-2xl book-shadow2 book-px-4">
+          <div
+            class="book-filtering-box book-border-b book-border-zinc-300 book-w-full book-flex book-flex-col book-gap-5 book-py-5">
             <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
-              <p class="book-text-zinc-900">مرتب سازی بر اساس</p>
+              <p class="book-text-zinc-900">ساعت</p>
               <span class="book-arrow book-transition-all book-duration-200">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    class="book-stroke-zinc-400"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-miterlimit="10"
-                    stroke-width="1.5"
-                    d="M19.92 8.95l-6.52 6.52c-.77.77-2.03.77-2.8 0L4.08 8.95"
-                  ></path>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path class="book-stroke-zinc-400" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-miterlimit="10" stroke-width="1.5"
+                    d="M19.92 8.95l-6.52 6.52c-.77.77-2.03.77-2.8 0L4.08 8.95"></path>
                 </svg>
               </span>
             </div>
             <div
-              class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden"
-            >
+              class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
               <div class="book-w-full book-flex book-gap-2 book-items-center">
-                <input
-                  type="radio"
-                  name="sortBy"
-                  id="asc"
-                  class="book-accent-primary-800 book-size-3"
-                />
-                <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="asc"
-                  >زودترین زمان حرکت</label
-                >
+                <input type="checkbox" id="6-12-A-M" class="book-accent-primary-800 book-size-3" />
+                <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="6-12-A-M">
+                  6 صبح تا 12 ظهر
+                </label>
               </div>
               <div class="book-w-full book-flex book-gap-2 book-items-center">
-                <input
-                  type="radio"
-                  name="sortBy"
-                  id="desc"
-                  class="book-accent-primary-800 book-size-3"
-                />
-                <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="desc"
-                  >دیرترین زمان حرکت</label
-                >
+                <input type="checkbox" id="12-6-A-M" class="book-accent-primary-800 book-size-3" />
+                <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="12-6-A-M">
+                  12 ظهر تا 6 عصر
+                </label>
+              </div>
+              <div class="book-w-full book-flex book-gap-2 book-items-center">
+                <input type="checkbox" id="6-12-P-M" class="book-accent-primary-800 book-size-3" />
+                <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="6-12-P-M">
+                  6 عصر تا 12 شب
+                </label>
+              </div>
+              <div class="book-w-full book-flex book-gap-2 book-items-center">
+                <input type="checkbox" id="12-6-P-M" class="book-accent-primary-800 book-size-3" />
+                <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="12-6-P-M">
+                  12 شب تا 6 صبح
+                </label>
               </div>
             </div>
           </div>
 
           <div
-            class="book-flex book-flex-col book-w-[85%] book-items-center book-rounded-2xl book-shadow2 book-px-4"
-          >
+            class="book-filtering-box book-border-b book-border-zinc-300 book-w-full book-flex book-flex-col book-gap-5 book-py-5">
+            <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
+              <p class="book-text-zinc-900">شرکت مسافربری</p>
+              <span class="book-arrow book-transition-all book-duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path class="book-stroke-zinc-400" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-miterlimit="10" stroke-width="1.5"
+                    d="M19.92 8.95l-6.52 6.52c-.77.77-2.03.77-2.8 0L4.08 8.95"></path>
+                </svg>
+              </span>
+            </div>
             <div
-              class="book-filtering-box book-border-b book-border-zinc-300 book-w-full book-flex book-flex-col book-gap-5 book-py-5"
-            >
-              <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
-                <p class="book-text-zinc-900">ساعت</p>
-                <span class="book-arrow book-transition-all book-duration-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      class="book-stroke-zinc-400"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-miterlimit="10"
-                      stroke-width="1.5"
-                      d="M19.92 8.95l-6.52 6.52c-.77.77-2.03.77-2.8 0L4.08 8.95"
-                    ></path>
-                  </svg>
-                </span>
+              class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
+              <div class="book-w-full book-flex book-gap-2 book-items-center">
+                <input type="checkbox" id="lorem1" class="book-accent-primary-800 book-size-3" />
+                <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem1">
+                  لورم 1
+                </label>
               </div>
-              <div
-                class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden"
-              >
-                <div class="book-w-full book-flex book-gap-2 book-items-center">
-                  <input
-                    type="checkbox"
-                    id="6-12-A-M"
-                    class="book-accent-primary-800 book-size-3"
-                  />
-                  <label
-                    class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                    for="6-12-A-M"
-                  >
-                    6 صبح تا 12 ظهر
-                  </label>
-                </div>
-                <div class="book-w-full book-flex book-gap-2 book-items-center">
-                  <input
-                    type="checkbox"
-                    id="12-6-A-M"
-                    class="book-accent-primary-800 book-size-3"
-                  />
-                  <label
-                    class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                    for="12-6-A-M"
-                  >
-                    12 ظهر تا 6 عصر
-                  </label>
-                </div>
-                <div class="book-w-full book-flex book-gap-2 book-items-center">
-                  <input
-                    type="checkbox"
-                    id="6-12-P-M"
-                    class="book-accent-primary-800 book-size-3"
-                  />
-                  <label
-                    class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                    for="6-12-P-M"
-                  >
-                    6 عصر تا 12 شب
-                  </label>
-                </div>
-                <div class="book-w-full book-flex book-gap-2 book-items-center">
-                  <input
-                    type="checkbox"
-                    id="12-6-P-M"
-                    class="book-accent-primary-800 book-size-3"
-                  />
-                  <label
-                    class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                    for="12-6-P-M"
-                  >
-                    12 شب تا 6 صبح
-                  </label>
-                </div>
+              <div class="book-w-full book-flex book-gap-2 book-items-center">
+                <input type="checkbox" id="lorem2" class="book-accent-primary-800 book-size-3" />
+                <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem2">
+                  لورم 2
+                </label>
+              </div>
+              <div class="book-w-full book-flex book-gap-2 book-items-center">
+                <input type="checkbox" id="lorem3" class="book-accent-primary-800 book-size-3" />
+                <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem3">
+                  لورم 3
+                </label>
               </div>
             </div>
+          </div>
 
+          <div
+            class="book-filtering-box book-border-b book-border-zinc-300 book-w-full book-flex book-flex-col book-gap-5 book-py-5">
+            <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
+              <p class="book-text-zinc-900">ترمینال ها</p>
+              <span class="book-arrow book-transition-all book-duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path class="book-stroke-zinc-400" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-miterlimit="10" stroke-width="1.5"
+                    d="M19.92 8.95l-6.52 6.52c-.77.77-2.03.77-2.8 0L4.08 8.95"></path>
+                </svg>
+              </span>
+            </div>
             <div
-              class="book-filtering-box book-border-b book-border-zinc-300 book-w-full book-flex book-flex-col book-gap-5 book-py-5"
-            >
-              <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
-                <p class="book-text-zinc-900">شرکت مسافربری</p>
-                <span class="book-arrow book-transition-all book-duration-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      class="book-stroke-zinc-400"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-miterlimit="10"
-                      stroke-width="1.5"
-                      d="M19.92 8.95l-6.52 6.52c-.77.77-2.03.77-2.8 0L4.08 8.95"
-                    ></path>
-                  </svg>
-                </span>
-              </div>
-              <div
-                class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden"
-              >
+              class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden">
+              <div class="book-w-full book-flex book-flex-col book-gap-3">
+                <p class="book-font-bold">ترمینال مبدا</p>
                 <div class="book-w-full book-flex book-gap-2 book-items-center">
-                  <input
-                    type="checkbox"
-                    id="lorem1"
-                    class="book-accent-primary-800 book-size-3"
-                  />
-                  <label
-                    class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                    for="lorem1"
-                  >
+                  <input type="checkbox" id="lorem4" class="book-accent-primary-800 book-size-3" />
+                  <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem4">
                     لورم 1
                   </label>
                 </div>
                 <div class="book-w-full book-flex book-gap-2 book-items-center">
-                  <input
-                    type="checkbox"
-                    id="lorem2"
-                    class="book-accent-primary-800 book-size-3"
-                  />
-                  <label
-                    class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                    for="lorem2"
-                  >
+                  <input type="checkbox" id="lorem5" class="book-accent-primary-800 book-size-3" />
+                  <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem5">
                     لورم 2
                   </label>
                 </div>
                 <div class="book-w-full book-flex book-gap-2 book-items-center">
-                  <input
-                    type="checkbox"
-                    id="lorem3"
-                    class="book-accent-primary-800 book-size-3"
-                  />
-                  <label
-                    class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                    for="lorem3"
-                  >
+                  <input type="checkbox" id="lorem6" class="book-accent-primary-800 book-size-3" />
+                  <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem6">
+                    لورم 3
+                  </label>
+                </div>
+              </div>
+              <div class="book-w-full book-flex book-flex-col book-gap-3">
+                <p class="book-font-bold">ترمینال مقصد</p>
+                <div class="book-w-full book-flex book-gap-2 book-items-center">
+                  <input type="checkbox" id="lorem7" class="book-accent-primary-800 book-size-3" />
+                  <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem7">
+                    لورم 1
+                  </label>
+                </div>
+                <div class="book-w-full book-flex book-gap-2 book-items-center">
+                  <input type="checkbox" id="lorem8" class="book-accent-primary-800 book-size-3" />
+                  <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem8">
+                    لورم 2
+                  </label>
+                </div>
+                <div class="book-w-full book-flex book-gap-2 book-items-center">
+                  <input type="checkbox" id="lorem9" class="book-accent-primary-800 book-size-3" />
+                  <label class="book-text-zinc-700 book-text-sm book-cursor-pointer" for="lorem9">
                     لورم 3
                   </label>
                 </div>
               </div>
             </div>
-
-            <div
-              class="book-filtering-box book-border-b book-border-zinc-300 book-w-full book-flex book-flex-col book-gap-5 book-py-5"
-            >
-              <div class="book-w-full book-cursor-pointer book-opener book-flex book-justify-between">
-                <p class="book-text-zinc-900">ترمینال ها</p>
-                <span class="book-arrow book-transition-all book-duration-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      class="book-stroke-zinc-400"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-miterlimit="10"
-                      stroke-width="1.5"
-                      d="M19.92 8.95l-6.52 6.52c-.77.77-2.03.77-2.8 0L4.08 8.95"
-                    ></path>
-                  </svg>
-                </span>
-              </div>
-              <div
-                class="book-flex book-flex-col book-w-full book-gap-3 book-show-content book-transition-all book-duration-200 book-hidden"
-              >
-                <div class="book-w-full book-flex book-flex-col book-gap-3">
-                  <p class="book-font-bold">ترمینال مبدا</p>
-                  <div class="book-w-full book-flex book-gap-2 book-items-center">
-                    <input
-                      type="checkbox"
-                      id="lorem4"
-                      class="book-accent-primary-800 book-size-3"
-                    />
-                    <label
-                      class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                      for="lorem4"
-                    >
-                      لورم 1
-                    </label>
-                  </div>
-                  <div class="book-w-full book-flex book-gap-2 book-items-center">
-                    <input
-                      type="checkbox"
-                      id="lorem5"
-                      class="book-accent-primary-800 book-size-3"
-                    />
-                    <label
-                      class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                      for="lorem5"
-                    >
-                      لورم 2
-                    </label>
-                  </div>
-                  <div class="book-w-full book-flex book-gap-2 book-items-center">
-                    <input
-                      type="checkbox"
-                      id="lorem6"
-                      class="book-accent-primary-800 book-size-3"
-                    />
-                    <label
-                      class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                      for="lorem6"
-                    >
-                      لورم 3
-                    </label>
-                  </div>
-                </div>
-                <div class="book-w-full book-flex book-flex-col book-gap-3">
-                  <p class="book-font-bold">ترمینال مقصد</p>
-                  <div class="book-w-full book-flex book-gap-2 book-items-center">
-                    <input
-                      type="checkbox"
-                      id="lorem7"
-                      class="book-accent-primary-800 book-size-3"
-                    />
-                    <label
-                      class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                      for="lorem7"
-                    >
-                      لورم 1
-                    </label>
-                  </div>
-                  <div class="book-w-full book-flex book-gap-2 book-items-center">
-                    <input
-                      type="checkbox"
-                      id="lorem8"
-                      class="book-accent-primary-800 book-size-3"
-                    />
-                    <label
-                      class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                      for="lorem8"
-                    >
-                      لورم 2
-                    </label>
-                  </div>
-                  <div class="book-w-full book-flex book-gap-2 book-items-center">
-                    <input
-                      type="checkbox"
-                      id="lorem9"
-                      class="book-accent-primary-800 book-size-3"
-                    />
-                    <label
-                      class="book-text-zinc-700 book-text-sm book-cursor-pointer"
-                      for="lorem9"
-                    >
-                      لورم 3
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-        <button
-          class="book-w-[85%] book-fixed book-bottom-5 book-left-[7.5%] book-text-white book-h-11 book-flex book-justify-center book-items-center book-rounded-lg book-bg-primary-800"
-          type="submit"
-        >
-          اعمال تغییرات
-        </button>
-      </form>
-    </div>
-    <div
-      class="book-w-screen book-overflow-scroll book-translate-y-[160%] book-flex book-justify-center book-h-screen book-transition-all book-duration-300 book-ease-in-out book-fixed book-top-0 book-change-routes-menu book-left-0 book-bg-white book-z-[1000]"
-    >
-      <div
-        class="book-w-full book-h-[120px] book-z-0 book-flex book-items-center book-p-5 book-absolute book-top-0 book-left-0 book-bg-gradient-to-b book-from-primary-500 book-to-primary-900 book-rounded-b-[30px]"
-      >
-        <button
-          class="book-close-change-route-menu book-glass5 book-size-10 book-rounded-lg book-flex book-justify-center book-items-center"
-          type="button"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              class="book-stroke-primary-900"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-miterlimit="10"
-              stroke-width="1.5"
-              d="M8.91 19.92l6.52-6.52c.77-.77.77-2.03 0-2.8L8.91 4.08"
-            ></path>
-          </svg>
-        </button>
-        <h2 class="book-text-white book-font-bold book-mr-20 book-text-lg">تغییر مسیر سفر</h2>
       </div>
+      <button
+        class="book-w-[85%] book-fixed book-bottom-5 book-left-[7.5%] book-text-white book-h-11 book-flex book-justify-center book-items-center book-rounded-lg book-bg-primary-800"
+        type="submit">
+        اعمال تغییرات
+      </button>
+    </form>
+  </div>
+  <div
+    class="book-w-screen book-overflow-scroll book-translate-y-[160%] book-flex book-justify-center book-h-screen book-transition-all book-duration-300 book-ease-in-out book-fixed book-top-0 book-change-routes-menu book-left-0 book-bg-white book-z-[1000]">
+    <div
+      class="book-w-full book-h-[120px] book-z-0 book-flex book-items-center book-p-5 book-absolute book-top-0 book-left-0 book-bg-gradient-to-b book-from-primary-500 book-to-primary-900 book-rounded-b-[30px]">
+      <button
+        class="book-close-change-route-menu book-glass5 book-size-10 book-rounded-lg book-flex book-justify-center book-items-center"
+        type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path class="book-stroke-primary-900" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+            stroke-width="1.5" d="M8.91 19.92l6.52-6.52c.77-.77.77-2.03 0-2.8L8.91 4.08"></path>
+        </svg>
+      </button>
+      <h2 class="book-text-white book-font-bold book-mr-20 book-text-lg">تغییر مسیر سفر</h2>
+    </div>
 
-      <form class="book-flex book-flex-col book-h-full book-gap-9 book-mt-[150px] book-w-[85%]">
-        <div class="book-flex book-flex-col book-routes book-w-full book-relative book-gap-[52px]">
-          <div class="book-flex book-flex-col book-relative book-gap-3 book-w-full">
-            <label
-              class="book-text-xs book-text-zinc-400 book-bg-white book-absolute book-top-[-8px] book-px-1 book-right-[16px]"
-              for="debarture"
-              >شهر مبدا</label
-            >
-            <input
-              id="debarture"
-              readonly
-              required
-              placeholder="مبدا را وارد کنید"
-              type="text"
-              class="book-bg-white focus:book-border focus:book-border-primary-400 book-text-zinc-900 book-w-full book-border book-border-zinc-200 focus:book-outline-none book-rounded-lg book-h-12 book-px-3 book-shadow1"
-            />
-          </div>
-          <span
-            class="book-absolute book-group hover:book-bg-primary-700 hover:book-shadow book-cursor-pointer book-top-[37.5%] book-left-5 book-w-10 book-h-10 book-rounded-full book-flex book-justify-center book-items-center"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                class="group-hover:book-stroke-white book-stroke-primary-700"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-miterlimit="10"
-                stroke-width="1.5"
-                d="M9.01 20.5l-5.02-5.01M9.01 3.5v17M14.99 3.5l5.02 5.01M14.99 20.5v-17"
-              ></path>
-            </svg>
-          </span>
-          <div class="book-flex book-flex-col book-relative book-gap-3 book-w-full">
-            <label
-              class="book-text-xs book-text-zinc-400 book-bg-white book-absolute book-top-[-8px] book-px-1 book-right-[16px]"
-              for="debarture"
-              >شهر مقصد</label
-            >
-            <input
-              id="debarture"
-              readonly
-              required
-              placeholder="مقصد را وارد کنید"
-              type="text"
-              class="book-bg-white focus:book-border focus:book-border-primary-400 book-text-zinc-900 book-w-full book-border book-border-zinc-200 focus:book-outline-none book-rounded-lg book-h-12 book-px-3 book-shadow1"
-            />
-          </div>
-        </div>
+    <form class="book-flex book-flex-col book-h-full book-gap-9 book-mt-[150px] book-w-[85%]">
+      <div class="book-flex book-flex-col book-routes book-w-full book-relative book-gap-[52px]">
         <div class="book-flex book-flex-col book-relative book-gap-3 book-w-full">
           <label
             class="book-text-xs book-text-zinc-400 book-bg-white book-absolute book-top-[-8px] book-px-1 book-right-[16px]"
-            for="debarture"
-            >تاریخ سفر</label
-          >
-          <input
-            id="debarture"
-            readonly
-            value="1404/02/08"
-            required
-            placeholder="تاریخ سفر"
-            type="text"
-            class="book-bg-white focus:book-border focus:book-border-primary-400 book-text-zinc-900 book-w-full book-border book-border-zinc-200 focus:book-outline-none book-rounded-lg book-h-12 book-px-3 book-shadow1"
-          />
+            for="debarture">شهر مبدا</label>
+          <input id="debarture" readonly required placeholder="مبدا را وارد کنید" type="text"
+            class="book-bg-white focus:book-border focus:book-border-primary-400 book-text-zinc-900 book-w-full book-border book-border-zinc-200 focus:book-outline-none book-rounded-lg book-h-12 book-px-3 book-shadow1" />
         </div>
-        <button
-          type="submit"
-          class="book-h-12 book-fixed book-bottom-5 book-left-[7.5%] book-w-[85%] book-flex hover:book-bg-primary-100 hover:book-shadow-md hover:book-text-primary-700 book-transition-all book-duration-300 book-font-bold book-items-center book-justify-center book-text-white book-rounded-lg book-bg-primary-700"
-        >
-          جستجو
-        </button>
-      </form>
+        <span
+          class="book-absolute book-group hover:book-bg-primary-700 hover:book-shadow book-cursor-pointer book-top-[37.5%] book-left-5 book-w-10 book-h-10 book-rounded-full book-flex book-justify-center book-items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path class="group-hover:book-stroke-white book-stroke-primary-700" stroke-linecap="round"
+              stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5"
+              d="M9.01 20.5l-5.02-5.01M9.01 3.5v17M14.99 3.5l5.02 5.01M14.99 20.5v-17"></path>
+          </svg>
+        </span>
+        <div class="book-flex book-flex-col book-relative book-gap-3 book-w-full">
+          <label
+            class="book-text-xs book-text-zinc-400 book-bg-white book-absolute book-top-[-8px] book-px-1 book-right-[16px]"
+            for="debarture">شهر مقصد</label>
+          <input id="debarture" readonly required placeholder="مقصد را وارد کنید" type="text"
+            class="book-bg-white focus:book-border focus:book-border-primary-400 book-text-zinc-900 book-w-full book-border book-border-zinc-200 focus:book-outline-none book-rounded-lg book-h-12 book-px-3 book-shadow1" />
+        </div>
+      </div>
+      <div class="book-flex book-flex-col book-relative book-gap-3 book-w-full">
+        <label
+          class="book-text-xs book-text-zinc-400 book-bg-white book-absolute book-top-[-8px] book-px-1 book-right-[16px]"
+          for="debarture">تاریخ سفر</label>
+        <input id="debarture" readonly value="1404/02/08" required placeholder="تاریخ سفر" type="text"
+          class="book-bg-white focus:book-border focus:book-border-primary-400 book-text-zinc-900 book-w-full book-border book-border-zinc-200 focus:book-outline-none book-rounded-lg book-h-12 book-px-3 book-shadow1" />
+      </div>
+      <button type="submit"
+        class="book-h-12 book-fixed book-bottom-5 book-left-[7.5%] book-w-[85%] book-flex hover:book-bg-primary-100 hover:book-shadow-md hover:book-text-primary-700 book-transition-all book-duration-300 book-font-bold book-items-center book-justify-center book-text-white book-rounded-lg book-bg-primary-700">
+        جستجو
+      </button>
+    </form>
+  </div>
+  <main class="book-py-6 book-relative book-flex book-justify-center">
+    <div
+      class="book-absolute book-top-0 book-z-0 book-left-0 book-w-full book-h-[90px] book-bg-gradient-to-b book-from-primary-900 book-from-[5%]">
     </div>
-    <main class="book-py-6 book-relative book-flex book-justify-center">
-      <div
-        class="book-absolute book-top-0 book-z-0 book-left-0 book-w-full book-h-[90px] book-bg-gradient-to-b book-from-primary-900 book-from-[5%]"
-      ></div>
-      <section class="book-w-full book-z-10 book-flex book-flex-col book-gap-5 book-pb-5">
-        <h1
-          class="book-flex book-gap-1 book-justify-center book-font-bold book-items-center book-!text-white"
-        >
-          <span>بلیط اتوبوس</span>
-          <span>تهران</span>
-          <span>مشهد</span>
-        </h1>
-        <div class="book-w-full book-flex book-flex-col book-gap-5">
-       
-          <p class="book-text-zinc-500 book-text-xs book-px-5">
-            لیست سرویس‌های لورم برای مسیر مورد نظر شما به شرح زیر است، با انتخاب
-            فیلتر اتوبوس، سواری یا ون می‌توانید صرفا لیست سرویس‌های وسیله نقلیه
-            مورد نظر خود را مشاهده کنید.
+    <section class="book-w-full book-z-10 book-flex book-flex-col book-gap-5 book-pb-5">
+      <h1 class="book-flex book-gap-1 book-justify-center book-font-bold book-items-center book-!text-white">
+        <span>بلیط اتوبوس</span>
+        <span>تهران</span>
+        <span>مشهد</span>
+      </h1>
+      <div class="book-w-full book-flex book-flex-col book-gap-5">
+
+        <p class="book-text-zinc-500 book-text-xs book-px-5">
+          لیست سرویس‌های لورم برای مسیر مورد نظر شما به شرح زیر است، با انتخاب
+          فیلتر اتوبوس، سواری یا ون می‌توانید صرفا لیست سرویس‌های وسیله نقلیه
+          مورد نظر خود را مشاهده کنید.
+        </p>
+        <div class="book-flex book-items-center book-gap-3 book-categories-show book-pr-5">
+          <p class="book-text-zinc-700 book-text-sm book-font-bold book-whitespace-nowrap">
+            نمایش بر اساس:
           </p>
-          <div class="book-flex book-items-center book-gap-3 book-categories-show book-pr-5">
-            <p class="book-text-zinc-700 book-text-sm book-font-bold book-whitespace-nowrap">
-              نمایش بر اساس:
-            </p>
-            <div class="book-overflow-hidden">
-              <div
-                class="book-overflow-auto book-flex book-items-center book-gap-3 [&::-webkit-scrollbar]:book-!hidden"
-              >
-                <button
-                  class="book-flex book-gap-3 book-whitespace-nowrap book-!text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-4 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
-                  type="button"
-                >
-                  <span class="book-tick book-hidden">
-                    <svg
-                      width="18"
-                      height="12"
-                      viewBox="0 0 18 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
+          <div class="book-overflow-hidden">
+            <div class="book-overflow-auto book-flex book-items-center book-gap-3 [&::-webkit-scrollbar]:book-!hidden">
+              <button
+                class="book-flex book-gap-3 book-whitespace-nowrap book-!text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-4 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
+                type="button">
+                <span class="book-tick book-hidden">
+                  <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                همه سرویس ها
+              </button>
+              <button
+                class="book-flex book-gap-3 book-whitespace-nowrap book-!text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-4 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
+                type="button">
+                <span class="book-tick book-hidden">
+                  <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                اتوبوس
+              </button>
+              <button
+                class="book-flex book-gap-3 book-whitespace-nowrap book-!text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-4 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
+                type="button">
+                <span class="book-tick book-hidden">
+                  <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                سواری
+              </button>
+              <button
+                class="book-flex book-gap-3 book-whitespace-nowrap book-!text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-4 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
+                type="button">
+                <span class="book-tick book-hidden">
+                  <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832" stroke="white" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+                ون
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="book-w-full book-flex book-flex-col book-gap-9 book-mb-14 book-bus-cards-container book-px-5">
+          <div
+            class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl book-!relative book-flex book-flex-col book-!gap-0 book-w-full book-!h-[300px]">
+            <div
+              class="book-absolute book-top-0 book-first-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+                اطلاعات ترمینال (پایانه جنوب - خزانه)</a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book-top-0 book-second-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+                اطلاعات ترمینال (پایانه امام رضا)</a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book-top-0 book-third-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">تعاونی
+                16 جهان گشت مهر
+              </a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book--right-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]">
+              <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1_69)">
+                  <g mask="url(#mask0_1_69)">
+                    <path
+                      d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
+                      fill="white" stroke="transparent" stroke-width="2"></path>
+                  </g>
+                </g>
+                <defs>
+                  <clipPath id="clip0_1_69">
+                    <rect width="21" height="63" fill="white"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+              <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
+            </div>
+
+            <div
+              class="book-absolute book--left-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]">
+              <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
+              <span class="book-rotate-180">
+                <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_1_69)">
+                    <g mask="url(#mask0_1_69)">
                       <path
-                        d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832"
-                        stroke="white"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                  </span>
-                  همه سرویس ها
-                </button>
-                <button
-                  class="book-flex book-gap-3 book-whitespace-nowrap book-!text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-4 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
-                  type="button"
-                >
-                  <span class="book-tick book-hidden">
-                    <svg
-                      width="18"
-                      height="12"
-                      viewBox="0 0 18 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832"
-                        stroke="white"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                  </span>
-                  اتوبوس
-                </button>
-                <button
-                  class="book-flex book-gap-3 book-whitespace-nowrap book-!text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-4 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
-                  type="button"
-                >
-                  <span class="book-tick book-hidden">
-                    <svg
-                      width="18"
-                      height="12"
-                      viewBox="0 0 18 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832"
-                        stroke="white"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                  </span>
-                  سواری
-                </button>
-                <button
-                  class="book-flex book-gap-3 book-whitespace-nowrap book-!text-sm book-items-center book-h-9 book-bg-transparent hover:book-bg-zinc-600 hover:book-text-white book-transition-all book-duration-300 book-px-4 book-rounded-lg book-text-zinc-600 book-border book-border-zinc-600"
-                  type="button"
-                >
-                  <span class="book-tick book-hidden">
-                    <svg
-                      width="18"
-                      height="12"
-                      viewBox="0 0 18 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.91699 5.99987L6.63366 10.7165L16.0837 1.2832"
-                        stroke="white"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                  </span>
-                  ون
-                </button>
+                        d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
+                        fill="white" stroke="transparent" stroke-width="2"></path>
+                    </g>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_1_69">
+                      <rect width="21" height="63" fill="white"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+            </div>
+            <div
+              class="book-w-full book-h-[70%] book-flex book-flex-col book-justify-between book-px-3 book-py-6 book-z-10 book-bg-white book-rounded-b-[30px] book-rounded-t-2xl">
+              <div class="book-w-full book-flex book-justify-between book-items-center">
+                <div class="book-flex book-items-center book-open-first-menu book-gap-1">
+                  <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
+                    تهران
+                  </p>
+                  <p class="book-text-xs book-text-zinc-600 book-whitespace-nowrap book-line-clamp-1">
+                    (جنوب - خزانه)
+                  </p>
+                </div>
+                <div
+                  class="book-set-before-after book-h-[1px] book-border-t book-border-dashed book-border-zinc-800 book-relative book-w-[18%]">
+                  <span></span><span></span>
+                </div>
+                <div class="book-flex book-items-center book-open-second-menu book-gap-1">
+                  <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
+                    مشهد
+                  </p>
+                  <p class="book-text-xs book-text-zinc-600 book-line-clamp-1 book-whitespace-nowrap">
+                    ( پایانه امام رضا )
+                  </p>
+                </div>
               </div>
+              <div class="book-w-full book-flex book-items-center">
+                <div class="book-flex book-items-center book-gap-1 book-open-third-menu">
+                  <img src="../../images/giti-navard.webp" alt="taavoni-logo" class="book-w-[36px] book-h-[36px]" />
+                  <p class="book-text-sm book-text-zinc-400">تعاونی 16 جهان گشت مهر</p>
+                </div>
+              </div>
+              <div class="book-flex book-items-center book-gap-2">
+                <img src="../../images/bus.svg" alt="bus" />
+                <p class="book-text-sm book-text-zinc-400">وی ای پی تخت شو 25نفره</p>
+              </div>
+              <div class="book-w-full book-flex book-items-center book-justify-between">
+                <div class="book-flex book-items-center book-gap-1">
+                  <p class="book-text-zinc-900">4</p>
+                  <p class="book-text-sm book-text-zinc-400">صندلی خالی</p>
+                </div>
+                <div class="book-flex book-items-center book-gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    class="book-size-4">
+                    <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
+                      class="book-stroke-zinc-900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    </path>
+                    <path d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1" class="book-stroke-zinc-900"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <p class="book-text-sm book-text-zinc-400">11:30 صبح</p>
+                </div>
+                <div class="book-flex book-gap-1 book-items-center">
+                  <p class="book-text-zinc-900">6,700,000</p>
+                  <p class="book-text-sm book-text-zinc-400">ریال</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="book-w-full book-h-[30%] book-py-3 book-px-3 book-flex book-flex-col book-justify-between book-z-10 book-bg-white book-rounded-t-[30px] book-rounded-b-2xl">
+              <div class="book-flex book-items-center book-gap-2">
+                <img src="../../images/listCheck.svg" alt="listCheck" class="book-size-4 book-opacity-40" />
+                <p class="book-text-xs book-text-zinc-400">
+                  09331041988-55185408الی10-09057426227
+                </p>
+              </div>
+              <a href=""
+                class="book-w-full book-flex hover:book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white">خریـد
+                بلیـط</a>
             </div>
           </div>
           <div
-            class="book-w-full book-flex book-flex-col book-gap-9 book-mb-14 book-bus-cards-container book-px-5"
-          >
+            class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl book-!relative book-flex book-flex-col book-!gap-0 book-w-full book-!h-[300px]">
             <div
-              class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl book-!relative book-flex book-flex-col book-!gap-0 book-w-full book-!h-[300px]"
-            >
-              <div
-                class="book-absolute book-top-0 book-first-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >مشاهده اطلاعات ترمینال (پایانه جنوب - خزانه)</a
-                >
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
-              </div>
-              <div
-                class="book-absolute book-top-0 book-second-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >مشاهده اطلاعات ترمینال (پایانه امام رضا)</a
-                >
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
-              </div>
-              <div
-                class="book-absolute book-top-0 book-third-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >تعاونی 16 جهان گشت مهر
-                </a>
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
-              </div>
-              <div
-                class="book-absolute book--right-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]"
-              >
-                <svg
-                  width="21"
-                  height="63"
-                  viewBox="0 0 21 63"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+              class="book-absolute book-top-0 book-first-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+                اطلاعات ترمینال (پایانه جنوب - خزانه)</a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book-top-0 book-second-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+                اطلاعات ترمینال (پایانه امام رضا)</a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book-top-0 book-third-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">تعاونی
+                16 جهان گشت مهر
+              </a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book--right-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]">
+              <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1_69)">
+                  <g mask="url(#mask0_1_69)">
+                    <path
+                      d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
+                      fill="white" stroke="transparent" stroke-width="2"></path>
+                  </g>
+                </g>
+                <defs>
+                  <clipPath id="clip0_1_69">
+                    <rect width="21" height="63" fill="white"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+              <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
+            </div>
+
+            <div
+              class="book-absolute book--left-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]">
+              <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
+              <span class="book-rotate-180">
+                <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_1_69)">
                     <g mask="url(#mask0_1_69)">
                       <path
                         d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                        fill="white"
-                        stroke="transparent"
-                        stroke-width="2"
-                      ></path>
+                        fill="white" stroke="transparent" stroke-width="2"></path>
                     </g>
                   </g>
                   <defs>
@@ -751,221 +574,148 @@
                     </clipPath>
                   </defs>
                 </svg>
-                <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
-              </div>
-
-              <div
-                class="book-absolute book--left-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]"
-              >
-                <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
-                <span class="book-rotate-180">
-                  <svg
-                    width="21"
-                    height="63"
-                    viewBox="0 0 21 63"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g clip-path="url(#clip0_1_69)">
-                      <g mask="url(#mask0_1_69)">
-                        <path
-                          d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                          fill="white"
-                          stroke="transparent"
-                          stroke-width="2"
-                        ></path>
-                      </g>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_1_69">
-                        <rect width="21" height="63" fill="white"></rect>
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </span>
-              </div>
-              <div
-                class="book-w-full book-h-[70%] book-flex book-flex-col book-justify-between book-px-3 book-py-6 book-z-10 book-bg-white book-rounded-b-[30px] book-rounded-t-2xl"
-              >
-                <div class="book-w-full book-flex book-justify-between book-items-center">
-                  <div class="book-flex book-items-center book-open-first-menu book-gap-1">
-                    <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
-                      تهران
-                    </p>
-                    <p
-                      class="book-text-xs book-text-zinc-600 book-whitespace-nowrap book-line-clamp-1"
-                    >
-                      (جنوب - خزانه)
-                    </p>
-                  </div>
-                  <div
-                    class="book-set-before-after book-h-[1px] book-border-t book-border-dashed book-border-zinc-800 book-relative book-w-[18%]"
-                  >
-                    <span></span><span></span>
-                  </div>
-                  <div class="book-flex book-items-center book-open-second-menu book-gap-1">
-                    <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
-                      مشهد
-                    </p>
-                    <p
-                      class="book-text-xs book-text-zinc-600 book-line-clamp-1 book-whitespace-nowrap"
-                    >
-                      ( پایانه امام رضا )
-                    </p>
-                  </div>
-                </div>
-                <div class="book-w-full book-flex book-items-center">
-                  <div class="book-flex book-items-center book-gap-1 book-open-third-menu">
-                    <img
-                      src="../../images/giti-navard.webp"
-                      alt="taavoni-logo"
-                      class="book-w-[36px] book-h-[36px]"
-                    />
-                    <p class="book-text-sm book-text-zinc-400">تعاونی 16 جهان گشت مهر</p>
-                  </div>
-                </div>
-                <div class="book-flex book-items-center book-gap-2">
-                  <img src="../../images/bus.svg" alt="bus" />
-                  <p class="book-text-sm book-text-zinc-400">وی ای پی تخت شو 25نفره</p>
-                </div>
-                <div class="book-w-full book-flex book-items-center book-justify-between">
-                  <div class="book-flex book-items-center book-gap-1">
-                    <p class="book-text-zinc-900">4</p>
-                    <p class="book-text-sm book-text-zinc-400">صندلی خالی</p>
-                  </div>
-                  <div class="book-flex book-items-center book-gap-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      class="book-size-4"
-                    >
-                      <path
-                        d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
-                        class="book-stroke-zinc-900"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                      <path
-                        d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1"
-                        class="book-stroke-zinc-900"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                    <p class="book-text-sm book-text-zinc-400">11:30 صبح</p>
-                  </div>
-                  <div class="book-flex book-gap-1 book-items-center">
-                    <p class="book-text-zinc-900">6,700,000</p>
-                    <p class="book-text-sm book-text-zinc-400">ریال</p>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="book-w-full book-h-[30%] book-py-3 book-px-3 book-flex book-flex-col book-justify-between book-z-10 book-bg-white book-rounded-t-[30px] book-rounded-b-2xl"
-              >
-                <div class="book-flex book-items-center book-gap-2">
-                  <img
-                    src="../../images/listCheck.svg"
-                    alt="listCheck"
-                    class="book-size-4 book-opacity-40"
-                  />
-                  <p class="book-text-xs book-text-zinc-400">
-                    09331041988-55185408الی10-09057426227
+              </span>
+            </div>
+            <div
+              class="book-w-full book-h-[70%] book-flex book-flex-col book-justify-between book-px-3 book-py-6 book-z-10 book-bg-white book-rounded-b-[30px] book-rounded-t-2xl">
+              <div class="book-w-full book-flex book-justify-between book-items-center">
+                <div class="book-flex book-items-center book-open-first-menu book-gap-1">
+                  <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
+                    تهران
+                  </p>
+                  <p class="book-text-xs book-text-zinc-600 book-whitespace-nowrap book-line-clamp-1">
+                    (جنوب - خزانه)
                   </p>
                 </div>
-                <a
-                  href=""
-                  class="book-w-full book-flex hover:book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white"
-                  >خریـد بلیـط</a
-                >
+                <div
+                  class="book-set-before-after book-h-[1px] book-border-t book-border-dashed book-border-zinc-800 book-relative book-w-[18%]">
+                  <span></span><span></span>
+                </div>
+                <div class="book-flex book-items-center book-open-second-menu book-gap-1">
+                  <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
+                    مشهد
+                  </p>
+                  <p class="book-text-xs book-text-zinc-600 book-line-clamp-1 book-whitespace-nowrap">
+                    ( پایانه امام رضا )
+                  </p>
+                </div>
+              </div>
+              <div class="book-w-full book-flex book-items-center">
+                <div class="book-flex book-items-center book-gap-1 book-open-third-menu">
+                  <img src="../../images/giti-navard.webp" alt="taavoni-logo" class="book-w-[36px] book-h-[36px]" />
+                  <p class="book-text-sm book-text-zinc-400">تعاونی 16 جهان گشت مهر</p>
+                </div>
+              </div>
+              <div class="book-flex book-items-center book-gap-2">
+                <img src="../../images/bus.svg" alt="bus" />
+                <p class="book-text-sm book-text-zinc-400">وی ای پی تخت شو 25نفره</p>
+              </div>
+              <div class="book-w-full book-flex book-items-center book-justify-between">
+                <div class="book-flex book-items-center book-gap-1">
+                  <p class="book-text-zinc-900">4</p>
+                  <p class="book-text-sm book-text-zinc-400">صندلی خالی</p>
+                </div>
+                <div class="book-flex book-items-center book-gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    class="book-size-4">
+                    <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
+                      class="book-stroke-zinc-900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    </path>
+                    <path d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1" class="book-stroke-zinc-900"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <p class="book-text-sm book-text-zinc-400">11:30 صبح</p>
+                </div>
+                <div class="book-flex book-gap-1 book-items-center">
+                  <p class="book-text-zinc-900">6,700,000</p>
+                  <p class="book-text-sm book-text-zinc-400">ریال</p>
+                </div>
               </div>
             </div>
             <div
-              class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl book-!relative book-flex book-flex-col book-!gap-0 book-w-full book-!h-[300px]"
-            >
-              <div
-                class="book-absolute book-top-0 book-first-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >مشاهده اطلاعات ترمینال (پایانه جنوب - خزانه)</a
-                >
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
+              class="book-w-full book-h-[30%] book-py-3 book-px-3 book-flex book-flex-col book-justify-between book-z-10 book-bg-white book-rounded-t-[30px] book-rounded-b-2xl">
+              <div class="book-flex book-items-center book-gap-2">
+                <img src="../../images/listCheck.svg" alt="listCheck" class="book-size-4 book-opacity-40" />
+                <p class="book-text-xs book-text-zinc-400">
+                  09331041988-55185408الی10-09057426227
+                </p>
               </div>
-              <div
-                class="book-absolute book-top-0 book-second-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >مشاهده اطلاعات ترمینال (پایانه امام رضا)</a
-                >
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
-              </div>
-              <div
-                class="book-absolute book-top-0 book-third-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >تعاونی 16 جهان گشت مهر
-                </a>
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
-              </div>
-              <div
-                class="book-absolute book--right-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]"
-              >
-                <svg
-                  width="21"
-                  height="63"
-                  viewBox="0 0 21 63"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+              <a href=""
+                class="book-w-full book-flex hover:book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white">خریـد
+                بلیـط</a>
+            </div>
+          </div>
+          <div
+            class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl book-!relative book-flex book-flex-col book-!gap-0 book-w-full book-!h-[300px]">
+            <div
+              class="book-absolute book-top-0 book-first-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+                اطلاعات ترمینال (پایانه جنوب - خزانه)</a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book-top-0 book-second-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+                اطلاعات ترمینال (پایانه امام رضا)</a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book-top-0 book-third-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">تعاونی
+                16 جهان گشت مهر
+              </a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book--right-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]">
+              <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1_69)">
+                  <g mask="url(#mask0_1_69)">
+                    <path
+                      d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
+                      fill="white" stroke="transparent" stroke-width="2"></path>
+                  </g>
+                </g>
+                <defs>
+                  <clipPath id="clip0_1_69">
+                    <rect width="21" height="63" fill="white"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+              <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
+            </div>
+
+            <div
+              class="book-absolute book--left-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]">
+              <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
+              <span class="book-rotate-180">
+                <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_1_69)">
                     <g mask="url(#mask0_1_69)">
                       <path
                         d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                        fill="white"
-                        stroke="transparent"
-                        stroke-width="2"
-                      ></path>
+                        fill="white" stroke="transparent" stroke-width="2"></path>
                     </g>
                   </g>
                   <defs>
@@ -974,221 +724,148 @@
                     </clipPath>
                   </defs>
                 </svg>
-                <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
-              </div>
-
-              <div
-                class="book-absolute book--left-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]"
-              >
-                <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
-                <span class="book-rotate-180">
-                  <svg
-                    width="21"
-                    height="63"
-                    viewBox="0 0 21 63"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g clip-path="url(#clip0_1_69)">
-                      <g mask="url(#mask0_1_69)">
-                        <path
-                          d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                          fill="white"
-                          stroke="transparent"
-                          stroke-width="2"
-                        ></path>
-                      </g>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_1_69">
-                        <rect width="21" height="63" fill="white"></rect>
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </span>
-              </div>
-              <div
-                class="book-w-full book-h-[70%] book-flex book-flex-col book-justify-between book-px-3 book-py-6 book-z-10 book-bg-white book-rounded-b-[30px] book-rounded-t-2xl"
-              >
-                <div class="book-w-full book-flex book-justify-between book-items-center">
-                  <div class="book-flex book-items-center book-open-first-menu book-gap-1">
-                    <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
-                      تهران
-                    </p>
-                    <p
-                      class="book-text-xs book-text-zinc-600 book-whitespace-nowrap book-line-clamp-1"
-                    >
-                      (جنوب - خزانه)
-                    </p>
-                  </div>
-                  <div
-                    class="book-set-before-after book-h-[1px] book-border-t book-border-dashed book-border-zinc-800 book-relative book-w-[18%]"
-                  >
-                    <span></span><span></span>
-                  </div>
-                  <div class="book-flex book-items-center book-open-second-menu book-gap-1">
-                    <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
-                      مشهد
-                    </p>
-                    <p
-                      class="book-text-xs book-text-zinc-600 book-line-clamp-1 book-whitespace-nowrap"
-                    >
-                      ( پایانه امام رضا )
-                    </p>
-                  </div>
-                </div>
-                <div class="book-w-full book-flex book-items-center">
-                  <div class="book-flex book-items-center book-gap-1 book-open-third-menu">
-                    <img
-                      src="../../images/giti-navard.webp"
-                      alt="taavoni-logo"
-                      class="book-w-[36px] book-h-[36px]"
-                    />
-                    <p class="book-text-sm book-text-zinc-400">تعاونی 16 جهان گشت مهر</p>
-                  </div>
-                </div>
-                <div class="book-flex book-items-center book-gap-2">
-                  <img src="../../images/bus.svg" alt="bus" />
-                  <p class="book-text-sm book-text-zinc-400">وی ای پی تخت شو 25نفره</p>
-                </div>
-                <div class="book-w-full book-flex book-items-center book-justify-between">
-                  <div class="book-flex book-items-center book-gap-1">
-                    <p class="book-text-zinc-900">4</p>
-                    <p class="book-text-sm book-text-zinc-400">صندلی خالی</p>
-                  </div>
-                  <div class="book-flex book-items-center book-gap-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      class="book-size-4"
-                    >
-                      <path
-                        d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
-                        class="book-stroke-zinc-900"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                      <path
-                        d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1"
-                        class="book-stroke-zinc-900"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                    <p class="book-text-sm book-text-zinc-400">11:30 صبح</p>
-                  </div>
-                  <div class="book-flex book-gap-1 book-items-center">
-                    <p class="book-text-zinc-900">6,700,000</p>
-                    <p class="book-text-sm book-text-zinc-400">ریال</p>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="book-w-full book-h-[30%] book-py-3 book-px-3 book-flex book-flex-col book-justify-between book-z-10 book-bg-white book-rounded-t-[30px] book-rounded-b-2xl"
-              >
-                <div class="book-flex book-items-center book-gap-2">
-                  <img
-                    src="../../images/listCheck.svg"
-                    alt="listCheck"
-                    class="book-size-4 book-opacity-40"
-                  />
-                  <p class="book-text-xs book-text-zinc-400">
-                    09331041988-55185408الی10-09057426227
+              </span>
+            </div>
+            <div
+              class="book-w-full book-h-[70%] book-flex book-flex-col book-justify-between book-px-3 book-py-6 book-z-10 book-bg-white book-rounded-b-[30px] book-rounded-t-2xl">
+              <div class="book-w-full book-flex book-justify-between book-items-center">
+                <div class="book-flex book-items-center book-open-first-menu book-gap-1">
+                  <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
+                    تهران
+                  </p>
+                  <p class="book-text-xs book-text-zinc-600 book-whitespace-nowrap book-line-clamp-1">
+                    (جنوب - خزانه)
                   </p>
                 </div>
-                <a
-                  href=""
-                  class="book-w-full book-flex hover:book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white"
-                  >خریـد بلیـط</a
-                >
+                <div
+                  class="book-set-before-after book-h-[1px] book-border-t book-border-dashed book-border-zinc-800 book-relative book-w-[18%]">
+                  <span></span><span></span>
+                </div>
+                <div class="book-flex book-items-center book-open-second-menu book-gap-1">
+                  <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
+                    مشهد
+                  </p>
+                  <p class="book-text-xs book-text-zinc-600 book-line-clamp-1 book-whitespace-nowrap">
+                    ( پایانه امام رضا )
+                  </p>
+                </div>
+              </div>
+              <div class="book-w-full book-flex book-items-center">
+                <div class="book-flex book-items-center book-gap-1 book-open-third-menu">
+                  <img src="../../images/giti-navard.webp" alt="taavoni-logo" class="book-w-[36px] book-h-[36px]" />
+                  <p class="book-text-sm book-text-zinc-400">تعاونی 16 جهان گشت مهر</p>
+                </div>
+              </div>
+              <div class="book-flex book-items-center book-gap-2">
+                <img src="../../images/bus.svg" alt="bus" />
+                <p class="book-text-sm book-text-zinc-400">وی ای پی تخت شو 25نفره</p>
+              </div>
+              <div class="book-w-full book-flex book-items-center book-justify-between">
+                <div class="book-flex book-items-center book-gap-1">
+                  <p class="book-text-zinc-900">4</p>
+                  <p class="book-text-sm book-text-zinc-400">صندلی خالی</p>
+                </div>
+                <div class="book-flex book-items-center book-gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    class="book-size-4">
+                    <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
+                      class="book-stroke-zinc-900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    </path>
+                    <path d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1" class="book-stroke-zinc-900"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <p class="book-text-sm book-text-zinc-400">11:30 صبح</p>
+                </div>
+                <div class="book-flex book-gap-1 book-items-center">
+                  <p class="book-text-zinc-900">6,700,000</p>
+                  <p class="book-text-sm book-text-zinc-400">ریال</p>
+                </div>
               </div>
             </div>
             <div
-              class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl book-!relative book-flex book-flex-col book-!gap-0 book-w-full book-!h-[300px]"
-            >
-              <div
-                class="book-absolute book-top-0 book-first-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >مشاهده اطلاعات ترمینال (پایانه جنوب - خزانه)</a
-                >
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
+              class="book-w-full book-h-[30%] book-py-3 book-px-3 book-flex book-flex-col book-justify-between book-z-10 book-bg-white book-rounded-t-[30px] book-rounded-b-2xl">
+              <div class="book-flex book-items-center book-gap-2">
+                <img src="../../images/listCheck.svg" alt="listCheck" class="book-size-4 book-opacity-40" />
+                <p class="book-text-xs book-text-zinc-400">
+                  09331041988-55185408الی10-09057426227
+                </p>
               </div>
-              <div
-                class="book-absolute book-top-0 book-second-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >مشاهده اطلاعات ترمینال (پایانه امام رضا)</a
-                >
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
-              </div>
-              <div
-                class="book-absolute book-top-0 book-third-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >تعاونی 16 جهان گشت مهر
-                </a>
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
-              </div>
-              <div
-                class="book-absolute book--right-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]"
-              >
-                <svg
-                  width="21"
-                  height="63"
-                  viewBox="0 0 21 63"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+              <a href=""
+                class="book-w-full book-flex hover:book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white">خریـد
+                بلیـط</a>
+            </div>
+          </div>
+          <div
+            class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl book-!relative book-flex book-flex-col book-!gap-0 book-w-full book-!h-[300px]">
+            <div
+              class="book-absolute book-top-0 book-first-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+                اطلاعات ترمینال (پایانه جنوب - خزانه)</a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book-top-0 book-second-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">مشاهده
+                اطلاعات ترمینال (پایانه امام رضا)</a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book-top-0 book-third-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center">
+              <a href=""
+                class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950">خرید
+                بلیط</a>
+              <a href=""
+                class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white">تعاونی
+                16 جهان گشت مهر
+              </a>
+              <button type="button"
+                class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950">
+                بستـن
+              </button>
+            </div>
+            <div
+              class="book-absolute book--right-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]">
+              <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1_69)">
+                  <g mask="url(#mask0_1_69)">
+                    <path
+                      d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
+                      fill="white" stroke="transparent" stroke-width="2"></path>
+                  </g>
+                </g>
+                <defs>
+                  <clipPath id="clip0_1_69">
+                    <rect width="21" height="63" fill="white"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+              <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
+            </div>
+
+            <div
+              class="book-absolute book--left-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]">
+              <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
+              <span class="book-rotate-180">
+                <svg width="21" height="63" viewBox="0 0 21 63" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_1_69)">
                     <g mask="url(#mask0_1_69)">
                       <path
                         d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                        fill="white"
-                        stroke="transparent"
-                        stroke-width="2"
-                      ></path>
+                        fill="white" stroke="transparent" stroke-width="2"></path>
                     </g>
                   </g>
                   <defs>
@@ -1197,368 +874,83 @@
                     </clipPath>
                   </defs>
                 </svg>
-                <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
-              </div>
-
-              <div
-                class="book-absolute book--left-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]"
-              >
-                <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
-                <span class="book-rotate-180">
-                  <svg
-                    width="21"
-                    height="63"
-                    viewBox="0 0 21 63"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g clip-path="url(#clip0_1_69)">
-                      <g mask="url(#mask0_1_69)">
-                        <path
-                          d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                          fill="white"
-                          stroke="transparent"
-                          stroke-width="2"
-                        ></path>
-                      </g>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_1_69">
-                        <rect width="21" height="63" fill="white"></rect>
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </span>
-              </div>
-              <div
-                class="book-w-full book-h-[70%] book-flex book-flex-col book-justify-between book-px-3 book-py-6 book-z-10 book-bg-white book-rounded-b-[30px] book-rounded-t-2xl"
-              >
-                <div class="book-w-full book-flex book-justify-between book-items-center">
-                  <div class="book-flex book-items-center book-open-first-menu book-gap-1">
-                    <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
-                      تهران
-                    </p>
-                    <p
-                      class="book-text-xs book-text-zinc-600 book-whitespace-nowrap book-line-clamp-1"
-                    >
-                      (جنوب - خزانه)
-                    </p>
-                  </div>
-                  <div
-                    class="book-set-before-after book-h-[1px] book-border-t book-border-dashed book-border-zinc-800 book-relative book-w-[18%]"
-                  >
-                    <span></span><span></span>
-                  </div>
-                  <div class="book-flex book-items-center book-open-second-menu book-gap-1">
-                    <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
-                      مشهد
-                    </p>
-                    <p
-                      class="book-text-xs book-text-zinc-600 book-line-clamp-1 book-whitespace-nowrap"
-                    >
-                      ( پایانه امام رضا )
-                    </p>
-                  </div>
-                </div>
-                <div class="book-w-full book-flex book-items-center">
-                  <div class="book-flex book-items-center book-gap-1 book-open-third-menu">
-                    <img
-                      src="../../images/giti-navard.webp"
-                      alt="taavoni-logo"
-                      class="book-w-[36px] book-h-[36px]"
-                    />
-                    <p class="book-text-sm book-text-zinc-400">تعاونی 16 جهان گشت مهر</p>
-                  </div>
-                </div>
-                <div class="book-flex book-items-center book-gap-2">
-                  <img src="../../images/bus.svg" alt="bus" />
-                  <p class="book-text-sm book-text-zinc-400">وی ای پی تخت شو 25نفره</p>
-                </div>
-                <div class="book-w-full book-flex book-items-center book-justify-between">
-                  <div class="book-flex book-items-center book-gap-1">
-                    <p class="book-text-zinc-900">4</p>
-                    <p class="book-text-sm book-text-zinc-400">صندلی خالی</p>
-                  </div>
-                  <div class="book-flex book-items-center book-gap-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      class="book-size-4"
-                    >
-                      <path
-                        d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
-                        class="book-stroke-zinc-900"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                      <path
-                        d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1"
-                        class="book-stroke-zinc-900"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                    <p class="book-text-sm book-text-zinc-400">11:30 صبح</p>
-                  </div>
-                  <div class="book-flex book-gap-1 book-items-center">
-                    <p class="book-text-zinc-900">6,700,000</p>
-                    <p class="book-text-sm book-text-zinc-400">ریال</p>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="book-w-full book-h-[30%] book-py-3 book-px-3 book-flex book-flex-col book-justify-between book-z-10 book-bg-white book-rounded-t-[30px] book-rounded-b-2xl"
-              >
-                <div class="book-flex book-items-center book-gap-2">
-                  <img
-                    src="../../images/listCheck.svg"
-                    alt="listCheck"
-                    class="book-size-4 book-opacity-40"
-                  />
-                  <p class="book-text-xs book-text-zinc-400">
-                    09331041988-55185408الی10-09057426227
+              </span>
+            </div>
+            <div
+              class="book-w-full book-h-[70%] book-flex book-flex-col book-justify-between book-px-3 book-py-6 book-z-10 book-bg-white book-rounded-b-[30px] book-rounded-t-2xl">
+              <div class="book-w-full book-flex book-justify-between book-items-center">
+                <div class="book-flex book-items-center book-open-first-menu book-gap-1">
+                  <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
+                    تهران
+                  </p>
+                  <p class="book-text-xs book-text-zinc-600 book-whitespace-nowrap book-line-clamp-1">
+                    (جنوب - خزانه)
                   </p>
                 </div>
-                <a
-                  href=""
-                  class="book-w-full book-flex hover:book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white"
-                  >خریـد بلیـط</a
-                >
+                <div
+                  class="book-set-before-after book-h-[1px] book-border-t book-border-dashed book-border-zinc-800 book-relative book-w-[18%]">
+                  <span></span><span></span>
+                </div>
+                <div class="book-flex book-items-center book-open-second-menu book-gap-1">
+                  <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
+                    مشهد
+                  </p>
+                  <p class="book-text-xs book-text-zinc-600 book-line-clamp-1 book-whitespace-nowrap">
+                    ( پایانه امام رضا )
+                  </p>
+                </div>
+              </div>
+              <div class="book-w-full book-flex book-items-center">
+                <div class="book-flex book-items-center book-gap-1 book-open-third-menu">
+                  <img src="../../images/giti-navard.webp" alt="taavoni-logo" class="book-w-[36px] book-h-[36px]" />
+                  <p class="book-text-sm book-text-zinc-400">تعاونی 16 جهان گشت مهر</p>
+                </div>
+              </div>
+              <div class="book-flex book-items-center book-gap-2">
+                <img src="../../images/bus.svg" alt="bus" />
+                <p class="book-text-sm book-text-zinc-400">وی ای پی تخت شو 25نفره</p>
+              </div>
+              <div class="book-w-full book-flex book-items-center book-justify-between">
+                <div class="book-flex book-items-center book-gap-1">
+                  <p class="book-text-zinc-900">4</p>
+                  <p class="book-text-sm book-text-zinc-400">صندلی خالی</p>
+                </div>
+                <div class="book-flex book-items-center book-gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    class="book-size-4">
+                    <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
+                      class="book-stroke-zinc-900" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    </path>
+                    <path d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1" class="book-stroke-zinc-900"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <p class="book-text-sm book-text-zinc-400">11:30 صبح</p>
+                </div>
+                <div class="book-flex book-gap-1 book-items-center">
+                  <p class="book-text-zinc-900">6,700,000</p>
+                  <p class="book-text-sm book-text-zinc-400">ریال</p>
+                </div>
               </div>
             </div>
             <div
-              class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl book-!relative book-flex book-flex-col book-!gap-0 book-w-full book-!h-[300px]"
-            >
-              <div
-                class="book-absolute book-top-0 book-first-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >مشاهده اطلاعات ترمینال (پایانه جنوب - خزانه)</a
-                >
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
+              class="book-w-full book-h-[30%] book-py-3 book-px-3 book-flex book-flex-col book-justify-between book-z-10 book-bg-white book-rounded-t-[30px] book-rounded-b-2xl">
+              <div class="book-flex book-items-center book-gap-2">
+                <img src="../../images/listCheck.svg" alt="listCheck" class="book-size-4 book-opacity-40" />
+                <p class="book-text-xs book-text-zinc-400">
+                  09331041988-55185408الی10-09057426227
+                </p>
               </div>
-              <div
-                class="book-absolute book-top-0 book-second-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >مشاهده اطلاعات ترمینال (پایانه امام رضا)</a
-                >
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
-              </div>
-              <div
-                class="book-absolute book-top-0 book-third-menu book-translate-y-[120%] book-ease-in-out book-transition-all book-duration-300 book-left-0 book-w-full book-z-30 book-h-full book-glass3 book-flex book-flex-col book-gap-4 book-justify-center book-items-center"
-              >
-                <a
-                  href=""
-                  class="book-w-[280px] book-h-10 book-rounded-lg book-text-xs book-flex book-justify-center book-items-center book-text-white book-bg-primary-700 hover:book-bg-primary-950"
-                  >خرید بلیط</a
-                >
-                <a
-                  href=""
-                  class="book-w-[280px] book-transition-all book-duration-300 book-text-xs book-h-10 book-glass3 book-rounded-lg book-flex book-justify-center book-items-center book-text-zinc-900 book-bg-transparent book-border-zinc-700 hover:book-bg-primary-950 book-border hover:book-text-white"
-                  >تعاونی 16 جهان گشت مهر
-                </a>
-                <button
-                  type="button"
-                  class="book-clode-menu book-w-[280px] book-text-xs book-h-10 book-rounded-lg book-flex book-justify-center book-items-center book-text-white book-bg-zinc-700 hover:book-bg-primary-950"
-                >
-                  بستـن
-                </button>
-              </div>
-              <div
-                class="book-absolute book--right-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]"
-              >
-                <svg
-                  width="21"
-                  height="63"
-                  viewBox="0 0 21 63"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clip-path="url(#clip0_1_69)">
-                    <g mask="url(#mask0_1_69)">
-                      <path
-                        d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                        fill="white"
-                        stroke="transparent"
-                        stroke-width="2"
-                      ></path>
-                    </g>
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_1_69">
-                      <rect width="21" height="63" fill="white"></rect>
-                    </clipPath>
-                  </defs>
-                </svg>
-                <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
-              </div>
-
-              <div
-                class="book-absolute book--left-[1px] book-flex book-justify-between book-w-[30px] book-top-[60%] book-z-[2]"
-              >
-                <span class="book-w-[9px] book-h-[60px] book-bg-white"></span>
-                <span class="book-rotate-180">
-                  <svg
-                    width="21"
-                    height="63"
-                    viewBox="0 0 21 63"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g clip-path="url(#clip0_1_69)">
-                      <g mask="url(#mask0_1_69)">
-                        <path
-                          d="M4 -159H-5L-7 92H0H3.3333H4C12.8366 92 20 84.837 20 76V51.036C20 46.985 17.8606 43.236 14.3734 41.175C6.9438 36.785 6.8544 26.067 14.2098 21.553L14.4545 21.403C17.3030 19.289 20 15.536 20 11.494V-143C20 -151.837 12.8366 -159 4 -159Z"
-                          fill="white"
-                          stroke="transparent"
-                          stroke-width="2"
-                        ></path>
-                      </g>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_1_69">
-                        <rect width="21" height="63" fill="white"></rect>
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </span>
-              </div>
-              <div
-                class="book-w-full book-h-[70%] book-flex book-flex-col book-justify-between book-px-3 book-py-6 book-z-10 book-bg-white book-rounded-b-[30px] book-rounded-t-2xl"
-              >
-                <div class="book-w-full book-flex book-justify-between book-items-center">
-                  <div class="book-flex book-items-center book-open-first-menu book-gap-1">
-                    <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
-                      تهران
-                    </p>
-                    <p
-                      class="book-text-xs book-text-zinc-600 book-whitespace-nowrap book-line-clamp-1"
-                    >
-                      (جنوب - خزانه)
-                    </p>
-                  </div>
-                  <div
-                    class="book-set-before-after book-h-[1px] book-border-t book-border-dashed book-border-zinc-800 book-relative book-w-[18%]"
-                  >
-                    <span></span><span></span>
-                  </div>
-                  <div class="book-flex book-items-center book-open-second-menu book-gap-1">
-                    <p class="book-font-bold book-text-sm book-whitespace-nowrap book-line-clamp-1">
-                      مشهد
-                    </p>
-                    <p
-                      class="book-text-xs book-text-zinc-600 book-line-clamp-1 book-whitespace-nowrap"
-                    >
-                      ( پایانه امام رضا )
-                    </p>
-                  </div>
-                </div>
-                <div class="book-w-full book-flex book-items-center">
-                  <div class="book-flex book-items-center book-gap-1 book-open-third-menu">
-                    <img
-                      src="../../images/giti-navard.webp"
-                      alt="taavoni-logo"
-                      class="book-w-[36px] book-h-[36px]"
-                    />
-                    <p class="book-text-sm book-text-zinc-400">تعاونی 16 جهان گشت مهر</p>
-                  </div>
-                </div>
-                <div class="book-flex book-items-center book-gap-2">
-                  <img src="../../images/bus.svg" alt="bus" />
-                  <p class="book-text-sm book-text-zinc-400">وی ای پی تخت شو 25نفره</p>
-                </div>
-                <div class="book-w-full book-flex book-items-center book-justify-between">
-                  <div class="book-flex book-items-center book-gap-1">
-                    <p class="book-text-zinc-900">4</p>
-                    <p class="book-text-sm book-text-zinc-400">صندلی خالی</p>
-                  </div>
-                  <div class="book-flex book-items-center book-gap-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      class="book-size-4"
-                    >
-                      <path
-                        d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10Z"
-                        class="book-stroke-zinc-900"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                      <path
-                        d="m15.71 15.18-3.1-1.85c-.54-.32-.98-1.09-.98-1.72v-4.1"
-                        class="book-stroke-zinc-900"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>
-                    </svg>
-                    <p class="book-text-sm book-text-zinc-400">11:30 صبح</p>
-                  </div>
-                  <div class="book-flex book-gap-1 book-items-center">
-                    <p class="book-text-zinc-900">6,700,000</p>
-                    <p class="book-text-sm book-text-zinc-400">ریال</p>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="book-w-full book-h-[30%] book-py-3 book-px-3 book-flex book-flex-col book-justify-between book-z-10 book-bg-white book-rounded-t-[30px] book-rounded-b-2xl"
-              >
-                <div class="book-flex book-items-center book-gap-2">
-                  <img
-                    src="../../images/listCheck.svg"
-                    alt="listCheck"
-                    class="book-size-4 book-opacity-40"
-                  />
-                  <p class="book-text-xs book-text-zinc-400">
-                    09331041988-55185408الی10-09057426227
-                  </p>
-                </div>
-                <a
-                  href=""
-                  class="book-w-full book-flex hover:book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white"
-                  >خریـد بلیـط</a
-                >
-              </div>
+              <a href=""
+                class="book-w-full book-flex hover:book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white">خریـد
+                بلیـط</a>
             </div>
           </div>
         </div>
-      </section>
-    </main>
-  </body>
-  <script src="https://cdn.basiscore.net/basisfly.com/js/swiper-bundle.min.js"></script>
-  <script src="../../js/bus-core.js"></script>
+      </div>
+    </section>
+  </main>
+</body>
+<script src="https://cdn.basiscore.net/basisfly.com/js/swiper-bundle.min.js"></script>
+<script src="../../js/bus-core.js"></script>
+
 </html>

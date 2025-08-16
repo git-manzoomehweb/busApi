@@ -1,3 +1,4 @@
+<!-- 1404-05-25 -->
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -272,7 +273,7 @@
                                                 class="book-tab__navigation__content book-min-w-20 book-active__tab__navigation book-p-3 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                                 <svg width="21" height="20">
                                                     <use
-                                                        href="/booking/images/sprite-booking-icons.svg#plane-rotate-icon">
+                                                        href="/booking/images/sprite-booking-icons.svg#bus-detail-icon">
                                                     </use>
                                                 </svg>
                                                 <h6 class="book-text-sm">جزئیات
@@ -284,7 +285,7 @@
                                                 class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                                 <svg width="21" height="20">
                                                     <use
-                                                        href="/booking/images/sprite-booking-icons.svg#class-icon">
+                                                        href="/booking/images/sprite-booking-icons.svg#bus-price-icon">
                                     
                                                     </use>
                                                 </svg>
@@ -297,7 +298,7 @@
                                                 class="book-tab__navigation__content book-min-w-20 book-p-2 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
                                                 <svg width="21" height="20">
                                                     <use
-                                                        href="/booking/images/sprite-booking-icons.svg#flight-rule-icon">
+                                                        href="/booking/images/sprite-booking-icons.svg#bus-rule-icon">
                                                     </use>
                                           </svg>
                                           <h6 class="book-text-sm">قوانین و مقررات</h6>
@@ -422,7 +423,7 @@
                                 class="book-bg-white book-shadow-md book-rounded-2xl book-p-5 book-mb-5 book-brief__container__title">
                                 <div class="book-flex book-justify-between">
                                     <div class="book-current__route__map">انتخاب صندلی</div>
-                                    <div class="book-text-green-600">
+                                    <div class="book-text-green-600 book-flex">
                                         <span class="book-timer__left__container"></span>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             strokeWidth={1.5} stroke="currentColor"
@@ -458,8 +459,12 @@
                         </div>
 
                         </div>
+
+
                             <div class="book-passengers__container book-hidden">
-                                <basis core="call" file="book/passenger"></basis>
+                                <basis core="call" file="book/passenger" lid="1"
+                                    pageindexid="[##cms.cms.pageindexid|(1)##]">
+                                </basis>
                             </div>
 
                             <div class="book-buyers__container book-hidden" data-run="0">
@@ -660,7 +665,8 @@
     <!-- Footer -->
     <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
 
-    <script src="[##cms.cms.cdn##]/booking/js/bus-book.js?ver=1" type="text/javascript"></script>
+    <script src="/booking/js/bus-book.js?ver=1" type="text/javascript"></script>
+    <!-- <script src="[##cms.cms.cdn##]/booking/js/bus-book.js?ver=1" type="text/javascript"></script> -->
 
 
 </body>

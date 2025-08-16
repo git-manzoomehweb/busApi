@@ -1,0 +1,346 @@
+<div class="book-passengers__container__internal book-passengers__content book-hidden">
+    <div class="book-passenger__container book-bg-white book-shadow-md book-border-slate-600 book-rounded-2xl book-border-b-3 book-p-5 book-mb-10"
+        data-index="1">
+        <div class="book-title book-flex book-justify-between book-text-sm book-mb-4">
+            <div class="book-flex">
+                <span class="book-passenger__container__title book-text-primary-400 book-font-bold">بزرگسال</span>
+                <ul class="book-passenger__container__type book-flex book-mr-4">
+                    <li onclick="togglePassengerType(this,'internal','external')" class="book-mx-4 book-cursor-pointer">
+                        <input type="radio" name="type-1" class="book-ml-1 book-align-middle" checked />کارت ملی
+                    </li>
+                    <li onclick="togglePassengerType(this,'external','internal')" class="book-mx-4 book-cursor-pointer">
+                        <input type="radio" name="type-1" class="book-ml-1 book-align-middle" />پاسپورت
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <div class="book-previous__passenger__container book-cursor-pointer book-text-primary-400 book-border-b-2 book-border-primary-400"
+                    data-run="0" data-index="1" onclick="showPreviousPassengers(this)">
+                    انتخاب مسافران سابق
+                </div>
+                <span
+                    class="book-api__container__loader book-hidden book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-m-3"></span>
+
+            </div>
+            <input type="hidden" class="book-Type" value="ADT" />
+        </div>
+        <div class="book-passenger__content book-mt-4 book-grid book-grid-cols-3 book-gap-4">
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="نام">نام به
+                    انگلیسی</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input onkeydown="checkEnglishKey(event,this),removeAlertContent(this)"
+                        onkeyup="checkUpperCaseKey(event,this)" class="book-Required book-EnglishKey book-FirstName"
+                        type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="نام خانوادگی">نام
+                    خانوادگی به انگلیسی</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input onkeydown="checkEnglishKey(event,this),removeAlertContent(this)"
+                        onkeyup="checkUpperCaseKey(event,this)" class="book-Required book-EnglishKey book-LastName"
+                        type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative book-has__drop__item">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="جنسیت">جنسیت</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input class="book-Gender book-Required book-cursor-pointer" type="text"
+                        onclick="toggleDropItem(this,'book-info__item__container')"
+                        onblur="autoFillSearch(this,'book-date__item__content')" onfocus="this.click()" readonly="true">
+                    <input class="book-data-id" type="hidden" />
+                </div>
+                <ul class="book-drop__item__content book-w-[96per] book-text-right">
+                    <li onclick="selectDropItem(this,'book-info__item__container')"
+                        class="book-li-item book-cursor-pointer book-p-2" data-id="MS" data-value="خانم">خانم</li>
+                    <li onclick="selectDropItem(this,'book-info__item__container')"
+                        class="book-li-item book-cursor-pointer book-p-2" data-id="MR" data-value="آقا">آقا</li>
+                </ul>
+            </div>
+            <div class="book-info__item__container book-mb-4 book-internal__internal">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="کد ملی">کد ملی</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input onkeyup="this.value=this.value.replace(/[^0-9]/g, '');"
+                        onkeydown="checkPersianKey(event,this)"
+                        class="book-check-required book-NationalCode book-Required" maxlength="10" type="text"
+                        autocomplete="off">
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="تاریخ تولد">تاریخ
+                    تولد</label>
+                <div class="book-date__item__container book-float-right book-w-[96per] book-internal">
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="2" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="روز" class="book-day book-Required book-cursor-pointer" data-id="" value=""
+                                oninput="autoCompleteSearch(this,'book-date__item__content')"
+                                onblur="autoFillSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g, '')">
+                        </div>
+                        <ul class="book-drop__item__content" id="birth-persian-day-dropdown"></ul>
+                    </div>
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="2" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="ماه" class="book-month book-Required book-cursor-pointer" data-id=""
+                                value="" oninput="autoCompleteSearch(this,'book-date__item__content')"
+                                onfocus="this.click()" onblur="autoFillSearch(this,'book-date__item__content')">
+                        </div>
+                        <ul class="book-drop__item__content" id="birth-persian-month-dropdown"></ul>
+                    </div>
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="4" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="سال" class="book-year book-Required book-cursor-pointer" data-id=""
+                                value="" oninput="autoCompleteSearch(this,'book-date__item__content')"
+                                onfocus="this.click()" onblur="autoFillSearch(this,'book-date__item__content')"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g, '') ">
+                        </div>
+                        <ul class="book-drop__item__content" id="birth-persian-year-dropdown"></ul>
+                    </div>
+                    <input type="hidden" class="book-DateOfBirth book-date" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative book-has__drop__item">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="ملیت">ملیت</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input value="ایران" data-value="ایران"
+                        oninput="autoCompleteSearch(this,'book-info__item__container')"
+                        onblur="autoFillSearch(this,'book-passenger-info-item')"
+                        onclick="toggleDropItem(this,'book-info__item__container','country')" onfocus="this.click()"
+                        class="book-Required book-NameOfCountry book-cursor-pointer" autocomplete="off">
+                </div>
+                <input type="hidden" value="1002236" class="book-data-id book-PlaceOfBirth" />
+                <ul class="book-drop__item__content book-w-[96per] book-text-right"></ul>
+            </div>
+            <div class="book-info__item__container book-mb-4 book-internal__external book-hidden"
+                onkeydown="checkPersianKey(event,this)">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="شماره گذرنامه">شماره
+                    گذرنامه</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input onkeyup="this.value=this.value.replace(/[^0-9a-zA-Z]/g, ''),removeAlertContent(this)"
+                        class="book-check-required book-PassportCode" maxlength="9" type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-4 book-internal__external book-hidden">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="انقضا گذرنامه">انقضا
+                    گذرنامه</label>
+                <div class="book-date__item__container book-float-right book-w-[96per]">
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="2" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="روز" class="book-check-required book-day book-cursor-pointer"
+                                oninput="autoCompleteSearch(this,'book-date__item__content')"
+                                onblur="autoFillSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g, '')" data-id="">
+                        </div>
+                        <ul class="book-drop__item__content" id="passport-persian-day-dropdown"></ul>
+                    </div>
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="2" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="ماه" class="book-check-required book-month book-cursor-pointer"
+                                oninput="autoCompleteSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onblur="autoFillSearch(this,'book-date__item__content')" data-id="">
+                        </div>
+                        <ul class="book-drop__item__content" id="passport-persian-month-dropdown"></ul>
+                    </div>
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="4" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="سال" class="book-check-required book-year book-cursor-pointer"
+                                oninput="autoCompleteSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onblur="autoFillSearch(this,'book-date__item__content')"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g, '')" data-id="">
+                        </div>
+                        <ul class="book-drop__item__content" id="passport-persian-year-dropdown"></ul>
+                    </div>
+                    <input type="hidden" class="book-PassportExpiration book-date" />
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="book-passengers__container__external book-passengers__content book-hidden">
+    <div class="book-passenger__container book-bg-white book-shadow-md book-border-slate-600 book-rounded-2xl book-border-b-3 book-p-5 book-mb-10"
+        data-index="1">
+        <div class="book-title book-flex book-justify-between book-text-sm book-mb-4">
+            <div class="book-flex">
+                <span class="book-passenger__container__title book-font-bold">بزرگسال</span>
+            </div>
+            <div>
+                <div class="book-previous__passenger__container book-cursor-pointer book-text-primary-400 book-border-b-2 book-border-primary-400"
+                    data-run="0" data-index="1" onclick="showPreviousPassengers(this)">
+                    انتخاب مسافران سابق
+                </div>
+                <span
+                    class="book-api__container__loader book-hidden book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-m-3"></span>
+            </div>
+            <input type="hidden" class="book-Type" value="ADT" />
+        </div>
+        <div class="book-passenger__content book-mt-4 book-grid book-grid-cols-3 book-gap-1">
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="نام">نام به
+                    انگلیسی</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input onkeydown="checkEnglishKey(event,this),removeAlertContent(this)"
+                        onkeyup="checkUpperCaseKey(event,this)" class="book-Required book-EnglishKey book-FirstName"
+                        type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="نام خانوادگی">نام
+                    خانوادگی به انگلیسی</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input onkeydown="checkEnglishKey(event,this),removeAlertContent(this)"
+                        onkeyup="checkUpperCaseKey(event,this)" class="book-Required book-EnglishKey book-LastName"
+                        type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative book-has__drop__item">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="جنسیت">جنسیت</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input class="book-Gender book-Required book-cursor-pointer" type="text"
+                        onclick="toggleDropItem(this,'book-info__item__container')" onfocus="this.click()"
+                        onblur="autoFillSearch(this,'book-date__item__content')" readonly="true" />
+                    <input class="book-data-id" type="hidden" />
+                </div>
+                <ul class="book-drop__item__content book-w-[96per] book-text-right">
+                    <li onclick="selectDropItem(this,'book-info__item__container')"
+                        class="book-li-item book-cursor-pointer book-p-2" data-id="MS" data-value="خانم">خانم</li>
+                    <li onclick="selectDropItem(this,'book-info__item__container')"
+                        class="book-li-item book-cursor-pointer book-p-2" data-id="MR" data-value="آقا">آقا</li>
+                </ul>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="تاریخ تولد">تاریخ تولد
+                    میلادی</label>
+                <div class="book-date__item__container book-float-right book-w-[96per]">
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="2" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="روز" class="book-day book-Required book-cursor-pointer" data-id=""
+                                oninput="autoCompleteSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onblur="autoFillSearch(this,'book-date__item__content')"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g, '')">
+                        </div>
+                        <ul class="book-drop__item__content" id="birth-gregorian-day-dropdown"></ul>
+                    </div>
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="2" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="ماه" class="book-month book-Required book-cursor-pointer" data-id=""
+                                oninput="autoCompleteSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onblur="autoFillSearch(this,'book-date__item__content')">
+                        </div>
+                        <ul class="book-drop__item__content" id="birth-gregorian-month-dropdown"></ul>
+                    </div>
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="4" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="سال" class="book-year book-Required book-cursor-pointer" data-id=""
+                                oninput="autoCompleteSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onblur="autoFillSearch(this,'book-date__item__content')">
+                        </div>
+                        <ul class="book-drop__item__content" id="birth-gregorian-year-dropdown"></ul>
+                    </div>
+                    <input type="hidden" class="book-DateOfBirth book-date" />
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative book-has__drop__item">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="ملیت">ملیت</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input value="ایران" data-value="ایران"
+                        oninput="autoCompleteSearch(this,'book-info__item__container')"
+                        onblur="autoFillSearch(this,'book-passenger-info-item')"
+                        onclick="toggleDropItem(this,'book-info__item__container','country')" onfocus="this.click()"
+                        class="book-Required book-NameOfCountry book-cursor-pointer" autocomplete="off">
+                </div>
+                <input type="hidden" value="1002236" class="book-data-id book-PlaceOfBirth" />
+                <ul class="book-drop__item__content book-w-[96per] book-text-right"></ul>
+            </div>
+            <div class="book-info__item__container book-mb-4 book-external-internal">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="کد ملی">کد ملی</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input onkeyup="this.value=this.value.replace(/[^0-9]/g, '');"
+                        onkeydown="checkPersianKey(event,this)" class="book-NationalCode book-Required" maxlength="10"
+                        type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative" onkeydown="checkPersianKey(event,this)">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="شماره گذرنامه">شماره
+                    گذرنامه</label>
+                <div class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                    <input onkeyup="this.value=this.value.replace(/[^0-9a-zA-Z]/g, ''),removeAlertContent(this)"
+                        class="book-PassportCode book-Required" maxlength="9" type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="book-info__item__container book-mb-3 book-relative">
+                <label class="book-mb-1 book-block book-text-zinc-500 book-text-xs" data-label="انقضا گذرنامه">انقضا
+                    گذرنامه</label>
+                <div class="book-date__item__container book-float-right book-w-[96per]">
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="2" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="روز" class="book-day book-Required book-cursor-pointer"
+                                oninput="autoCompleteSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onblur="autoFillSearch(this,'book-date__item__content')"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g, '')" data-id="">
+                        </div>
+                        <ul class="book-drop__item__content" id="passport-gregorian-day-dropdown"></ul>
+                    </div>
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="2" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="ماه" class="book-month book-Required book-cursor-pointer"
+                                oninput="autoCompleteSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onblur="autoFillSearch(this,'book-date__item__content')" data-id="">
+                        </div>
+                        <ul class="book-drop__item__content" id="passport-gregorian-month-dropdown"></ul>
+                    </div>
+                    <div
+                        class="book-date__item__content book-float-right book-w-1/3 book-relative book-has__drop__item">
+                        <div
+                            class="book-info__item__content book-bg-zinc-100 book-rounded-lg book-w-[96per] book-transition">
+                            <input maxlength="4" type="text" onclick="toggleDropItem(this,'book-date__item__content')"
+                                placeholder="سال" class="book-year book-Required book-cursor-pointer"
+                                oninput="autoCompleteSearch(this,'book-date__item__content')" onfocus="this.click()"
+                                onblur="autoFillSearch(this,'book-date__item__content')"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g, '')" data-id="">
+                        </div>
+                        <ul class="book-drop__item__content" id="passport-gregorian-year-dropdown"></ul>
+                    </div>
+                    <input type="hidden" class="book-PassportExpiration book-date" />
+                </div>
+                <div class="clr"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
