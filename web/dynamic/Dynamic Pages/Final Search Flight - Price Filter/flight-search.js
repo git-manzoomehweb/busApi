@@ -1,150 +1,10 @@
-// Multi-language translations
-const translations = {
-    // ============= CABIN CLASSES =============
-    "economy_class": { en: "Economy", fa: "اکونومی", ar: "اقتصادية" },
-    "business_class": { en: "Business", fa: "بیزینس", ar: "رجال أعمال" },
-    "first_class": { en: "First Class", fa: "فرست", ar: "الدرجة الأولى" },
-
-    // ============= PASSENGER TYPES =============
-    "adult_passenger": { en: "Adult", fa: "بزرگسال", ar: "بالغ" },
-    "child_passenger": { en: "Child", fa: "کودک", ar: "طفل" },
-    "infant_passenger": { en: "Infant", fa: "نوزاد", ar: "رضيع" },
-    "passenger": { en: "Passenger", fa: "مسافر", ar: "مسافر" },
-    "per_passenger": { en: "Per Passenger", fa: "به ازای هر مسافر", ar: "لكل مسافر" },
-
-    // ============= TRIP TYPES =============
-    "outbound_flight": { en: "Outbound", fa: "رفت", ar: "الذهاب" },
-    "return_flight": { en: "Return", fa: "برگشت", ar: "العودة" },
-    "route": { en: "Route", fa: "مسیر", ar: "المسار" },
-
-    // ============= ORDINAL NUMBERS =============
-    "first_route": { en: "First", fa: "اول", ar: "الأول" },
-    "second_route": { en: "Second", fa: "دوم", ar: "الثاني" },
-    "third_route": { en: "Third", fa: "سوم", ar: "الثالث" },
-    "fourth_route": { en: "Fourth", fa: "چهارم", ar: "الرابع" },
-
-    // ============= DIRECTIONS & CONNECTING WORDS =============
-    "to_destination": { en: "to", fa: "به", ar: "إلى" },
-    "until_time": { en: "to", fa: "تا", ar: "إلى" },
-    "delete": { en: "Delete", fa: "حذف", ar: "حذف" },
-    "unknown": { en: "Unknown", fa: "نامشخص", ar: "غير معروف" },
-    "unknown_info": { en: "Unknown", fa: "نامعلوم", ar: "غير معروف" },
-
-    // ============= TIME PERIODS =============
-    "morning_time": { en: "Morning", fa: "صبح", ar: "الصباح" },
-    "afternoon_time": { en: "Afternoon", fa: "بعدازظهر", ar: "بعد الظهر" },
-    "evening_time": { en: "Evening", fa: "عصر", ar: "المساء" },
-    "night_time": { en: "Night", fa: "شب", ar: "الليل" },
-
-    // ============= TIME LABELS =============
-    "time_from": { en: "Time from:", fa: "ساعت از:", ar: "الوقت من:" },
-    "hour": { en: "hour", fa: "ساعت", ar: "ساعة" },
-    "minute": { en: "minute", fa: "دقیقه", ar: "دقيقة" },
-
-    // ============= STOP TYPES =============
-    "direct_flight": { en: "Direct", fa: "بدون توقف", ar: "مباشر" },
-    "one_stop_flight": { en: "1 Stop", fa: "یک توقف", ar: "توقف واحد" },
-    "multi_stop_flight": { en: "Multi-stop", fa: "چند توقف", ar: "توقفات متعدد" },
-
-    // ============= SYSTEM MESSAGES =============
-    "svg_sprite_load_error": { en: "SVG sprite load error", fa: "خطا در بارگذاری آیکون‌ها", ar: "خطأ في تحميل الرموز" },
-    "loading": { en: "Loading...", fa: "در حال بارگذاری...", ar: "جارٍ التحميل..." },
-
-    // ============= FLIGHT INFORMATION =============
-    "remaining_seats": { en: "Remaining", fa: "باقی‌مانده", ar: "متبقي" },
-    "flight_number": { en: "Flight No.", fa: "شماره پرواز", ar: "رقم الرحلة" },
-    "seats": { en: "seats", fa: "صندلی", ar: "مقاعد" },
-    "outbound_flight_info": { en: "Outbound Flight", fa: "پرواز رفت", ar: "رحلة الذهاب" },
-    "return_flight_info": { en: "Return Flight", fa: "پرواز برگشت", ar: "رحلة العودة" },
-    "flight_duration": { en: "Flight Duration", fa: "مدت پرواز", ar: "مدة الرحلة" },
-
-    // ============= TICKET & FARE INFORMATION =============
-    "ticket_class": { en: "Ticket Class", fa: "کلاس بلیط", ar: "فئة التذكرة" },
-    "allowed_baggage": { en: "Allowed Baggage", fa: "بار مجاز", ar: "الأمتعة المسموح بها" },
-    "fare_class": { en: "Fare Class", fa: "کلاس نرخ", ar: "فئة التعرفة" },
-    "aircraft_type": { en: "Aircraft Type", fa: "نوع هواپیما", ar: "نوع الطائرة" },
-    "connection_time": { en: "Connection Time", fa: "زمان اتصال", ar: "وقت الربط" },
-
-    // ============= FARE BREAKDOWN =============
-    "base_fare": { en: "Base Fare", fa: "نرخ پایه", ar: "التعرفة الأساسية" },
-    "taxes_and_fees": { en: "Taxes & Fees", fa: "مالیات و عوارض", ar: "الضرائب والرسوم" },
-    "total_price": { en: "Total", fa: "مجموع", ar: "المجموع" },
-
-    // ============= SELECTION & ACTIONS =============
-    "selected": { en: "Selected", fa: "انتخاب شده", ar: "مختار" },
-    "decrease": { en: "Decrease", fa: "کاهش", ar: "تقليل" },
-    "increase": { en: "Increase", fa: "افزایش", ar: "زيادة" },
-    "increase_fare_and_continue": { en: "Change fare and continue", fa: "تغییر نرخ و ادامه", ar: "تغييرات التعرفة والمتابعة" },
-    "continue_with_current_fare": { en: "Continue with current fare", fa: "ادامه با نرخ فعلی", ar: "المتابعة مع التعرفة الحالية" },
-
-    // ============= BAGGAGE & SERVICES =============
-    "no_baggage_allowed": { en: "No Baggage", fa: "بدون بار", ar: "بدون أمتعة" },
-
-    // ============= FLIGHT TYPES =============
-    "system_flight": { en: "System Flight", fa: "پرواز سیستمی", ar: "رحلة نظامية" },
-    "charter_flight": { en: "Charter Flight", fa: "پرواز چارتر", ar: "رحلة مستأجرة" },
-
-    // ============= SERVICES & REWARDS =============
-    "club_points": { en: "Club Points", fa: "امتیاز باشگاه", ar: "نقاط النادي" },
-    "special_rate": { en: "Special Rate", fa: "نرخ ویژه", ar: "تعرفة خاصة" },
-    "operated_by": { en: "Operated by", fa: "بهره‌برداری توسط", ar: "تشغيل بواسطة" },
-
-    // ============= ERROR MESSAGES =============
-    "invalid_origin": { en: "Invalid origin", fa: "مبدا نامعتبر است", ar: "المنشأ غير صحيح" },
-    "invalid_destination": { en: "Invalid destination", fa: "مقصد نامعتبر است", ar: "الوجهة غير صحيحة" },
-    "departure_date_required": { en: "Departure date not entered", fa: "تاریخ رفت وارد نشده است", ar: "تاريخ المغادرة غير مدخل" },
-    "return_date_required": { en: "Return date not entered", fa: "تاریخ برگشت وارد نشده است", ar: "تاريخ العودة غير مدخل" },
-
-    // ============= ADDITIONAL TRANSLATIONS FOR FUNCTION =============
-    "morning_period": { en: "Morning", fa: "صبح", ar: "الصباح" },
-    "time_from_label": { en: "Time from:", fa: "ساعت از:", ar: "الوقت من:" },
-    "no_flights_matching_filters": { en: "No flights found matching your filters.", fa: "هیچ پروازی مطابق با فیلترهای شما وجود ندارد.", ar: "لم يتم العثور على رحلات تطابق الفلاتر الخاصة بك." },
-    "clear_filters_to_see_results": { en: "Clear your filters to see results.", fa: "برای مشاهده نتایج، فیلترهای خود را پاک کنید.", ar: "امسح الفلاتر لرؤية النتائج." },
-    "no_amenities_available": { en: "No facilities available.", fa: "امکاناتی در دسترس نیست.", ar: "لا توجد مرافق متاحة." }
-
-};
-
-
-// Language detection and direction setup
-let currentLanguage = document.documentElement.lang || 'fa';
-let isRTL = document.documentElement.dir === 'rtl' || currentLanguage === 'fa' || currentLanguage === 'ar';
-// Function to translate text
-function translate(text) {
-    return translations[text] ? translations[text][currentLanguage] : text;
-}
-
-// Function to apply direction-specific styles
-function applyDirectionStyles() {
-    const direction = isRTL ? 'rtl' : 'ltr';
-    document.documentElement.dir = direction;
-    document.documentElement.lang = currentLanguage;
-
-    // Use existing book-rtl and book-ltr classes
-    document.body.classList.toggle('book-rtl', isRTL);
-    document.body.classList.toggle('book-ltr', !isRTL);
-}
-
-// Initialize direction styles
-applyDirectionStyles();
-
-document.addEventListener("DOMContentLoaded", function () {
-    sessionStorage.removeItem('sessionAmenities');
-    fetch("/booking/images/sprite-booking-icons.svg")
-        .then((res) => res.text())
-        .then((svgText) => {
-            const div = document.createElement("div");
-            div.style.display = "none"; // Hide the container from view
-            div.innerHTML = svgText;
-            document.body.insertBefore(div, document.body.firstChild); // Inject the SVG sprite at the beginning of <body>
-        })
-        .catch((err) => {
-            console.error(translate("SVG sprite load error") + ":", err);
-        });
-});
-
 /**
  * Global state for session management and UI updates
  */
+let translations = {};
+let currentLanguage = document.documentElement.lang || 'fa';
+let isRTL = document.documentElement.dir === 'rtl' || currentLanguage === 'fa' || currentLanguage === 'ar';
+
 let sessionSearchStorage = sessionStorage.getItem("sessionSearch")
     ? JSON.parse(sessionStorage.getItem("sessionSearch"))
     : {};
@@ -172,7 +32,7 @@ let isDurationSliderActive = false;
 
 const cookieValue = `; ${document.cookie}`;
 const cookieParts = cookieValue.split(`; rkey=`); // Split cookie to extract 'rkey'
-const tripNames = [translate("first_route"), translate("second_route"), translate("third_route"), translate("fourth_route")];
+let tripNames = [];
 let providerDataList = [];
 let isClosing = false;
 let totalTime = 20 * 60; // 20 minutes in seconds
@@ -198,6 +58,61 @@ let inboundMaxPercent = 100;
 let outboundMinPercent = 0;
 let outboundMaxPercent = 100;
 
+
+const loadTranslations = async (lang = 'fa') => {
+    try {
+        const response = await fetch(`/json/translations`);
+        const allTranslations = await response.json();
+        translations = allTranslations;
+        tripNames = [translate("first_route"), translate("second_route"), translate("third_route"), translate("fourth_route")];
+    } catch (error) {
+        console.error('loadTranslations:', error);
+    }
+}
+
+// Function to translate text
+const translate = (text) => {
+    try {
+        return translations[text] ? translations[text][currentLanguage] : text;
+    } catch (error) {
+        console.error('translate:', error);
+    }
+};
+// Function to apply direction-specific styles
+const applyDirectionStyles = async () => {
+    try {
+        const direction = isRTL ? 'rtl' : 'ltr';
+        document.documentElement.dir = direction;
+        document.documentElement.lang = currentLanguage;
+
+        // Use existing book-rtl and book-ltr classes
+        document.body.classList.toggle('book-rtl', isRTL);
+        document.body.classList.toggle('book-ltr', !isRTL);
+    } catch (error) {
+        console.error('applyDirectionStyles:', error);
+    }
+};
+
+document.addEventListener("DOMContentLoaded", async function () {
+
+    // Initialize translation
+    await loadTranslations();
+    // Initialize direction styles
+    await applyDirectionStyles();
+    sessionStorage.removeItem('sessionAmenities');
+    fetch("/booking/images/sprite-booking-icons.svg")
+        .then((res) => res.text())
+        .then((svgText) => {
+            const div = document.createElement("div");
+            div.style.display = "none"; // Hide the container from view
+            div.innerHTML = svgText;
+            document.body.insertBefore(div, document.body.firstChild); // Inject the SVG sprite at the beginning of <body>
+        })
+        .catch((err) => {
+            console.error(translate("SVG sprite load error") + ":", err);
+        });
+
+});
 /**
  * Sets up the session data and updates the UI based on flight search parameters
  * @param {Object} args - Arguments containing source data
@@ -301,6 +216,7 @@ const setSession = async (args) => {
                 TripGroup.forEach((trip, index) => {
                     retryInfoContainer.appendChild(createTripInfo(`${translate("route")} ${tripNames[index]}`, trip));
                 });
+                document.querySelector(".formflight").classList.add("multicity-flight-form");
             }
         }
 
@@ -613,15 +529,12 @@ const onCloseConnection = (param) => {
             completeProgressBar();
             setupBookCardButtons();
 
-
             if (isMobile) {
                 setTimeout(() => {
                     setupMobilePriceSlider();
                     initializeDurationSliders();
                 }, 200);
             }
-
-
 
             // Trigger calendar lookup if enabled
             if (document.querySelector("main").getAttribute("data-calendarLookUp") === 'true') {
@@ -630,6 +543,93 @@ const onCloseConnection = (param) => {
                 $bc.setSource("cms.calendarLookUp", { origin: Origin, destination: Destination, run: true });
                 document.querySelector(".book-card__price__selection__container").classList.remove('book-hidden');
             }
+
+            // Initialize Swiper instances with language-aware configurations
+            setTimeout(() => {
+                if (document.querySelectorAll('.book-airline__swiper .swiper-slide').length) {
+                    new Swiper(".book-airline__swiper", {
+                        slidesPerView: 'auto',
+                        slidesPerGroup: 1,
+                        speed: 400,
+                        centeredSlides: false,
+                        spaceBetween: 20,
+                        loop: false,
+                        watchOverflow: true,
+                        navigation: {
+                            nextEl: '.book-airline__next__swiper',
+                            prevEl: '.book-airline__prev__swiper',
+                        },
+                        breakpoints: {
+                            640: {
+                                slidesPerView: 2,
+                                spaceBetween: 20,
+                            },
+                            768: {
+                                slidesPerView: 3,
+                                spaceBetween: 40,
+                            },
+                            1024: {
+                                slidesPerView: 4,
+                                spaceBetween: 50,
+                            },
+                        },
+                    });
+                };
+                if (document.querySelectorAll('.book-price__swiper .swiper-slide').length) {
+                    new Swiper(".book-price__swiper", {
+                        slidesPerView: 8,
+                        speed: 400,
+                        centeredSlides: false,
+                        spaceBetween: 0,
+                        loop: false,
+                        navigation: {
+                            nextEl: '.book-price__next__swiper',
+                            prevEl: '.book-price__prev__swiper',
+                        },
+                        breakpoints: {
+                            640: {
+                                slidesPerView: 2,
+                                spaceBetween: 20,
+                            },
+                            768: {
+                                slidesPerView: 3,
+                                spaceBetween: 40,
+                            },
+                            1024: {
+                                slidesPerView: 4,
+                                spaceBetween: 50,
+                            },
+                        },
+                    });
+                };
+                if (document.querySelectorAll('.book-mob__price__swiper .swiper-slide').length) {
+                    new Swiper(".book-mob__price__swiper", {
+                        slidesPerView: 4,
+                        speed: 400,
+                        centeredSlides: false,
+                        spaceBetween: 0,
+                        loop: false,
+                        navigation: {
+                            nextEl: '.book-mob__price__next__swiper',
+                            prevEl: '.book-mob__price__next__swiper',
+                        },
+                        breakpoints: {
+                            640: {
+                                slidesPerView: 2,
+                                spaceBetween: 20,
+                            },
+                            768: {
+                                slidesPerView: 3,
+                                spaceBetween: 40,
+                            },
+                            1024: {
+                                slidesPerView: 4,
+                                spaceBetween: 50,
+                            },
+                        },
+                    });
+                };
+            }, 100);
         } else {
             document.querySelector(".book-main__container").classList.add("book-hidden");
             document.querySelector(".book-nodata__container").classList.remove("book-hidden");
@@ -638,6 +638,7 @@ const onCloseConnection = (param) => {
         console.error("onCloseConnection: " + error.message);
     }
 };
+
 
 /**
  * Sets up event listeners for book card buttons
@@ -834,9 +835,15 @@ const manipulation = async (args) => {
     let dynamicFlightProposalsCount = 0;
     elseExecuted = false;
     startProgressBar();
+    //  const airline__swiper = document.querySelector(".book-airline__swiper");
+    // if (window.airline__swiper) {
+    //     window.airline__swiper.update()
+    // }
+    // updateSwiperRepeatedly(airline__swiper,20,100)
 
     // ============= PAGINATION HANDLERS =============
     if (args.source.id === 'cms.page') {
+        scrollToMainContent();
         mustUpdate = true;
         InUpdatePaging = false;
         InUpdateFiltering = false;
@@ -868,6 +875,7 @@ const manipulation = async (args) => {
         nextButton.classList.toggle("book-hidden", newActive === lastButton);
 
     } else if (args.source.id === 'cms.nextpage') {
+        scrollToMainContent();
         mustUpdate = true;
         InUpdatePaging = false;
         InUpdateFiltering = false;
@@ -908,6 +916,7 @@ const manipulation = async (args) => {
         end = start + 30;
 
     } else if (args.source.id === 'cms.prevpage') {
+        scrollToMainContent();
         mustUpdate = true;
         InUpdatePaging = false;
         InUpdateFiltering = false;
@@ -946,6 +955,7 @@ const manipulation = async (args) => {
 
         // ============= AIRLINE FILTER HANDLERS =============
     } else if (args.source.id === "cms.outboundairline") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -961,6 +971,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.inboundairline") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -976,6 +987,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.airline") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -992,6 +1004,7 @@ const manipulation = async (args) => {
 
         // ============= AIRPORT FILTER HANDLERS =============
     } else if (args.source.id === "cms.outboundairport") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1007,6 +1020,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.inboundairport") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1022,6 +1036,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.airport") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1038,6 +1053,7 @@ const manipulation = async (args) => {
 
         // ============= STOP FILTER HANDLERS =============
     } else if (args.source.id === "cms.outboundstop") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1053,6 +1069,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.inboundstop") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1068,6 +1085,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.stop") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1095,10 +1113,11 @@ const manipulation = async (args) => {
                 removeFilterDiv("outbound-flight-number");
             }
         } else {
-            outboundFlightNumberNames = flightNumberValue
-                .split(",")
-                .map(item => item.trim().toLowerCase())
-                .filter(item => item !== "");
+            // outboundFlightNumberNames = flightNumberValue
+            //     .split(",")
+            //     .map(item => item.trim().toLowerCase())
+            //     .filter(item => item !== "");
+            outboundFlightNumberNames = [flightNumberValue.toLowerCase()];
 
             // Mobile version handling
             if (isMobile) {
@@ -1119,10 +1138,7 @@ const manipulation = async (args) => {
                 removeFilterDiv("inbound-flight-number");
             }
         } else {
-            inboundFlightNumberNames = flightNumberValue
-                .split(",")
-                .map(item => item.trim().toLowerCase())
-                .filter(item => item !== "");
+            inboundFlightNumberNames = [flightNumberValue.toLowerCase()];
 
             // Mobile version handling
             if (isMobile) {
@@ -1143,10 +1159,7 @@ const manipulation = async (args) => {
                 removeFilterDiv("flight-number");
             }
         } else {
-            flightNumberNames = flightNumberValue
-                .split(",")
-                .map(item => item.trim().toLowerCase())
-                .filter(item => item !== "");
+            flightNumberNames = [flightNumberValue.toLowerCase()];
 
             // Mobile version handling
             if (isMobile) {
@@ -1157,6 +1170,7 @@ const manipulation = async (args) => {
 
         // ============= DEPARTURE TIME FILTER HANDLERS =============
     } else if (args.source.id === "cms.outbounddeparturetime") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         const content = document.querySelector(".book-outbounddeparturetime__content");
@@ -1224,6 +1238,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.inbounddeparturetime") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         const content = document.querySelector(".book-inbounddeparturetime__content");
@@ -1290,6 +1305,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.departuretime") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         const content = document.querySelector(".book-departuretime__content");
@@ -1357,6 +1373,7 @@ const manipulation = async (args) => {
 
         // ============= SYSTEM FLIGHT & FARE FAMILY FILTERS =============
     } else if (args.source.id === "cms.systemflight") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1372,6 +1389,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.farefamily") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1395,7 +1413,7 @@ const manipulation = async (args) => {
         if (!priceSlider) {
             return;
         }
-        
+
         if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
             return;
         }
@@ -1405,59 +1423,60 @@ const manipulation = async (args) => {
         // ===== Desktop Mouse Events =====
         if (!isMobile) {
             setupDesktopPriceSlider(args.source.rows[0].value);
-        } 
+        }
         // ===== Mobile Touch Events =====
         else {
             setupMobilePriceSlider(args.source.rows[0].value);
         }
-        } else if (args.source.id === "cms.price.update") {
-            InUpdateFiltering = false;
-            InUpdatePaging = true;
-            selectedFlightId = null;
-            mustUpdate = true;
+    } else if (args.source.id === "cms.price.update") {
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedFlightId = null;
+        mustUpdate = true;
 
-        } else if (args.source.id === "cms.outboundhour") {
-    InUpdateFiltering = false;
-    InUpdatePaging = true;
-    selectedFlightId = null;
+    } else if (args.source.id === "cms.outboundhour") {
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedFlightId = null;
 
-    if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
-        return;
-    }
+        if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+            return;
+        }
 
-    cleanupDurationSliderEvents();
-    activeDurationSliderType = 'outbound';
+        cleanupDurationSliderEvents();
+        activeDurationSliderType = 'outbound';
 
-    if (!isMobile) {
-        setupDesktopDurationSlider(args.source.rows[0].value);
-    } else {
-        setupMobileDurationSlider(args.source.rows[0].value);
-    }
+        if (!isMobile) {
+            setupDesktopDurationSlider(args.source.rows[0].value);
+        } else {
+            setupMobileDurationSlider(args.source.rows[0].value);
+        }
 
-        } else if (args.source.id === "cms.inboundhour") {
-            InUpdateFiltering = false;
-            InUpdatePaging = true;
-            selectedFlightId = null;
+    } else if (args.source.id === "cms.inboundhour") {
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedFlightId = null;
 
-            if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
-                return;
-            }
+        if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+            return;
+        }
 
-            cleanupDurationSliderEvents();
-            activeDurationSliderType = 'inbound';
+        cleanupDurationSliderEvents();
+        activeDurationSliderType = 'inbound';
 
-            if (!isMobile) {
-                setupDesktopDurationSlider(args.source.rows[0].value);
-            } else {
-                setupMobileDurationSlider(args.source.rows[0].value);
-            }
+        if (!isMobile) {
+            setupDesktopDurationSlider(args.source.rows[0].value);
+        } else {
+            setupMobileDurationSlider(args.source.rows[0].value);
+        }
 
-        } else if (args.source.id === "cms.outboundhour.update" || args.source.id === "cms.inboundhour.update") {
-            InUpdateFiltering = false;
-            InUpdatePaging = true;
-            selectedFlightId = null;
-            mustUpdate = true;
-        } else if (args.source.id === "cms.hour") {
+    } else if (args.source.id === "cms.outboundhour.update" || args.source.id === "cms.inboundhour.update") {
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedFlightId = null;
+        mustUpdate = true;
+    } else if (args.source.id === "cms.hour") {
+
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1476,7 +1495,8 @@ const manipulation = async (args) => {
         );
 
         // ============= BAGGAGE FILTER HANDLERS =============
-    }  else if (args.source.id === "cms.outboundbaggage") {
+    } else if (args.source.id === "cms.outboundbaggage") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1492,6 +1512,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.inboundbaggage") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1507,6 +1528,7 @@ const manipulation = async (args) => {
         }
 
     } else if (args.source.id === "cms.baggage") {
+        scrollToMainContent();
         InUpdateFiltering = false;
         InUpdatePaging = true;
         selectedFlightId = null;
@@ -1534,7 +1556,7 @@ const manipulation = async (args) => {
         // Reset all sort items
         listItems.forEach(item => {
             if (item.getAttribute('data-sort')) {
-                item.setAttribute('data-sort', 'descend');
+                item.setAttribute('data-sort', 'ascend');
             }
             const svg = item.querySelector('svg');
             if (svg) {
@@ -1650,9 +1672,9 @@ const manipulation = async (args) => {
             item => !stopNames.length || item.FlightGroup.some(flight => stopNames.includes(parseInt(flight.NumberOfStops))),
 
             // Flight number filters
-            item => !outboundFlightNumberNames.length || outboundFlightNumberNames.every(fn => item.FlightGroup[0]?.RoutesInfo.some(route => route.FlightNumber.toLowerCase() === fn)),
-            item => !inboundFlightNumberNames.length || inboundFlightNumberNames.every(fn => (item.FlightGroup[1]?.RoutesInfo || []).some(route => route.FlightNumber.toLowerCase() === fn)),
-            item => !flightNumberNames.length || flightNumberNames.every(fn => item.FlightGroup.some(flight => flight.RoutesInfo.some(route => route.FlightNumber.toLowerCase() === fn))),
+            item => !outboundFlightNumberNames.length || outboundFlightNumberNames.every(fn => item.FlightGroup[0]?.RoutesInfo.some(route => route.FlightNumber.toLowerCase().startsWith(fn))),
+            item => !inboundFlightNumberNames.length || inboundFlightNumberNames.every(fn => item.FlightGroup[1]?.RoutesInfo.some(route => route.FlightNumber.toLowerCase().startsWith(fn))),
+            item => !flightNumberNames.length || flightNumberNames.every(fn => item.FlightGroup.some(flight => flight.RoutesInfo.some(route => route.FlightNumber.toLowerCase().startsWith(fn)))),
 
             // Baggage filters
             item => !outboundBaggageNames.length || outboundBaggageNames.includes(item.Baggages[0]?.Baggage),
@@ -1714,61 +1736,61 @@ const manipulation = async (args) => {
             // },
 
 
-                // ============= DURATION FILTERS (FIXED) =============
-                // Outbound duration filter (for one-way and round-trip)
-                item => {
-                    // Only apply outbound filter for schemas 290 (round-trip) and 291 (one-way)
-                    if (schemaId !== 290 && schemaId !== 291) return true;
-                    
-                    // Check if outbound filter is active (range changed from default)
-                    if (outboundHourRange[0] === outboundMinHour && outboundHourRange[1] === outboundMaxHour) {
-                        return true; // No filter applied
-                    }
+            // ============= DURATION FILTERS (FIXED) =============
+            // Outbound duration filter (for one-way and round-trip)
+            item => {
+                // Only apply outbound filter for schemas 290 (round-trip) and 291 (one-way)
+                if (schemaId !== 290 && schemaId !== 291) return true;
 
-                    const outboundDuration = item.FlightGroup[0]?.Duration;
-                    if (!outboundDuration) return false;
-                    
-                    const outboundDurationInMinutes = convertToMinutes(outboundDuration);
-                    return outboundDurationInMinutes >= outboundHourRange[0] && 
-                        outboundDurationInMinutes <= outboundHourRange[1];
-                },
+                // Check if outbound filter is active (range changed from default)
+                if (outboundHourRange[0] === outboundMinHour && outboundHourRange[1] === outboundMaxHour) {
+                    return true; // No filter applied
+                }
 
-                // Inbound duration filter (only for round-trip)  
-                item => {
-                    // Only apply inbound filter for schema 290 (round-trip)
-                    if (schemaId !== 290) return true;
-                    
-                    // Check if inbound filter is active (range changed from default)
-                    if (inboundHourRange[0] === inboundMinHour && inboundHourRange[1] === inboundMaxHour) {
-                        return true; // No filter applied
-                    }
+                const outboundDuration = item.FlightGroup[0]?.Duration;
+                if (!outboundDuration) return false;
 
-                    const inboundDuration = item.FlightGroup[1]?.Duration;
-                    if (!inboundDuration) return false;
-                    
-                    const inboundDurationInMinutes = convertToMinutes(inboundDuration);
-                    return inboundDurationInMinutes >= inboundHourRange[0] && 
-                        inboundDurationInMinutes <= inboundHourRange[1];
-                },
+                const outboundDurationInMinutes = convertToMinutes(outboundDuration);
+                return outboundDurationInMinutes >= outboundHourRange[0] &&
+                    outboundDurationInMinutes <= outboundHourRange[1];
+            },
 
-                // General duration filter (for multi-city)
-                item => {
-                    // Only apply general filter for schema 292 (multi-city)
-                    if (schemaId !== 292) return true;
-                    
-                    // Check if general filter is active (range changed from default)
-                    if (hourRange[0] === minHour && hourRange[1] === maxHour) {
-                        return true; // No filter applied
-                    }
+            // Inbound duration filter (only for round-trip)  
+            item => {
+                // Only apply inbound filter for schema 290 (round-trip)
+                if (schemaId !== 290) return true;
 
-                    return item.FlightGroup.some(flight => {
-                        const duration = flight.Duration;
-                        if (!duration) return false;
-                        
-                        const durationInMinutes = convertToMinutes(duration);
-                        return durationInMinutes >= hourRange[0] && durationInMinutes <= hourRange[1];
-                    });
-                },
+                // Check if inbound filter is active (range changed from default)
+                if (inboundHourRange[0] === inboundMinHour && inboundHourRange[1] === inboundMaxHour) {
+                    return true; // No filter applied
+                }
+
+                const inboundDuration = item.FlightGroup[1]?.Duration;
+                if (!inboundDuration) return false;
+
+                const inboundDurationInMinutes = convertToMinutes(inboundDuration);
+                return inboundDurationInMinutes >= inboundHourRange[0] &&
+                    inboundDurationInMinutes <= inboundHourRange[1];
+            },
+
+            // General duration filter (for multi-city)
+            item => {
+                // Only apply general filter for schema 292 (multi-city)
+                if (schemaId !== 292) return true;
+
+                // Check if general filter is active (range changed from default)
+                if (hourRange[0] === minHour && hourRange[1] === maxHour) {
+                    return true; // No filter applied
+                }
+
+                return item.FlightGroup.some(flight => {
+                    const duration = flight.Duration;
+                    if (!duration) return false;
+
+                    const durationInMinutes = convertToMinutes(duration);
+                    return durationInMinutes >= hourRange[0] && durationInMinutes <= hourRange[1];
+                });
+            },
 
             // System flight and fare family filters
             item => !systemFlightNames.length || item.FlightGroup.some(flight => systemFlightNames.includes(flight.isSystemFlight)),
@@ -2103,7 +2125,7 @@ const manipulation = async (args) => {
             args.context.setAsSource("flight.updated", pagedSource, { keyFieldName: "FlightId" });
             setTimeout(() => {
                 preservePriceLabels();
-            }, 10); 
+            }, 10);
             InUpdateUIProcess = false;
 
         } else {
@@ -2250,6 +2272,8 @@ const renderFlightGroupMob = async (element) => {
         const lastIndex = element.FlightGroup.length - 1;
 
         for (const [index, item] of element.FlightGroup.entries()) {
+            const isLast = index === lastIndex;
+            const cardClass = isLast ? '' : 'book-mb-3';
             // Map flight class to translated text
             const classMap = {
                 economy: translate("economy_class"),
@@ -2259,16 +2283,16 @@ const renderFlightGroupMob = async (element) => {
             const flightClass = classMap[item.Class.toLowerCase()] || translate("economy_class");
 
             // Direction-aware margin classes
-            const marginRightClass = isRTL ? 'book-ml-2' : 'book-mr-2';
-            const marginLeftClass = isRTL ? 'book-mr-1' : 'book-ml-1';
+            const marginRightClass = isRTL ? 'book-mr-2' : 'book-ml-2';
+            const marginLeftClass = isRTL ? 'book-ml-1' : 'book-mr-1';
 
             // Render flight group card
             // This code is for the mobile version
-            output += `<div class="book-card__logo__class__provider">
+            output += `<div class="${cardClass}"><div class="book-card__logo__class__provider">
         <div class="book-flex book-text-sm book-items-center book-justify-between book-text-xs">
           <div class="book-flex book-gap-2">
             <div class="book-bg-zinc-50 book-border book-border-zinc-100 book-rounded">
-              ${await renderAirlineLogo(item.RoutesInfo[0].AirlineCode, '34', '85', '34', item)}
+              ${await renderAirlineLogo(item.RoutesInfo[0].AirlineCode, '8', '85', '34', item)}
             </div>
             <div>
               <div class="book-text-zinc-800 book-mb-1">${await renderAirlineName(item.RoutesInfo[0].AirlineCode)}</div>
@@ -2321,7 +2345,7 @@ const renderFlightGroupMob = async (element) => {
             <div class="book-text-xs book-text-zinc-900 book-mt-1 book-mb-2">${await renderCity(item.Destination)}</div>
             <div class="book-text-xs book-text-zinc-400">${item.Destination}</div>
           </div>
-        </div>`;
+        </div></div>`;
 
             // Add amenities for the last flight group
             if (index === lastIndex) {
@@ -2368,7 +2392,7 @@ const renderFlightGroupPc = async (element) => {
             output += `<div class="book-flex book-justify-between book-p-4">
     <div class="book-card__logo__class__provider book-text-center">
         <div class="book-bg-zinc-50 book-border book-border-zinc-100 book-rounded">
-            ${await renderAirlineLogo(item.RoutesInfo[0].AirlineCode, '34', '85', '34', item)}
+            ${await renderAirlineLogo(item.RoutesInfo[0].AirlineCode, '8', '85', '34', item)}
         </div>
         <div class="book-mt-3">
             <div class="book-text-sm book-text-zinc-800 book-font-bold">${await renderAirlineName(item.RoutesInfo[0].AirlineCode)}</div>
@@ -2421,7 +2445,7 @@ const renderFlightGroupPc = async (element) => {
             // Add amenities for the last flight group
             if (index === lastIndex) {
                 output += `
-        <div class="book-flex book-items-center book-mt-2 book-gap-1 book-flex-wrap">
+        <div class="book-flex book-items-center book-mt-3 book-gap-1 book-flex-wrap">
             <div class="book-bg-zinc-100 book-text-emerald-500 book-flex book-gap-1 book-rounded-full book-text-xs book-min-w-24 book-py-2 book-items-center book-justify-center">
                 <svg width="17" height="17" class="book-fill-emerald-500">
                     <use href="/booking/images/sprite-booking-icons.svg#wheel-bag-cart-icon"></use>
@@ -2581,14 +2605,12 @@ const renderEnablePoint = async (element, type) => {
 
             if (type == 'mob') {
                 return `
-                <div class="book-text-zinc-800 book-rounded-full book-px-2 book-bg-zinc-100 book-flex book-gap-1 book-text-xs book-items-center book-justify-center ${marginLeftClass} book-py-1">
-                  <div class="book-text-zinc-800 book-rounded-full book-px-2 book-bg-zinc-100 book-flex book-gap-1 book-text-xs book-items-center book-justify-center book-point">
+                <div class="book-text-zinc-800 book-rounded-full book-px-2 book-bg-primary-100 book-flex book-gap-1 book-text-xs book-items-center book-justify-center ${marginLeftClass} book-py-1">
                    <span class="${marginLeftClass}">${translate("club_points")}:</span>
                     ${element.ClubMembers.ClubPoint}
-                  </div>
                 </div>`;
             } else {
-                return `<div class="book-relative"><div class="book-bg-zinc-100 book-text-zinc-500 book-flex book-gap-1 book-rounded-full book-text-xs book-min-w-24 book-p-2  book-items-center book-justify-center">
+                return `<div class="book-relative"><div class="book-bg-primary-100 book-text-zinc-500 book-flex book-gap-1 book-rounded-full book-text-xs book-min-w-24 book-p-2  book-items-center book-justify-center">
                 <svg width="17" height="17">
                     <use href="/booking/images/sprite-booking-icons.svg#club-member-icon"></use>
                 </svg>
@@ -2698,8 +2720,8 @@ const renderConnectionTime = async (element) => {
             const minutes = element % 60;
             const marginRightClass = isRTL ? 'book-mr-1' : 'book-ml-1';
 
-            return `<div class="book-text-xs book-text-zinc-600 book-mt-2 book-flex book-items-center">
-              <svg width="15" height="15" class="book-mx-auto">
+            return `<div class="book-text-xs book-text-zinc-600 ${isMobile ? 'book-mb-2' : 'book-mt-2'} book-flex book-items-center">
+              <svg width="15" height="15" class="${isMobile ? '' : 'book-mx-auto'}">
                   <use href="/booking/images/sprite-booking-icons.svg#time-circle-icon"></use>
               </svg>
               <span class="${marginRightClass} book-relative book-top-[2px]">${hours}:${minutes}</span>
@@ -2722,7 +2744,7 @@ const renderProvider = (element) => {
         const providerData = providerDataList.find(provider => provider.id === parseInt(element));
         if (providerData) {
             const marginLeftClass = isRTL ? 'book-mr-1' : 'book-ml-1';
-            return `<div class="book-text-zinc-800 book-rounded-full book-px-2 book-bg-zinc-100 book-flex book-gap-1 book-text-xs book-items-center book-justify-center ${marginLeftClass} book-py-1">
+            return `<div class="book-bg-secondary-100 book-text-zinc-500 book-flex book-gap-1 book-rounded-full book-text-xs book-min-w-24 book-py-2 book-items-center book-justify-center ${marginLeftClass}">
               <span>${providerData.name}</span>
           </div>`;
         }
@@ -2824,7 +2846,7 @@ const renderRoutesInfoMob = async (element) => {
                               ${await renderOperatingAirlineCode(item)}
                           </div>
                           <div class="book-text-sm book-text-primary-400 book-my-3">
-                              <span class="${isRTL ? 'book-mr-1' : 'book-ml-1'}">${await renderFormatterDuration(item.Duration)}</span>${translate("flight_duration")}
+                              ${translate("flight_duration")}<span class="${isRTL ? 'book-mr-1' : 'book-ml-1'}">${await renderFormatterDuration(item.Duration)}</span>
                           </div>
                           <div class="book-flex book-gap-5 book-my-3">
                                 ${renderAirlineInfo("class-details-icon", translate("ticket_class"), `${await renderFlightClass(item.Class)}`)}
@@ -2924,14 +2946,14 @@ const renderRoutesInfoPc = async (element) => {
                     <use href="/booking/images/sprite-booking-icons.svg#tag-details-icon"></use>
                 </svg>
             </div>
-            <div class="book-flex book-flex-col book-border-l book-border-zinc-300 book-px-7 book-ml-7">
+            <div class="book-flex book-flex-col book-border-l book-items-center book-justify-between book-border-zinc-300 book-px-7 book-ml-7">
                 <div>
                     <h5 class="book-text-xl book-font-bold book-text-zinc-900">${item.OriginAirport}</h5>
                     <h5 class="book-text-xl book-font-bold book-text-zinc-900 book-my-2">${item.DepartureTime}</h5>
                     <p class="book-text-zinc-500 book-text-sm">${await renderFormatterDate(item.DepartureDate)}</p>
                 </div>
-                <div class="book-text-sm book-text-primary-400 book-my-10 book-w-40">
-                    <span class="${isRTL ? 'book-ml-1' : 'book-mr-1'}">${await renderFormatterDuration(item.Duration)}</span>${translate("flight_duration")}
+                <div class="book-text-sm book-text-primary-400  book-w-40">
+                    ${translate("flight_duration")}<span class="${isRTL ? 'book-mr-1' : 'book-ml-1'}">${await renderFormatterDuration(item.Duration)}</span>
                 </div>
                 <div>
                     <h5 class="book-text-xl book-font-bold book-text-zinc-900">${item.DestinationAirport}</h5>
@@ -3018,7 +3040,7 @@ const renderConnectionTimeRoute = async (element) => {
                   <svg width="15" height="16">
                       <use href="/booking/images/sprite-booking-icons.svg#hourglass-icon"></use>
                   </svg>
-                  <span>${translate("connection_time")}: ${hours} ${translate("hour")} ${translate("until_time")} ${minutes} ${translate("minute")}</span>
+                  <span>${translate("connection_time")}: ${hours} ${translate("hour")} ${translate("and")} ${minutes} ${translate("minute")}</span>
               </div>
               <div>
                   (${element.DestinationAirport})
@@ -3119,7 +3141,7 @@ const renderFormatterDuration = (str) => {
 
         let result = `${hours} ${translate("hour")}`;
         if (minutes > 0) {
-            result += ` ${minutes} ${translate("minute")}`;
+            result += `<span class="book-mx-1">${translate("and")}</span> ${minutes} ${translate("minute")}`;
         }
 
         return result;
@@ -3155,29 +3177,90 @@ const renderPassengerFare = async (element) => {
                 const ulClass = (currentIndex === validCount) ? '' : 'book-mb-6';
 
                 output += `<ul class="${ulClass}">
+                   <li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
+                      <span>${translate("per_passenger")} ${passengerType}</span>
+                      <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.Unit)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
+                  </li>
                   <li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
                       <span>${translate("base_fare")}</span>
-                      <span>${new Intl.NumberFormat().format(item.BaseFare)}${await renderCurrency(element.PriceInfo.Currency)}</span>
+                      <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.BaseFare)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
                   </li>
                   <li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
                       <span>${translate("taxes_and_fees")}</span>
-                      <span>${new Intl.NumberFormat().format(item.Tax)}${await renderCurrency(element.PriceInfo.Currency)}</span>
+                      <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.Tax)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
                   </li>
-                  <li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
-                      <span>${translate("per_passenger")} ${passengerType}</span>
-                      <span>${new Intl.NumberFormat().format(item.Unit)}${await renderCurrency(element.PriceInfo.Currency)}</span>
+                    <li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
+                      <span>${translate("taxes_and_services")}</span>
+                      <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.providerFare)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
+                  </li>`;
+                if (item.Commission && item.Commission !== '0') {
+                    output += `<li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
+                      <span>${translate("total_price")} ${passengerType}<span class="book-mx-1">(${item.Count})</span></span>
+                      <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.Total)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
+                  </li><li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
+                        <span>${translate("commission")}</span>
+                        <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.Commission)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
+                    </li><li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
+                        <span>${translate("amount_after_commission")} ${passengerType}<span class="book-mx-1">(${item.Count})</span></span>
+                        <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.TotalCommission)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
+                    </li></ul>`;
+                } else {
+                    output += `<li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
+                      <span>${translate("total_price")} ${passengerType}<span class="book-mx-1">(${item.Count})</span></span>
+                      <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.Total)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
                   </li>
-                  <li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
-                      <span>${translate("total_price")} ${passengerType}</span>
-                      <span>${new Intl.NumberFormat().format(item.Total)}${await renderCurrency(element.PriceInfo.Currency)}</span>
-                  </li>
-              </ul>`;
+                 </ul>`;
+                }
             }
         }
 
         return output;
     } catch (error) {
         console.error(`renderPassengerFare: ${error.message}`);
+        return "";
+    }
+};
+/**
+* Renders passenger fare details including base fare, tax, unit, and total.
+* @param {Object} element - Price information containing PassengerFare and Currency.
+* @returns {Promise<string>} HTML string of fare details or empty string on error.
+*/
+const renderPerPrice = async (element) => {
+    try {
+        let output = "";
+
+        const count = parseInt(element.Count) || 1;
+        const commission = parseFloat(element.Commission) || 0;
+        const totalCommission = parseFloat(element.TotalCommission) || 0;
+
+        if (commission === 0) {
+            output = `<div class="book-text-xs book-text-zinc-500 book-mb-2">${translate("total_per_passenger")}:</div>
+            <h4  class="book-text-xl book-font-bold book-text-zinc-900"><span>
+                ${new Intl.NumberFormat().format(Math.floor(totalCommission / count))}
+            </span>${await renderCurrency(element.Currency)}</h4>`;
+        } else {
+            const perCommission = Math.floor(commission / count);
+            const perTotalCommission = Math.floor(totalCommission / count);
+
+            output = `
+                <div class="book-mb-2">
+                   <div class="book-text-xs book-text-zinc-500 book-mb-2">${translate("commission_per_passenger")}:</div>
+                    <h4><span class="book-ltr book-inline-block">
+                        ${new Intl.NumberFormat().format(perCommission)}
+                    </span>${await renderCurrency(element.Currency)}</h4>
+                </div>
+                <div>
+                    <div class="book-text-xs book-text-zinc-500 book-mb-2">${translate("total_after_commission_per_passenger")}:</div>
+                    <h4 class="book-text-xl book-font-bold book-text-zinc-900"><span class="book-ltr book-inline-block">
+                        ${new Intl.NumberFormat().format(perTotalCommission)}
+                    </span>${await renderCurrency(element.Currency)}</h4>
+                </div>
+            `;
+        }
+
+        return output;
+    } catch (error) {
+        console.error(`renderPerPrice: ${error.message}`);
         return "";
     }
 };
@@ -3393,7 +3476,15 @@ const scrollModalContainerItem = (element, type, parent, idToFind) => {
             tab.classList.remove("book-active__tab__navigation")
         );
         element.classList.add("book-active__tab__navigation");
+        element.closest(".book-modal__card__content")
+            .querySelectorAll(".book-api__container")
+            .forEach(e => {
+                if (e !== target && !e.querySelector(".book-api__container__content").classList.contains("book-hidden")) {
+                    e.querySelector(".book-api__container__content").classList.add("book-hidden");
+                }
+            });
         toggleContentApi(target.querySelector(".book-content__api"), type, parent, idToFind, true);
+
     } catch (error) {
         console.error(`scrollModalContainerItem: ${error.message}`);
     }
@@ -3737,12 +3828,12 @@ const onProcessedFlightApiRule = async (args) => {
                           <div>${await renderRule(item.Rule)}</div>
                       </div>`;
                     } else {
-                        renderingContainer.innerHTML = translate("no_rules_available") || "قوانینی در دسترس نیست";
+                        renderingContainer.innerHTML = translate("no_rules_available") || " با پشتیبانی آژانس تماس بگیرید";
                     }
                 }
-                renderingContainer.innerHTML = output || (translate("no_rules_available") || "قوانینی در دسترس نیست");
+                renderingContainer.innerHTML = output || (translate("no_rules_available") || " با پشتیبانی آژانس تماس بگیرید");
             } else {
-                renderingContainer.innerHTML = translate("no_rules_available") || "قوانینی در دسترس نیست";
+                renderingContainer.innerHTML = translate("no_rules_available") || " با پشتیبانی آژانس تماس بگیرید";
             }
         }
         // Render baggage details
@@ -3771,7 +3862,7 @@ const onProcessedFlightApiRule = async (args) => {
                 output += `</tbody></table>`;
                 renderingContainer.innerHTML = output;
             } else {
-                renderingContainer.innerHTML = translate("no_rules_available") || "قوانینی در دسترس نیست";
+                renderingContainer.innerHTML = translate("no_rules_available") || " با پشتیبانی آژانس تماس بگیرید";
             }
         }
         // Render amenities proposals
@@ -3848,7 +3939,7 @@ const initializeSlider = async (hourContainer, argsValue, maxHour, minHour, hour
 
         // Get current percentages based on type
         let currentMinPercent, currentMaxPercent;
-        
+
         if (type === "outboundhour") {
             currentMinPercent = outboundMinPercent;
             currentMaxPercent = outboundMaxPercent;
@@ -3991,7 +4082,7 @@ const resetFilterRange = (type, label, originalMin, originalMax, hourContainer, 
             durationMaxPercent = 100;
             updateHourSlider(type, label, originalMin, originalMax, hourContainer, hourRange);
         }
-        
+
         if (isMobile) {
             // Remove the filter
             removeFilterDiv(label);
@@ -4092,7 +4183,7 @@ function cleanupPriceSliderEvents() {
 function setupDesktopPriceSlider(thumbType) {
     try {
         let isDragging = false;
-        
+
         const onMouseMove = (e) => {
             if (!isDragging) return;
             const rect = priceSlider.getBoundingClientRect();
@@ -4110,7 +4201,7 @@ function setupDesktopPriceSlider(thumbType) {
         const onMouseUp = () => {
             if (!isDragging) return;
             isDragging = false;
-            
+
             document.removeEventListener("mousemove", window.priceMouseMoveHandler);
             document.removeEventListener("mouseup", window.priceMouseUpHandler);
 
@@ -4163,7 +4254,7 @@ function setupMobilePriceSlider(thumbType) {
 
         const onTouchEnd = (e) => {
             if (!isTouchDragging) return;
-            
+
             isTouchDragging = false;
 
             document.removeEventListener("touchmove", window.priceTouchMoveHandler);
@@ -4192,7 +4283,7 @@ function applyPriceFilter() {
         lastUserMinPrice = priceRange[0];
         lastUserMaxPrice = priceRange[1];
         mustUpdate = true;
-        
+
         if (typeof $bc !== 'undefined' && $bc.setSource) {
             $bc.setSource("cms.price.update", {
                 value: "range",
@@ -4254,7 +4345,7 @@ const updatePriceSlider = () => {
         if (typeof updateFilterDisplay === 'function') {
             updateFilterDisplay(
                 "price",
-                "price-range", 
+                "price-range",
                 priceMinValue,
                 priceMaxValue,
                 minPrice,
@@ -4280,7 +4371,7 @@ function applyDurationFilter() {
         durationLastUserMinHour = hourRange[0];
         durationLastUserMaxHour = hourRange[1];
         mustUpdate = true;
-        
+
         if (typeof $bc !== 'undefined' && $bc.setSource) {
             $bc.setSource("cms.hour.update", {
                 value: "range",
@@ -4488,20 +4579,20 @@ function cleanupDurationSliderEvents() {
 // =============================================================================
 function setupDesktopDurationSlider(thumbType) {
     try {
-        const elements = activeDurationSliderType === 'outbound' 
-            ? getOutboundDurationElements() 
+        const elements = activeDurationSliderType === 'outbound'
+            ? getOutboundDurationElements()
             : getInboundDurationElements();
-            
+
         if (!elements.slider) {
             console.warn(`Duration slider not found for ${activeDurationSliderType}`);
             return;
         }
-        
+
         isDurationSliderActive = true;
-        
+
         const onMouseMove = (e) => {
             if (!isDurationSliderActive) return;
-            
+
             const rect = elements.slider.getBoundingClientRect();
             const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
             const percent = (x / rect.width) * 100;
@@ -4531,11 +4622,11 @@ function setupDesktopDurationSlider(thumbType) {
 
         const onMouseUp = () => {
             if (!isDurationSliderActive) return;
-            
+
             isDurationSliderActive = false;
             document.removeEventListener("mousemove", onMouseMove);
             document.removeEventListener("mouseup", onMouseUp);
-            
+
             applyDurationFilterImmediate();
         };
 
@@ -4552,15 +4643,15 @@ function setupDesktopDurationSlider(thumbType) {
 // =============================================================================
 function setupMobileDurationSlider(thumbType) {
     try {
-        const elements = activeDurationSliderType === 'outbound' 
-            ? getOutboundDurationElements() 
+        const elements = activeDurationSliderType === 'outbound'
+            ? getOutboundDurationElements()
             : getInboundDurationElements();
-            
+
         if (!elements.slider) {
             console.warn(`Duration slider not found for ${activeDurationSliderType}`);
             return;
         }
-        
+
         isDurationSliderActive = true;
 
         const getTouchX = (e) => {
@@ -4571,7 +4662,7 @@ function setupMobileDurationSlider(thumbType) {
         const onTouchMove = (e) => {
             if (!isDurationSliderActive) return;
             e.preventDefault();
-            
+
             const rect = elements.slider.getBoundingClientRect();
             const x = Math.max(0, Math.min(getTouchX(e) - rect.left, rect.width));
             const percent = (x / rect.width) * 100;
@@ -4601,12 +4692,12 @@ function setupMobileDurationSlider(thumbType) {
 
         const onTouchEnd = () => {
             if (!isDurationSliderActive) return;
-            
+
             isDurationSliderActive = false;
             document.removeEventListener("touchmove", onTouchMove);
             document.removeEventListener("touchend", onTouchEnd);
             document.removeEventListener("touchcancel", onTouchEnd);
-            
+
             applyDurationFilterImmediate();
         };
 
@@ -4621,10 +4712,10 @@ function setupMobileDurationSlider(thumbType) {
 
 function updateDurationSliderUI() {
     try {
-        const elements = activeDurationSliderType === 'outbound' 
-            ? getOutboundDurationElements() 
+        const elements = activeDurationSliderType === 'outbound'
+            ? getOutboundDurationElements()
             : getInboundDurationElements();
-            
+
         if (!elements.slider) return;
 
         const isOutbound = activeDurationSliderType === 'outbound';
@@ -4697,7 +4788,7 @@ function applyDurationFilterImmediate() {
             const label = `${type}-range`;
             const originalMin = isOutbound ? outboundMinHour : inboundMinHour;
             const originalMax = isOutbound ? outboundMaxHour : inboundMaxHour;
-            
+
             updateFilterDisplay(
                 type,
                 label,
@@ -4797,7 +4888,7 @@ const updateHourSlider = (type, label, minHour, maxHour, hourContainer, hourRang
     try {
         // Get current percentages based on type
         let currentMinPercent, currentMaxPercent;
-        
+
         if (type === "outboundhour") {
             currentMinPercent = outboundMinPercent;
             currentMaxPercent = outboundMaxPercent;
@@ -4886,7 +4977,7 @@ const addFilterDiv = (identifier, cmsName, displayValue = null, displayText = nu
                         if (input) input.value = "";
                     }
                 });
-            } 
+            }
             else if (cmsName === "cms.price") {
                 filterDiv.addEventListener("click", () => {
                     priceMinPercent = 0;  // تغییر از minPercent به priceMinPercent
@@ -4901,7 +4992,7 @@ const addFilterDiv = (identifier, cmsName, displayValue = null, displayText = nu
                     });
                 });
             }
-             else {
+            else {
                 filterDiv.addEventListener("click", () => {
                     $bc.setSource(cmsName, { value: identifier });
                 });
@@ -5023,124 +5114,15 @@ const JalaliDate = {
         }
     }
 };
+const scrollToMainContent = () => {
+    try {
+        const target = document.querySelector(".book-main__content");
+        if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    } catch (error) {
+        console.error(`scrollToMainContent: ${error.message}`);
+        return 0;
+    }
+};
 
-// Initialize Swiper instances with language-aware configurations
-var mob__airline__swiper = new Swiper(".book-mob__airline__swiper", {
-    slidesPerView: 1,
-    speed: 400,
-    centeredSlides: false,
-    spaceBetween: 0,
-    centerInsufficientSlides: true,
-    observer: true,
-    observeParents: true,
-    watchOverflow: true,
-    loop: false,
-    navigation: {
-        nextEl: '.book-mob__airline__next__swiper',
-        prevEl: '.book-mob__airline__prev__swiper',
-    },
-    breakpoints: {
-        640: {
-            slidesPerView: 1,
-            spaceBetween: 20,
-        },
-        768: {
-            slidesPerView: 1,
-            spaceBetween: 40,
-        },
-        1024: {
-            slidesPerView: 1,
-            spaceBetween: 50,
-        },
-    },
-});
-
-var mob__price__swiper = new Swiper(".book-mob__price__swiper", {
-    slidesPerView: 4,
-    speed: 400,
-    centeredSlides: false,
-    spaceBetween: 0,
-    centerInsufficientSlides: true,
-    observer: true,
-    observeParents: true,
-    watchOverflow: true,
-    loop: false,
-    navigation: {
-        nextEl: '.book-mob__price__next__swiper',
-        prevEl: '.book-mob__price__prev__swiper',
-    },
-    breakpoints: {
-        640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-        },
-        768: {
-            slidesPerView: 3,
-            spaceBetween: 40,
-        },
-        1024: {
-            slidesPerView: 4,
-            spaceBetween: 50,
-        },
-    },
-});
-
-var airline__swiper = new Swiper(".book-airline__swiper", {
-    slidesPerView: 6,
-    speed: 400,
-    centeredSlides: false,
-    spaceBetween: 0,
-    centerInsufficientSlides: true,
-    observer: true,
-    observeParents: true,
-    watchOverflow: true,
-    loop: false,
-    navigation: {
-        nextEl: '.book-airline__next__swiper',
-        prevEl: '.book-airline__prev__swiper',
-    },
-    breakpoints: {
-        640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-        },
-        768: {
-            slidesPerView: 3,
-            spaceBetween: 40,
-        },
-        1024: {
-            slidesPerView: 4,
-            spaceBetween: 50,
-        },
-    },
-});
-
-var price__swiper = new Swiper(".book-price__swiper", {
-    slidesPerView: 8,
-    speed: 400,
-    centeredSlides: false,
-    spaceBetween: 0,
-    centerInsufficientSlides: true,
-    observer: true,
-    observeParents: true,
-    watchOverflow: true,
-    loop: false,
-    navigation: {
-        nextEl: '.book-price__next__swiper',
-        prevEl: '.book-price__prev__swiper',
-    },
-    breakpoints: {
-        640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-        },
-        768: {
-            slidesPerView: 3,
-            spaceBetween: 40,
-        },
-        1024: {
-            slidesPerView: 4,
-            spaceBetween: 50,
-        },
-    },
-});

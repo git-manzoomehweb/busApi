@@ -423,10 +423,12 @@ const renderRoutesInfo = async (element) => {
     };
 
     // اگر لازم دارید تاریخ/مدت‌زمان را فرمت کنید، از همان توابع پرواز استفاده کنید
-    const formatDate = async (val) =>
-      typeof renderFormatterDate === "function" ? await renderFormatterDate(val) : (val || "");
-    const formatDuration = async (mins) =>
-      typeof renderFormatterDuration === "function" ? await renderFormatterDuration(mins) : (mins || "");
+    const formatDate = async (val) => typeof renderFormatterDate === "function" ? await renderFormatterDate(val) : (val || "");
+    const formatDuration = async (mins) =>  typeof renderFormatterDuration === "function" ? await renderFormatterDuration(mins) : (mins || "");
+
+
+
+
 
     // اگر برای اتوبوس مدت‌زمان ندارید، می‌توانیم از اختلاف زمان رسیدن/حرکت محاسبه کنیم (اختیاری):
     const getDurationLabel = async (item) => {
@@ -546,20 +548,150 @@ const renderRoutesInfo = async (element) => {
  * @param {string} element - The date string to format.
  * @returns {string} Formatted Persian date or empty string on error.
  */
-const renderFormatterDate = async (element) => {
+//     const renderFormatterDate = async (element) => {
+//     try {
+//         const gregorianDate = new Date(element);
+//         const formatter = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+//             weekday: 'long',
+//             day: 'numeric',
+//             month: 'long'
+//         });
+//         return formatter.format(gregorianDate);
+//     } catch (error) {
+//         console.error("renderFormatterDate: " + error.message);
+//         return "";
+//     }
+// };
+/**
+ * Utility object for Jalali (Persian) date conversions.
+ */
+const JalaliDate = {
+  g_days_in_month: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+  j_days_in_month: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29],
+
+  /**
+   * Checks if a Jalali year is a leap year.
+   * @param {number} year - The Jalali year.
+   * @returns {boolean} True if leap year, false otherwise.
+   */
+  isLeapJalali(year) {
+    const mod = year % 33;
+    return [1, 5, 9, 13, 17, 22, 26, 30].includes(mod);
+  },
+
+  /**
+   * Converts a Jalali date to Gregorian format.
+   * @param {number} j_y - Jalali year.
+   * @param {number} j_m - Jalali month (1-12).
+   * @param {number} j_d - Jalali day.
+   * @returns {string} Gregorian date in YYYY-MM-DD format.
+   */
+  JalaliToGregorian(j_y, j_m, j_d) {
+    j_y = parseInt(j_y, 10);
+    j_m = parseInt(j_m, 10) - 1;
+    j_d = parseInt(j_d, 10) - 1;
+
+    const jy = j_y - 979;
+    let j_day_no =
+      365 * jy + Math.floor(jy / 33) * 8 + Math.floor(((jy % 33) + 3) / 4);
+    j_day_no +=
+      this.j_days_in_month.slice(0, j_m).reduce((a, b) => a + b, 0) + j_d;
+
+    let g_day_no = j_day_no + 79;
+    let gy = 1600 + Math.floor(g_day_no / 146097) * 400;
+    g_day_no %= 146097;
+
+    let leap = true;
+    if (g_day_no >= 36525) {
+      g_day_no--;
+      gy += Math.floor(g_day_no / 36524) * 100;
+      g_day_no %= 36524;
+      if (g_day_no >= 365) g_day_no++;
+      else leap = false;
+    }
+
+    gy += Math.floor(g_day_no / 1461) * 4;
+    g_day_no %= 1461;
+
+    if (g_day_no >= 366) {
+      leap = false;
+      g_day_no--;
+      gy += Math.floor(g_day_no / 365);
+      g_day_no %= 365;
+    }
+
+    const monthLengths = [...this.g_days_in_month];
+    if (leap) monthLengths[1] = 29;
+
+    let gm, gd;
+    for (gm = 0; g_day_no >= monthLengths[gm]; gm++) {
+      g_day_no -= monthLengths[gm];
+    }
+    gd = g_day_no + 1;
+
+    gm = String(gm + 1).padStart(2, "0");
+    gd = String(gd).padStart(2, "0");
+
+    return `${gy}-${gm}-${gd}`;
+  },
+
+  /**
+   * Checks if a date string is a valid Persian date (YYYY-MM-DD).
+   * @param {string} dateStr - The date string to validate.
+   * @returns {boolean} True if valid Persian date, false otherwise.
+   */
+  isPersianDate(dateStr) {
+    try {
+      const regex = /^\d{4}-\d{2}-\d{2}$/;
+      if (!regex.test(dateStr)) return false;
+
+      const [year, month, day] = dateStr.split("-").map(Number);
+      if (year < 1300 || year > 1500 || month < 1 || month > 12) return false;
+
+      let maxDays = this.j_days_in_month[month - 1];
+      if (month === 12 && this.isLeapJalali(year)) maxDays = 30;
+      return day >= 1 && day <= maxDays;
+    } catch (error) {
+      console.error("isPersianDate: " + error.message);
+      return false;
+    }
+  },
+};
+
+const renderFormatterDate = async (input) => {
   try {
-    const gregorianDate = new Date(element);
+    let gregorianDate;
+
+    // اگر تاریخ شمسی بود
+    if (JalaliDate.isPersianDate(input)) {
+      const [jy, jm, jd] = input.split("-").map(Number);
+      const gDateStr = JalaliDate.JalaliToGregorian(jy, jm, jd);
+      gregorianDate = new Date(gDateStr);
+    }
+    // اگر تاریخ میلادی معتبر بود
+    else if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+      gregorianDate = new Date(input);
+    }
+    else {
+      throw new Error("فرمت تاریخ معتبر نیست. باید YYYY-MM-DD باشه.");
+    }
+
+    // خروجی فرمت شده شمسی
     const formatter = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
       weekday: "long",
       day: "numeric",
       month: "long",
     });
+
     return formatter.format(gregorianDate);
+
   } catch (error) {
     console.error("renderFormatterDate: " + error.message);
     return "";
   }
 };
+
+
 
 /**
  * Formats duration string (e.g., '2h30m') to Persian format.
@@ -4366,101 +4498,7 @@ const autoFillSearch = (element, type) => {
   }
 };
 
-/**
- * Utility object for Jalali (Persian) date conversions.
- */
-const JalaliDate = {
-  g_days_in_month: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-  j_days_in_month: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29],
 
-  /**
-   * Checks if a Jalali year is a leap year.
-   * @param {number} year - The Jalali year.
-   * @returns {boolean} True if leap year, false otherwise.
-   */
-  isLeapJalali(year) {
-    const mod = year % 33;
-    return [1, 5, 9, 13, 17, 22, 26, 30].includes(mod);
-  },
-
-  /**
-   * Converts a Jalali date to Gregorian format.
-   * @param {number} j_y - Jalali year.
-   * @param {number} j_m - Jalali month (1-12).
-   * @param {number} j_d - Jalali day.
-   * @returns {string} Gregorian date in YYYY-MM-DD format.
-   */
-  JalaliToGregorian(j_y, j_m, j_d) {
-    j_y = parseInt(j_y, 10);
-    j_m = parseInt(j_m, 10) - 1;
-    j_d = parseInt(j_d, 10) - 1;
-
-    const jy = j_y - 979;
-    let j_day_no =
-      365 * jy + Math.floor(jy / 33) * 8 + Math.floor(((jy % 33) + 3) / 4);
-    j_day_no +=
-      this.j_days_in_month.slice(0, j_m).reduce((a, b) => a + b, 0) + j_d;
-
-    let g_day_no = j_day_no + 79;
-    let gy = 1600 + Math.floor(g_day_no / 146097) * 400;
-    g_day_no %= 146097;
-
-    let leap = true;
-    if (g_day_no >= 36525) {
-      g_day_no--;
-      gy += Math.floor(g_day_no / 36524) * 100;
-      g_day_no %= 36524;
-      if (g_day_no >= 365) g_day_no++;
-      else leap = false;
-    }
-
-    gy += Math.floor(g_day_no / 1461) * 4;
-    g_day_no %= 1461;
-
-    if (g_day_no >= 366) {
-      leap = false;
-      g_day_no--;
-      gy += Math.floor(g_day_no / 365);
-      g_day_no %= 365;
-    }
-
-    const monthLengths = [...this.g_days_in_month];
-    if (leap) monthLengths[1] = 29;
-
-    let gm, gd;
-    for (gm = 0; g_day_no >= monthLengths[gm]; gm++) {
-      g_day_no -= monthLengths[gm];
-    }
-    gd = g_day_no + 1;
-
-    gm = String(gm + 1).padStart(2, "0");
-    gd = String(gd).padStart(2, "0");
-
-    return `${gy}-${gm}-${gd}`;
-  },
-
-  /**
-   * Checks if a date string is a valid Persian date (YYYY-MM-DD).
-   * @param {string} dateStr - The date string to validate.
-   * @returns {boolean} True if valid Persian date, false otherwise.
-   */
-  isPersianDate(dateStr) {
-    try {
-      const regex = /^\d{4}-\d{2}-\d{2}$/;
-      if (!regex.test(dateStr)) return false;
-
-      const [year, month, day] = dateStr.split("-").map(Number);
-      if (year < 1300 || year > 1500 || month < 1 || month > 12) return false;
-
-      let maxDays = this.j_days_in_month[month - 1];
-      if (month === 12 && this.isLeapJalali(year)) maxDays = 30;
-      return day >= 1 && day <= maxDays;
-    } catch (error) {
-      console.error("isPersianDate: " + error.message);
-      return false;
-    }
-  },
-};
 
 /**
  * Creates a date string from year, month, and day inputs and validates it.

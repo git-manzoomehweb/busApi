@@ -2829,3 +2829,36 @@ const toggleContent = (element) => {
     console.error(`toggleContent: ${error.message}`);
   }
 };
+
+
+// mobile bus
+
+/**
+* Toggles the visibility of a content container in the aside section.
+* @param {string} element - The type of content to toggle ("filter" or "sort").
+*/
+const toggleAside = (element) => {
+    try {
+        // Show the main aside container
+        const asideContainer = document.querySelector(".book-aside__container");
+        if (asideContainer) {
+            asideContainer.classList.remove("book-hidden");
+        }
+
+        // Show the relevant content section and hide the other
+        const filterContent = document.querySelector(".book-aside__filter__container");
+        const sortContent = document.querySelector(".book-aside__sort__container");
+
+        if (element === "filter") {
+            filterContent?.classList.remove("book-hidden");
+            sortContent?.classList.add("book-hidden");
+        } else if (element === "sort") {
+            sortContent?.classList.remove("book-hidden");
+            filterContent?.classList.add("book-hidden");
+        }
+    } catch (error) {
+        console.error(`toggleAside: ${error.message}`);
+    }
+};
+
+// mobile bus

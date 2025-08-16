@@ -525,7 +525,18 @@
                                                 @busType@
                                                 </div>
 
-                                                <div class="book-text-zinc-800">@availableSeats@ صندلی خالی</div>
+                                                {{
+                                                    if(@availableSeats@ === 0){
+
+                                                       return <div class="book-text-red-800">ظرفیت تکمیل</div>
+
+                                                    }else{
+
+                                                       return <div class="book-text-zinc-800">@availableSeats@ صندلی خالی</div>
+
+                                                    }
+                                                }}
+
 
 
 
@@ -607,8 +618,21 @@
                                                     @formattedPrice@
                                                     </div>
 
-                                                    <button type="button" data-run="0" data-id="@busId@" onclick="{{return `submitCard(this,'${$data.busId}')`}}"
-                                                    class="book-card__btn book-w-[90%] book-h-10  book-bg-primary-500 book-text-white book-px-2  book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">خرید</button>
+
+                                                {{
+                                                    if(@availableSeats@ === 0){
+
+                                                       return <button type="button" disabled
+                                                        class="book-card__btn book-w-[90%] book-h-10  book-bg-gray-300 book-text-white book-px-2  book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">غیرقابل رزرو</button>
+                                                       
+                                                    }else{
+                                                        
+                                                        return <button type="button" data-run="0" data-id="@busId@" onclick="{{return `submitCard(this,'${$data.busId}')`}}"
+                                                        class="book-card__btn book-w-[90%] book-h-10  book-bg-primary-500 book-text-white book-px-2  book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">خرید</button>
+
+                                                    }
+                                                }}
+                                                
                                             </div>
 
                                             </div>
