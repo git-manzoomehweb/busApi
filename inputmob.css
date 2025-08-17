@@ -2,23 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("../../css/customized.ui.min.css");
+
 @font-face {
   font-family: "Dana";
   font-weight: 400;
   font-style: normal;
-  src: url("./fonts/DanaFaNum-Regular.ttf");
+  src: url("../../_fonts/DanaFaNum-Regular.woff");
 }
 @font-face {
   font-family: "Dana";
   font-weight: 500;
   font-style: normal;
-  src: url("./fonts/DanaFaNum-Medium.ttf");
+  src: url("../../_fonts/DanaFaNum-Medium.woff");
 }
 @font-face {
   font-family: "Dana";
   font-weight: 700;
   font-style: normal;
-  src: url("./fonts/DanaFaNum-Bold.ttf");
+  src: url("../../_fonts/DanaFaNum-Bold.woff");
 }
 
 html,
@@ -207,14 +209,17 @@ body {
   border-radius: 50%;
 }
 .book-set-before-after::after {
-  content: "";
-  width: 7px;
-  height: 7px;
-  position: absolute;
-  top: -3px;
-  right: 0;
-  background-color: var(--primary-600);
-  border-radius: 50%;
+    content: "";
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: -8px;
+    right: -16px;
+    /* background-color: var(--primary-600); */
+    /* border-radius: 50%; */
+    background-image: url(../images/bus-icon.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .book-set-before-after span {
@@ -231,7 +236,8 @@ body {
   left: -6px;
 }
 .book-set-before-after span:last-child {
-  right: -6px;
+  /* right: -6px; */
+  display: none;
 }
 
 @keyframes animate-pals {

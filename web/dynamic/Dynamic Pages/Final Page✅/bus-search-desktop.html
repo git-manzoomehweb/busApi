@@ -11,11 +11,11 @@
 
 </head>
 
-<body class="book-bg-specialcolor-1 book-rtl" >
+<body class="book-bg-specialcolor-1 book-rtl">
     <!-- header -->
     <basis core="call" file="header.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
     <span class="book-hidden book-rotate-180 book-h-[482px]"></span>
-    
+
     <!-- main -->
     <main data-dmnid="[##cms.cms.domainid##]" class="book-py-6 book-flex book-justify-center">
 
@@ -42,7 +42,8 @@
                             <button onclick="location.reload()" type="button"
                                 class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-white hover:book-book-text-primary-400">بروز
                                 رسانی جستجو</button>
-                            <button onclick="sessionStorage.removeItem('searchSession'); window.location='/'" type="button"
+                            <button onclick="sessionStorage.removeItem('searchSession'); window.location='/'"
+                                type="button"
                                 class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-book-bg-primary-400 hover:book-book-text-white">بازگشت
                                 به صفحه اصلی</button>
                         </div>
@@ -525,17 +526,18 @@
                                                 @busType@
                                                 </div>
 
-                                                {{
-                                                    if(@availableSeats@ === 0){
 
-                                                       return <div class="book-text-red-800">ظرفیت تکمیل</div>
+                                                            {{
+            const data = $bc.tryToGetSource('bus.updated');
+              const seats = (Number(data.rows[0].availableSeats) || 0);
 
-                                                    }else{
-
-                                                       return <div class="book-text-zinc-800">@availableSeats@ صندلی خالی</div>
-
-                                                    }
-                                                }}
+              if(seats === 0){
+                return `<p class='book-text-red-800'>ظرفیت تکمیل</p>`;
+              } else {
+                return `<p class="book-text-zinc-800"> ${seats} صندلی خالی </p>`;
+              }
+            }}
+            
 
 
 
@@ -619,19 +621,30 @@
                                                     </div>
 
 
-                                                {{
-                                                    if(@availableSeats@ === 0){
 
-                                                       return <button type="button" disabled
-                                                        class="book-card__btn book-w-[90%] book-h-10  book-bg-gray-300 book-text-white book-px-2  book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">غیرقابل رزرو</button>
-                                                       
-                                                    }else{
-                                                        
-                                                        return <button type="button" data-run="0" data-id="@busId@" onclick="{{return `submitCard(this,'${$data.busId}')`}}"
-                                                        class="book-card__btn book-w-[90%] book-h-10  book-bg-primary-500 book-text-white book-px-2  book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">خرید</button>
 
-                                                    }
-                                                }}
+
+                                                                                                        
+{{
+    const data = $bc.tryToGetSource('bus.updated');
+  const seats = (Number(data.rows[0].availableSeats) || 0);
+  const id = data.rows[0].BusId ;
+
+  if (seats === 0) {
+    return `<button type="button" 
+              class="book-card__btn hover:book-cursor-not-allowed book-w-[90%] book-h-10 book-bg-zinc-200 book-text-white book-px-2 book-rounded-lg  book-transition-colors book-animate-pulse-light">
+              غیرقابل خرید
+            </button>`;
+  } else {
+    return `<button type="button" data-run="0" data-id="${id}"
+              onclick="return submitCard(this,'${id}')"
+              class="book-card__btn book-w-[90%] book-h-10 book-bg-primary-500 book-text-white book-px-2 book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">
+              خرید
+            </button>`;
+  }
+}}
+
+
                                                 
                                             </div>
 
@@ -647,7 +660,7 @@
 
                             <!-- paging -->
                             <div
-                            class="book-paging__cards__container book-text-center book-my-10 book-ltr book-justify-center book-gap-1 book-flex">
+                                class="book-paging__cards__container book-text-center book-my-10 book-ltr book-justify-center book-gap-1 book-flex">
                                 <button
                                     class="book-paging__container book-leading-9 book-prevpage book-border book-border-solid book-border-zinc-200 book-rounded-lg book-w-8 book-h-8 book-hidden book-bg-white"
                                     type="button" bc-value bc-name="cms.prevpage" bc-triggers="click">
@@ -679,27 +692,27 @@
                             </div>
 
 
-                <div class="book-nodata__container book-w-full book-text-center book-hidden">
-                    <div>
-                        <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
-                            <use xlink:href="/booking/images/sprite-booking-icons.svg#calendare-icon">
-                            </use>
-                        </svg>
-                    </div>
-                    <div class="book-text-2xl book-font-bold book-mt-6">اتوبوسی
-                        در تاریخ انتخابی شما یافت نشد.
-                        تاریخ دیگری
-                        را امتحان کنید</div>
-                    <div class="book-text-zinc-500 book-mt-3">برای
-                        دریافت نتیجه لطفا تاریخ و یا مسیر خود را
-                        تغییر دهید
-                    </div>
-                    <div class="book-mt-6">
-                        <button onclick="sessionStorage.removeItem('searchSession'); window.location='/'"
-                            class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-primary-400 hover:book-text-white">بازگشت
-                            به صفحه اصلی</button>
-                    </div>
-                </div>
+                            <div class="book-nodata__container book-w-full book-text-center book-hidden">
+                                <div>
+                                    <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
+                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#calendare-icon">
+                                        </use>
+                                    </svg>
+                                </div>
+                                <div class="book-text-2xl book-font-bold book-mt-6">اتوبوسی
+                                    در تاریخ انتخابی شما یافت نشد.
+                                    تاریخ دیگری
+                                    را امتحان کنید</div>
+                                <div class="book-text-zinc-500 book-mt-3">برای
+                                    دریافت نتیجه لطفا تاریخ و یا مسیر خود را
+                                    تغییر دهید
+                                </div>
+                                <div class="book-mt-6">
+                                    <button onclick="sessionStorage.removeItem('searchSession'); window.location='/'"
+                                        class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-primary-400 hover:book-text-white">بازگشت
+                                        به صفحه اصلی</button>
+                                </div>
+                            </div>
 
 
                         </div>
@@ -715,4 +728,5 @@
     <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
     <script src="[##cms.cms.cdn##]/booking/js/bus-search.js?ver=1" type="text/javascript"></script>
 </body>
+
 </html>
