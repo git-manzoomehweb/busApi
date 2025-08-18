@@ -106,6 +106,17 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 
+const getSearchCookie = (element) => {
+    try {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${element}=`);
+        return parts.length === 2 ? parts.pop().split(';').shift() : null;
+    } catch (error) {
+        console.error("getSearchCookie: " + error.message);
+        return null;
+    }
+};
+
 async function setSession(args) {
   try {
 
@@ -119,7 +130,7 @@ async function setSession(args) {
 
       sessionSearchStorage.SessionId = args.source.rows[0].sessionId;
 
-    sessionSearchStorage.rkey = cookieParts?.[1];
+    sessionSearchStorage.rkey = getSearchCookie("rkey") || "";
     sessionSearchStorage.selectedMode = MODE;
 
     // TTL (20 دقیقه)
@@ -155,14 +166,15 @@ async function setSession(args) {
       });
     }
 
-    // --- گرفتن provider برای یوزرهای «کلاینت»
-    if (cookieParts?.length === 2) {
-      const user = await (await fetch('/Client_User_Type.inc')).text();
-      if (user === '1') {
-        const providerResponse = await fetch('/Client_Provider_Library.bc');
-        providerDataList = await providerResponse.json();
-      }
-    }
+        // Fetch provider data for client users
+        if (getSearchCookie("rkey")) {
+            const userResponse = await fetch('/Client_User_Type.inc');
+            const user = await userResponse.text();
+            if (user === "1") {
+                const providerResponse = await fetch('/Client_Provider_Library.bc');
+                providerDataList = await providerResponse.json();
+            }
+        }
 
 const tripGroup = Array.isArray(sessionSearchStorage.tripGroup)
   ? sessionSearchStorage.tripGroup
@@ -1797,6 +1809,7 @@ const busManipulation = async (args) => {
         }
 
         if (args.context && typeof args.context.setAsSource === "function") {
+          console.log("bus.updated" , args.context );
           args.context.setAsSource("bus.updated", pagedSource, {
             keyFieldName: "busId",
           });
@@ -2432,129 +2445,161 @@ function initializeBusCards(idToFind, type) {
     ) {
       busGroupArray = Object.values(foundObject.busGroup);
     }
+    if(type === "seat" || type === "rule"){
+  
+      if (typeof $bc !== "undefined" && $bc.setSource) {
+        if (type === "seat") {
+          $bc.setSource("cms.seat", {
+            type: "upselling",
+            busId: idToFind,
+            busGroup: JSON.stringify(busGroupArray),
+            run: true,
+          });
+        } else if (type === "rule") {
+          $bc.setSource("cms.rule", {
+            type: "upselling",
+            busId: idToFind,
+            busGroup: JSON.stringify(busGroupArray),
+            TripGroup: JSON.stringify(cleanTripGroup),
+            dmnid: sessionSearchStorage.dmnid || 0,
+            Type: sessionSearchStorage.Type || "",
+            lid: sessionSearchStorage.lid || 1,
+            SessionId: sessionSearchStorage.SessionId || "",
+            run: true,
+          });
+        }
+      }
+  
+      const container = document.querySelector(".book-bus-cards-container");
+      if (!container) {
+        console.error(" کانتینر .book-bus-cards-container پیدا نشد");
+        return;
+      }
+  
+      if (container._busCardHandler) {
+        container.removeEventListener("click", container._busCardHandler);
+      }
+  
+      // تعریف handler جدید
+      const busCardHandler = (event) => {
+        const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
+        const closeCardBtn = event.target.closest(".book-closeCard");
+        const openFirstMenu = event.target.closest(".book-open-first-menu");
+        const closeFirstMenu = event.target.closest(
+          ".book-first-menu .book-clode-menu"
+        );
+        const openSecondMenu = event.target.closest(".book-open-second-menu");
+        const closeSecondMenu = event.target.closest(
+          ".book-second-menu .book-clode-menu"
+        );
+        const openThirdMenu = event.target.closest(".book-open-third-menu");
+        const closeThirdMenu = event.target.closest(
+          ".book-third-menu .book-clode-menu"
+        );
+  
+        const card = event.target.closest(".book-bus-card");
+  
+        if (!card) return;
+  
+        if (type === "seat") {
+          const seatBox = card.querySelector(".seat-box-visibility");
+          if (seatBox.classList.contains("book-hidden")) {
+            seatBox.classList.remove("book-hidden");
+          }
+  
+          const seatguideBox = card.querySelector(".seatguide-box-visibility");
+          if (seatguideBox.classList.contains("book-hidden")) {
+            seatguideBox.classList.remove("book-hidden");
+          }
+        } else if (type === "rule") {
+          const rulesBox = card.querySelector(".rules-box-visibility");
+          if (rulesBox.classList.contains("book-hidden")) {
+            rulesBox.classList.remove("book-hidden");
+          }
+        }
+  
+        if (seeMoreBtn) {
+          event.stopPropagation();
+          seeMoreBtn.classList.add("book-hidden");
+          card.querySelectorAll(".book-hidden-elements").forEach((el) => {
+            el.classList.remove("book-hidden");
+          });
+          card.classList.remove("book-h-[240px]");
+          card.classList.add("book-h-[506px]");
+        }
+  
+        if (closeCardBtn) {
+          event.stopPropagation();
+          const seeMore = card.querySelector(".book-see-and-buy-ticket");
+          if (seeMore) seeMore.classList.remove("book-hidden");
+          card.querySelectorAll(".book-hidden-elements").forEach((el) => {
+            el.classList.add("book-hidden");
+          });
+          card.classList.add("book-h-[240px]");
+          card.classList.remove("book-h-[506px]");
+        }
+  
+        if (openFirstMenu) {
+          const firstMenu = card.querySelector(".book-first-menu");
+          if (firstMenu) firstMenu.classList.remove("book-translate-x-[105%]");
+        }
+        if (closeFirstMenu) {
+          const firstMenu = card.querySelector(".book-first-menu");
+          if (firstMenu) firstMenu.classList.add("book-translate-x-[105%]");
+        }
+  
+        if (openSecondMenu) {
+          const secondMenu = card.querySelector(".book-second-menu");
+          if (secondMenu) secondMenu.classList.remove("book-translate-x-[105%]");
+        }
+        if (closeSecondMenu) {
+          const secondMenu = card.querySelector(".book-second-menu");
+          if (secondMenu) secondMenu.classList.add("book-translate-x-[105%]");
+        }
+  
+        if (openThirdMenu) {
+          const thirdMenu = card.querySelector(".book-third-menu");
+          if (thirdMenu) thirdMenu.classList.remove("book-translate-x-[105%]");
+        }
+        if (closeThirdMenu) {
+          const thirdMenu = card.querySelector(".book-third-menu");
+          if (thirdMenu) thirdMenu.classList.add("book-translate-x-[105%]");
+        }
+      };
+  
+      container._busCardHandler = busCardHandler;
+      container.addEventListener("click", busCardHandler);
+
+    }else if(type === "seatandrules"){
+
 
     if (typeof $bc !== "undefined" && $bc.setSource) {
-      if (type === "seat") {
-        $bc.setSource("cms.seat", {
-          type: "upselling",
-          busId: idToFind,
-          busGroup: JSON.stringify(busGroupArray),
-          run: true,
-        });
-      } else if (type === "rule") {
-        $bc.setSource("cms.rule", {
-          type: "upselling",
-          busId: idToFind,
-          busGroup: JSON.stringify(busGroupArray),
-          TripGroup: JSON.stringify(cleanTripGroup),
-          dmnid: sessionSearchStorage.dmnid || 0,
-          Type: sessionSearchStorage.Type || "",
-          lid: sessionSearchStorage.lid || 1,
-          SessionId: sessionSearchStorage.SessionId || "",
-          run: true,
-        });
+
+    this.closest(".book-card__container").querySelector(".book-modal__container").classList.remove(".")
+          $bc.setSource("cms.seat", {
+            type: "upselling",
+            busId: idToFind,
+            busGroup: JSON.stringify(busGroupArray),
+            run: true,
+          });
+
+
+          $bc.setSource("cms.rule", {
+            type: "upselling",
+            busId: idToFind,
+            busGroup: JSON.stringify(busGroupArray),
+            TripGroup: JSON.stringify(cleanTripGroup),
+            dmnid: sessionSearchStorage.dmnid || 0,
+            Type: sessionSearchStorage.Type || "",
+            lid: sessionSearchStorage.lid || 1,
+            SessionId: sessionSearchStorage.SessionId || "",
+            run: true,
+          });
+
+
       }
+
     }
-
-    const container = document.querySelector(".book-bus-cards-container");
-    if (!container) {
-      console.error(" کانتینر .book-bus-cards-container پیدا نشد");
-      return;
-    }
-
-    if (container._busCardHandler) {
-      container.removeEventListener("click", container._busCardHandler);
-    }
-
-    // تعریف handler جدید
-    const busCardHandler = (event) => {
-      const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
-      const closeCardBtn = event.target.closest(".book-closeCard");
-      const openFirstMenu = event.target.closest(".book-open-first-menu");
-      const closeFirstMenu = event.target.closest(
-        ".book-first-menu .book-clode-menu"
-      );
-      const openSecondMenu = event.target.closest(".book-open-second-menu");
-      const closeSecondMenu = event.target.closest(
-        ".book-second-menu .book-clode-menu"
-      );
-      const openThirdMenu = event.target.closest(".book-open-third-menu");
-      const closeThirdMenu = event.target.closest(
-        ".book-third-menu .book-clode-menu"
-      );
-
-      const card = event.target.closest(".book-bus-card");
-
-      if (!card) return;
-
-      if (type === "seat") {
-        const seatBox = card.querySelector(".seat-box-visibility");
-        if (seatBox.classList.contains("book-hidden")) {
-          seatBox.classList.remove("book-hidden");
-        }
-
-        const seatguideBox = card.querySelector(".seatguide-box-visibility");
-        if (seatguideBox.classList.contains("book-hidden")) {
-          seatguideBox.classList.remove("book-hidden");
-        }
-      } else if (type === "rule") {
-        const rulesBox = card.querySelector(".rules-box-visibility");
-        if (rulesBox.classList.contains("book-hidden")) {
-          rulesBox.classList.remove("book-hidden");
-        }
-      }
-
-      if (seeMoreBtn) {
-        event.stopPropagation();
-        seeMoreBtn.classList.add("book-hidden");
-        card.querySelectorAll(".book-hidden-elements").forEach((el) => {
-          el.classList.remove("book-hidden");
-        });
-        card.classList.remove("book-h-[240px]");
-        card.classList.add("book-h-[506px]");
-      }
-
-      if (closeCardBtn) {
-        event.stopPropagation();
-        const seeMore = card.querySelector(".book-see-and-buy-ticket");
-        if (seeMore) seeMore.classList.remove("book-hidden");
-        card.querySelectorAll(".book-hidden-elements").forEach((el) => {
-          el.classList.add("book-hidden");
-        });
-        card.classList.add("book-h-[240px]");
-        card.classList.remove("book-h-[506px]");
-      }
-
-      if (openFirstMenu) {
-        const firstMenu = card.querySelector(".book-first-menu");
-        if (firstMenu) firstMenu.classList.remove("book-translate-x-[105%]");
-      }
-      if (closeFirstMenu) {
-        const firstMenu = card.querySelector(".book-first-menu");
-        if (firstMenu) firstMenu.classList.add("book-translate-x-[105%]");
-      }
-
-      if (openSecondMenu) {
-        const secondMenu = card.querySelector(".book-second-menu");
-        if (secondMenu) secondMenu.classList.remove("book-translate-x-[105%]");
-      }
-      if (closeSecondMenu) {
-        const secondMenu = card.querySelector(".book-second-menu");
-        if (secondMenu) secondMenu.classList.add("book-translate-x-[105%]");
-      }
-
-      if (openThirdMenu) {
-        const thirdMenu = card.querySelector(".book-third-menu");
-        if (thirdMenu) thirdMenu.classList.remove("book-translate-x-[105%]");
-      }
-      if (closeThirdMenu) {
-        const thirdMenu = card.querySelector(".book-third-menu");
-        if (thirdMenu) thirdMenu.classList.add("book-translate-x-[105%]");
-      }
-    };
-
-    container._busCardHandler = busCardHandler;
-    container.addEventListener("click", busCardHandler);
   } catch (error) {
     console.error(" initializeBusCards: " + error.message);
   }
@@ -2785,7 +2830,7 @@ function cleanCSSClassName(str) {
   return str.replace(/[^a-zA-Z0-9_-]/g, "");
 }
 
-const submitCard = (element, idToFind) => {
+const submitCard = (element, idToFind , useragent) => {
   try {
     const result = findBusData(idToFind);
     if (!result) {

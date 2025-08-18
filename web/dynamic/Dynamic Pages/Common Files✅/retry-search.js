@@ -134,21 +134,20 @@ const decreasePassengerCount = (element) => {
 * @param {HTMLElement} element - The flight type element.
 * @param {number} id - The schema ID (291, 290, 292).
 */
-const selectModuleFlightType = (element, id) => {
+const selectModuleFlightType = (element, schemaId) => {
     try {
-        schemaId = id;
         const flightTypes = document.querySelectorAll('.book-module__flight__type li');
         flightTypes.forEach(item => item.classList.remove('book-active__module__flight__type'));
         element.classList.add('book-active__module__flight__type');
 
         const container = document.querySelector("#route__template");
         const addRouteContainer = document.querySelector(".book__add__roue__container");
-        const routeBlocks = container.querySelectorAll(".route__block");
+        const routeBlocks = container.querySelectorAll(".route-content");
 
         // Remove existing route names
         container.querySelectorAll(".route__name").forEach(e => e.remove());
 
-        if (schemaId === 292) {
+        if (id === 292) {
             // Multi-city: Show add route button and adjust styling
             addRouteContainer.classList.remove("book-hidden");
             container.querySelectorAll(".arrival__date__container").forEach(e => {
@@ -172,6 +171,7 @@ const selectModuleFlightType = (element, id) => {
             if (routeBlocks.length < 2) {
                 const clone = routeBlocks[0].cloneNode(true);
                 clone.querySelectorAll("input").forEach(input => input.value = "");
+                clone.setAttribute("data-index", routeBlocks.length + 1);
                 container.appendChild(clone);
             }
             element.closest("form").classList.add("multicity-flight-form");
@@ -192,7 +192,6 @@ const selectModuleFlightType = (element, id) => {
             addRouteContainer.classList.add("book-hidden");
             container.classList.add("md:book-w-3/5");
             if (!container.classList.contains("book-route__mob")) {
-                console.log('ddddddddddddddddddddddddddd')
                 container.classList.remove("book-grid", "book-grid-cols-2", "book-gap-4");
                 container.querySelectorAll(".departure__date__container").forEach(e => e.classList.remove("book-w-11/12"));
                 container.querySelectorAll(".departure__date__container").forEach(e => e.classList.remove("book-w-full"));
@@ -339,7 +338,7 @@ const selectCityItem = (element) => {
 
         const isDeparture = input.classList.contains("departure__location__name");
         const isArrival = input.classList.contains("arrival__location__name");
-        const routeBlock = input.closest(".route__block");
+        const routeBlock = input.closest(".route-content");
 
         if (isDeparture) {
             window.__programmaticClick = true;
@@ -386,7 +385,7 @@ const handleCitySearch = (element) => {
 */
 const exchangeCities = (element) => {
     try {
-        const routeBlock = element.closest(".route__block");
+        const routeBlock = element.closest(".route-content");
         const departureInput = routeBlock.querySelector(".departure__location__name");
         const arrivalInput = routeBlock.querySelector(".arrival__location__name");
 
@@ -409,24 +408,37 @@ const exchangeCities = (element) => {
 const addRoute = () => {
     try {
         const container = document.getElementById("route__template");
-        const currentRoutes = container.querySelectorAll(".route__block");
+        const currentRoutes = container.querySelectorAll(".route-content"); // اینجا کلاس درست رو بذار
 
         if (currentRoutes.length >= 4) return;
 
         const clone = currentRoutes[0].cloneNode(true);
         clone.querySelectorAll("input").forEach(input => input.value = "");
 
+        // اضافه کردن data-index
+        clone.setAttribute("data-index", currentRoutes.length + 1);
+
         // Add delete button for routes 3 and 4 with translation
         if (currentRoutes.length >= 2) {
             const deleteButton = document.createElement("button");
             deleteButton.textContent = translate("حذف");
             deleteButton.type = "button";
-            deleteButton.classList.add("route__delete", "book-bg-red-500", "book-text-sm", "book-text-white", "book-px-2", "book-py-1", "book-rounded", "book-top-0", "book-absolute");
+            deleteButton.classList.add(
+                "route__delete",
+                "book-bg-red-500",
+                "book-text-sm",
+                "book-text-white",
+                "book-px-2",
+                "book-py-1",
+                "book-rounded",
+                "book-top-0",
+                "book-absolute"
+            );
             if (container.classList.contains("book-route__mob")) {
                 deleteButton.classList.add("book-left-0");
             } else {
                 deleteButton.classList.add("book-left-5");
-            };
+            }
             deleteButton.onclick = () => deleteRoute(deleteButton);
             clone.appendChild(deleteButton);
         }
@@ -438,12 +450,13 @@ const addRoute = () => {
     }
 };
 
+
 /**
 * Updates route names for multi-city trips.
 */
 const updateRouteNames = () => {
     try {
-        const routes = document.querySelectorAll("#route__template .route__block");
+        const routes = document.querySelectorAll("#route__template .route-content");
         routes.forEach((route, index) => {
             let nameDiv = route.querySelector(".route__name");
             if (!nameDiv) {
@@ -451,7 +464,7 @@ const updateRouteNames = () => {
                 nameDiv.classList.add("route__name", "book-text-sm", "book-mb-1");
                 route.insertBefore(nameDiv, route.firstChild);
             }
-            nameDiv.textContent = `${translate("مسیر")} ${tripNames[index]}`;
+            nameDiv.textContent = tripNames[index];
         });
     } catch (error) {
         console.error("updateRouteNames: " + error.message);
@@ -464,7 +477,7 @@ const updateRouteNames = () => {
 */
 const deleteRoute = (element) => {
     try {
-        element.closest(".route__block").remove();
+        element.closest(".route-content").remove();
         updateRouteNames();
     } catch (error) {
         console.error("deleteRoute: " + error.message);
@@ -476,83 +489,83 @@ const deleteRoute = (element) => {
 /* ===== Helpers Convert Date===== */
 
 const toEnglishDigits = (str) =>
-  String(str).replace(/[\u06F0-\u06F9\u0660-\u0669]/g, (d) =>
-    "0123456789"[
-      "۰۱۲۳۴۵۶۷۸۹".indexOf(d) > -1
-        ? "۰۱۲۳۴۵۶۷۸۹".indexOf(d)
-        : "٠١٢٣٤٥٦٧٨٩".indexOf(d)
-    ] ?? d
-  );
+    String(str).replace(/[\u06F0-\u06F9\u0660-\u0669]/g, (d) =>
+        "0123456789"[
+        "۰۱۲۳۴۵۶۷۸۹".indexOf(d) > -1
+            ? "۰۱۲۳۴۵۶۷۸۹".indexOf(d)
+            : "٠١٢٣٤٥٦٧٨٩".indexOf(d)
+        ] ?? d
+    );
 
 const _faParts = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-  year: "numeric", month: "numeric", day: "numeric"
+    year: "numeric", month: "numeric", day: "numeric"
 });
 const _ymdFromDateInPersian = (d) => {
-  const parts = _faParts.formatToParts(d);
-  const y = +toEnglishDigits(parts.find(p=>p.type==="year").value);
-  const m = +toEnglishDigits(parts.find(p=>p.type==="month").value);
-  const da= +toEnglishDigits(parts.find(p=>p.type==="day").value);
-  return { y, m, d: da };
+    const parts = _faParts.formatToParts(d);
+    const y = +toEnglishDigits(parts.find(p => p.type === "year").value);
+    const m = +toEnglishDigits(parts.find(p => p.type === "month").value);
+    const da = +toEnglishDigits(parts.find(p => p.type === "day").value);
+    return { y, m, d: da };
 };
-const _cmpYmd = (a,b)=> a.y-b.y || a.m-b.m || a.d-b.d;
+const _cmpYmd = (a, b) => a.y - b.y || a.m - b.m || a.d - b.d;
 
 const jalaliYmdToGregorianDate = (jy, jm, jd) => {
-  const DAY = 86400000;
-  let low  = Date.UTC(jy + 621,  0,  1) - 10*DAY;
-  let high = Date.UTC(jy + 622, 11, 31) + 10*DAY;
-  const target = { y: jy, m: jm, d: jd };
-  while (low <= high) {
-    const mid = Math.floor(((low + high) / 2) / DAY) * DAY;
-    const d = new Date(mid);
-    const cur = _ymdFromDateInPersian(d);
-    const cmp = _cmpYmd(cur, target);
-    if (cmp === 0) return d;
-    if (cmp < 0) low = mid + DAY; else high = mid - DAY;
-  }
-  return null;
+    const DAY = 86400000;
+    let low = Date.UTC(jy + 621, 0, 1) - 10 * DAY;
+    let high = Date.UTC(jy + 622, 11, 31) + 10 * DAY;
+    const target = { y: jy, m: jm, d: jd };
+    while (low <= high) {
+        const mid = Math.floor(((low + high) / 2) / DAY) * DAY;
+        const d = new Date(mid);
+        const cur = _ymdFromDateInPersian(d);
+        const cmp = _cmpYmd(cur, target);
+        if (cmp === 0) return d;
+        if (cmp < 0) low = mid + DAY; else high = mid - DAY;
+    }
+    return null;
 };
 
 
 const convertDateIfPersian = (value) => {
-  if (value == null || value === "") return "";
+    if (value == null || value === "") return "";
 
-  if (typeof value === "number" || /^\d+$/.test(toEnglishDigits(value))) {
-    const n = Number(toEnglishDigits(value));
-    const d = new Date(n < 1e12 ? n * 1000 : n);
-    if (isNaN(d)) return "";
-    const y  = d.getUTCFullYear();
-    const mo = String(d.getUTCMonth()+1).padStart(2,"0");
-    const da = String(d.getUTCDate()).padStart(2,"0");
-    return `${y}-${mo}-${da}`;
-  }
-
-  let s = toEnglishDigits(String(value)).trim();
-
-  // YYYY-MM-DD
-  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (m) {
-    const y = +m[1], mo = +m[2], da = +m[3];
-    if (y < 1700) {
-      const g = jalaliYmdToGregorianDate(y, mo, da);
-      if (!g) return s;
-      const yy = g.getUTCFullYear();
-      const mm = String(g.getUTCMonth()+1).padStart(2,"0");
-      const dd = String(g.getUTCDate()).padStart(2,"0");
-      return `${yy}-${mm}-${dd}`;
+    if (typeof value === "number" || /^\d+$/.test(toEnglishDigits(value))) {
+        const n = Number(toEnglishDigits(value));
+        const d = new Date(n < 1e12 ? n * 1000 : n);
+        if (isNaN(d)) return "";
+        const y = d.getUTCFullYear();
+        const mo = String(d.getUTCMonth() + 1).padStart(2, "0");
+        const da = String(d.getUTCDate()).padStart(2, "0");
+        return `${y}-${mo}-${da}`;
     }
+
+    let s = toEnglishDigits(String(value)).trim();
+
+    // YYYY-MM-DD
+    const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (m) {
+        const y = +m[1], mo = +m[2], da = +m[3];
+        if (y < 1700) {
+            const g = jalaliYmdToGregorianDate(y, mo, da);
+            if (!g) return s;
+            const yy = g.getUTCFullYear();
+            const mm = String(g.getUTCMonth() + 1).padStart(2, "0");
+            const dd = String(g.getUTCDate()).padStart(2, "0");
+            return `${yy}-${mm}-${dd}`;
+        }
+        return s;
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}T/.test(s)) {
+        const d = new Date(/[zZ]|[+\-]\d{2}:\d{2}$/.test(s) ? s : s + "Z");
+        if (isNaN(d)) return "";
+        const y = d.getUTCFullYear();
+        const mo = String(d.getUTCMonth() + 1).padStart(2, "0");
+        const da = String(d.getUTCDate()).padStart(2, "0");
+        return `${y}-${mo}-${da}`;
+    }
+
     return s;
-  }
-
-  if (/^\d{4}-\d{2}-\d{2}T/.test(s)) {
-    const d = new Date(/[zZ]|[+\-]\d{2}:\d{2}$/.test(s) ? s : s + "Z");
-    if (isNaN(d)) return "";
-    const y  = d.getUTCFullYear();
-    const mo = String(d.getUTCMonth()+1).padStart(2,"0");
-    const da = String(d.getUTCDate()).padStart(2,"0");
-    return `${y}-${mo}-${da}`;
-  }
-
-  return s;
 };
 /* ===== End Helpers ===== */
 
@@ -564,78 +577,78 @@ const convertDateIfPersian = (value) => {
 const fetchApi = (element, moduletype) => {
     try {
 
-    if (moduletype === 'bus') {
+        if (moduletype === 'bus') {
 
-      const form = element.closest(".book-research__container");
-      let errorBox = form.querySelector(".form-error-box");
-      if (!errorBox) {
-        errorBox = document.createElement("div");
-        errorBox.className = "form-error-box";
-        errorBox.style.color = "red";
-        errorBox.style.marginBottom = "10px";
-        form.prepend(errorBox);
-      }
-      errorBox.innerHTML = "";
+            const form = element.closest(".book-research__container");
+            let errorBox = form.querySelector(".form-error-box");
+            if (!errorBox) {
+                errorBox = document.createElement("div");
+                errorBox.className = "form-error-box";
+                errorBox.style.color = "red";
+                errorBox.style.marginBottom = "10px";
+                form.prepend(errorBox);
+            }
+            errorBox.innerHTML = "";
 
-      const routeBlocks = form.querySelectorAll(".route__block");
-      let hasError = false;
-      const tripGroup = [];
+            const routeBlocks = form.querySelectorAll(".route-content");
+            let hasError = false;
+            const tripGroup = [];
 
-      routeBlocks.forEach((route, index) => {
-        const originInput       = route.querySelector(".departure__location__name");
-        const destinationInput  = route.querySelector(".arrival__location__name");
-        const departureDateInput= route.querySelector(".departure__date");
+            routeBlocks.forEach((route, index) => {
+                const originInput = route.querySelector(".departure__location__name");
+                const destinationInput = route.querySelector(".arrival__location__name");
+                const departureDateInput = route.querySelector(".departure__date");
 
-        const origin       = originInput?.value.trim();
-        const destination  = destinationInput?.value.trim();
-        const viewValue    = departureDateInput?.value.trim();         
-        const dataValue    = departureDateInput?.dataset.date || "";  
+                const origin = originInput?.value.trim();
+                const destination = destinationInput?.value.trim();
+                const viewValue = departureDateInput?.value.trim();
+                const dataValue = departureDateInput?.dataset.date || "";
 
-        if (!origin || !originInput.dataset.id) {
-          hasError = true;
-          errorBox.innerHTML += `${translate("مسیر")} ${index + 1}: ${translate("invalid_origin")}.<br>`;
+                if (!origin || !originInput.dataset.id) {
+                    hasError = true;
+                    errorBox.innerHTML += `${translate("مسیر")} ${index + 1}: ${translate("invalid_origin")}.<br>`;
+                }
+                if (!destination || !destinationInput.dataset.id) {
+                    hasError = true;
+                    errorBox.innerHTML += `${translate("مسیر")} ${index + 1}: ${translate("invalid_destination")}.<br>`;
+                }
+                if (!viewValue && !dataValue) {
+                    hasError = true;
+                    errorBox.innerHTML += `${translate("مسیر")} ${index + 1}: ${translate("departure_date_required")}.<br>`;
+                }
+                if (hasError) return;
+
+                const iso = convertDateIfPersian(dataValue || viewValue);
+                departureDateInput.dataset.date = iso;
+
+                tripGroup.push({
+                    origin: originInput.dataset.id,
+                    destination: destinationInput.dataset.id,
+                    originName: extractCityName(origin),
+                    destinationName: extractCityName(destination),
+                    departureDate: iso
+                });
+            });
+
+            if (hasError) return;
+            errorBox.remove();
+
+            const busSearch = {
+                tripGroup,
+                rkey: getSearchCookie("rkey") || "",
+                dmnid: document.querySelector("main")?.dataset.dmnid || "",
+                SchemaId: 391,
+                Type: "bus",
+                lid: "1"
+            };
+
+            sessionStorage.setItem('sessionSearch', JSON.stringify(busSearch));
+
+            window.location.href = '/bus/search';
+
+            return;
         }
-        if (!destination || !destinationInput.dataset.id) {
-          hasError = true;
-          errorBox.innerHTML += `${translate("مسیر")} ${index + 1}: ${translate("invalid_destination")}.<br>`;
-        }
-        if (!viewValue && !dataValue) {
-          hasError = true;
-          errorBox.innerHTML += `${translate("مسیر")} ${index + 1}: ${translate("departure_date_required")}.<br>`;
-        }
-        if (hasError) return;
-
-        const iso = convertDateIfPersian(dataValue || viewValue);
-        departureDateInput.dataset.date = iso;
-
-        tripGroup.push({
-          origin:            originInput.dataset.id,
-          destination:       destinationInput.dataset.id,
-          originName:        extractCityName(origin),
-          destinationName:   extractCityName(destination),
-          departureDate:     iso                                
-        });
-      });
-
-      if (hasError) return;
-      errorBox.remove();
-
-      const busSearch = {
-        tripGroup,
-        rkey:  getSearchCookie("rkey") || "",
-        dmnid: document.querySelector("main")?.dataset.dmnid || "",
-        SchemaId: 391,                 
-        Type: "bus",
-        lid: "1"
-      };
-
-      sessionStorage.setItem('sessionSearch', JSON.stringify(busSearch));
-
-      window.location.href = '/bus/search';
-
-      return; 
-    }
-    else {
+        else {
             sessionStorage.removeItem('sessionAmenities')
             const form = element.closest(".book-research__container");
             let errorBox = form.querySelector(".form-error-box");
@@ -648,7 +661,7 @@ const fetchApi = (element, moduletype) => {
             }
             errorBox.innerHTML = "";
 
-            const routeBlocks = form.querySelectorAll(".route__block");
+            const routeBlocks = form.querySelectorAll(".route-content");
             let hasError = false;
             const TripGroup = [];
 
@@ -715,6 +728,9 @@ const fetchApi = (element, moduletype) => {
 
             // Build flight search data
             const passengerItems = form.querySelectorAll('.book-passenger__searched__items li');
+            const activeEl = document.querySelector(".book-active__module__flight__type");
+            const onclickAttr = activeEl.getAttribute("onclick");
+            const schemaId = parseInt(onclickAttr.match(/\d+/)[0]);
             const flightSearch = {
                 TripGroup,
                 CabinClass: form.querySelector(".book-cabinClass__searched__content").dataset.class || "",
@@ -727,7 +743,6 @@ const fetchApi = (element, moduletype) => {
                 Type: "flight",
                 lid: "1"
             };
-
             sessionStorage.setItem('sessionSearch', JSON.stringify(flightSearch));
             window.location.href = '/flight/search';
         }
@@ -736,21 +751,6 @@ const fetchApi = (element, moduletype) => {
     }
 };
 
-/**
-* Retrieves the value of a specific cookie by name.
-* @param {string} element - The cookie name.
-* @returns {string|null} The cookie value or null if not found.
-*/
-const getSearchCookie = (element) => {
-    try {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${element}=`);
-        return parts.length === 2 ? parts.pop().split(';').shift() : null;
-    } catch (error) {
-        console.error("getSearchCookie: " + error.message);
-        return null;
-    }
-};
 
 /**
 * Extracts the Persian city name from a string.

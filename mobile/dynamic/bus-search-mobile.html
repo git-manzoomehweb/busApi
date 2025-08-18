@@ -315,7 +315,7 @@
                                                     class="book-space-y-2 book-selector__content book-text-zinc-500 book-hidden">
 
                                                     <div
-                                                        class="book-filter__content book-outbounddeparturetime__content">
+                                                        class="book-filter__content book-departuretime__content">
                                                         <div class="book-time__content">
                                                             <div
                                                                 class="book-text-primary-300 book-text-sm book-mb-1 book-hour__title">
@@ -333,7 +333,7 @@
                                                             <div bc-value="0-4" data-time-period="صبح"
                                                                 data-time-range="4:59 الی 12:00"
                                                                 data-textshow="4:59 الی 12:00"
-                                                                bc-name="cms.outbounddeparturetime" bc-triggers="click"
+                                                                bc-name="cms.departuretime" bc-triggers="click"
                                                                 class="book-custom__checkbox book-button__content  book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
                                                                 <svg width="24" height="24" class="book-mx-auto">
                                                                     <use
@@ -345,7 +345,7 @@
                                                             <div bc-value="5-11" data-time-period="صبح"
                                                                 data-time-range="4:59 الی 12:00"
                                                                 data-textshow="4:59 الی 12:00"
-                                                                bc-name="cms.outbounddeparturetime" bc-triggers="click"
+                                                                bc-name="cms.departuretime" bc-triggers="click"
                                                                 class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
                                                                 <svg width="24" height="24" class="book-mx-auto">
                                                                     <use
@@ -357,7 +357,7 @@
                                                             <div bc-value="12-17" data-time-period="ظهر"
                                                                 data-time-range="4:59 الی 12:00"
                                                                 data-textshow="4:59 الی 12:00"
-                                                                bc-name="cms.outbounddeparturetime" bc-triggers="click"
+                                                                bc-name="cms.departuretime" bc-triggers="click"
                                                                 class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
                                                                 <svg width="24" height="24" class="book-mx-auto">
                                                                     <use
@@ -369,7 +369,7 @@
                                                             <div bc-value="18-23" data-time-period="شب"
                                                                 data-time-range="4:59 الی 12:00"
                                                                 data-textshow="4:59 الی 12:00"
-                                                                bc-name="cms.outbounddeparturetime" bc-triggers="click"
+                                                                bc-name="cms.departuretime" bc-triggers="click"
                                                                 class="book-custom__checkbox book-button__content book-cursor-pointer book-py-3 book-w-1/4 book-rounded-lg">
                                                                 <svg width="24" height="24" class="book-mx-auto">
                                                                     <use
@@ -710,7 +710,7 @@
                                     </layout>
                                     <face>
                                         <script type="text/template">
-                                                <div id="bus__@index@" data-id="@BusId@" data-index="@index@" class="book-card__container book-mb-4 transition{{ return await renderSelectedBus($data.SelectedBus)}}">
+                                                <div id="bus__@index@" data-id="@BusId@" data-index="@index@" class="book-card__container book-mb-4 transition ">
                                                     
                                                     
   <div class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl !book-relative book-flex book-flex-col !book-gap-0 book-w-full !book-h-[240px]">
@@ -828,7 +828,7 @@
       {{
     const data = $bc.tryToGetSource('bus.updated');
   const seats = (Number(data.rows[0].availableSeats) || 0);
-  const id = data.rows[0].BusId ;
+  const id = data.rows[0].busId ;
 
   if (seats === 0) {
     return `<button type="button" 
@@ -837,7 +837,7 @@
 </button>`;
   } else {
     return `<button type="button" data-run="0" data-id="${id}"
-              onclick="return submitCard(this,'${id}')"
+                onclick="return initializeBusCards( '${id}' , 'seatandrules')"
               class="book-card__btn book-w-full book-flex hover:book-book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white">
               خرید
             </button>`;
@@ -846,7 +846,6 @@
 
   </div>
 </div>
-
 
 
                                                     <section  class="book-modal__container book-modal__mob__container book-fixed book-h-full book-w-full book-top-0 book-bottom-0 book-transitionbook-z-[9999999999] book-bg-zinc-200 book-inset-x-0  book-overflow-auto book-hidden">

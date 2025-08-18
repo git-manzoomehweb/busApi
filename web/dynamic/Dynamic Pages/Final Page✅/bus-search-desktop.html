@@ -628,7 +628,7 @@
 {{
     const data = $bc.tryToGetSource('bus.updated');
   const seats = (Number(data.rows[0].availableSeats) || 0);
-  const id = data.rows[0].BusId ;
+  const id = data.rows[0].busId ;
 
   if (seats === 0) {
     return `<button type="button" 
@@ -637,7 +637,7 @@
             </button>`;
   } else {
     return `<button type="button" data-run="0" data-id="${id}"
-              onclick="return submitCard(this,'${id}')"
+              onclick="return submitCard(this,'${id}','desktop')"
               class="book-card__btn book-w-[90%] book-h-10 book-bg-primary-500 book-text-white book-px-2 book-rounded-lg hover:book-bg-secondary-500 book-transition-colors book-animate-pulse-light">
               خرید
             </button>`;
