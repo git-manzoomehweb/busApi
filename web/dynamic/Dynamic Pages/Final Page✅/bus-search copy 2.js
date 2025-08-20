@@ -1827,10 +1827,6 @@ const busManipulation = async (args) => {
     endProgressBar();
   }
 };
-
-
-
-
 const renderPaging = async (element) => {
   try {
     const { index, page, isActive, isVisible } = element;
@@ -2065,15 +2061,15 @@ const preservePriceLabels = () => {
 function triggerPriceFilter() {
   try {
     mustUpdate = true;
+
     if (typeof $bc !== "undefined" && $bc.setSource) {
       $bc.setSource("cms.price", {
         value: "range",
         minPrice: priceRange[0],
         maxPrice: priceRange[1],
-        run: true
+        run: true,
       });
     } else {
-      console.log("tttttttttttttttttttttttttttttttttttttttttttttttttt")
       busManipulation({
         source: {
           id: "cms.price.update",
@@ -2102,7 +2098,6 @@ function triggerPriceFilter() {
     console.error("triggerPriceFilter: " + error.message);
   }
 }
-
 
 function handlePriceDrag(args) {
   try {
@@ -2179,59 +2174,6 @@ function handlePriceDrag(args) {
   }
 }
 
-
-const updateFilterDisplay = (type, label, minValue, maxValue, originalMin, originalMax, hourContainer = null, hourRange = null) => {
-    try {
-        if (isMobile) {
-            removeFilterDiv(label);
-        };
-
-        if (minValue !== originalMin || maxValue !== originalMax) {
-            let displayValue;
-            let filterLabel;
-
-            if (type === "price") {
-                const formattedMin = new Intl.NumberFormat().format(minValue);
-                const formattedMax = new Intl.NumberFormat().format(maxValue);
-                displayValue = `${formattedMin} - ${formattedMax}`;
-                filterLabel = `${translate("price") || "قیمت"}: ${displayValue}`;
-                if (isMobile) {
-                    addFilterDiv(label, `cms.${type}`, filterLabel, null, {
-                        originalMin,
-                        originalMax,
-                        hourContainer,
-                        hourRange
-                    });
-                }
-
-            } else if (type === "outboundhour" || type === "inboundhour" || type === "hour") {
-                const formatTime = (minutes) => {
-                    const hours = Math.floor(minutes / 60);
-                    const mins = minutes % 60;
-                    return `${hours} ${translate("hour")} ${mins} ${translate("minute")}`;
-                };
-                const formattedMin = formatTime(minValue);
-                const formattedMax = formatTime(maxValue);
-                displayValue = `${formattedMin} - ${formattedMax}`;
-                filterLabel =
-                    type === "outboundhour" ? `${translate("outbound_time") || "ساعت رفت"}: ${displayValue}` :
-                        type === "inboundhour" ? `${translate("return_time") || "ساعت برگشت"}: ${displayValue}` :
-                            `${translate("time") || "ساعت"}: ${displayValue}`;
-                if (isMobile) {
-                    addFilterDiv(label, `cms.${type}`, filterLabel, null, {
-                        originalMin,
-                        originalMax,
-                        hourContainer,
-                        hourRange
-                    });
-                }
-            }
-        }
-    } catch (error) {
-        console.error(`updateFilterDisplay: ${error.message}`);
-    }
-};
-
 // function initializePriceSlider() {
 //   try {
 //     if (!priceSlider || !priceThumbMin || !priceThumbMax) {
@@ -2270,7 +2212,6 @@ function initializePriceSlider() {
     if (priceSliderInitialized || !priceSlider) return;
     priceSliderInitialized = true;
 
-    console.log("ooooooooooooooooooooooooooooooo")
     setupPriceSliderEvents(priceThumbMin, priceThumbMax);
   } catch (error) {
     console.error("initializePriceSlider:", error.message);
@@ -2279,120 +2220,42 @@ function initializePriceSlider() {
 
 
 
-// function setupPriceSliderEvents(thumbMin, thumbMax) {
-//   try {
-//     // Mouse events for desktop
-//     thumbMin.addEventListener('mousedown', (e) => {
-//       e.preventDefault();
-//       cleanupPriceSliderEvents();
-//       if (!isMobile) {
-//         setupDesktopPriceSlider('min');
-//       }
-//     });
-
-//     thumbMax.addEventListener('mousedown', (e) => {
-//       e.preventDefault();
-//       cleanupPriceSliderEvents();
-//       if (!isMobile) {
-//         setupDesktopPriceSlider('max');
-//       }
-//     });
-
-//     // Touch events for mobile
-//     if (isMobile) {
-//       thumbMin.addEventListener('touchstart', (e) => {
-//         e.preventDefault();
-//         cleanupPriceSliderEvents();
-//         setupMobilePriceSlider('min');
-//       }, { passive: false });
-
-//       thumbMax.addEventListener('touchstart', (e) => {
-//         e.preventDefault();
-//         cleanupPriceSliderEvents();
-//         setupMobilePriceSlider('max');
-//       }, { passive: false });
-//     }
-//   } catch (error) {
-//     console.error("setupPriceSliderEvents:", error.message);
-//   }
-// }
-
 function setupPriceSliderEvents(thumbMin, thumbMax) {
   try {
-    // Pointer events for both desktop and mobile (cross-browser)
-    thumbMin.addEventListener('pointerdown', (e) => {
+    // Mouse events for desktop
+    thumbMin.addEventListener('mousedown', (e) => {
       e.preventDefault();
       cleanupPriceSliderEvents();
-      setupUnifiedPriceSlider('min');
-    }, { passive: false });
+      if (!isMobile) {
+        setupDesktopPriceSlider('min');
+      }
+    });
 
-    thumbMax.addEventListener('pointerdown', (e) => {
+    thumbMax.addEventListener('mousedown', (e) => {
       e.preventDefault();
       cleanupPriceSliderEvents();
-      setupUnifiedPriceSlider('max');
-    }, { passive: false });
+      if (!isMobile) {
+        setupDesktopPriceSlider('max');
+      }
+    });
+
+    // Touch events for mobile
+    if (isMobile) {
+      thumbMin.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        cleanupPriceSliderEvents();
+        setupMobilePriceSlider('min');
+      }, { passive: false });
+
+      thumbMax.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        cleanupPriceSliderEvents();
+        setupMobilePriceSlider('max');
+      }, { passive: false });
+    }
   } catch (error) {
     console.error("setupPriceSliderEvents:", error.message);
   }
-}
-
-
-function setupUnifiedPriceSlider(thumbType) {
-    try {
-        if (!priceSlider) {
-            console.warn("Price slider not found");
-            return;
-        }
-
-        // اول cleanup کنید تا listenerهای قبلی پاک شوند
-        cleanupPriceSliderEvents();
-
-        isPriceSliderActive = true;
-        currentPriceThumbType = thumbType;
-
-        // تعریف listenerها
-        currentOnPointerMove = (e) => {
-            if (!isPriceSliderActive) return;
-            e.preventDefault();
-
-            const rect = priceSlider.getBoundingClientRect();
-            const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-            const percent = (x / rect.width) * 100;
-
-            if (thumbType === "min") {
-                if (percent <= priceMaxPercent) {
-                    priceMinPercent = percent;
-                    updatePriceSliderUI();
-                }
-            } else if (thumbType === "max") {
-                if (percent >= priceMinPercent) {
-                    priceMaxPercent = percent;
-                    updatePriceSliderUI();
-                }
-            }
-        };
-
-        currentOnPointerUp = () => {
-            if (!isPriceSliderActive) return;
-
-            isPriceSliderActive = false;
-            cleanupPriceSliderEvents();  // cleanup در up
-
-            debouncedApplyPriceFilter();  // استفاده از debounced version
-        };
-
-        // add listenerها
-        document.addEventListener("pointermove", currentOnPointerMove, { passive: false });
-        document.addEventListener("pointerup", currentOnPointerUp, { passive: false });
-        document.addEventListener("pointercancel", currentOnPointerUp, { passive: false });
-
-        // optional: اگر کاربر صفحه را ترک کرد (blur)، cleanup کنید
-        window.addEventListener('blur', cleanupPriceSliderEvents, { once: true });
-
-    } catch (error) {
-        console.error("setupUnifiedPriceSlider:", error.message);
-        cleanupPriceSliderEvents();  // در error هم cleanup
-    }
 }
 
 
@@ -2500,7 +2363,6 @@ function setupMobilePriceSlider(thumbType) {
 }
 
 
-
 function updatePriceSliderUI() {
   try {
     if (!priceSlider) return;
@@ -2568,57 +2430,13 @@ function applyPriceFilterImmediate() {
   }
 }
 
-
-// اول، تابع debounce را اضافه کنید (اگر وجود ندارد)
-function debounce(func, delay) {
-    let timeout;
-    return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), delay);
-    };
-}
-
-// حالا، applyPriceFilterImmediate را به صورت debounced تعریف کنید
-const debouncedApplyPriceFilter = debounce(() => {
-    mustUpdate = true;
-    if (typeof $bc !== 'undefined' && $bc.setSource) {
-        $bc.setSource("cms.price", {
-            value: "range",
-            min: priceRange[0],
-            max: priceRange[1],
-            run: true
-        });
-    }
-    // اگر موبایل است، display را update کنید
-    if (isMobile) {
-        updateFilterDisplay(
-            "price",
-            "price-range",
-            priceRange[0],
-            priceRange[1],
-            minPrice,
-            maxPrice,
-            null,
-            priceRange
-        );
-    }
-}, 150);  // 150ms تأخیر برای جلوگیری از updateهای مکرر
-
-// بهبود تابع cleanupPriceSliderEvents (listenerها را remove کند)
-let currentOnPointerMove = null;  // برای نگهداری reference listenerها
-let currentOnPointerUp = null;
-
 function cleanupPriceSliderEvents() {
+  try {
     isPriceSliderActive = false;
-    if (currentOnPointerMove) {
-        document.removeEventListener("pointermove", currentOnPointerMove);
-        currentOnPointerMove = null;
-    }
-    if (currentOnPointerUp) {
-        document.removeEventListener("pointerup", currentOnPointerUp);
-        document.removeEventListener("pointercancel", currentOnPointerUp);
-        currentOnPointerUp = null;
-    }
+    // Remove any existing listeners (they will be replaced with new ones)
+  } catch (error) {
+    console.error("cleanupPriceSliderEvents:", error.message);
+  }
 }
 
 
@@ -2665,7 +2483,6 @@ const resetPriceFilter = () => {
     updatePriceSlider();
     mustUpdate = true;
     if (typeof busManipulation === "function") {
-      console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
       busManipulation({
         source: {
           id: "cms.price.update",

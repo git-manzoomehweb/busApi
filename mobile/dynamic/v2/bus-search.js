@@ -2232,38 +2232,6 @@ const updateFilterDisplay = (type, label, minValue, maxValue, originalMin, origi
     }
 };
 
-// function initializePriceSlider() {
-//   try {
-//     if (!priceSlider || !priceThumbMin || !priceThumbMax) {
-//       console.error("Price slider elements not found");
-//       return;
-//     }
-//     priceThumbMin.removeEventListener("mousedown", handlePriceSliderMouseDown);
-//     priceThumbMax.removeEventListener("mousedown", handlePriceSliderMouseDown);
-
-//     priceThumbMin.addEventListener("mousedown", (e) => {
-//       e.preventDefault();
-//       handlePriceDrag({
-//         source: {
-//           id: "cms.price",
-//           rows: [{ value: "min" }],
-//         },
-//       });
-//     });
-
-//     priceThumbMax.addEventListener("mousedown", (e) => {
-//       e.preventDefault();
-//       handlePriceDrag({
-//         source: {
-//           id: "cms.price",
-//           rows: [{ value: "max" }],
-//         },
-//       });
-//     });
-//   } catch (error) {
-//     console.error("initializePriceSlider: " + error.message);
-//   }
-// }
 
 function initializePriceSlider() {
   try {
@@ -2278,44 +2246,6 @@ function initializePriceSlider() {
 }
 
 
-
-// function setupPriceSliderEvents(thumbMin, thumbMax) {
-//   try {
-//     // Mouse events for desktop
-//     thumbMin.addEventListener('mousedown', (e) => {
-//       e.preventDefault();
-//       cleanupPriceSliderEvents();
-//       if (!isMobile) {
-//         setupDesktopPriceSlider('min');
-//       }
-//     });
-
-//     thumbMax.addEventListener('mousedown', (e) => {
-//       e.preventDefault();
-//       cleanupPriceSliderEvents();
-//       if (!isMobile) {
-//         setupDesktopPriceSlider('max');
-//       }
-//     });
-
-//     // Touch events for mobile
-//     if (isMobile) {
-//       thumbMin.addEventListener('touchstart', (e) => {
-//         e.preventDefault();
-//         cleanupPriceSliderEvents();
-//         setupMobilePriceSlider('min');
-//       }, { passive: false });
-
-//       thumbMax.addEventListener('touchstart', (e) => {
-//         e.preventDefault();
-//         cleanupPriceSliderEvents();
-//         setupMobilePriceSlider('max');
-//       }, { passive: false });
-//     }
-//   } catch (error) {
-//     console.error("setupPriceSliderEvents:", error.message);
-//   }
-// }
 
 function setupPriceSliderEvents(thumbMin, thumbMax) {
   try {
@@ -2336,64 +2266,6 @@ function setupPriceSliderEvents(thumbMin, thumbMax) {
   }
 }
 
-
-function setupUnifiedPriceSlider(thumbType) {
-    try {
-        if (!priceSlider) {
-            console.warn("Price slider not found");
-            return;
-        }
-
-        // اول cleanup کنید تا listenerهای قبلی پاک شوند
-        cleanupPriceSliderEvents();
-
-        isPriceSliderActive = true;
-        currentPriceThumbType = thumbType;
-
-        // تعریف listenerها
-        currentOnPointerMove = (e) => {
-            if (!isPriceSliderActive) return;
-            e.preventDefault();
-
-            const rect = priceSlider.getBoundingClientRect();
-            const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-            const percent = (x / rect.width) * 100;
-
-            if (thumbType === "min") {
-                if (percent <= priceMaxPercent) {
-                    priceMinPercent = percent;
-                    updatePriceSliderUI();
-                }
-            } else if (thumbType === "max") {
-                if (percent >= priceMinPercent) {
-                    priceMaxPercent = percent;
-                    updatePriceSliderUI();
-                }
-            }
-        };
-
-        currentOnPointerUp = () => {
-            if (!isPriceSliderActive) return;
-
-            isPriceSliderActive = false;
-            cleanupPriceSliderEvents();  // cleanup در up
-
-            debouncedApplyPriceFilter();  // استفاده از debounced version
-        };
-
-        // add listenerها
-        document.addEventListener("pointermove", currentOnPointerMove, { passive: false });
-        document.addEventListener("pointerup", currentOnPointerUp, { passive: false });
-        document.addEventListener("pointercancel", currentOnPointerUp, { passive: false });
-
-        // optional: اگر کاربر صفحه را ترک کرد (blur)، cleanup کنید
-        window.addEventListener('blur', cleanupPriceSliderEvents, { once: true });
-
-    } catch (error) {
-        console.error("setupUnifiedPriceSlider:", error.message);
-        cleanupPriceSliderEvents();  // در error هم cleanup
-    }
-}
 
 
 function setupDesktopPriceSlider(thumbType) {
@@ -2537,12 +2409,13 @@ function updatePriceSliderUI() {
   }
 }
 
+// tetssssssssssssssssssssssssssssssss
 function applyPriceFilterImmediate() {
   try {
     mustUpdate = true;
 
     if (typeof $bc !== 'undefined' && $bc.setSource) {
-      $bc.setSource("cms.price", {
+      $bc.setSource("cms.price.update", {
         value: "range",
         min: priceRange[0],
         max: priceRange[1],
@@ -2577,9 +2450,12 @@ function debounce(func, delay) {
         timeout = setTimeout(() => func.apply(this, args), delay);
     };
 }
-
+let updateLock = false;
 // حالا، applyPriceFilterImmediate را به صورت debounced تعریف کنید
 const debouncedApplyPriceFilter = debounce(() => {
+    if (updateLock) return;  // اگر lock باشه، skip کن
+    updateLock = true;       // lock رو set کن
+
     mustUpdate = true;
     if (typeof $bc !== 'undefined' && $bc.setSource) {
         $bc.setSource("cms.price", {
@@ -2589,7 +2465,7 @@ const debouncedApplyPriceFilter = debounce(() => {
             run: true
         });
     }
-    // اگر موبایل است، display را update کنید
+    // اگر موبایل است، display رو update کنید
     if (isMobile) {
         updateFilterDisplay(
             "price",
@@ -2602,26 +2478,84 @@ const debouncedApplyPriceFilter = debounce(() => {
             priceRange
         );
     }
-}, 150);  // 150ms تأخیر برای جلوگیری از updateهای مکرر
 
-// بهبود تابع cleanupPriceSliderEvents (listenerها را remove کند)
-let currentOnPointerMove = null;  // برای نگهداری reference listenerها
+    // بعد از 200ms، lock رو reset کن (برای جلوگیری از flood)
+    setTimeout(() => { updateLock = false; }, 200);
+}, 150);
+
+let currentOnPointerMove = null;
 let currentOnPointerUp = null;
 
 function cleanupPriceSliderEvents() {
     isPriceSliderActive = false;
     if (currentOnPointerMove) {
-        document.removeEventListener("pointermove", currentOnPointerMove);
+        document.removeEventListener("pointermove", currentOnPointerMove, { passive: false });
         currentOnPointerMove = null;
     }
     if (currentOnPointerUp) {
-        document.removeEventListener("pointerup", currentOnPointerUp);
-        document.removeEventListener("pointercancel", currentOnPointerUp);
+        document.removeEventListener("pointerup", currentOnPointerUp, { passive: false });
+        document.removeEventListener("pointercancel", currentOnPointerUp, { passive: false });
         currentOnPointerUp = null;
     }
+    updateLock = false;  // reset lock در cleanup
 }
 
+// setupUnifiedPriceSlider
+function setupUnifiedPriceSlider(thumbType) {
+    try {
+        if (!priceSlider) {
+            console.warn("Price slider not found");
+            return;
+        }
 
+        cleanupPriceSliderEvents();  // همیشه اول cleanup
+
+        isPriceSliderActive = true;
+        currentPriceThumbType = thumbType;
+
+        currentOnPointerMove = (e) => {
+            if (!isPriceSliderActive || updateLock) return;  // اگر lock باشه، skip
+            e.preventDefault();
+            e.stopPropagation();  // جلوگیری از bubbling که ممکنه trigger کنه
+
+            const rect = priceSlider.getBoundingClientRect();
+            const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+            const percent = (x / rect.width) * 100;
+
+            if (thumbType === "min") {
+                if (percent <= priceMaxPercent) {
+                    priceMinPercent = percent;
+                    updatePriceSliderUI();
+                }
+            } else if (thumbType === "max") {
+                if (percent >= priceMinPercent) {
+                    priceMaxPercent = percent;
+                    updatePriceSliderUI();
+                }
+            }
+        };
+
+        currentOnPointerUp = (e) => {
+            if (!isPriceSliderActive) return;
+            e.stopPropagation();  // stop bubbling
+
+            isPriceSliderActive = false;
+            cleanupPriceSliderEvents();
+
+            debouncedApplyPriceFilter();
+        };
+
+        document.addEventListener("pointermove", currentOnPointerMove, { passive: false });
+        document.addEventListener("pointerup", currentOnPointerUp, { passive: false });
+        document.addEventListener("pointercancel", currentOnPointerUp, { passive: false });
+
+        window.addEventListener('blur', cleanupPriceSliderEvents, { once: true });
+
+    } catch (error) {
+        console.error("setupUnifiedPriceSlider:", error.message);
+        cleanupPriceSliderEvents();
+    }
+}
 
 
 

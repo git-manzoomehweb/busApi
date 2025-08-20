@@ -5272,6 +5272,21 @@ const STEP_CONFIGS = {
       summary: ".book-summary__container",
     },
   },
+  busmobile: {
+    steps: ["passengers", "passenger", "buyer", "summary"], // passengers = seat selection
+    stepLabels: {
+      passengers: "انتخاب صندلی",
+      passenger: "مشخصات مسافران",
+      buyer: "مشخصات خریدار",
+      summary: "خلاصه رزرو",
+    },
+    containers: {
+      passengers: ".book-seat_selection__container",
+      passenger: ".book-passengers__container",
+      buyer: ".book-buyers__container",
+      summary: ".book-summary__container",
+    },
+  },
 };
 
 /**
@@ -5283,8 +5298,10 @@ function detectBookingType() {
   if (document.querySelector(".seat-selection-container")) {
     return "bus";
   }
-  // You can add more detection logic here based on your specific indicators
-  return "flight";
+  if (document.querySelector(".mobile-seat-selection-container")) {
+    return "busmobile";
+  }
+
 }
 
 /**
@@ -5436,7 +5453,7 @@ const nextStep = (element) => {
     const currentStep = element.getAttribute("data-step");
     const bookingType = detectBookingType();
 
-    if (bookingType === "bus" && currentStep === "passengers") {
+    if ((bookingType === "bus" || bookingType === "busmobile" ) && currentStep === "passengers") {
       // Bus: Seat selection validation
       let isValid = true;
       const seatContainer = document.querySelector(".seat-selection-container");
@@ -5542,7 +5559,7 @@ const nextStep = (element) => {
       if (isExist) {
         // Get departure date based on booking type
         let exitDateMsDate;
-        if (bookingType === "bus") {
+        if (bookingType === "bus" || bookingType === "busmobile" ) {
           const exitDateMs = document.querySelector(
             ".book-DepartureDate"
           )?.value;
@@ -6135,7 +6152,7 @@ const prevStep = (element) => {
 
     // Special handling for bus seat selection
     const bookingType = detectBookingType();
-    if (bookingType === "bus" && previousStep === "passengers") {
+    if ((bookingType === "bus" || bookingType === "busmobile" ) && previousStep === "passengers") {
       // Re-render seat map if going back to seat selection
       if (
         typeof onProcessedRenderSeatMapSelection === "function" &&
@@ -6335,6 +6352,164 @@ const onProcessedRenderSeatMapSelection = async (args) => {
     console.error("onProcessedRenderSeatMapSelection: " + error.message);
   }
 };
+
+
+const onProcessedRenderMobSeatMapSelection = async (args) => {
+  try {
+    if (!args || !args.response) {
+      console.error("onProcessedRenderMobSeatMapSelection: Invalid arguments");
+      return;
+    }
+
+    const { response } = args;
+    if (response.status !== 200) return;
+
+    const responseJson = await response.json();
+
+    // 1) اول سعی کن مثل دسکتاپ همون کانتینر استاندارد رو بگیری
+    let renderingContainer = document.querySelector(".seat-selection-container .seat-load");
+
+    // 2) اگر نبود، فallback به seat-id-<busId> (در صورت موجود بودن در DOM)
+    if (!renderingContainer) {
+      const busId = responseJson.busId;
+      if (busId) {
+        const escapedBusId = CSS.escape(busId);
+        renderingContainer = document.querySelector(`.seat-id-${escapedBusId}`);
+      }
+    }
+    if (!renderingContainer) return;
+
+    const { layout, col, row } = responseJson;
+    const columns = parseInt(col, 10);
+    const rows = parseInt(row, 10);
+
+    // کمکی: کلاس اضافه کن بدون پاک‌کردن کلاس‌های قبلی
+    const addClasses = (el, cls) => {
+      cls.split(/\s+/).filter(Boolean).forEach(c => el.classList.add(c));
+    };
+
+    // کانتینر را برای موبایل عمودی کن، اما کلاس‌های قبلی را نگه دار
+    addClasses(renderingContainer, "book-flex book-flex-col book-items-center book-gap-2 book-w-full");
+    renderingContainer.setAttribute("dir", "ltr");
+    renderingContainer.innerHTML = "";
+
+    // دکمه صندلی (با منطق انتخاب مثل دسکتاپ)
+    const createSeatButton = (seat, indexInRow) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = seat.number;
+      addClasses(btn, "book-bg-center book-bg-cover book-w-[30px] book-h-[34px] book-flex book-justify-center book-items-center");
+
+      // فاصله راهرو ستون دوم برای موبایل
+      if (indexInRow === 1) {
+        addClasses(btn, "book-mx-4");
+      }
+
+      if (seat.status === "reserved") {
+        if (seat.gender === "Female") {
+          addClasses(btn, "book-seat-ladies book-text-[#c60055]");
+          btn.title = "Ladies";
+        } else {
+          addClasses(btn, "book-seat-by-for-gentlemans book-text-primary-900");
+          btn.title = "Gentleman";
+        }
+        btn.disabled = true;
+      } else if (seat.status === "available") {
+        addClasses(btn, "book-seat-available book-text-zinc-900");
+        btn.title = "Available";
+
+        btn.addEventListener("click", () => {
+          const seatIndex = selectedSeats.findIndex((s) => s.number === seat.number);
+
+          if (seatIndex === -1) {
+            if (selectedSeats.length >= maxSelectableSeats) {
+              bookToast?.(`شما فقط مجاز به انتخاب ${maxSelectableSeats} صندلی هستید.`);
+              return;
+            }
+            selectedSeats.push(seat);
+            btn.classList.add("book-seat-selected");
+          } else {
+            selectedSeats.splice(seatIndex, 1);
+            btn.classList.remove("book-seat-selected");
+          }
+
+          const seatCountElement = document.getElementById("seat-countnum");
+          if (seatCountElement) seatCountElement.textContent = selectedSeats.length;
+          handleSeatSelection(seat);
+        });
+      }
+
+      return btn;
+    };
+
+    const createGap = (indexInRow) => {
+      const span = document.createElement("span");
+      addClasses(span, "book-w-[30px] book-h-[34px]");
+      if (indexInRow === 1) addClasses(span, "book-mx-4"); // راهرو
+      return span;
+    };
+
+    // ساخت ردیف‌ها (هر ردیف افقی، کل کانتینر عمودی)
+    let currentRow = null;
+    let seatCountInRow = 0;
+    let rowCount = 0;
+
+    for (let i = 0; i < layout.length; i++) {
+      if (seatCountInRow === 0) {
+        currentRow = document.createElement("div");
+        addClasses(currentRow, "book-w-full book-flex book-items-center book-gap-2 book-justify-center");
+        currentRow.setAttribute("dir", "ltr");
+      }
+
+      const item = layout[i];
+
+      if (item.type === "seat") {
+        currentRow.appendChild(createSeatButton(item, seatCountInRow));
+        seatCountInRow++;
+      } else if (item.type === "gap") {
+        currentRow.appendChild(createGap(seatCountInRow));
+        seatCountInRow++;
+      }
+
+      if (seatCountInRow === columns) {
+        renderingContainer.appendChild(currentRow);
+        seatCountInRow = 0;
+        rowCount++;
+      }
+    }
+
+    // ردیف ناقص آخر
+    if (seatCountInRow > 0 && currentRow) {
+      while (seatCountInRow < columns) {
+        currentRow.appendChild(createGap(seatCountInRow));
+        seatCountInRow++;
+      }
+      renderingContainer.appendChild(currentRow);
+      rowCount++;
+    }
+
+    // پر کردن تا rows
+    while (rowCount < rows) {
+      const emptyRow = document.createElement("div");
+      addClasses(emptyRow, "book-w-full book-flex book-items-center book-gap-2 book-justify-center");
+      emptyRow.setAttribute("dir", "ltr");
+      for (let i = 0; i < columns; i++) emptyRow.appendChild(createGap(i));
+      renderingContainer.appendChild(emptyRow);
+      rowCount++;
+    }
+
+    // بازگردانی انتخاب‌های قبلی داخل همین کانتینر
+    const buttons = renderingContainer.querySelectorAll("button");
+    selectedSeats.forEach((selected) => {
+      buttons.forEach((btn) => {
+        if (btn.textContent === selected.number) btn.classList.add("book-seat-selected");
+      });
+    });
+  } catch (error) {
+    console.error("onProcessedRenderMobSeatMapSelection: " + error.message);
+  }
+};
+
 
 /**
  * Handles seat selection logging (placeholder for further logic).

@@ -2232,38 +2232,7 @@ const updateFilterDisplay = (type, label, minValue, maxValue, originalMin, origi
     }
 };
 
-// function initializePriceSlider() {
-//   try {
-//     if (!priceSlider || !priceThumbMin || !priceThumbMax) {
-//       console.error("Price slider elements not found");
-//       return;
-//     }
-//     priceThumbMin.removeEventListener("mousedown", handlePriceSliderMouseDown);
-//     priceThumbMax.removeEventListener("mousedown", handlePriceSliderMouseDown);
 
-//     priceThumbMin.addEventListener("mousedown", (e) => {
-//       e.preventDefault();
-//       handlePriceDrag({
-//         source: {
-//           id: "cms.price",
-//           rows: [{ value: "min" }],
-//         },
-//       });
-//     });
-
-//     priceThumbMax.addEventListener("mousedown", (e) => {
-//       e.preventDefault();
-//       handlePriceDrag({
-//         source: {
-//           id: "cms.price",
-//           rows: [{ value: "max" }],
-//         },
-//       });
-//     });
-//   } catch (error) {
-//     console.error("initializePriceSlider: " + error.message);
-//   }
-// }
 
 function initializePriceSlider() {
   try {
@@ -2277,45 +2246,6 @@ function initializePriceSlider() {
   }
 }
 
-
-
-// function setupPriceSliderEvents(thumbMin, thumbMax) {
-//   try {
-//     // Mouse events for desktop
-//     thumbMin.addEventListener('mousedown', (e) => {
-//       e.preventDefault();
-//       cleanupPriceSliderEvents();
-//       if (!isMobile) {
-//         setupDesktopPriceSlider('min');
-//       }
-//     });
-
-//     thumbMax.addEventListener('mousedown', (e) => {
-//       e.preventDefault();
-//       cleanupPriceSliderEvents();
-//       if (!isMobile) {
-//         setupDesktopPriceSlider('max');
-//       }
-//     });
-
-//     // Touch events for mobile
-//     if (isMobile) {
-//       thumbMin.addEventListener('touchstart', (e) => {
-//         e.preventDefault();
-//         cleanupPriceSliderEvents();
-//         setupMobilePriceSlider('min');
-//       }, { passive: false });
-
-//       thumbMax.addEventListener('touchstart', (e) => {
-//         e.preventDefault();
-//         cleanupPriceSliderEvents();
-//         setupMobilePriceSlider('max');
-//       }, { passive: false });
-//     }
-//   } catch (error) {
-//     console.error("setupPriceSliderEvents:", error.message);
-//   }
-// }
 
 function setupPriceSliderEvents(thumbMin, thumbMax) {
   try {
@@ -2336,64 +2266,6 @@ function setupPriceSliderEvents(thumbMin, thumbMax) {
   }
 }
 
-
-function setupUnifiedPriceSlider(thumbType) {
-    try {
-        if (!priceSlider) {
-            console.warn("Price slider not found");
-            return;
-        }
-
-        // اول cleanup کنید تا listenerهای قبلی پاک شوند
-        cleanupPriceSliderEvents();
-
-        isPriceSliderActive = true;
-        currentPriceThumbType = thumbType;
-
-        // تعریف listenerها
-        currentOnPointerMove = (e) => {
-            if (!isPriceSliderActive) return;
-            e.preventDefault();
-
-            const rect = priceSlider.getBoundingClientRect();
-            const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-            const percent = (x / rect.width) * 100;
-
-            if (thumbType === "min") {
-                if (percent <= priceMaxPercent) {
-                    priceMinPercent = percent;
-                    updatePriceSliderUI();
-                }
-            } else if (thumbType === "max") {
-                if (percent >= priceMinPercent) {
-                    priceMaxPercent = percent;
-                    updatePriceSliderUI();
-                }
-            }
-        };
-
-        currentOnPointerUp = () => {
-            if (!isPriceSliderActive) return;
-
-            isPriceSliderActive = false;
-            cleanupPriceSliderEvents();  // cleanup در up
-
-            debouncedApplyPriceFilter();  // استفاده از debounced version
-        };
-
-        // add listenerها
-        document.addEventListener("pointermove", currentOnPointerMove, { passive: false });
-        document.addEventListener("pointerup", currentOnPointerUp, { passive: false });
-        document.addEventListener("pointercancel", currentOnPointerUp, { passive: false });
-
-        // optional: اگر کاربر صفحه را ترک کرد (blur)، cleanup کنید
-        window.addEventListener('blur', cleanupPriceSliderEvents, { once: true });
-
-    } catch (error) {
-        console.error("setupUnifiedPriceSlider:", error.message);
-        cleanupPriceSliderEvents();  // در error هم cleanup
-    }
-}
 
 
 function setupDesktopPriceSlider(thumbType) {
@@ -2577,9 +2449,12 @@ function debounce(func, delay) {
         timeout = setTimeout(() => func.apply(this, args), delay);
     };
 }
-
+let updateLock = false;
 // حالا، applyPriceFilterImmediate را به صورت debounced تعریف کنید
 const debouncedApplyPriceFilter = debounce(() => {
+    if (updateLock) return;  // اگر lock باشه، skip کن
+    updateLock = true;       // lock رو set کن
+
     mustUpdate = true;
     if (typeof $bc !== 'undefined' && $bc.setSource) {
         $bc.setSource("cms.price", {
@@ -2589,7 +2464,7 @@ const debouncedApplyPriceFilter = debounce(() => {
             run: true
         });
     }
-    // اگر موبایل است، display را update کنید
+    // اگر موبایل است، display رو update کنید
     if (isMobile) {
         updateFilterDisplay(
             "price",
@@ -2602,56 +2477,84 @@ const debouncedApplyPriceFilter = debounce(() => {
             priceRange
         );
     }
-}, 150);  // 150ms تأخیر برای جلوگیری از updateهای مکرر
 
-// بهبود تابع cleanupPriceSliderEvents (listenerها را remove کند)
-let currentOnPointerMove = null;  // برای نگهداری reference listenerها
+    // بعد از 200ms، lock رو reset کن (برای جلوگیری از flood)
+    setTimeout(() => { updateLock = false; }, 200);
+}, 150);
+
+let currentOnPointerMove = null;
 let currentOnPointerUp = null;
 
 function cleanupPriceSliderEvents() {
     isPriceSliderActive = false;
     if (currentOnPointerMove) {
-        document.removeEventListener("pointermove", currentOnPointerMove);
+        document.removeEventListener("pointermove", currentOnPointerMove, { passive: false });
         currentOnPointerMove = null;
     }
     if (currentOnPointerUp) {
-        document.removeEventListener("pointerup", currentOnPointerUp);
-        document.removeEventListener("pointercancel", currentOnPointerUp);
+        document.removeEventListener("pointerup", currentOnPointerUp, { passive: false });
+        document.removeEventListener("pointercancel", currentOnPointerUp, { passive: false });
         currentOnPointerUp = null;
     }
+    updateLock = false;  // reset lock در cleanup
 }
 
+// setupUnifiedPriceSlider
+function setupUnifiedPriceSlider(thumbType) {
+    try {
+        if (!priceSlider) {
+            console.warn("Price slider not found");
+            return;
+        }
 
+        cleanupPriceSliderEvents();  // همیشه اول cleanup
 
+        isPriceSliderActive = true;
+        currentPriceThumbType = thumbType;
 
+        currentOnPointerMove = (e) => {
+            if (!isPriceSliderActive || updateLock) return;  // اگر lock باشه، skip
+            e.preventDefault();
+            e.stopPropagation();  // جلوگیری از bubbling که ممکنه trigger کنه
 
+            const rect = priceSlider.getBoundingClientRect();
+            const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+            const percent = (x / rect.width) * 100;
 
+            if (thumbType === "min") {
+                if (percent <= priceMaxPercent) {
+                    priceMinPercent = percent;
+                    updatePriceSliderUI();
+                }
+            } else if (thumbType === "max") {
+                if (percent >= priceMinPercent) {
+                    priceMaxPercent = percent;
+                    updatePriceSliderUI();
+                }
+            }
+        };
 
+        currentOnPointerUp = (e) => {
+            if (!isPriceSliderActive) return;
+            e.stopPropagation();  // stop bubbling
 
+            isPriceSliderActive = false;
+            cleanupPriceSliderEvents();
 
+            debouncedApplyPriceFilter();
+        };
 
+        document.addEventListener("pointermove", currentOnPointerMove, { passive: false });
+        document.addEventListener("pointerup", currentOnPointerUp, { passive: false });
+        document.addEventListener("pointercancel", currentOnPointerUp, { passive: false });
 
+        window.addEventListener('blur', cleanupPriceSliderEvents, { once: true });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    } catch (error) {
+        console.error("setupUnifiedPriceSlider:", error.message);
+        cleanupPriceSliderEvents();
+    }
+}
 
 const resetPriceFilter = () => {
   try {
@@ -2703,78 +2606,7 @@ function addFilterDiv(filterId, sourceId, value) {
   }
 }
 
-const updateHourSlider = (
-  type,
-  label,
-  minHour,
-  maxHour,
-  hourContainer,
-  hourRange
-) => {
-  try {
-    // Get current percentages based on type
-    let currentMinPercent =
-      type === "outboundhour"
-        ? outboundMinPercent || 0
-        : type === "inboundhour"
-        ? inboundMinPercent || 0
-        : minPercent || 0;
-    let currentMaxPercent =
-      type === "outboundhour"
-        ? outboundMaxPercent || 100
-        : type === "inboundhour"
-        ? inboundMaxPercent || 100
-        : maxPercent || 100;
 
-    // Get slider elements
-    const hourMinValueLabel = hourContainer.querySelector(".book-min__value");
-    const hourMaxValueLabel = hourContainer.querySelector(".book-max__value");
-    const hourThumbMin = hourContainer.querySelector(".book-thumb__min");
-    const hourThumbMax = hourContainer.querySelector(".book-thumb__max");
-    const hourTrack = hourContainer.querySelector(".book-slider__track");
-
-    // Calculate values
-    const totalRange = maxHour - minHour;
-    const hourMinValue = Math.round(
-      (currentMinPercent / 100) * totalRange + minHour
-    );
-    const hourMaxValue = Math.round(
-      (currentMaxPercent / 100) * totalRange + minHour
-    );
-
-    // Update labels
-    hourMinValueLabel.textContent = `${Math.floor(hourMinValue / 60)} ساعت ${
-      hourMinValue % 60
-    } دقیقه`;
-    hourMaxValueLabel.textContent = `${Math.floor(hourMaxValue / 60)} ساعت ${
-      hourMaxValue % 60
-    } دقیقه`;
-
-    // Update range array
-    hourRange[0] = hourMinValue;
-    hourRange[1] = hourMaxValue;
-
-    // Update slider UI
-    hourThumbMin.style.left = `${currentMinPercent}%`;
-    hourThumbMax.style.left = `${currentMaxPercent}%`;
-    hourTrack.style.left = `${currentMinPercent}%`;
-    hourTrack.style.right = `${100 - currentMaxPercent}%`;
-
-    // Update filter display
-    updateFilterDisplay(
-      type,
-      label,
-      hourMinValue,
-      hourMaxValue,
-      minHour,
-      maxHour,
-      hourContainer,
-      hourRange
-    );
-  } catch (error) {
-    console.error(`updateHourSlider (${type}): ${error.message}`);
-  }
-};
 
 function removeFilterDiv(filterId) {
   try {
@@ -2834,696 +2666,4 @@ function findBusData(idToFind) {
   return null;
 }
 
-function initializeBusCards( element , idToFind, type) {
-  try {
-    const cleanId = String(idToFind)
-      .trim()
-      .replace(/[^a-zA-Z0-9]/g, "");
-    const result = findBusData(idToFind);
 
-    if (!result) {
-      const originalResult = findBusData(idToFind);
-      if (!originalResult) {
-        console.error(" هیچ داده‌ای برای busId یافت نشد:", idToFind);
-        return;
-      }
-      result.object = originalResult.object;
-      result.source = originalResult.source;
-    }
-
-    const foundObject = result.object;
-
-    let busGroupArray = [];
-    if (Array.isArray(foundObject.busGroup)) {
-      busGroupArray = foundObject.busGroup;
-    } else if (
-      typeof foundObject.busGroup === "object" &&
-      foundObject.busGroup !== null
-    ) {
-      busGroupArray = Object.values(foundObject.busGroup);
-    }
-    if(type === "seat" || type === "rule"){
-  
-      if (typeof $bc !== "undefined" && $bc.setSource) {
-        if (type === "seat") {
-          $bc.setSource("cms.seat", {
-            type: "upselling",
-            busId: idToFind,
-            busGroup: JSON.stringify(busGroupArray),
-            run: true,
-          });
-        } else if (type === "rule") {
-          $bc.setSource("cms.rule", {
-            type: "upselling",
-            busId: idToFind,
-            busGroup: JSON.stringify(busGroupArray),
-            TripGroup: JSON.stringify(cleanTripGroup),
-            dmnid: sessionSearchStorage.dmnid || 0,
-            Type: sessionSearchStorage.Type || "",
-            lid: sessionSearchStorage.lid || 1,
-            SessionId: sessionSearchStorage.SessionId || "",
-            run: true,
-          });
-        }
-      }
-  
-      const container = document.querySelector(".book-bus-cards-container");
-      if (!container) {
-        console.error(" کانتینر .book-bus-cards-container پیدا نشد");
-        return;
-      }
-  
-      if (container._busCardHandler) {
-        container.removeEventListener("click", container._busCardHandler);
-      }
-  
-      // تعریف handler جدید
-      const busCardHandler = (event) => {
-        const seeMoreBtn = event.target.closest(".book-see-and-buy-ticket");
-        const closeCardBtn = event.target.closest(".book-closeCard");
-        const openFirstMenu = event.target.closest(".book-open-first-menu");
-        const closeFirstMenu = event.target.closest(
-          ".book-first-menu .book-clode-menu"
-        );
-        const openSecondMenu = event.target.closest(".book-open-second-menu");
-        const closeSecondMenu = event.target.closest(
-          ".book-second-menu .book-clode-menu"
-        );
-        const openThirdMenu = event.target.closest(".book-open-third-menu");
-        const closeThirdMenu = event.target.closest(
-          ".book-third-menu .book-clode-menu"
-        );
-  
-        const card = event.target.closest(".book-bus-card");
-  
-        if (!card) return;
-  
-        if (type === "seat") {
-          const seatBox = card.querySelector(".seat-box-visibility");
-          if (seatBox.classList.contains("book-hidden")) {
-            seatBox.classList.remove("book-hidden");
-          }
-  
-          const seatguideBox = card.querySelector(".seatguide-box-visibility");
-          if (seatguideBox.classList.contains("book-hidden")) {
-            seatguideBox.classList.remove("book-hidden");
-          }
-        } else if (type === "rule") {
-          const rulesBox = card.querySelector(".rules-box-visibility");
-          if (rulesBox.classList.contains("book-hidden")) {
-            rulesBox.classList.remove("book-hidden");
-          }
-        }
-  
-        if (seeMoreBtn) {
-          event.stopPropagation();
-          seeMoreBtn.classList.add("book-hidden");
-          card.querySelectorAll(".book-hidden-elements").forEach((el) => {
-            el.classList.remove("book-hidden");
-          });
-          card.classList.remove("book-h-[240px]");
-          card.classList.add("book-h-[506px]");
-        }
-  
-        if (closeCardBtn) {
-          event.stopPropagation();
-          const seeMore = card.querySelector(".book-see-and-buy-ticket");
-          if (seeMore) seeMore.classList.remove("book-hidden");
-          card.querySelectorAll(".book-hidden-elements").forEach((el) => {
-            el.classList.add("book-hidden");
-          });
-          card.classList.add("book-h-[240px]");
-          card.classList.remove("book-h-[506px]");
-        }
-  
-        if (openFirstMenu) {
-          const firstMenu = card.querySelector(".book-first-menu");
-          if (firstMenu) firstMenu.classList.remove("book-translate-x-[105%]");
-        }
-        if (closeFirstMenu) {
-          const firstMenu = card.querySelector(".book-first-menu");
-          if (firstMenu) firstMenu.classList.add("book-translate-x-[105%]");
-        }
-  
-        if (openSecondMenu) {
-          const secondMenu = card.querySelector(".book-second-menu");
-          if (secondMenu) secondMenu.classList.remove("book-translate-x-[105%]");
-        }
-        if (closeSecondMenu) {
-          const secondMenu = card.querySelector(".book-second-menu");
-          if (secondMenu) secondMenu.classList.add("book-translate-x-[105%]");
-        }
-  
-        if (openThirdMenu) {
-          const thirdMenu = card.querySelector(".book-third-menu");
-          if (thirdMenu) thirdMenu.classList.remove("book-translate-x-[105%]");
-        }
-        if (closeThirdMenu) {
-          const thirdMenu = card.querySelector(".book-third-menu");
-          if (thirdMenu) thirdMenu.classList.add("book-translate-x-[105%]");
-        }
-      };
-  
-      container._busCardHandler = busCardHandler;
-      container.addEventListener("click", busCardHandler);
-
-    }else if(type === "seatandrules"){
-
-
-      console.log(busGroupArray, idToFind);  // برای بررسی درست بودن داده‌ها
-
-    if (typeof $bc !== "undefined" && $bc.setSource) {
-
-    element.closest(".book-card__container").querySelector(".book-modal__mob__container").classList.remove("book-hidden")
-          
-    $bc.setSource("cms.seat", {
-            type: "upselling",
-            busId: idToFind,
-            busGroup: JSON.stringify(busGroupArray),
-            run: true,
-          });
-
-
-          $bc.setSource("cms.rule", {
-            type: "upselling",
-            busId: idToFind,
-            busGroup: JSON.stringify(busGroupArray),
-            TripGroup: JSON.stringify(cleanTripGroup),
-            dmnid: sessionSearchStorage.dmnid || 0,
-            Type: sessionSearchStorage.Type || "",
-            lid: sessionSearchStorage.lid || 1,
-            SessionId: sessionSearchStorage.SessionId || "",
-            run: true,
-          });
-
-
-      }
-
-    }
-  } catch (error) {
-    console.error(" initializeBusCards: " + error.message);
-  }
-}
-
-
-const closeModalContainer = (element, className) => {
-    try {
-        const cardContainer = element.closest(".book-card__container");
-        const modalContainer = element.closest(".book-modal__container");
-        if (className) {
-            cardContainer.classList.remove(className);
-        }
-        if (modalContainer.classList.contains("book-modal__mob__container")) {
-            modalContainer.classList.add("book-hidden");
-        } else {
-            modalContainer.classList.add("book--left-full");
-            modalContainer.classList.remove("book-left-0");
-        }
-    } catch (error) {
-        console.error(`closeModalContainer: ${error.message}`);
-    }
-};
-
-
-const onProcessedRenderSeatMap = async (args) => {
-  try {
-    if (!args || !args.response) {
-      console.error("onProcessedRenderSeatMap: Invalid arguments");
-      return;
-    }
-
-    const { response } = args;
-    if (response.status !== 200) return;
-
-    const responseJson = await response.json();
-    const busId = responseJson.busId;
-    const escapedBusId = CSS.escape(busId);
-    const renderingContainer = document.querySelector(
-      `.seat-id-${escapedBusId}`
-    );
-
-    if (!renderingContainer) return;
-
-    const { layout, col, row } = responseJson;
-    const columns = parseInt(col, 10); // Number of seats/gaps per row
-    const rows = parseInt(row, 10); // Number of rows
-
-    const createSeatButton = (seat, indexInRow) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.textContent = seat.number;
-
-      btn.className = `book-bg-center book-bg-cover book-w-[30px] book-h-[34px] book-flex book-justify-center book-items-center`;
-
-      // Add margin to the second seat (index 1) in each row
-      if (indexInRow === 1) {
-        btn.classList.add("book-mb-[50px]"); // Add right margin for spacing
-      }
-
-      if (seat.status === "reserved") {
-        if (seat.gender === "Female") {
-          btn.classList.add("book-seat-ladies", "book-text-[#c60055]");
-          btn.title = "Ladies";
-        } else {
-          btn.classList.add(
-            "book-seat-by-for-gentlemans",
-            "book-text-primary-900"
-          );
-          btn.title = "Gentleman";
-        }
-        btn.disabled = true;
-      } else if (seat.status === "available") {
-        btn.classList.add("book-seat-available", "book-text-zinc-900");
-        btn.title = "Available";
-      }
-
-      return btn;
-    };
-
-    const createGap = (indexInRow) => {
-      const span = document.createElement("span");
-      span.className = `book-w-[30px] book-h-[34px]`;
-      // Add margin to the gap if it's at index 1
-      if (indexInRow === 1) {
-        span.classList.add("book-mb-[50px]");
-      }
-      return span;
-    };
-
-    renderingContainer.innerHTML = "";
-    let currentRow = null;
-    let seatCountInRow = 0;
-    let rowCount = 0;
-
-    for (let i = 0; i < layout.length; i++) {
-      if (seatCountInRow === 0) {
-        // Start a new row
-        currentRow = document.createElement("div");
-        currentRow.className =
-          "book-w-full book-flex book-items-center book-gap-2 book-justify-between book-flex-col";
-        currentRow.setAttribute("dir", "ltr");
-      }
-
-      const item = layout[i];
-
-      if (item.type === "seat") {
-        const btn = createSeatButton(item, seatCountInRow);
-        currentRow.appendChild(btn);
-        seatCountInRow++;
-      } else if (item.type === "gap") {
-        const gap = createGap(seatCountInRow);
-        currentRow.appendChild(gap);
-        seatCountInRow++;
-      }
-
-      // Complete the row when it reaches the column limit
-      if (seatCountInRow === columns) {
-        renderingContainer.appendChild(currentRow);
-        seatCountInRow = 0;
-        rowCount++;
-      }
-    }
-
-    // Append the last row if it contains items and hasn't been appended
-    if (seatCountInRow > 0 && currentRow) {
-      // Fill remaining spaces in the last row with gaps if needed
-      while (seatCountInRow < columns) {
-        const gap = createGap(seatCountInRow);
-        currentRow.appendChild(gap);
-        seatCountInRow++;
-      }
-      renderingContainer.appendChild(currentRow);
-      rowCount++;
-    }
-
-    // Ensure the total number of rows matches the specified 'row' count
-    while (rowCount < rows) {
-      const emptyRow = document.createElement("div");
-      emptyRow.className =
-        "book-w-full book-flex book-items-center book-gap-2 book-justify-between book-flex-col";
-      emptyRow.setAttribute("dir", "ltr");
-      for (let i = 0; i < columns; i++) {
-        const gap = createGap(i);
-        emptyRow.appendChild(gap);
-      }
-      renderingContainer.appendChild(emptyRow);
-      rowCount++;
-    }
-  } catch (error) {
-    console.error("onProcessedRenderSeatMap: " + error.message);
-  }
-};
-
-
-const onProcessedRenderMobSeatMap = async (args) => {
-  try {
-    if (!args || !args.response) {
-      console.error("onProcessedRenderMobSeatMap: Invalid arguments");
-      return;
-    }
-
-    const { response } = args;
-    if (response.status !== 200) return;
-
-    const responseJson = await response.json();
-    const busId = responseJson.busId;
-    const escapedBusId = CSS.escape(busId);
-    const renderingContainer = document.querySelector(
-      `.seat-id-${escapedBusId}`
-    );
-
-    if (!renderingContainer) return;
-
-    const { layout, col, row } = responseJson;
-    const columns = parseInt(col, 10); // تعداد صندلی‌ها/شکاف‌ها در هر ردیف
-    const rows = parseInt(row, 10); // تعداد ردیف‌ها
-
-    const createSeatButton = (seat, indexInRow) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.textContent = seat.number;
-
-      btn.className = `book-bg-center book-bg-cover book-w-[30px] book-h-[34px] book-flex book-justify-center book-items-center`;
-
-      // افزودن فاصله برای صندلی دوم (اندیس 1) در هر ردیف
-      if (indexInRow === 1) {
-        btn.classList.add("book-mx-4"); // فاصله افقی برای شبیه‌سازی راهرو
-      }
-
-      if (seat.status === "reserved") {
-        if (seat.gender === "Female") {
-          btn.classList.add("book-seat-ladies", "book-text-[#c60055]");
-          btn.title = "Ladies";
-        } else {
-          btn.classList.add(
-            "book-seat-by-for-gentlemans",
-            "book-text-primary-900"
-          );
-          btn.title = "Gentleman";
-        }
-        btn.disabled = true;
-      } else if (seat.status === "available") {
-        btn.classList.add("book-seat-available", "book-text-zinc-900");
-        btn.title = "Available";
-      }
-
-      return btn;
-    };
-
-    const createGap = (indexInRow) => {
-      const span = document.createElement("span");
-      span.className = `book-w-[30px] book-h-[34px]`;
-      // افزودن فاصله برای شکاف در اندیس 1
-      if (indexInRow === 1) {
-        span.classList.add("book-mx-4"); // فاصله افقی برای شبیه‌سازی راهرو
-      }
-      return span;
-    };
-
-    renderingContainer.innerHTML = "";
-    let currentRow = null;
-    let seatCountInRow = 0;
-    let rowCount = 0;
-
-    // تنظیم جهت‌گیری عمودی برای کل کانتینر
-    renderingContainer.className = `seat-id-${escapedBusId} book-flex book-flex-col book-items-center book-gap-2 book-w-full`;
-    renderingContainer.setAttribute("dir", "ltr");
-
-    for (let i = 0; i < layout.length; i++) {
-      if (seatCountInRow === 0) {
-        // شروع یک ردیف جدید
-        currentRow = document.createElement("div");
-        currentRow.className =
-          "book-w-full book-flex book-items-center book-gap-2 book-justify-center"; // تغییر به justify-center برای مرکز کردن صندلی‌ها
-        currentRow.setAttribute("dir", "ltr");
-      }
-
-      const item = layout[i];
-
-      if (item.type === "seat") {
-        const btn = createSeatButton(item, seatCountInRow);
-        currentRow.appendChild(btn);
-        seatCountInRow++;
-      } else if (item.type === "gap") {
-        const gap = createGap(seatCountInRow);
-        currentRow.appendChild(gap);
-        seatCountInRow++;
-      }
-
-      // تکمیل ردیف وقتی تعداد ستون‌ها پر شد
-      if (seatCountInRow === columns) {
-        renderingContainer.appendChild(currentRow);
-        seatCountInRow = 0;
-        rowCount++;
-      }
-    }
-
-    // افزودن آخرین ردیف اگر شامل آیتم‌هایی باشد و هنوز اضافه نشده باشد
-    if (seatCountInRow > 0 && currentRow) {
-      // پر کردن فضای باقی‌مانده در ردیف آخر با شکاف‌ها
-      while (seatCountInRow < columns) {
-        const gap = createGap(seatCountInRow);
-        currentRow.appendChild(gap);
-        seatCountInRow++;
-      }
-      renderingContainer.appendChild(currentRow);
-      rowCount++;
-    }
-
-    // اطمینان از مطابقت تعداد ردیف‌ها با مقدار مشخص‌شده
-    while (rowCount < rows) {
-      const emptyRow = document.createElement("div");
-      emptyRow.className =
-        "book-w-full book-flex book-items-center book-gap-2 book-justify-center";
-      emptyRow.setAttribute("dir", "ltr");
-      for (let i = 0; i < columns; i++) {
-        const gap = createGap(i);
-        emptyRow.appendChild(gap);
-      }
-      renderingContainer.appendChild(emptyRow);
-      rowCount++;
-    }
-  } catch (error) {
-    console.error("onProcessedRenderMobSeatMap: " + error.message);
-  }
-};
-
-
-const onProcessedRenderBusRules = async (args) => {
-  try {
-    if (!args || !args.response) {
-      console.error("onProcessedRenderBusRules: Invalid arguments");
-      return;
-    }
-
-    const { response } = args;
-    if (response.status !== 200) return;
-
-    const responseJson = await response.json();
-
-    if (!Array.isArray(responseJson) || responseJson.length === 0) {
-      console.error("onProcessedRenderBusRules: Invalid response format");
-      return;
-    }
-
-    const busId = responseJson[0].busId;
-    const escapedBusId = CSS.escape(busId);
-    const renderingContainer = document.querySelector(
-      `.rule-id-${escapedBusId}`
-    );
-
-    if (!renderingContainer) {
-      console.warn(`Container with class rule-id-${escapedBusId} not found`);
-      return;
-    }
-
-    const busRules = responseJson[0].busRules;
-    if (!Array.isArray(busRules)) {
-      console.error("onProcessedRenderBusRules: busRules is not an array");
-      return;
-    }
-
-    renderingContainer.innerHTML = "";
-
-    const headerDiv = document.createElement("div");
-    headerDiv.className =
-      "book-flex book-mb-3 book-mt-3 book-items-center book-gap-3";
-    headerDiv.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M22 6v2.42C22 10 21 11 19.42 11H16V4.01C16 2.9 16.91 2 18.02 2c1.09.01 2.09.45 2.81 1.17C21.55 3.9 22 4.9 22 6Z" stroke="#FF0000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M2 7v14c0 .83.94 1.3 1.6.8l1.71-1.28c.4-.3.96-.26 1.32.1l1.66 1.67c.39.39 1.03.39 1.42 0l1.68-1.68c.35-.35.91-.39 1.3-.09l1.71 1.28c.66.49 1.6.02 1.6-.8V4c0-1.1.9-2 2-2H6C3 2 2 3.79 2 6v1Z" stroke="#FF0000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M6.25 10h5.5" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            <p class="book-text-zinc-900 book-font-bold">شرایط استرداد</p>
-        `;
-    renderingContainer.appendChild(headerDiv);
-
-    let rulesItem = 0;
-    const currentRow = document.createElement("div");
-    currentRow.className =
-      "book-flex book-flex-col book-gap-3 book-w-full book-items-center";
-
-    for (let i = 0; i < busRules.length; i++) {
-      const item = busRules[i];
-      if (!Array.isArray(item.rule)) continue;
-
-      for (let j = 0; j < item.rule.length; j++) {
-        const rule = item.rule[j];
-        if (rule.title === "cancel rule") {
-          const conditions = rule.text.split(".");
-          for (let condition of conditions) {
-            if (condition.trim() === "") continue;
-            const timeText = condition.replace(/با کسر \d+ درصد/, "").trim();
-            const ruleDiv = document.createElement("div");
-            ruleDiv.className =
-              "book-w-[90%] book-h-14 book-flex book-justify-center book-items-center book-text-sm book-text-zinc-700 book-p-1 book-relative book-bg-transparent book-border book-border-zinc-500 book-rounded-lg";
-            ruleDiv.innerHTML = `
-                            <span class="book-mx-1">${timeText}</span>
-                        `;
-            currentRow.appendChild(ruleDiv);
-            rulesItem++;
-          }
-        }
-      }
-    }
-    if (rulesItem > 0) {
-      renderingContainer.appendChild(currentRow);
-    }
-  } catch (error) {
-    console.error("onProcessedRenderBusRules: " + error.message);
-  }
-};
-
-function escapeCSSSelector(str) {
-  if (typeof CSS !== "undefined" && CSS.escape) {
-    return CSS.escape(str);
-  }
-  return str.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
-}
-
-function cleanCSSClassName(str) {
-  return str.replace(/[^a-zA-Z0-9_-]/g, "");
-}
-
-const submitCard = (element, idToFind , useragent) => {
-  try {
-    const result = findBusData(idToFind);
-    if (!result) {
-      console.error(" submitCard: هیچ آبجکتی با busId پیدا نشد:", idToFind);
-      if (globalListData?.source?._rows?.[0]?.busProposals) {
-        console.warn(
-          "listData busProposals length:",
-          globalListData.source._rows[0].busProposals.length
-        );
-      }
-      return;
-    }
-    const foundObject = result.object;
-    if (!foundObject.dictionaries) {
-      if (globalListData?.source?._rows?.[0]?.dictionaries) {
-        foundObject.dictionaries = globalListData.source._rows[0].dictionaries;
-      } else if (dictionaries && dictionaries.length > 0) {
-        foundObject.dictionaries = dictionaries[0];
-      }
-    }
-
-    console.log("sessionBook", foundObject);
-    sessionStorage.setItem("sessionBook", JSON.stringify(foundObject));
-    window.location.href = "/bus/book";
-  } catch (error) {
-    console.error("submitCard: " + error.message);
-  }
-};
-
-/**
- * Toggles the visibility of a content container and its arrow icon.
- * @param {HTMLElement} element - The element triggering the toggle.
- */
-const toggleContent = (element) => {
-  try {
-    const selectorContainer = element.closest(".book-selector__container");
-    const content = selectorContainer.querySelector(".book-selector__content");
-    content.classList.toggle("book-hidden");
-    toggleArrowIcon(element.querySelector("svg use"));
-  } catch (error) {
-    console.error(`toggleContent: ${error.message}`);
-  }
-};
-
-
-
-const toggleContentApi = (element, type, parent, idToFind, fromScroll = false) => {
-    try {
-        // Remove rendering class from any existing active container
-        const renderingContainer = document.querySelector(".book-api__container__rendering");
-        if (renderingContainer) {
-            renderingContainer.classList.remove("book-api__container__rendering");
-        }
-
-        // Toggle content visibility and arrow icon
-        const apiContainer = element.closest(`.${parent}`);
-        const content = apiContainer.querySelector(".book-api__container__content");
-        const arrow = apiContainer.querySelector(".book-api__container__arrow use");
-        // Toggle content visibility based on scroll or click
-        if (fromScroll) {
-            if (content.classList.contains('book-hidden')) {
-                content.classList.remove('book-hidden');
-            }
-        } else {
-            content.classList.toggle('book-hidden');
-        }
-        toggleArrowIcon(arrow);
-
-        // Fetch rules on first run if loader exists
-        if (element.dataset.run === "0" && apiContainer.querySelector(".book-api__container__loader")) {
-            content.classList.add("book-api__container__rendering");
-            let foundObject = FlightProposalsSource.find(item => item.FlightId === idToFind);
-            if (!foundObject) {
-                foundObject = FlightAmenitiesProposalsSource.find(item => item.FlightId === idToFind);
-            }
-            if (foundObject) {
-                $bc.setSource("cms.rule", {
-                    type,
-                    SessionId: sessionSearchStorage.SessionId || "",
-                    FlightId: idToFind,
-                    FlightGroup: JSON.stringify(foundObject.FlightGroup),
-                    run: true
-                });
-            }
-            element.setAttribute("data-run", "1");
-        }
-    } catch (error) {
-        console.error(`toggleContentApi: ${error.message}`);
-    }
-};
-// mobile bus
-
-/**
-* Toggles the visibility of a content container in the aside section.
-* @param {string} element - The type of content to toggle ("filter" or "sort").
-*/
-const toggleAside = (element) => {
-    try {
-        // Show the main aside container
-        const asideContainer = document.querySelector(".book-aside__container");
-        if (asideContainer) {
-            asideContainer.classList.remove("book-hidden");
-        }
-
-        // Show the relevant content section and hide the other
-        const filterContent = document.querySelector(".book-aside__filter__container");
-        const sortContent = document.querySelector(".book-aside__sort__container");
-
-        if (element === "filter") {
-            filterContent?.classList.remove("book-hidden");
-            sortContent?.classList.add("book-hidden");
-        } else if (element === "sort") {
-            sortContent?.classList.remove("book-hidden");
-            filterContent?.classList.add("book-hidden");
-        }
-    } catch (error) {
-        console.error(`toggleAside: ${error.message}`);
-    }
-};
-
-// mobile bus

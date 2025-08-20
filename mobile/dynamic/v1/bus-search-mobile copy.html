@@ -5,7 +5,7 @@
     <basis core="call" file="book/taglist" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
     <title>جستجو اتوبوس</title>
     <meta name="description" content="جستجو اتوبوس">
-    <link href="/booking/css/bus-search-mob.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
+    <link href="/booking/css/bus-search-mob.ui.min.css?ver=[##cms.cms.date2##][##cms.cms.time2##]" type="text/css" rel="stylesheet" />
     <!-- <link href="[##cms.cms.cdn##]/booking/css/bus-search-mob.ui.min.css?ver=1" type="text/css" rel="stylesheet" /> -->
     <!-- <link href="[##cms.cms.cdn##]/_css/swiper-bundle.min.css" type="text/css" rel="stylesheet" /> -->
 
@@ -710,7 +710,7 @@
                                     </layout>
                                     <face>
                                         <script type="text/template">
-                                                <div id="bus__@index@" data-id="@BusId@" data-index="@index@" class="book-card__container book-mb-4 transition ">
+                                                <div id="bus__@index@" data-id="@busId@" data-index="@index@" class="book-card__container book-mb-4 transition ">
                                                     
                                                     
   <div class="book-bus-card-mobile book-overflow-hidden book-rounded-2xl !book-relative book-flex book-flex-col !book-gap-0 book-w-full !book-h-[240px]">
@@ -791,15 +791,27 @@
       <div class="book-flex book-items-center book-gap-1">
 
             {{
-            const data = $bc.tryToGetSource('bus.updated');
-              const seats = (Number(data.rows[0].availableSeats) || 0);
+const data = $bc.tryToGetSource('bus.updated');
 
-              if(seats === 0){
-                return `<p class='book-text-red-800'>ظرفیت تکمیل</p>`;
-              } else {
-                return `<p class='book-text-zinc-900'> ${seats} </p>
-                     <p class='book-text-sm book-text-zinc-400'>صندلی خالی</p>`;
-              }
+if (data && Array.isArray(data.rows)) {
+  return data.rows.map(row => {
+    const seats = (Number(row.availableSeats) || 0); // تعداد صندلی‌های هر کارت
+    const busId = row.busId; // شناسه منحصر به فرد هر اتوبوس
+
+    if (seats === 0) {
+      return `<p class='book-text-red-800'>ظرفیت تکمیل</p>`;
+    } else {
+      return `
+        <p class='book-text-zinc-900'>${seats}</p>
+        <p class='book-text-sm book-text-zinc-400'>صندلی خالی</p>
+      `;
+    }
+  }).join('');
+} else {
+  console.error("داده‌ها به درستی بارگذاری نشده‌اند.");
+  return '';
+}
+
             }}
 
       </div>
@@ -826,29 +838,44 @@
 
 
       {{
-    const data = $bc.tryToGetSource('bus.updated');
-  const seats = (Number(data.rows[0].availableSeats) || 0);
-  const id = data.rows[0].busId ;
 
-  if (seats === 0) {
-    return `<button type="button" 
-              class="book-card__btn hover:book-cursor-not-allowed book-bg-zinc-200 book-w-full book-flex book-justify-center book-items-center book-h-10 book-text-sm book-rounded-xl book-text-white">
-ظرفیت تکمیل            
-</button>`;
-  } else {
-    return `<button type="button" data-run="0" data-id="${id}"
-                onclick="return initializeBusCards( '${id}' , 'seatandrules')"
-              class="book-card__btn book-w-full book-flex hover:book-book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white">
-              خرید
-            </button>`;
-  }
+        const data = $bc.tryToGetSource('bus.updated');
+
+if (data && Array.isArray(data.rows)) {
+  return data.rows.map(row => {
+    const seats = (Number(row.availableSeats) || 0);
+    const id = row.busId; // هر کارت شناسه‌ی منحصر به فرد خود را خواهد داشت
+
+    if (seats === 0) {
+      return `
+        <button type="button" 
+          class="book-card__btn hover:book-cursor-not-allowed book-bg-zinc-200 book-w-full book-flex book-justify-center book-items-center book-h-10 book-text-sm book-rounded-xl book-text-white">
+          ظرفیت تکمیل
+        </button>
+      `;
+    } else {
+      return `
+        <button type="button" data-run="0" data-id="${id}"
+          onclick="return initializeBusCards(this, '${id}', 'seatandrules')"
+          class="book-card__btn book-w-full book-flex hover:book-book-bg-primary-950 book-justify-center book-items-center book-h-10 book-text-sm book-bg-primary-800 book-rounded-xl book-text-white">
+          خرید
+        </button>
+      `;
+    }
+  }).join('');
+} else {
+  console.error("داده‌ها به درستی بارگذاری نشده‌اند.");
+  return '';
+}
+
+
 }}
 
   </div>
 </div>
 
 
-                                                    <section  class="book-modal__container book-modal__mob__container book-fixed book-h-full book-w-full book-top-0 book-bottom-0 book-transitionbook-z-[9999999999] book-bg-zinc-200 book-inset-x-0  book-overflow-auto book-hidden">
+                                                    <section  class="book-modal__container book-modal__mob__container book-fixed book-h-full book-w-full book-top-0 book-bottom-0 book-transition book-z-[9999999999] book-bg-zinc-200 book-inset-x-0  book-overflow-auto book-hidden">
                                                         <div class="book-modal__content book-w-full">
                                                             <div class="book-p-3">
                                                                 <span onclick="closeModalContainer(this,'book-card__container__selected')"
@@ -861,22 +888,52 @@
                                                                 </span>
                                                             </div>
                                                             <div class="book-modal__card__content book-min-h-screen book-bg-white book-rounded-t-3xl book-p-3">
-                                                                <div class="book-bus__fareFamily book-api__container book-p-3 book-border book-border-zinc-300 book-rounded-2xl book-mb-4 book-hidden">
-                                                                    <div class="book-border-b book-border-zinc-300 book-pb-8 book-mb-7">
-                                                                        <div class="book-flex book-justify-between book-mb-2">
-                                                                            <h6 class="book-text-xm book-font-bold book-text-zinc-800">
-                                                                                نمایش صندلی های قابل رزرو</h6>
-                                                                            <svg  class="book-api__container__arrow" width="24" height="24">
-                                                                                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
-                                                                                </use>
-                                                                            </svg>
-                                                                        </div>
-                                                
-                                                                    </div>
-                                                                    <div class="book-api__container__content">
-                                                                        <span class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
-                                                                    </div>  
-                                                                </div>
+
+
+
+<div class="book-bus_seatMap book-api__container book-p-3 book-border book-border-zinc-300 book-rounded-2xl book-mb-4 ">
+    <div class="book-border-b book-border-zinc-300  book-mb-7">
+        <div class="book-flex book-justify-between book-mb-2" onclick="toggleContentApi(this,'','book-bus_seatMap','')">
+            <h6 class="book-text-xm book-font-bold book-text-zinc-800">
+                نمایش صندلی های قابل رزرو</h6>
+            <svg class="book-api__container__arrow" width="24" height="24">
+                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                </use>
+            </svg>
+        </div>
+
+    </div>
+    <div class="book-api__container__content">
+        <div dir="ltr" class="seat-id-@busId@  book-flex book-dir-ltr">
+            <span
+                class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+            <!-- seat  -->
+        </div>
+    </div>
+</div>
+
+<div
+    class="book-bus_refundRules book-api__container book-p-3 book-border book-border-zinc-300 book-rounded-2xl book-mb-4 ">
+    <div class="book-border-b book-border-zinc-300  book-mb-7">
+        <div class="book-flex book-justify-between book-mb-2"
+            onclick="toggleContentApi(this,'','book-bus_refundRules','')">
+            <h6 class="book-text-xm book-font-bold book-text-zinc-800">
+                قوانین استرداد</h6>
+            <svg class="book-api__container__arrow" width="24" height="24">
+                <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon">
+                </use>
+            </svg>
+        </div>
+
+    </div>
+
+    <div class="book-api__container__content rule-id-@busId@ rules-box-visibility">
+        <span
+            class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+    </div>
+</div>
+
+
                                                             </div>
                                                         </div>
                                                     </section>
@@ -955,7 +1012,7 @@
 
 
     <!-- <script src="[##cms.cms.cdn##]/_js/swiper-bundle.11.2.5.min.js " type="text/javascript"></script> -->
-    <script src="/booking/js/bus-search.js?ver=1" type="text/javascript"></script>
+    <script src="/booking/js/bus-search.js?ver=[##cms.cms.date2##][##cms.cms.time2##]" type="text/javascript"></script>
     <!-- <script src="[##cms.cms.cdn##]/booking/js/bus-search.js?ver=1" type="text/javascript"></script> -->
 
 </body>
