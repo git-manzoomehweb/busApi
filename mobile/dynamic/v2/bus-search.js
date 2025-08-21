@@ -2981,6 +2981,7 @@ const closeModalContainer = (element, className) => {
 
 const onProcessedRenderSeatMap = async (args) => {
   try {
+    console.log("desktop seat ...................................................")
     if (!args || !args.response) {
       console.error("onProcessedRenderSeatMap: Invalid arguments");
       return;
@@ -3111,6 +3112,9 @@ const onProcessedRenderSeatMap = async (args) => {
 
 const onProcessedRenderMobSeatMap = async (args) => {
   try {
+
+        console.log("mobile seat ...................................................")
+
     if (!args || !args.response) {
       console.error("onProcessedRenderMobSeatMap: Invalid arguments");
       return;

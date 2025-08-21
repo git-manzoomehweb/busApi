@@ -2,7 +2,6 @@
  * Global variables to store session search and booking data from sessionSearch.
  * Initialized as null to be populated on DOM load.
  */
-
 let translations = {};
 let currentLanguage = document.documentElement.lang || 'fa';
 let isRTL = document.documentElement.dir === 'rtl' || currentLanguage === 'fa' || currentLanguage === 'ar';
@@ -32,7 +31,11 @@ let productGroupField = null;
 // Always check for utm_source in URL
 const urlParams = new URLSearchParams(window.location.search);
 const utmSource = urlParams.get("utm_source");
-
+const MAX_PER_TYPEBook = 9; // Maximum passengers per type (adult, child, infant)
+const MAX_TOTALBook = 9; // Maximum total passengers
+let adultsCountBook = 1; // Number of adult passengers
+let childrenCountBook = 0; // Number of child passengers
+let infantsCountBook = 0; // Number of infant passengers
 const isMobile = document.querySelector("main").dataset.mob === "true";
 const domainId = document.querySelector("main").dataset.dmnid;
 const safarmarketIdCookie = document.cookie
@@ -41,6 +44,8 @@ const safarmarketIdCookie = document.cookie
     ?.split('=')[1] || '';
 
 let tripNames = [];
+let gridPreviousPassengers;
+let mobGridPreviousPassengers;
 
 
 
@@ -123,30 +128,181 @@ function getBaseFare() {
  */
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    // Initialize translation
-    await loadTranslations();
+        // Initialize translation
+        await loadTranslations();
+
+        gridPreviousPassengers = {
+            columns: {
+                firstName: {
+                    title: `${translate("first_name")}`,
+                    filter: true,
+                    sort: false,
+                },
+                lastName: {
+                    title: `${translate("last_name")}`,
+                    filter: true,
+                    sort: false,
+                },
+                nationalCode: {
+                    title: `${translate("national_code")}`,
+                    filter: true,
+                    sort: false,
+                },
+                birthDate: {
+                    title: `${translate("birth_date")}`,
+                    filter: true,
+                    sort: true,
+                },
+                passportCode: {
+                    title: `${translate("passport_code")}`,
+                    filter: true,
+                    sort: false,
+                },
+                operation: {
+                    title: `${translate("operation")}`,
+                    filter: false,
+                    sort: false,
+                    cellMaker: (row, data, td) => {
+                        return `<div class="book-select__item__container book-relative">
+                                                                <div class="book-icon book-cursor-pointer" onclick="toggleSelectItem(this)">
+                                                                    <svg width="6" height="20" viewBox="0 0 6 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <use xlink:href="/booking/images/sprite-booking-icons.svg#details-icon">
+                                                                        </use></svg>
+                                                                </div>
+                                                                <div class="book-select__item__content book-absolute book-left-0 book-right-0 book-mx-auto book-hidden book-z-10">
+                                                                    <button class="book-select__item__btn book-inline-block book-w-16 book-bg-zinc-300 hover:book-bg-zinc-200  book-text-white book-text-xs book-cursor-pointer book-rounded" onclick="selectPreviousPassenger(this,event, '${row.firstName}', '${row.lastName}', '${row.nationalCode}', '${row.birthDate}', '${row.gender}', '${row.issueCountryName}', '${row.issueCountryId}', '${row.passportExpiration}', '${row.passportCode}', '${row.persianFirstName}', '${row.persianLastName}')">
+                                                                        ${translate("operation")}
+                                                                    </button>
+                                                                  
+                                                                </div>
+                                                            </div>
+                                                    `;
+                    },
+                }
+            },
+            filter: 'row',
+            rowNumber: `${translate("row_number")}`,
+            defaultSort: false,
+            direction: "rtl",
+            paging: 10,
+            information: true,
+            firstAndLastBtn: true,
+            culture: {
+                labels: {
+                    "refresh": "",
+                    "next": `${translate("next")}`,
+                    "previous": `${translate("previous")}`,
+                    "first": `${translate("first")}`,
+                    "last": `${translate("last")}`,
+                    "information": "نمایش ${from} تا ${to} از مجموع ${total}"
+                }
+            },
+            noData: (td) => {
+                td.innerHTML = `<div class="noData"><div class="text" style="padding-top: 10px;">${translate("no_data")}</div></div>`
+            },
+            mode: "grid",
+            pageCount: false,
+            refresh: true
+        };
+
+        mobGridPreviousPassengers = {
+            columns: {
+                firstName: {
+                    title: `${translate("first_name")}`,
+                    filter: true,
+                    sort: false,
+                },
+                lastName: {
+                    title: `${translate("last_name")}`,
+                    filter: true,
+                    sort: false,
+                },
+                nationalCode: {
+                    title: `${translate("national_code")}`,
+                    filter: true,
+                    sort: false,
+                },
+                birthDate: {
+                    title: `${translate("birth_date")}`,
+                    filter: true,
+                    sort: true,
+                },
+                passportCode: {
+                    title: `${translate("passport_code")}`,
+                    filter: true,
+                    sort: false,
+                },
+                operation: {
+                    title: `${translate("operation")}`,
+                    filter: false,
+                    sort: false,
+                    cellMaker: (row, data, td) => {
+                        return `<div class="book-select__item__container book-relative">
+                                                                    <div class="book-icon book-cursor-pointer" onclick="toggleSelectItem(this)">
+                                                                        <svg width="6" height="20" viewBox="0 0 6 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                            <use xlink:href="/booking/images/sprite-booking-icons.svg#details-icon">
+                                                                            </use></svg>
+                                                                    </div>
+                                                                    <div class="book-select__item__content book-absolute book-left-0 book-right-0 book-mx-auto book-hidden book-z-10">
+                                                                        <button class="book-select__item__btn book-inline-block book-w-16 book-bg-zinc-300 hover:book-bg-zinc-200  book-text-white book-text-xs book-cursor-pointer book-rounded" onclick="selectPreviousPassenger(this,event, '${row.firstName}', '${row.lastName}', '${row.nationalCode}', '${row.birthDate}', '${row.gender}', '${row.issueCountryName}', '${row.issueCountryId}', '${row.passportExpiration}', '${row.passportCode}', '${row.persianFirstName}', '${row.persianLastName}')">
+                                                                            ${translate("operation")}
+                                                                        </button>
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                        `;
+                    },
+                }
+            },
+            filter: 'row',
+            rowNumber: `${translate("row_number")}`,
+            defaultSort: false,
+            direction: "rtl",
+            paging: 10,
+            information: true,
+            firstAndLastBtn: true,
+            culture: {
+                deviceId: 2,
+                template: "template3",
+                labels: {
+                    "refresh": "",
+                    "next": `${translate("next")}`,
+                    "previous": `${translate("previous")}`,
+                    "first": `${translate("first_page")}`,
+                    "last": `${translate("last_page")}`,
+                    "information": "نمایش ${from} تا ${to} از مجموع ${total}"
+                }
+            },
+            noData: (td) => {
+                td.innerHTML = `<div class="noData"><div class="text" style="padding-top: 10px;">${translate("no_data")}</div></div>`
+            },
+            mode: "grid",
+            pageCount: false,
+            refresh: true
+        };
+
+
     // Initialize direction styles
     await applyDirectionStyles();
-    // Initialize dropdowns
     // BirthDate Persian
-    generateDays("birth-persian-day-dropdown");
-    generateMonths("birth-persian-month-dropdown", false);
-    generateYears("birth-persian-year-dropdown", false, false);
+        generateDays('birth-persian-day-dropdown');
+        generateMonths('birth-persian-month-dropdown', false);
+        generateYears('birth-persian-year-dropdown', false, false);
 
     // BirthDate Gregorian
-    generateDays("birth-gregorian-day-dropdown");
-    generateMonths("birth-gregorian-month-dropdown", true);
-    generateYears("birth-gregorian-year-dropdown", true, false);
+        generateDays('birth-gregorian-day-dropdown');
+        generateMonths('birth-gregorian-month-dropdown', true);
+        generateYears('birth-gregorian-year-dropdown', true, false);
 
     // PassportDate Persian
-    generateDays("passport-persian-day-dropdown");
-    generateMonths("passport-persian-month-dropdown", false);
-    generateYears("passport-persian-year-dropdown", false, true);
+        generateDays('passport-persian-day-dropdown');
+        generateMonths('passport-persian-month-dropdown', false);
+        generateYears('passport-persian-year-dropdown', false, true);
 
     // PassportDate Gregorian
-    generateDays("passport-gregorian-day-dropdown");
-    generateMonths("passport-gregorian-month-dropdown", true);
-    generateYears("passport-gregorian-year-dropdown", true, true);
+        generateDays('passport-gregorian-day-dropdown');
+        generateMonths('passport-gregorian-month-dropdown', true);
+        generateYears('passport-gregorian-year-dropdown', true, true);
     // Load the request mapping JSON only once and cache it for future use
     await loadRequestMapping();
     // Load and inject the SVG sprite for icons
@@ -164,9 +320,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (sessionStorage.getItem("sessionSearch")) {
       // Parse stored flight search data
-      sessionSearchStorage = JSON.parse(
-        sessionStorage.getItem("sessionSearch")
-      );
+            sessionSearchStorage = JSON.parse(sessionStorage.getItem("sessionSearch"));
       // Initialize selectedMode
       selectedMode = sessionSearchStorage.Type;
 
@@ -180,8 +334,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           },
         ]);
 
-        document
-          .querySelector(".book-research__btn__container")
+                document.querySelector(".book-research__btn__container")
           .setAttribute("onclick", "window.location='/book/ai'");
       } else {
         // If not AI, load regular flight booking data
@@ -216,7 +369,7 @@ const loadRequestMapping = async () => {
   if (requestMappingCache) return requestMappingCache;
 
   // Fetch the JSON file from the specified path
-  const response = await fetch("/json/request");
+    const response = await fetch('/json/request');
 
   // Parse the JSON response into a JavaScript object
   const data = await response.json();
@@ -706,17 +859,18 @@ const renderFormatterDuration = (str) => {
     const hours = parseInt(match[1], 10);
     const minutes = match[2] ? parseInt(match[2], 10) : 0;
 
-    let result = `${hours} ساعت`;
+        let result = `<span>${hours} ${translate("hour")}`;
     if (minutes > 0) {
-      result += ` ${minutes} دقیقه`;
+            result += `<span class="book-mx-1">${translate("and")}</span> ${minutes} ${translate("minute")}`;
     }
-
+        result += `</span>`;
     return result;
   } catch (error) {
-    console.error(`renderFormatterDuration: ${error.message}`);
+        console.error("renderFormatterDuration: " + error.message);
     return str;
   }
 };
+
 
 /**
  * Renders the country name for a given location code.
@@ -5020,14 +5174,11 @@ const sendDataWithFetch = () => {
       });
 
     // Collect buyer data based on account type
-    const accountType = document.querySelector(".book-buyers__container")
-      .dataset.accounttype;
+        const accountType = document.querySelector(".book-buyers__container").dataset.accounttype;
     const mid = document.querySelector(".book-buyers__container").dataset.mid;
     if (Number(accountType) === 1) {
       if (Number(mid) === 24) {
-        const buyerDataContent = document.querySelector(
-          ".book-buyer__passenger__content"
-        );
+                const buyerDataContent = document.querySelector(".book-buyer__passenger__content");
         buyerData = {
           fullname: {
             firstname: getFieldValue(buyerDataContent, ".book-firstname"),
@@ -5038,38 +5189,18 @@ const sendDataWithFetch = () => {
           mobile: getFieldValue(buyerDataContent, ".book-mobile__number"),
           address: getFieldValue(buyerDataContent, ".book-address"),
           gender: getFieldValue(
-            buyerDataContent
-              .querySelector(".book-gender")
-              .closest(".book-info__item__container"),
-            ".book-data-id"
-          ),
-          countryid: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-countryid"
-          ),
-          cityid: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-cityid"
-          ),
-          namecounter: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-firstname"
-          ),
-          familycounter: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-lastname"
-          ),
+                        buyerDataContent.querySelector(".book-gender").closest(".book-info__item__container"), ".book-data-id"
+                    ),
+                    countryid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-countryid"),
+                    cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid"),
+                    namecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-firstname"),
+                    familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname")
         };
       } else {
-        const buyerDataContent = document.querySelector(
-          ".book-buyer__agency__content"
-        );
+                const buyerDataContent = document.querySelector(".book-buyer__agency__content");
         buyerData = {
           agencyname: getFieldValue(buyerDataContent, ".book-Agencyname"),
-          agencymanegername: getFieldValue(
-            buyerDataContent,
-            ".book-Agencymanegername"
-          ),
+          agencymanegername: getFieldValue(buyerDataContent, ".book-Agencymanegername"),
           agencytell: getFieldValue(buyerDataContent, ".book-tel__number"),
           agencymobile: getFieldValue(buyerDataContent, ".book-mobile__number"),
           agencyaddress: getFieldValue(buyerDataContent, ".book-address"),
@@ -5077,50 +5208,21 @@ const sendDataWithFetch = () => {
           agencyweb: getFieldValue(buyerDataContent, ".book-web"),
           agencyfax: "-",
           agencyid: getFieldValue(buyerDataContent, ".book-agencyid"),
-          countryid: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-countryid"
-          ),
-          cityid: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-cityid"
-          ),
-          namecounter: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-firstname"
-          ),
-          familycounter: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-lastname"
-          ),
+                    countryid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-countryid"),
+                    cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid"),
+                    namecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-firstname"),
+                    familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname")
         };
       }
     } else if (Number(accountType) === 2) {
-      const buyerDataContent = document.querySelector(
-        ".book-buyer__type__content-2"
-      );
+            const buyerDataContent = document.querySelector(".book-buyer__type__content-2");
       buyerData = {
         agencyname: getFieldValue(buyerDataContent, ".book-Agencyname"),
-        agencymanegername: getFieldValue(
-          buyerDataContent,
-          ".book-Agencymanegername"
-        ),
-        namecounter: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-firstname"
-        ),
-        familycounter: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-lastname"
-        ),
-        emailcounter: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-email"
-        ),
-        mobilecounter: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-mobile__number"
-        ),
+                agencymanegername: getFieldValue(buyerDataContent, ".book-Agencymanegername"),
+                namecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-firstname"),
+                familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname"),
+                emailcounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-email"),
+                mobilecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-mobile__number"),
         agencytell: getFieldValue(buyerDataContent, ".book-tel__number"),
         agencymobile: getFieldValue(buyerDataContent, ".book-mobile__number"),
         agencyaddress: getFieldValue(buyerDataContent, ".book-address"),
@@ -5128,16 +5230,11 @@ const sendDataWithFetch = () => {
         agencyweb: getFieldValue(buyerDataContent, ".book-web"),
         agencyfax: "-",
         agencyid: getFieldValue(buyerDataContent, ".book-agencyid"),
-        countryid: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-countryid"
-        ),
-        cityid: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-cityid"
-        ),
-      };
-    } else {
+                countryid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-countryid"),
+                cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid"),
+            };
+        }
+        else {
       const buyerDataContent = document.querySelector(".book-check__has__data");
       buyerData = {
         fullname: {
@@ -5149,9 +5246,7 @@ const sendDataWithFetch = () => {
         mobile: getFieldValue(buyerDataContent, ".book-mobile__number"),
         address: getFieldValue(buyerDataContent, ".book-address"),
         gender: getFieldValue(
-          buyerDataContent
-            .querySelector(".book-gender")
-            .closest(".book-info__item__container"),
+                    buyerDataContent.querySelector(".book-gender").closest(".book-info__item__container"),
           ".book-data-id"
         ),
         countryid: getFieldValue(buyerDataContent, ".book-countryid"),
@@ -5167,17 +5262,12 @@ const sendDataWithFetch = () => {
       SchemaId: sessionSearchStorage.SchemaId,
       Travelers: passengerList,
       account: buyerData,
-      agencycountername: document
-        .querySelector(".book-counter__container")
-        .querySelector(".book-name").value,
-      agencycounter: document
-        .querySelector(".book-counter__container")
-        .querySelector(".book-name").dataset.id,
+      agencycountername: document.querySelector(".book-counter__container").querySelector(".book-name").value,
+      agencycounter: document.querySelector(".book-counter__container").querySelector(".book-name").dataset.id,
       clear: document.querySelector(".book-clear").value,
       payType: document.querySelector(".book-payType").value,
       bankIdentifier: document.querySelector(".book-bankIdentifier").value,
-      accounttype: document.querySelector(".book-buyers__container").dataset
-        .accounttype,
+      accounttype: document.querySelector(".book-buyers__container").dataset.accounttype,
       mid: document.querySelector(".book-buyers__container").dataset.mid,
       code: document.querySelector(".book-coupon__code").value,
       club_discount: "",
@@ -5193,10 +5283,7 @@ const sendDataWithFetch = () => {
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = key;
-      input.value =
-        typeof formData[key] === "object"
-          ? JSON.stringify(formData[key])
-          : formData[key];
+            input.value = typeof formData[key] === "object" ? JSON.stringify(formData[key]) : formData[key];
       form.appendChild(input);
     }
     document.body.appendChild(form);
@@ -6585,159 +6672,9 @@ const handleClickOutside = (event) => {
 
 // Attach the click event listener to the document
 document.addEventListener('click', handleClickOutside);
-if (typeof gridPreviousPassengers === "undefined") {
-    var gridPreviousPassengers = {
-        columns: {
-            firstName: {
-                title: `${translate("first_name")}`,
-                filter: true,
-                sort: false,
-            },
-            lastName: {
-                title: `${translate("last_name")}`,
-                filter: true,
-                sort: false,
-            },
-            nationalCode: {
-                title: `${translate("national_code")}`,
-                filter: true,
-                sort: false,
-            },
-            birthDate: {
-                title: `${translate("birth_date")}`,
-                filter: true,
-                sort: true,
-            },
-            passportCode: {
-                title: `${translate("passport_code")}`,
-                filter: true,
-                sort: false,
-            },
-            operation: {
-                title: `${translate("operation")}`,
-                filter: false,
-                sort: false,
-                cellMaker: (row, data, td) => {
-                    return `<div class="book-select__item__container book-relative">
-                                                        <div class="book-icon book-cursor-pointer" onclick="toggleSelectItem(this)">
-                                                            <svg width="6" height="20" viewBox="0 0 6 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <use xlink:href="/booking/images/sprite-booking-icons.svg#details-icon">
-                                                                </use></svg>
-                                                        </div>
-                                                        <div class="book-select__item__content book-absolute book-left-0 book-right-0 book-mx-auto book-hidden book-z-10">
-                                                            <button class="book-select__item__btn book-inline-block book-w-16 book-bg-zinc-300 hover:book-bg-zinc-200  book-text-white book-text-xs book-cursor-pointer book-rounded" onclick="selectPreviousPassenger(this,event, '${row.firstName}', '${row.lastName}', '${row.nationalCode}', '${row.birthDate}', '${row.gender}', '${row.issueCountryName}', '${row.issueCountryId}', '${row.passportExpiration}', '${row.passportCode}', '${row.persianFirstName}', '${row.persianLastName}')">
-                                                                ${translate("operation")}
-                                                            </button>
-                                                          
-                                                        </div>
-                                                    </div>
-                                            `;
-                },
-            }
-        },
-        filter: 'row',
-        rowNumber: `${translate("row_number")}`,
-        defaultSort: false,
-        direction: "rtl",
-        paging: 10,
-        information: true,
-        firstAndLastBtn: true,
-        culture: {
-            labels: {
-                "refresh": "",
-                "next": `${translate("next")}`,
-                "previous": `${translate("previous")}`,
-                "first": `${translate("first")}`,
-                "last": `${translate("last")}`,
-                "information": "نمایش ${from} تا ${to} از مجموع ${total}"
-            }
-        },
-        noData: (td) => {
-            td.innerHTML = `<div class="noData"><div class="text" style="padding-top: 10px;">${translate("no_data")}</div></div>`
-        },
-        mode: "grid",
-        pageCount: false,
-        refresh: true
-    };
-};
 
-if (typeof mobGridPreviousPassengers === "undefined") {
-    var mobGridPreviousPassengers = {
-        columns: {
-            firstName: {
-                title: `${translate("first_name")}`,
-                filter: true,
-                sort: false,
-            },
-            lastName: {
-                title: `${translate("last_name")}`,
-                filter: true,
-                sort: false,
-            },
-            nationalCode: {
-                title: `${translate("national_code")}`,
-                filter: true,
-                sort: false,
-            },
-            birthDate: {
-                title: `${translate("birth_date")}`,
-                filter: true,
-                sort: true,
-            },
-            passportCode: {
-                title: `${translate("passport_code")}`,
-                filter: true,
-                sort: false,
-            },
-            operation: {
-                title: `${translate("operation")}`,
-                filter: false,
-                sort: false,
-                cellMaker: (row, data, td) => {
-                    return `<div class="book-select__item__container book-relative">
-                                                        <div class="book-icon book-cursor-pointer" onclick="toggleSelectItem(this)">
-                                                            <svg width="6" height="20" viewBox="0 0 6 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <use xlink:href="/booking/images/sprite-booking-icons.svg#details-icon">
-                                                                </use></svg>
-                                                        </div>
-                                                        <div class="book-select__item__content book-absolute book-left-0 book-right-0 book-mx-auto book-hidden book-z-10">
-                                                            <button class="book-select__item__btn book-inline-block book-w-16 book-bg-zinc-300 hover:book-bg-zinc-200  book-text-white book-text-xs book-cursor-pointer book-rounded" onclick="selectPreviousPassenger(this,event, '${row.firstName}', '${row.lastName}', '${row.nationalCode}', '${row.birthDate}', '${row.gender}', '${row.issueCountryName}', '${row.issueCountryId}', '${row.passportExpiration}', '${row.passportCode}', '${row.persianFirstName}', '${row.persianLastName}')">
-                                                                ${translate("operation")}
-                                                            </button>
-                                                          
-                                                        </div>
-                                                    </div>
-                                            `;
-                },
-            }
-        },
-        filter: 'row',
-        rowNumber: `${translate("row_number")}`,
-        defaultSort: false,
-        direction: "rtl",
-        paging: 10,
-        information: true,
-        firstAndLastBtn: true,
-        culture: {
-            deviceId: 2,
-            template: "template3",
-            labels: {
-                "refresh": "",
-                "next": `${translate("next")}`,
-                "previous": `${translate("previous")}`,
-                "first": `${translate("first_page")}`,
-                "last": `${translate("last_page")}`,
-                "information": "نمایش ${from} تا ${to} از مجموع ${total}"
-            }
-        },
-        noData: (td) => {
-            td.innerHTML = `<div class="noData"><div class="text" style="padding-top: 10px;">${translate("no_data")}</div></div>`
-        },
-        mode: "grid",
-        pageCount: false,
-        refresh: true
-    };
-};
+
+
 /**
  * Returns the mapping information for a given selectedMode (e.g., "flight", "bus").
  * Throws an error if requestMappingCache is not loaded or the mode is unsupported.

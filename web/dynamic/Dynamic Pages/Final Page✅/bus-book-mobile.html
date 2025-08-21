@@ -167,8 +167,8 @@
     <!-- Main-->
     <main>
         <!-- Commands / Requests -->
-        <basis core="call" file="bus/book/commands" lid="1"></basis>
-        <basis core="call" file="book/commands" lid="1"></basis>
+        <basis core="call" file="bus/book/commands" lid="1" pageindexid="[##cms.cms.pageindexid|(2)##]"></basis>
+        <basis core="call" file="book/commands" lid="1" ></basis>
         <!-- Layout Section -->
         <div class="book-layout__main" data-dmnid="[##cms.cms.domainid##]" data-cmsdate="[##cms.cms.date##]">
             <!-- Expire  Modal-->
@@ -459,7 +459,7 @@
 
                         </div>
                             <div class="book-passengers__container book-hidden">
-                                <basis core="call" file="book/passenger" lid="1" pageindexid="2"></basis>
+                                <basis core="call" file="book/passenger" lid="1" pageindexid="[##cms.cms.pageindexid|(2)##]"></basis>
                            </div>
 
                             <div class="book-buyers__container book-hidden" data-run="0">

@@ -2,7 +2,6 @@
  * Global variables to store session search and booking data from sessionSearch.
  * Initialized as null to be populated on DOM load.
  */
-
 let translations = {};
 let currentLanguage = document.documentElement.lang || 'fa';
 let isRTL = document.documentElement.dir === 'rtl' || currentLanguage === 'fa' || currentLanguage === 'ar';
@@ -32,7 +31,11 @@ let productGroupField = null;
 // Always check for utm_source in URL
 const urlParams = new URLSearchParams(window.location.search);
 const utmSource = urlParams.get("utm_source");
-
+const MAX_PER_TYPEBook = 9; // Maximum passengers per type (adult, child, infant)
+const MAX_TOTALBook = 9; // Maximum total passengers
+let adultsCountBook = 1; // Number of adult passengers
+let childrenCountBook = 0; // Number of child passengers
+let infantsCountBook = 0; // Number of infant passengers
 const isMobile = document.querySelector("main").dataset.mob === "true";
 const domainId = document.querySelector("main").dataset.dmnid;
 const safarmarketIdCookie = document.cookie
@@ -41,6 +44,8 @@ const safarmarketIdCookie = document.cookie
     ?.split('=')[1] || '';
 
 let tripNames = [];
+let gridPreviousPassengers;
+let mobGridPreviousPassengers;
 
 
 
@@ -5020,14 +5025,11 @@ const sendDataWithFetch = () => {
       });
 
     // Collect buyer data based on account type
-    const accountType = document.querySelector(".book-buyers__container")
-      .dataset.accounttype;
+        const accountType = document.querySelector(".book-buyers__container").dataset.accounttype;
     const mid = document.querySelector(".book-buyers__container").dataset.mid;
     if (Number(accountType) === 1) {
       if (Number(mid) === 24) {
-        const buyerDataContent = document.querySelector(
-          ".book-buyer__passenger__content"
-        );
+                const buyerDataContent = document.querySelector(".book-buyer__passenger__content");
         buyerData = {
           fullname: {
             firstname: getFieldValue(buyerDataContent, ".book-firstname"),
@@ -5038,38 +5040,18 @@ const sendDataWithFetch = () => {
           mobile: getFieldValue(buyerDataContent, ".book-mobile__number"),
           address: getFieldValue(buyerDataContent, ".book-address"),
           gender: getFieldValue(
-            buyerDataContent
-              .querySelector(".book-gender")
-              .closest(".book-info__item__container"),
-            ".book-data-id"
-          ),
-          countryid: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-countryid"
-          ),
-          cityid: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-cityid"
-          ),
-          namecounter: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-firstname"
-          ),
-          familycounter: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-lastname"
-          ),
+                        buyerDataContent.querySelector(".book-gender").closest(".book-info__item__container"), ".book-data-id"
+                    ),
+                    countryid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-countryid"),
+                    cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid"),
+                    namecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-firstname"),
+                    familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname")
         };
       } else {
-        const buyerDataContent = document.querySelector(
-          ".book-buyer__agency__content"
-        );
+                const buyerDataContent = document.querySelector(".book-buyer__agency__content");
         buyerData = {
           agencyname: getFieldValue(buyerDataContent, ".book-Agencyname"),
-          agencymanegername: getFieldValue(
-            buyerDataContent,
-            ".book-Agencymanegername"
-          ),
+          agencymanegername: getFieldValue(buyerDataContent, ".book-Agencymanegername"),
           agencytell: getFieldValue(buyerDataContent, ".book-tel__number"),
           agencymobile: getFieldValue(buyerDataContent, ".book-mobile__number"),
           agencyaddress: getFieldValue(buyerDataContent, ".book-address"),
@@ -5077,50 +5059,21 @@ const sendDataWithFetch = () => {
           agencyweb: getFieldValue(buyerDataContent, ".book-web"),
           agencyfax: "-",
           agencyid: getFieldValue(buyerDataContent, ".book-agencyid"),
-          countryid: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-countryid"
-          ),
-          cityid: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-cityid"
-          ),
-          namecounter: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-firstname"
-          ),
-          familycounter: getFieldValue(
-            document.querySelector(".book-check__has__data"),
-            ".book-lastname"
-          ),
+                    countryid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-countryid"),
+                    cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid"),
+                    namecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-firstname"),
+                    familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname")
         };
       }
     } else if (Number(accountType) === 2) {
-      const buyerDataContent = document.querySelector(
-        ".book-buyer__type__content-2"
-      );
+            const buyerDataContent = document.querySelector(".book-buyer__type__content-2");
       buyerData = {
         agencyname: getFieldValue(buyerDataContent, ".book-Agencyname"),
-        agencymanegername: getFieldValue(
-          buyerDataContent,
-          ".book-Agencymanegername"
-        ),
-        namecounter: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-firstname"
-        ),
-        familycounter: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-lastname"
-        ),
-        emailcounter: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-email"
-        ),
-        mobilecounter: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-mobile__number"
-        ),
+                agencymanegername: getFieldValue(buyerDataContent, ".book-Agencymanegername"),
+                namecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-firstname"),
+                familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname"),
+                emailcounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-email"),
+                mobilecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-mobile__number"),
         agencytell: getFieldValue(buyerDataContent, ".book-tel__number"),
         agencymobile: getFieldValue(buyerDataContent, ".book-mobile__number"),
         agencyaddress: getFieldValue(buyerDataContent, ".book-address"),
@@ -5128,16 +5081,11 @@ const sendDataWithFetch = () => {
         agencyweb: getFieldValue(buyerDataContent, ".book-web"),
         agencyfax: "-",
         agencyid: getFieldValue(buyerDataContent, ".book-agencyid"),
-        countryid: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-countryid"
-        ),
-        cityid: getFieldValue(
-          document.querySelector(".book-check__has__data"),
-          ".book-cityid"
-        ),
-      };
-    } else {
+                countryid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-countryid"),
+                cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid"),
+            };
+        }
+        else {
       const buyerDataContent = document.querySelector(".book-check__has__data");
       buyerData = {
         fullname: {
@@ -5149,9 +5097,7 @@ const sendDataWithFetch = () => {
         mobile: getFieldValue(buyerDataContent, ".book-mobile__number"),
         address: getFieldValue(buyerDataContent, ".book-address"),
         gender: getFieldValue(
-          buyerDataContent
-            .querySelector(".book-gender")
-            .closest(".book-info__item__container"),
+                    buyerDataContent.querySelector(".book-gender").closest(".book-info__item__container"),
           ".book-data-id"
         ),
         countryid: getFieldValue(buyerDataContent, ".book-countryid"),
@@ -5167,17 +5113,12 @@ const sendDataWithFetch = () => {
       SchemaId: sessionSearchStorage.SchemaId,
       Travelers: passengerList,
       account: buyerData,
-      agencycountername: document
-        .querySelector(".book-counter__container")
-        .querySelector(".book-name").value,
-      agencycounter: document
-        .querySelector(".book-counter__container")
-        .querySelector(".book-name").dataset.id,
+      agencycountername: document.querySelector(".book-counter__container").querySelector(".book-name").value,
+      agencycounter: document.querySelector(".book-counter__container").querySelector(".book-name").dataset.id,
       clear: document.querySelector(".book-clear").value,
       payType: document.querySelector(".book-payType").value,
       bankIdentifier: document.querySelector(".book-bankIdentifier").value,
-      accounttype: document.querySelector(".book-buyers__container").dataset
-        .accounttype,
+      accounttype: document.querySelector(".book-buyers__container").dataset.accounttype,
       mid: document.querySelector(".book-buyers__container").dataset.mid,
       code: document.querySelector(".book-coupon__code").value,
       club_discount: "",
@@ -5193,10 +5134,7 @@ const sendDataWithFetch = () => {
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = key;
-      input.value =
-        typeof formData[key] === "object"
-          ? JSON.stringify(formData[key])
-          : formData[key];
+            input.value = typeof formData[key] === "object" ? JSON.stringify(formData[key]) : formData[key];
       form.appendChild(input);
     }
     document.body.appendChild(form);

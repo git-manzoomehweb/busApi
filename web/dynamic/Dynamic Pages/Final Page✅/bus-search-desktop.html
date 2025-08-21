@@ -20,7 +20,7 @@
     <main data-dmnid="[##cms.cms.domainid##]" class="book-py-6 book-flex book-justify-center">
 
         <!-- Commands / Requests -->
-        <basis core="call" file="bus/search/commands" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+        <basis core="call" file="bus/search/commands" lid="1" pageindexid="[##cms.cms.pageindexid|(1)##]"></basis>
 
 
         <div class="book-layout__main book-w-full book-z-10">
@@ -69,7 +69,7 @@
             <div class="book-max-w-7xl book-mx-auto book-px-4 book-py-2">
                 <!-- Retry Search -->
                 <basis core="call" file="/module/retry/search" method="post" selectedMode="bus" run="atclient"
-                    pageindex="[##cms.cms.pageindex|(1)##]">
+                    pageindexid="[##cms.cms.pageindexid|(1)##]">
                 </basis>
 
                 <div class="book-main__container book-w-full book-flex book-flex-wrap book--mx-2">
