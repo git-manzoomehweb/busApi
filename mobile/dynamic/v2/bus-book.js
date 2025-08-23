@@ -5194,7 +5194,11 @@ const sendDataWithFetch = () => {
                     countryid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-countryid"),
                     cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid"),
                     namecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-firstname"),
-                    familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname")
+                    familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname"),
+                    emailcounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-email"),
+                    mobilecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-mobile__number"),
+                    telcode: getFieldValue(buyerDataContent, ".book-tel__code__number"),
+                    mobilecode: getFieldValue(buyerDataContent, ".book-mobile__code__number")
         };
       } else {
                 const buyerDataContent = document.querySelector(".book-buyer__agency__content");
@@ -5211,7 +5215,9 @@ const sendDataWithFetch = () => {
                     countryid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-countryid"),
                     cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid"),
                     namecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-firstname"),
-                    familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname")
+                    familycounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-lastname"),
+                    emailcounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-email"),
+                    mobilecounter: getFieldValue(document.querySelector(".book-check__has__data"), ".book-mobile__number")
         };
       }
     } else if (Number(accountType) === 2) {
@@ -5231,7 +5237,7 @@ const sendDataWithFetch = () => {
         agencyfax: "-",
         agencyid: getFieldValue(buyerDataContent, ".book-agencyid"),
                 countryid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-countryid"),
-                cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid"),
+                cityid: getFieldValue(document.querySelector(".book-check__has__data"), ".book-cityid")
             };
         }
         else {
@@ -5250,7 +5256,7 @@ const sendDataWithFetch = () => {
           ".book-data-id"
         ),
         countryid: getFieldValue(buyerDataContent, ".book-countryid"),
-        cityid: getFieldValue(buyerDataContent, ".book-cityid"),
+                cityid: getFieldValue(buyerDataContent, ".book-cityid")
       };
     }
 
