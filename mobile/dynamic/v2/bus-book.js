@@ -2426,12 +2426,11 @@ const onProcessedPreviousPassengers = async (args) => {
 const onProcessedUserCredit = async (args) => {
     try {
         const response = args.response;
-        console.log(response);
         if (response.status === 200) {
             const responseJson = await response.json();
             if (responseJson) {
                 const userCredit = parseFloat(responseJson.user_credit);
-                const firstPay = parseFloat(document.querySelector(".book-firstpay__cost").textContent);
+                const firstPay = parseFloat(document.querySelector(".book-firstpay__cost").textContent.replace(/,/g, ""));
                 if (userCredit > firstPay) {
                     const container = document.querySelector(".book-invoice__container");
                     const currencyUnit = document.querySelector(".book-unit__content span").textContent;
