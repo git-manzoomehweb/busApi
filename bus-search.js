@@ -185,7 +185,7 @@ const tripGroup = Array.isArray(sessionSearchStorage.tripGroup)
 
     // --- باکس «تلاش مجدد/Retry info» (Bus یک‌طرفه)
     const retryInfoContainer = document.querySelector(
-      '#busSearch .book-retry__info, .book-retry__info'
+      '.formbus .book-retry__info, .book-retry__info'
     );
 
     const createTripInfo = (title, trip) => {
@@ -216,16 +216,16 @@ const tripGroup = Array.isArray(sessionSearchStorage.tripGroup)
     // --- ست‌کردن فیلدهای فرم Bus (یک‌طرفه)
     if (tripGroup.length > 0) {
       const departureLocationName = document.querySelector(
-        '#busSearch .departure__location__name'
+        '.formbus .departure__location__name'
       );
       const arrivalLocationName = document.querySelector(
-        '#busSearch .arrival__location__name'
+        '.formbus .arrival__location__name'
       );
       const departureDate = document.querySelector(
-        '#busSearch .departure__date'
+        '.formbus .departure__date'
       );
       const arrivalDateContainer = document.querySelector(
-        '#busSearch .arrival__date__container'
+        '.formbus .arrival__date__container'
       ); // معمولا غیرفعاله
 
       const raw = tripGroup[0] || {};
@@ -3465,3 +3465,4 @@ const toggleAside = (element) => {
 };
 
 // mobile bus
+
