@@ -1,0 +1,312 @@
+<basis core="group" name="airport" if="'[##cms.query.typeid##]'= '1'">
+    <div class="autocomplete__options__container">
+        <div
+            class="book-text-center book-bg-white book-flex book-justify-between book-items-center book-top-0 book-inset-x-0 book-sticky book-p-3">
+
+            <div class="book-text-center book-city__list__label"></div>
+            <button onclick="confirmAndCloseCityList(this)" type="button"
+                class="book-px-4 book-py-2 book-rounded-xl book-bg-primary-400 book-text-white">تایید
+                و بستن</button>
+        </div>
+        <div class="book-text-sm book-px-3">
+            <div class="book-mb-3">
+                <input type="text" oninput="handleCitySearch(this , '1')" readonly
+                    class="book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600" />
+            </div>
+            <p class="book-font-bold book-mb-2">محبوب‌ترین‌ها</p>
+            <div onclick="selectCityItem(this)" data-id="1203548"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">تهران</p>
+                    <p class="book-text-zinc-600">ایران</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1177676"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">استانبول</p>
+                    <p class="book-text-zinc-600">ترکیه</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1173505"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">دبی</p>
+                    <p class="book-text-zinc-600">امارات متحده عربی</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1211129"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">نجف</p>
+                    <p class="book-text-zinc-600">عراق</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1168073"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">آنکارا</p>
+                    <p class="book-text-zinc-600">ترکیه</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1168092"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">آنتالیا</p>
+                    <p class="book-text-zinc-600">ترکیه</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1177366"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">ازمیر</p>
+                    <p class="book-text-zinc-600">ترکیه</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1197994"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">قاضی
+                        پاشا</p>
+                    <p class="book-text-zinc-600">ترکیه</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1194714"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">دنیزلی</p>
+                    <p class="book-text-zinc-600">ترکیه</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1192689"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">ایروان</p>
+                    <p class="book-text-zinc-600">ارمنستان</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1190224"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">تورنتو</p>
+                    <p class="book-text-zinc-600">کانادا</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1180000"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">لندن</p>
+                    <p class="book-text-zinc-600">انگلستان</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1198686"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">دوحه</p>
+                    <p class="book-text-zinc-600">قطر</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1169331"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">پکن</p>
+                    <p class="book-text-zinc-600">چین</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1178542"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">کوالالامپور</p>
+                    <p class="book-text-zinc-600">مالزی</p>
+                </div>
+            </div>
+            <div onclick="selectCityItem(this)" data-id="1174865"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">فرانکفورت</p>
+                    <p class="book-text-zinc-600">آلمان</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</basis>
+
+<basis core="group" name="city" if="'[##cms.query.typeid##]'= '2'">
+    <div class="autocomplete__options__container">
+        <div
+            class="book-text-center book-bg-white book-flex book-justify-between book-items-center book-top-0 book-inset-x-0 book-sticky book-p-3">
+
+            <div class="book-text-center book-city__list__label"></div>
+            <button onclick="confirmAndCloseCityList(this)" type="button"
+                class="book-px-4 book-py-2 book-rounded-xl book-bg-primary-400 book-text-white">تایید
+                و بستن</button>
+        </div>
+        <div class="book-text-sm book-px-3">
+            <div class="book-mb-3">
+                <input type="text" oninput="handleCitySearch(this , '1')" readonly
+                    class="book-w-full focus:book-outline-none book-bg-zinc-100 book-rounded-lg book-px-2 book-py-3 book-text-zinc-600" />
+            </div>
+
+            <p class="book-font-bold book-mb-4">محبوب‌ترین‌ها</p>
+            <!-- داخلی‌ها (ایران) -->
+            <div onclick="selectCityItem(this)" data-id="1203548"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">تهران</p>
+                    <p class="book-text-zinc-600">ایران</p>
+                </div>
+            </div>
+
+            <div onclick="selectCityItem(this)" data-id="1211083"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">مشهد</p>
+                    <p class="book-text-zinc-600">ایران</p>
+                </div>
+            </div>
+
+            <div onclick="selectCityItem(this)" data-id="1270505"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">ایلام</p>
+                    <p class="book-text-zinc-600">ایران</p>
+                </div>
+            </div>
+
+            <div onclick="selectCityItem(this)" data-id="1211087"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">اهواز</p>
+                    <p class="book-text-zinc-600">ایران</p>
+                </div>
+            </div>
+
+            <div onclick="selectCityItem(this)" data-id="1203561"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">رشت</p>
+                    <p class="book-text-zinc-600">ایران</p>
+                </div>
+            </div>
+
+            <!-- خارجی‌ها -->
+            <div onclick="selectCityItem(this)" data-id="1177676"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">استانبول</p>
+                    <p class="book-text-zinc-600">ترکیه</p>
+                </div>
+            </div>
+
+            <div onclick="selectCityItem(this)" data-id="1173505"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">دبی</p>
+                    <p class="book-text-zinc-600">امارات</p>
+                </div>
+            </div>
+
+            <div onclick="selectCityItem(this)" data-id="1182289"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">مسقط</p>
+                    <p class="book-text-zinc-600">عمان</p>
+                </div>
+            </div>
+
+            <div onclick="selectCityItem(this)" data-id="1189731"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">تفلیس</p>
+                    <p class="book-text-zinc-600">گرجستان</p>
+                </div>
+            </div>
+
+            <div onclick="selectCityItem(this)" data-id="1173328"
+                class="book-flex book-items-center book-gap-2 book-pt-2 book-cursor-pointer">
+                <svg width="17" height="18">
+                    <use href="/booking/images/sprite-booking-icons.svg#pin-icon"></use>
+                </svg>
+                <div class="book-mb-3">
+                    <p class="book-mb-1 book-font-bold city__option__content">دوحه</p>
+                    <p class="book-text-zinc-600">قطر</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</basis>
