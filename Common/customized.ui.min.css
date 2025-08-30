@@ -74,6 +74,10 @@ color: #313131;}
 
 /* bus */
 *, ::before, ::after {
+    box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
     --tw-border-spacing-x: 0;
     --tw-border-spacing-y: 0;
     --tw-translate-x: 0;
