@@ -1322,7 +1322,14 @@ const busManipulation = async (args) => {
 
       if (allDataProcessed) {
         if (currentSort.value === "default") {
-          allBusProposals = [...originalBusProposals];
+                          // Sort by price ascending by default
+                allBusProposals.sort((a, b) => {
+                    const priceA = a.priceInfo?.totalCommission ? parseFloat(a.priceInfo.totalCommission) : Infinity;
+                    const priceB = b.priceInfo?.totalCommission ? parseFloat(b.priceInfo.totalCommission) : Infinity;
+                    return priceA - priceB;
+                });
+
+          // allBusProposals = [...originalBusProposals];
         } else {
           allBusProposals.sort((a, b) => {
             let fieldA, fieldB;

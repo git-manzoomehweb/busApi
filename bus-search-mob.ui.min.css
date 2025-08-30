@@ -801,6 +801,12 @@ video {
   z-index: 9999999999;
 }
 
+
+
+
+
+
+
 .book-float-right {
   float: right;
 }
@@ -3327,8 +3333,7 @@ body {
   color: var(--primary-400);
 }
 
-.book-checked.book-button__content,
-.book-button__content:hover {
+.book-checked.book-button__content{
   background-color: var(--primary-300);
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
@@ -3336,9 +3341,7 @@ body {
 }
 
 .book-checked.book-button__content svg,
-.book-active__tab__navigation svg,
-.book-tab__navigation__content:hover svg,
-.book-button__content:hover svg {
+.book-active__tab__navigation svg {
   filter: brightness(0) saturate(100%) invert(1);
 }
 

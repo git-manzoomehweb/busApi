@@ -1769,12 +1769,14 @@ const toggleReserveArrowIcon = (element) => {
  * @param {string} idToFind - Flight ID for the API call.
  * @param {string} renderingClass - Class to add/remove for rendering state.
  */
+
 const toggleContentApi = (element, type, parent, fromScroll = false) => {
   try {
     // Remove rendering class from any existing active container
     const renderingContainer = document.querySelector(
       ".book-api__container__rendering"
     );
+
     if (renderingContainer) {
       renderingContainer.classList.remove("book-api__container__rendering");
     }
@@ -1838,6 +1840,7 @@ const toggleContentApi = (element, type, parent, fromScroll = false) => {
     console.error("toggleContentApi: " + error.message);
   }
 };
+
 
 /**
  * Toggles passenger type fields (internal/external) and updates UI.
@@ -2829,83 +2832,111 @@ const renderAmenities = async (element) => {
 // }
 
 
-const scrollModalContainerItem = async (element, type, parent, opts = {}) => {
-  const options = {
-    pad: 12,
-    stickyOffsetTop: 0,       // هدر چسبان بالا (px)
-    stickyOffsetBottom: 0,    // فوتر/استیکی پایین که می‌پوشاند (px)
-    alignTop: true,
-    openWaitMs: 300,
-    ...opts
-  };
+// const scrollModalContainerItem = async (element, type, parent, opts = {}) => {
+//   const options = {
+//     pad: 12,
+//     stickyOffsetTop: 0,       // هدر چسبان بالا (px)
+//     stickyOffsetBottom: 0,    // فوتر/استیکی پایین که می‌پوشاند (px)
+//     alignTop: true,
+//     openWaitMs: 300,
+//     ...opts
+//   };
 
-  try {
-    const container = element.closest(".book-aside__content");
-    if (!container) return;
+//   try {
+//     const container = element.closest(".book-aside__content");
+//     if (!container) return;
 
-    const target = container.querySelector(`.${parent}`);
-    if (!target) return;
+//     const target = container.querySelector(`.${parent}`);
+//     if (!target) return;
 
-    // 1) باز کردن آکاردئون (در صورت نیاز)
-    const header = target.querySelector(".book-content__api");
-    const content = target.querySelector(".book-api__container__content");
-    if (header) {
-      const collapsed = content && (
-        getComputedStyle(content).display === "none" || content.clientHeight === 0
-      );
-      if (collapsed) {
-        if (typeof toggleContentApi === "function") {
-          toggleContentApi(header, type, parent, true);
-        } else if (content) {
-          content.style.display = "block";
-        }
-        await waitForOpen(content, options.openWaitMs);
-      }
+//     // 1) باز کردن آکاردئون (در صورت نیاز)
+//     const header = target.querySelector(".book-content__api");
+//     const content = target.querySelector(".book-api__container__content");
+//     if (header) {
+//       const collapsed = content && (
+//         getComputedStyle(content).display === "none" || content.clientHeight === 0
+//       );
+//       if (collapsed) {
+//         if (typeof toggleContentApi === "function") {
+//           toggleContentApi(header, type, parent, true);
+//         } else if (content) {
+//           content.style.display = "block";
+//         }
+//         await waitForOpen(content, options.openWaitMs);
+//       }
+//     }
+
+//     // 2) اسکرول داخلی کانتینر را "آنـی" انجام بده تا اندازه‌گیری دقیق بشه
+//     const { shortfall } = scrollSectionIntoContainer(container, target, options.pad, /*instant*/ true);
+
+//     // 3) دو فریم صبر کن تا layout تثبیت بشه
+//     await nextFrame(); await nextFrame();
+
+//     // 4) اگر هنوز جا کم داریم یا می‌خوایم بچسبونیم به بالا، اسکرول صفحه
+//     const rect = target.getBoundingClientRect();
+//     const viewportH = window.innerHeight - options.stickyOffsetTop - options.stickyOffsetBottom;
+
+//     let delta = 0;
+//     if (options.alignTop) {
+//       // بچسبون به بالای viewport (با لحاظ هدر چسبان و pad)
+//       delta = rect.top - options.stickyOffsetTop - options.pad;
+//     } else if (shortfall > 0 || rect.bottom > window.innerHeight - options.stickyOffsetBottom) {
+//       // به اندازه نیاز بیار تا کامل دیده بشه
+//       const need = Math.max(
+//         shortfall,
+//         rect.bottom - (window.innerHeight - options.stickyOffsetBottom) + options.pad
+//       );
+//       delta = need;
+//     }
+
+//     if (Math.abs(delta) > 1) {
+//       window.scrollBy({ top: delta, behavior: "smooth" });
+//     }
+
+//     // 5) اگر خود content اسکرول داخلی دارد و هنوز بخشی دیده نمی‌شود، تا ته اسکرولش بده
+//     if (content && content.scrollHeight > content.clientHeight) {
+//       // یک فریم بعد از اسکرول صفحه
+//       await nextFrame();
+//       content.scrollTop = content.scrollHeight;
+//     }
+
+//     // 6) تب فعال
+//     container.querySelectorAll(".book-tab__navigation__content")
+//       .forEach(tab => tab.classList.remove("book-active__tab__navigation"));
+//     element.classList.add("book-active__tab__navigation");
+
+//   } catch (err) {
+//     console.error("scrollModalContainerItem:", err.message);
+//   }
+// };
+
+
+const scrollModalContainerItem = (element, type, parent) => {
+    try {
+        const cardContainer = element.closest(".book-aside__content");
+        const target = cardContainer.querySelector(`.${parent}`);
+
+        // Smooth scroll to target
+        cardContainer.scroll({ top: target.offsetTop, behavior: 'smooth' });
+
+        // Update tab navigation
+        cardContainer.querySelectorAll(".book-tab__navigation__content").forEach(tab =>
+            tab.classList.remove("book-active__tab__navigation")
+        );
+        element.classList.add("book-active__tab__navigation");
+        element.closest(".book-aside__content")
+            .querySelectorAll(".book-api__container")
+            .forEach(e => {
+                if (e !== target && !e.querySelector(".book-api__container__content").classList.contains("book-hidden")) {
+                    e.querySelector(".book-api__container__content").classList.add("book-hidden");
+                }
+            });
+        toggleContentApi(target.querySelector(".book-content__api"), type, parent, true);
+    } catch (error) {
+        console.error("scrollModalContainerItem: " + error.message);
     }
-
-    // 2) اسکرول داخلی کانتینر را "آنـی" انجام بده تا اندازه‌گیری دقیق بشه
-    const { shortfall } = scrollSectionIntoContainer(container, target, options.pad, /*instant*/ true);
-
-    // 3) دو فریم صبر کن تا layout تثبیت بشه
-    await nextFrame(); await nextFrame();
-
-    // 4) اگر هنوز جا کم داریم یا می‌خوایم بچسبونیم به بالا، اسکرول صفحه
-    const rect = target.getBoundingClientRect();
-    const viewportH = window.innerHeight - options.stickyOffsetTop - options.stickyOffsetBottom;
-
-    let delta = 0;
-    if (options.alignTop) {
-      // بچسبون به بالای viewport (با لحاظ هدر چسبان و pad)
-      delta = rect.top - options.stickyOffsetTop - options.pad;
-    } else if (shortfall > 0 || rect.bottom > window.innerHeight - options.stickyOffsetBottom) {
-      // به اندازه نیاز بیار تا کامل دیده بشه
-      const need = Math.max(
-        shortfall,
-        rect.bottom - (window.innerHeight - options.stickyOffsetBottom) + options.pad
-      );
-      delta = need;
-    }
-
-    if (Math.abs(delta) > 1) {
-      window.scrollBy({ top: delta, behavior: "smooth" });
-    }
-
-    // 5) اگر خود content اسکرول داخلی دارد و هنوز بخشی دیده نمی‌شود، تا ته اسکرولش بده
-    if (content && content.scrollHeight > content.clientHeight) {
-      // یک فریم بعد از اسکرول صفحه
-      await nextFrame();
-      content.scrollTop = content.scrollHeight;
-    }
-
-    // 6) تب فعال
-    container.querySelectorAll(".book-tab__navigation__content")
-      .forEach(tab => tab.classList.remove("book-active__tab__navigation"));
-    element.classList.add("book-active__tab__navigation");
-
-  } catch (err) {
-    console.error("scrollModalContainerItem:", err.message);
-  }
 };
+
 
 // --- Helpers ---
 
@@ -6909,3 +6940,4 @@ function bookToast(text) {
     console.error("bookToast error:", err);
   }
 }
+
