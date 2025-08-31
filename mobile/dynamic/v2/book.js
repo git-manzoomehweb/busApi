@@ -329,6 +329,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     : "";
                 setFlightGroup();
             }
+
+            // bus - add cms.seat
         }
     } catch (error) {
         // Catch and log any errors that occur during DOMContentLoaded
