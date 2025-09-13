@@ -150,7 +150,7 @@
       <!-- Header -->
       <basis core="call" file="header.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
       <!-- Main-->
-      <main data-mob="true" data-dmnid="[##cms.cms.domainid##]" data-cmsdate="[##cms.cms.date##]">
+      <main data-mob="true"  data-dmnid="[##cms.cms.domainid##]" data-cmsdate="[##cms.cms.date##]">
          <!-- Commands / Requests -->
          <basis core="call" file="bus/book/commands" lid="1" pageindexid="[##cms.cms.pageindexid|(2)##]"></basis>
          <basis core="call" file="book/commands" lid="1"></basis>
@@ -502,6 +502,7 @@
       </main>
       <!-- Footer -->
       <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
+      <script src="[##cms.cms.cdn##]/booking/js/book.js?ver=[##cms.cms.date2##][##cms.cms.time2##]" type="text/javascript"></script>
       <script src="[##cms.cms.cdn##]/booking/js/bus-book.js?ver=[##cms.cms.date2##][##cms.cms.time2##]" type="text/javascript"></script>
    </body>
 </html>

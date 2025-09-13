@@ -5,6 +5,7 @@
 let translations = {};
 let currentLanguage = document.documentElement.lang || 'fa';
 let isRTL = document.documentElement.dir === 'rtl' || currentLanguage === 'fa' || currentLanguage === 'ar';
+
 let selectedMode = null;
 let sessionSearchStorage = null;
 let sessionBookStorage = null;
@@ -35,24 +36,25 @@ let childrenCountBook = 0; // Number of child passengers
 let infantsCountBook = 0; // Number of infant passengers
 const isMobile = document.querySelector("main").dataset.mob === "true";
 const domainId = document.querySelector("main").dataset.dmnid;
+
 let tripNames = [];
 let gridPreviousPassengers;
 let mobGridPreviousPassengers;
-let selectedCountry = null;
-let selectedCountryId = null;
-let selectedCountryCode = null;
 
-// Function to load translate
+
+
 const loadTranslations = async (lang = 'fa') => {
     try {
-        const response = await fetch(`/json/translations?lid=1`);
+        const response = await fetch(`/json/translations`);
         const allTranslations = await response.json();
         translations = allTranslations;
         tripNames = [translate("first_route"), translate("second_route"), translate("third_route"), translate("fourth_route")];
     } catch (error) {
         console.error('loadTranslations:', error);
     }
-};
+}
+
+// Function to translate text
 const translate = (text) => {
     try {
         return translations[text] ? translations[text][currentLanguage] : text;
@@ -66,6 +68,7 @@ const applyDirectionStyles = async () => {
         const direction = isRTL ? 'rtl' : 'ltr';
         document.documentElement.dir = direction;
         document.documentElement.lang = currentLanguage;
+
         // Use existing book-rtl and book-ltr classes
         document.body.classList.toggle('book-rtl', isRTL);
         document.body.classList.toggle('book-ltr', !isRTL);
@@ -144,8 +147,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     "next": `${translate("next")}`,
                     "previous": `${translate("previous")}`,
                     "first": `${translate("first")}`,
-                    "last": `${translate("last")}`
-
+                    "last": `${translate("last")}`,
+                    "information": "نمایش ${from} تا ${to} از مجموع ${total}"
                 }
             },
             noData: (td) => {
@@ -280,7 +283,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             $bc.setSource("cms.flightSafarmarket", [{
                 flight_key: flightId,
                 route_key: routeKey,
-                safarmarketId: safarmarketId,
                 run: true
             }]);
 
@@ -305,7 +307,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             sessionStorage.removeItem("sessionAmenities");
 
         } else if (sessionStorage.getItem("sessionSearch")) {
-            // Parse stored search data
+            // Parse stored flight search data
             sessionSearchStorage = JSON.parse(sessionStorage.getItem("sessionSearch"));
             // Initialize selectedMode 
             selectedMode = sessionSearchStorage.Type;
@@ -321,45 +323,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                 document.querySelector(".book-research__btn__container")
                     .setAttribute("onclick", "window.location='/book/ai'");
             } else {
-                // If not AI, load regular booking data
+                // If not AI, load regular flight booking data
                 sessionBookStorage = sessionStorage.getItem("sessionBook")
                     ? JSON.parse(sessionStorage.getItem("sessionBook"))
                     : "";
-                setProductGroup();
+                setFlightGroup();
             }
+
+            // bus - add cms.seat
         }
     } catch (error) {
         // Catch and log any errors that occur during DOMContentLoaded
         console.error("DOMContentLoaded: " + error.message);
     }
 });
-const getGroupAndId = (selectedMode) => {
-    try {
-        // Check if selectedMode is 'flight'
-        if (selectedMode === 'flight') {
-            return {
-                Group: sessionBookStorage.FlightGroup, // Return FlightGroup for flight mode
-                GroupJson: JSON.stringify(sessionBookStorage.FlightGroup), // Return FlightGroup for flight mode
-                Id: sessionBookStorage.FlightId // Return FlightId for flight mode
-            };
-        }
-        // Check if selectedMode is 'bus'
-        else if (selectedMode === 'bus') {
-            return {
-                Group: sessionBookStorage.busGroup, // Return busGroup for bus mode
-                GroupJson: JSON.stringify(sessionBookStorage.busGroup), // Return busGroup for bus mode
-                Id: sessionBookStorage.busId // Return busId for bus mode
-            };
-        } else {
-            // Return null if selectedMode is neither 'flight' nor 'bus' ,...
-            return { Group: null, Id: null };
-        }
-    } catch (error) {
-        // Log error if any occurs during the execution
-        console.error('Error in getGroupAndId function:', error);
-        return { Group: null, Id: null }; // Return null for both Group and Id in case of error
-    }
-};
 
 /**
  * Subsequent calls will return the cached data instead of fetching again.
@@ -380,6 +357,325 @@ const loadRequestMapping = async () => {
     // Return the loaded data
     return data;
 };
+/**
+* Renders detailed route information for a flight group, including airline, baggage, and flight details.
+* @param {Object} element - The flight group data containing FlightGroup and Baggages.
+* @returns {Promise<string>} HTML string representing detailed route information.
+*/
+const renderRoutesInfoMob = async (element) => {
+    try {
+        /**
+         * Renders airline information with an icon, label, and value.
+         * @param {string} icon - The icon identifier for the SVG sprite.
+         * @param {string} label - The label for the airline information.
+         * @param {string} value - The value to display.
+         * @returns {string} HTML string for airline information or empty string if value is invalid.
+         */
+        const renderAirlineInfo = (icon, label, value) => {
+            if (value && value !== "") {
+                return `
+                  <div class="book-text-sm">
+                      <div class="book-w-8 book-h-8 book-bg-primary-50 book-flex book-items-center book-justify-center book-rounded">
+                           <svg width="25" height="24" class="book-fill-primary-400">
+                              <use href="/booking/images/sprite-booking-icons.svg#${icon}"></use>
+                          </svg>
+                      </div>
+                      <div>
+                          <p class="book-text-zinc-500 book-my-1">${label}:</p>
+                          <p class="book-text-zinc-900">${value}</p>
+                      </div>
+                  </div>`;
+            }
+            return "";
+        };
+
+        /**
+         * Renders HTML for a single route with flight details and optional title for first route in group.
+         * @param {Object} item - Route information.
+         * @param {Object} baggage - Baggage information for the route.
+         * @param {number} index - Index of the route.
+         * @param {boolean} isFirstInGroup - Whether this is the first route in the group.
+         * @param {number} groupIndex - Index of the flight group.
+         * @returns {Promise<string>} HTML string for the route.
+         */
+        const routeHtml = async (item, baggage, index, isFirstInGroup, groupIndex) => {
+            let titleDiv = "";
+            if (isFirstInGroup && index === 0) {
+                if (schemaId === 290) {
+                    titleDiv = `
+            <div class="book-route__title book-text-lg book-font-bold book-mb-4">
+                ${groupIndex === 0 ? translate("outbound_flight") : translate("return_flight")}
+            </div>`;
+                } else if (schemaId === 292) {
+                    const routeNames = [translate("first_route"), translate("second_route"), translate("third_route"), translate("fourth_route")];
+                    const name = routeNames[groupIndex];
+                    titleDiv = `
+            <div class="book-route__title book-text-lg book-font-bold book-mb-4">
+                ${name}
+            </div>`;
+                }
+            }
+
+            return `
+          <div class="book-route__info">
+              ${titleDiv}
+              <div class="book-mb-2">
+                  <div class="book-flex book-items-stretch">
+                      <div class="book-flight__details__progress__line book-bg-zinc-300 book-ml-4 book-mr-2 book-relative">
+                          <svg width="26" height="40" class="book-fill-primary-400 book-absolute book--right-3 book-top-1.2 book--translate-y-1.2 book-z-10">
+                              <use href="/booking/images/sprite-booking-icons.svg#path-icon"></use>
+                          </svg>
+                      </div>
+                      <div class="book-flex book-flex-col book-px-3 book-items-stretch book-w-full">
+                          <div class="book-border-b book-border-zinc-300 book-mb-3 book-pb-4">
+                              <h5 class="book-text-xm book-font-bold book-text-zinc-900">${item.OriginAirport}</h5>
+                              <h5 class="book-text-xm book-font-bold book-text-zinc-900 book-my-1">${item.DepartureTime}</h5>
+                              <p class="book-text-zinc-500 book-text-sm">${await renderFormatterDate(item.DepartureDate)}</p>
+                          </div>
+                          <div>
+                              <h6 class="book-text-sm book-text-zinc-900">${await renderAirport(item.OriginAirport)}</h6>
+                              <p class="book-text-zinc-600 book-text-sm book-my-2">
+                                  ${await renderCity(item.OriginAirport)}, ${await renderCountry(item.OriginAirport)}
+                              </p>
+                              <div class="book-flex book-text-sm book-items-center book-gap-2">
+                                  <div>
+                                      ${await renderAirlineLogo(item.AirlineCode, '5', '50', '20')}
+                                  </div>
+                                  <span class="book-text-zinc-900 book-text-sm">
+                                      ${await renderAirlineName(item.AirlineCode)} ${item.FlightNumber}
+                                  </span>
+                              </div>
+                              ${await renderOperatingAirlineCode(item)}
+                          </div>
+                          <div class="book-text-sm book-text-primary-400 book-my-3">
+                              ${translate("flight_duration")}<span class="${isRTL ? 'book-mr-1' : 'book-ml-1'}">${await renderFormatterDuration(item.Duration)}</span>
+                          </div>
+                          <div class="book-flex book-gap-5 book-my-3">
+                                ${renderAirlineInfo("class-details-icon", translate("ticket_class"), `${await renderFlightClass(item.Class)}`)}
+                                ${renderAirlineInfo("wheel-bag-details-icon", translate("allowed_baggage"), await renderBaggages(baggage))}
+                                ${renderAirlineInfo("ticket-details-icon", translate("fare_class"), item.ClassCode)}
+                                ${renderAirlineInfo("plane-details-icon", translate("aircraft_type"), item.AirCraft)}
+                          </div>
+                          <div class="book-border-b book-border-zinc-300 book-my-3 book-pb-4">
+                              <h6 class="book-text-sm book-text-zinc-900">${await renderAirport(item.DestinationAirport)}</h6>
+                              <p class="book-text-zinc-600 book-text-sm book-my-2">
+                                  ${await renderCity(item.DestinationAirport)}, ${await renderCountry(item.DestinationAirport)}
+                              </p>
+                          </div>
+                          <div>
+                              <h5 class="book-text-xm book-font-bold book-text-zinc-900">${item.DestinationAirport}</h5>
+                              <h5 class="book-text-xm book-font-bold book-text-zinc-900 book-my-1">${item.ArrivalTime}</h5>
+                              <p class="book-text-zinc-500 book-text-sm">${await renderFormatterDate(item.ArrivalDate)}</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              ${await renderConnectionTime(item.ConnectionTime)}
+          </div>`;
+        };
+
+        let output = "";
+        for (let groupIndex = 0; groupIndex < (element.FlightGroup || []).length; groupIndex++) {
+            const flightGroup = element.FlightGroup[groupIndex];
+
+            const routeHtmls = await Promise.all(
+                (flightGroup.RoutesInfo || []).map((item, i) =>
+                    routeHtml(item, element.Baggages?.[i], i, true, groupIndex)
+                )
+            );
+
+            output += routeHtmls.join('');
+        }
+
+        return output;
+    } catch (error) {
+        console.error(`renderRoutesInfoMob: ${error.message}`);
+        return "";
+    }
+};
+const renderRoutesInfoPc = async (element) => {
+    try {
+        const renderAirlineInfo = (icon, labelKey, value) => {
+            try {
+                if (value && value !== "") {
+                    return `
+                        <div class="">
+                            <div class="book-w-10 book-h-10 book-bg-primary-50 book-flex book-items-center book-justify-center book-rounded book-ml-2">
+                                <svg width="25" height="24" class="book-fill-primary-400">
+                                    <use href="/booking/images/sprite-booking-icons.svg#${icon}"></use>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="book-text-zinc-500 book-my-2">${translate(labelKey)}:</p>
+                                <p class="book-text-zinc-900">${value}</p>
+                            </div>
+                        </div>`;
+                }
+                return "";
+            } catch (error) {
+                console.error("renderAirlineInfo: " + error.message);
+                return "";
+            }
+        };
+
+        const routeHtml = async (item, baggage, index, isFirstInGroup, groupIndex) => {
+            let titleDiv = "";
+
+            if (isFirstInGroup && index === 0) {
+
+                if (schemaId === 290) {
+
+                    const titleKey = groupIndex === 0 ? "flight_outbound" : "flight_inbound";
+                    titleDiv = `
+                        <div class="book-route__title book-text-lg book-font-bold book-mb-4">
+                            ${translate(titleKey)}
+                        </div>`;
+                } else if (schemaId === 292) {
+                    const routeKeys = ["route_1", "route_2", "route_3", "route_4"];
+                    const routeKey = routeKeys[groupIndex] || null;
+                    const name = routeKey ? translate(routeKey) : `Route ${groupIndex + 1}`;
+                    titleDiv = `
+                        <div class="book-route__title book-text-lg book-font-bold book-mb-4">
+                            ${name}
+                        </div>`;
+                }
+            }
+
+            return `
+                <div class="book-route__info">
+                    ${titleDiv}
+                    <div class="book-flex book-mb-4">
+                        <div class="book-flex">
+                            <div class="book-flight__details__progress__line book-ml-3 book-mr-3 book-relative">
+                                <svg width="26" height="40" class="book-fill-primary-400 book-absolute book--right-3 book-z-10">
+                                    <use href="/booking/images/sprite-booking-icons.svg#path-icon"></use>
+                                </svg>
+                                <svg width="26" height="40" class="book-fill-primary-400 book-absolute book--right-3 book--bottom-3 book-z-10">
+                                    <use href="/booking/images/sprite-booking-icons.svg#tag-details-icon"></use>
+                                </svg>
+                            </div>
+                            <div class="book-flex book-flex-col book-border-l book-items-center book-justify-between book-border-zinc-300 book-px-2 book-ml-3">
+                                <div>
+                                    <h5 class="book-text-xl book-font-bold book-text-zinc-900">${item.OriginAirport}</h5>
+                                    <h5 class="book-text-xl book-font-bold book-text-zinc-900 book-my-2">${item.DepartureTime}</h5>
+                                    <p class="book-text-zinc-500 book-text-sm">${await renderFormatterDate(item.DepartureDate)}</p>
+                                </div>
+                                <div class="book-text-sm book-text-primary-400  book-w-40">
+                                     ${translate("flight_duration")}<span class="${isRTL ? 'book-mr-1' : 'book-ml-1'}">${await renderFormatterDuration(item.Duration)}</span>
+                                </div>
+                                <div>
+                                    <h5 class="book-text-xl book-font-bold book-text-zinc-900">${item.DestinationAirport}</h5>
+                                    <h5 class="book-text-xl book-font-bold book-text-zinc-900 book-my-2">${item.ArrivalTime}</h5>
+                                    <p class="book-text-zinc-500 book-text-sm">${await renderFormatterDate(item.ArrivalDate)}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="book-flex">
+                            <div class="book-flex book-flex-col">
+                                <div>
+                                    <h6 class="book-text-lg book-text-zinc-900">${await renderAirport(item.OriginAirport)}</h6>
+                                    <p class="book-text-zinc-600 book-text-sm book-my-2">
+                                        ${await renderCity(item.OriginAirport)}, ${await renderCountry(item.OriginAirport)}
+                                    </p>
+                                    <div class="book-flex book-items-center book-gap-2">
+                                        <div class="">
+                                            ${await renderAirlineLogo(item.AirlineCode, '5', '50', '20')}
+                                        </div>
+                                        <span class="book-text-zinc-900 book-text-sm">
+                                            ${await renderAirlineName(item.AirlineCode)} ${item.FlightNumber}
+                                        </span>
+                                    </div>
+                                    ${await renderOperatingAirlineCode(item)}
+                                </div>
+                                <div class="book-text-sm book-my-5">
+                                    <div class="book-grid book-grid-cols-2 book-gap-2">
+                                        ${renderAirlineInfo("class-details-icon", "ticket_class", `${await renderFlightClass(item.Class)}`)}
+                                        ${renderAirlineInfo("wheel-bag-details-icon", "baggage_allowance", await renderBaggages(baggage))}
+                                        ${renderAirlineInfo("ticket-details-icon", "fare_class", item.ClassCode)}
+                                        ${renderAirlineInfo("plane-details-icon", "aircraft_type", item.AirCraft)}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="book-text-lg book-text-zinc-900">${await renderAirport(item.DestinationAirport)}</h6>
+                                    <p class="book-text-zinc-600 book-text-sm book-my-2">
+                                        ${await renderCity(item.DestinationAirport)}, ${await renderCountry(item.DestinationAirport)}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    ${await renderConnectionTimeRoute(item)}
+                </div>`;
+        };
+
+        let output = "";
+        for (let groupIndex = 0; groupIndex < (element.FlightGroup || []).length; groupIndex++) {
+            const flightGroup = element.FlightGroup[groupIndex];
+            const routeHtmls = await Promise.all(
+                (flightGroup.RoutesInfo || []).map((item, i) =>
+                    routeHtml(item, element.Baggages?.[i], i, true, groupIndex)
+                )
+            );
+            output += routeHtmls.join('');
+        }
+
+        return output;
+    } catch (error) {
+        console.error("renderRoutesInfoPc: " + error.message);
+        return "";
+    }
+};
+
+/**
+ * Renders connection time for a route stop in translated format.
+ * @param {Object} element - Route data containing ConnectionTime and DestinationAirport.
+ * @returns {Promise<string>} HTML string representing connection time or empty string if invalid.
+ */
+const renderConnectionTimeRoute = async (element) => {
+    try {
+        if (element?.ConnectionTime > 0) {
+            const hours = Math.floor(element.ConnectionTime / 60);
+            const minutes = element.ConnectionTime % 60;
+
+            return `<div class="book-my-10 book-flex book-text-zinc-800 book-text-sm book-justify-between book-bg-zinc-100 book-rounded-xl book-p-3">
+              <div class="book-flex book-gap-1">
+                  <svg width="15" height="16">
+                      <use href="/booking/images/sprite-booking-icons.svg#hourglass-icon"></use>
+                  </svg>
+                  <span>${translate("connection_time")}: ${hours} ${translate("hour")} ${translate("and")} ${minutes} ${translate("minute")}</span>
+              </div>
+              <div>
+                  (${element.DestinationAirport})
+                  ${await renderAirport(element.DestinationAirport)}
+              </div>
+          </div>`;
+        }
+        return "";
+    } catch (error) {
+        console.error(`renderConnectionTimeRoute: ${error.message}`);
+        return "";
+    }
+};
+/**
+ * Formats a date to Persian (Shamsi) format with weekday, day, and month.
+ * @param {string} element - The date string to format.
+ * @returns {string} Formatted Persian date or empty string on error.
+ */
+const renderFormatterDate = async (element) => {
+    try {
+        const gregorianDate = new Date(element);
+        const formatter = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long'
+        });
+        return formatter.format(gregorianDate);
+    } catch (error) {
+        console.error("renderFormatterDate: " + error.message);
+        return "";
+    }
+};
+
 /**
  * Formats duration string (e.g., '2h30m') to Persian format.
  * @param {string} str - Duration string to format.
@@ -406,6 +702,210 @@ const renderFormatterDuration = (str) => {
 };
 
 
+/**
+ * Renders the country name for a given location code.
+ * @param {string} element - Location code.
+ * @returns {string} Country name or empty string on error.
+ */
+const renderCountry = async (element) => {
+    try {
+        const mergedLocation = dictionaries.reduce((acc, item) => ({ ...acc, ...item.location }), {});
+        return mergedLocation[element]?.country || "";
+    } catch (error) {
+        console.error("renderCountry: " + error.message);
+        return "";
+    }
+};
+
+/**
+ * Renders an airline logo image.
+ * @param {string} element - Airline code.
+ * @param {string} heightClass - CSS class for image height.
+ * @param {string} width - Image width.
+ * @param {string} height - Image height.
+ * @param {Object} [item] - Optional route data for multi-airline check.
+ * @returns {string} HTML string for airline logo or empty string on error.
+ */
+const renderAirlineLogo = async (element, heightClass, width, height, item) => {
+    try {
+        const mergedCarriers = dictionaries.reduce((acc, item) => ({ ...acc, ...item.carriers }), {});
+        const carrier = mergedCarriers[element] || { image: "", name: "" };
+        const imgTag = `<img class="book-route__airline book-mx-auto book-h-${heightClass}" src="/${carrier.image}" width="${width}" height="${height}" alt="${carrier.name}"/>`;
+
+        if (item?.RoutesInfo?.length > 1) {
+            const codes = item.RoutesInfo.map(route => route.AirlineCode);
+            const uniqueCodes = [...new Set(codes)];
+            if (uniqueCodes.length > 1) {
+                return `<div class="book-multi__airlines">${imgTag}</div>`;
+            }
+            return imgTag;
+        }
+        return imgTag;
+    } catch (error) {
+        console.error("renderAirlineLogo: " + error.message);
+        return "";
+    }
+};
+
+/**
+ * Renders codeshare indicator for operating airline.
+ * @param {Object} element - Route data containing airline codes.
+ * @returns {string} HTML string for codeshare info or empty string.
+ */
+const renderOperatingAirlineCode = async (element) => {
+    try {
+        if (element.OperatingAirlineCode) {
+            if (element.OperatingAirlineCode !== element.AirlineCode) {
+                return `
+                    <div class="book-text-zinc-600 book-text-sm book-my-2 book-mx-3">
+                        <span class="book-mr-1">Operated By</span>
+                        <span class="book-mr-1">${element.OperatingAirlineCode}</span><span>(${await renderAirlineName(element.OperatingAirlineCode)})</span>
+                    </div>
+                `;
+            }
+        }
+        return "";
+    } catch (error) {
+        console.error("renderOperatingAirlineCode: " + error.message);
+        return "";
+    }
+};
+
+/**
+ * Renders the flight class in Persian.
+ * @param {string} element - Flight class code.
+ * @returns {string} Persian flight class name or default "فرست" on error.
+ */
+const renderFlightClass = async (element) => {
+    try {
+        const key = element.toLowerCase();
+        const classKeys = {
+            economy: "flight_class_economy",
+            businessclass: "flight_class_business",
+            firstclass: "flight_class_first"
+        };
+
+        const translationKey = classKeys[key] || "flight_class_first";
+        return translate(translationKey);
+    } catch (error) {
+        console.error("renderFlightClass: " + error.message);
+        return "";
+    }
+};
+
+
+/**
+ * Renders airline logo based on airline code.
+ * @param {string} element - Airline code.
+ * @returns {string} HTML string of airline logo or empty string on error.
+ */
+const renderAirlineCode = async (element) => {
+    try {
+        const mergedCarriers = dictionaries.reduce((acc, item) => ({ ...acc, ...item.carriers }), {});
+        return `<img src="/${mergedCarriers[element].image}" width="70" height="28" alt="${mergedCarriers[element].name}"/>`;
+    } catch (error) {
+        console.error("renderAirlineCode: " + error.message);
+        return "";
+    }
+};
+
+/**
+ * Renders the airline name for a given airline code.
+ * @param {string} element - Airline code.
+ * @returns {string} Airline name or empty string on error.
+ */
+const renderAirlineName = async (element) => {
+    try {
+        const mergedCarriers = dictionaries.reduce((acc, item) => ({ ...acc, ...item.carriers }), {});
+        return mergedCarriers[element]?.name || "";
+    } catch (error) {
+        console.error("renderAirlineName: " + error.message);
+        return "";
+    }
+};
+
+/**
+ * Renders baggage information.
+ * @param {Object} element - Baggage data.
+ * @param {string} [style] - Optional CSS style for baggage info.
+ * @returns {string} HTML string for baggage info or empty string on error.
+ */
+const renderBaggages = async (element, style) => {
+    try {
+        if (!element) return "";
+        if (Number(element?.Baggage) === 0) {
+            return `<span class="book-baggage__info ${style ? 'book-font-bold' : ''}">${translate("no_baggage_allowed")}</span>`;
+        };
+        const marginLeftClass = isRTL ? 'book-ml-1' : 'book-mr-1';
+        const baggageHTML = `
+    <span class="book-baggage__info ${style ? 'book-relative book-top-[2px] book-font-bold' : ''}">
+        ${element.Baggage}
+        <span class="${marginLeftClass}">${element.Unit || ""}</span>
+    </span>`;
+        return baggageHTML.trim();
+    } catch (error) {
+        console.error("renderBaggages: " + error.message);
+        return "";
+    }
+};
+
+
+/**
+ * Renders connection time for a route stop.
+ * @param {Object} element - Route data with connection time.
+ * @returns {string} HTML string for connection time or empty string.
+ */
+const renderConnectionTime = async (element) => {
+    try {
+        if (element > 0) {
+            const hours = Math.floor(element / 60);
+            const minutes = element % 60;
+            const marginRightClass = isRTL ? 'book-mr-1' : 'book-ml-1';
+
+            return `<div class="book-text-xs book-text-zinc-600 ${isMobile ? 'book-mb-2' : 'book-mt-2'} book-flex book-items-center">
+              <svg width="15" height="15" class="${isMobile ? '' : 'book-mx-auto'}">
+                  <use href="/booking/images/sprite-booking-icons.svg#time-circle-icon"></use>
+              </svg>
+              <span class="${marginRightClass} book-relative book-top-[2px]">${hours}:${minutes}</span>
+          </div>`;
+        }
+        return "";
+    } catch (error) {
+        console.error(`renderConnectionTime: ${error.message}`);
+        return "";
+    }
+};
+
+
+/**
+ * Renders the city name for a given location code.
+ * @param {string} element - Location code.
+ * @returns {string} City name or empty string on error.
+ */
+const renderCity = async (element) => {
+    try {
+        const mergedLocation = dictionaries.reduce((acc, item) => ({ ...acc, ...item.location }), {});
+        return mergedLocation[element]?.city || "";
+    } catch (error) {
+        console.error("renderCity: " + error.message);
+        return "";
+    }
+};
+
+/**
+ * Renders airport name based on airport code.
+ * @param {string} element - Airport code.
+ * @returns {string} Airport name or empty string on error.
+ */
+const renderAirport = async (element) => {
+    try {
+        const mergedLocation = dictionaries.reduce((acc, item) => ({ ...acc, ...item.location }), {});
+        return mergedLocation[element].airport;
+    } catch (error) {
+        console.error("renderAirport: " + error.message);
+        return "";
+    }
+};
 
 /**
  * Renders fare rules as title-text pairs.
@@ -474,18 +974,18 @@ const renderPassengerFare = async (element) => {
                   </li>`;
                 if (item.Commission && item.Commission !== '0') {
                     output += `<li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
-                      <span>${translate("total_price")} ${passengerType}<span class="book-mx-1">(${item.Count}<span class="book-mx-1">${translate("people")}</span>)</span></span>
+                      <span>${translate("total_price")} ${passengerType}<span class="book-mx-1">(${item.Count}<span class="book-mx-1">نفر</span>)</span></span>
                       <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.Total)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
                   </li><li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
                         <span>${translate("commission")}</span>
                         <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.Commission)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
                     </li><li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
-                        <span>${translate("amount_after_commission")} ${passengerType}<span class="book-mx-1">(${item.Count}<span class="book-mx-1">${translate("people")}</span>)</span></span>
+                        <span>${translate("amount_after_commission")} ${passengerType}<span class="book-mx-1">(${item.Count}<span class="book-mx-1">نفر</span>)</span></span>
                         <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.TotalCommission)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
                     </li></ul>`;
                 } else {
                     output += `<li class="book-flex book-justify-between book-py-3 book-px-2 book-bg-zinc-100 book-rounded-lg book-mb-2">
-                      <span>${translate("total_price")} ${passengerType}<span class="book-mx-1">(${item.Count}<span class="book-mx-1">${translate("people")}</span>)</span></span>
+                      <span>${translate("total_price")} ${passengerType}<span class="book-mx-1">(${item.Count}<span class="book-mx-1">نفر</span>)</span></span>
                       <span><span class="book-ltr book-inline-block">${new Intl.NumberFormat().format(item.Total)}</span>${await renderCurrency(element.PriceInfo.Currency)}</span>
                   </li>
                  </ul>`;
@@ -513,8 +1013,7 @@ const renderCurrency = async (element, type) => {
         if (type === "input") {
             return mergedCurrency[element]; // Return raw currency value
         }
-        const marginClass = isRTL ? 'book-mr-1' : 'book-ml-1';
-        return `<span class="${marginClass} book-text-xs book-currency">${mergedCurrency[element] || ""}</span>`;
+        return `<span class="book-text-xs book-mr-1">${mergedCurrency[element]}</span>`; // Return HTML span with symbol
     } catch (error) {
         console.error("renderCurrency: " + error.message);
         return "";
@@ -585,14 +1084,12 @@ const renderCheckCoupon = async (element) => {
             productGroupField,
             productIdField
         } = getServiceMappingInfo(selectedMode);
-
         const checkCouponUrl = requests.checkCoupon;
-        const { GroupJson, Id } = getGroupAndId(selectedMode);
         // Trigger API call to check coupon
         $bc.setSource("cms.checkCoupon", [{
             SessionId: sessionSearchStorage.SessionId,
-            Group: GroupJson,
-            Id: Id,
+            Group: JSON.stringify(sessionBookStorage.FlightGroup),
+            Id: sessionBookStorage.FlightId,
             selectedMode: selectedMode,
             accountType,
             price,
@@ -636,7 +1133,6 @@ const renderCompanyRule = async () => {
     try {
         // Set data-run attribute to indicate processing completion
         document.querySelector(".book-company__rule__container input").setAttribute("data-run", "1");
-        document.querySelector(".book-company__rule__container").querySelector(".book-modal__container")?.classList.toggle("book-hidden");
     } catch (error) {
         console.error("renderCompanyRule: " + error.message);
     }
@@ -669,7 +1165,197 @@ const renderBankList = async (element) => {
         console.error("renderBankList: " + error.message);
     }
 };
+/**
+ * Renders the flight search UI based on stored flight group data.
+ * Updates cabin class, flight type, passenger summary, and trip details in the UI.
+ */
+const renderResearch = async () => {
+    try {
+        // Validate sessionStorage data
+        if (!sessionSearchStorage || !sessionSearchStorage.SchemaId) {
+            throw new Error("Missing SchemaId in sessionSearchStorage");
+        }
+        if (!sessionBookStorage || !sessionBookStorage.FlightGroup || !sessionBookStorage.PriceInfo) {
+            throw new Error("Invalid or missing data in sessionBookStorage");
+        }
 
+
+
+        // Update cabin class display
+        const cabinClass = document.querySelector(".book-cabinClass__searched__content");
+        if (!cabinClass) {
+            throw new Error("Cabin class element not found");
+        }
+
+        const cabinMap = {
+            Economy: { text: "اکونومی", class: "Economy" },
+            BusinessClass: { text: "بیزینس", class: "BusinessClass" },
+            FirstClass: { text: "فرست", class: "FirstClass" }
+        };
+        const flightClass = sessionBookStorage.FlightGroup[0].Class;
+        const cabin = cabinMap[flightClass] || { text: "اکونومی", class: "Economy" }; // Fallback to Economy
+        cabinClass.textContent = cabin.text;
+        cabinClass.dataset.class = cabin.class;
+
+        // Update flight type selection
+        const flightTypes = document.querySelectorAll('.book-module__flight__type li');
+        if (flightTypes.length < 3) {
+            throw new Error("Flight type elements not found or insufficient");
+        }
+        flightTypes.forEach(item => item.classList.remove('book-active__module__flight__type'));
+        const typeIndex = { 291: 0, 290: 1, 292: 2 }[schemaId];
+        if (flightTypes[typeIndex]) {
+            flightTypes[typeIndex].classList.add('book-active__module__flight__type');
+        } else {
+            console.warn(`Invalid schemaId: ${schemaId}, defaulting to first flight type`);
+            flightTypes[0].classList.add('book-active__module__flight__type');
+        }
+
+        // Update passenger summary
+        const passengerItems = document.querySelectorAll('.book-passenger__searched__items li');
+        const passengerCountInput = document.querySelector('.book-passenger__count');
+        if (passengerItems.length < 3 || !passengerCountInput) {
+            throw new Error("Passenger items or count input not found");
+        }
+
+        const passengerFare = sessionBookStorage.PriceInfo.PassengerFare;
+        const passengerParts = [];
+        if (passengerFare[0].Count > 0) passengerParts.push(`${passengerFare[0].Count} ${translate("passenger_adult")}`);
+        if (passengerFare[1].Count > 0) passengerParts.push(`${passengerFare[1].Count} ${translate("passenger_child")}`);
+        if (passengerFare[2].Count > 0) passengerParts.push(`${passengerFare[2].Count} ${translate("passenger_infant")}`);
+        const passengerSummary = passengerParts.join(' / ') || `1 ${translate("passenger_adult")}`;
+
+        passengerCountInput.value = passengerSummary;
+
+        passengerItems[0].querySelector(".book-passenger__count__value").innerHTML = passengerFare[0].Count || 0;
+        passengerItems[1].querySelector(".book-passenger__count__value").innerHTML = passengerFare[1].Count || 0;
+        passengerItems[2].querySelector(".book-passenger__count__value").innerHTML = passengerFare[2].Count || 0;
+
+        // Update passenger UI for single adult case
+        if (passengerFare[0].Count === 1 && passengerFare[1].Count === 0 && passengerFare[2].Count === 0) {
+            updateBookPassengerUI(); // Assumed to be defined elsewhere
+        }
+
+        // Update trip details
+        if (sessionBookStorage.FlightGroup.length === 0) {
+            throw new Error("No flight group data available");
+        }
+
+        const departureLocationName = document.querySelector(".departure__location__name");
+        const arrivalLocationName = document.querySelector(".arrival__location__name");
+        const departureDate = document.querySelector(".departure__date");
+        const arrivalDate = document.querySelector(".arrival__date");
+        const arrivalDateContainer = document.querySelector(".arrival__date__container");
+        if (!departureLocationName || !arrivalLocationName || !departureDate || !arrivalDate || !arrivalDateContainer) {
+            throw new Error("Trip detail elements not found");
+        }
+
+        const flightGroup = sessionBookStorage.FlightGroup;
+        const lastIndex = flightGroup.length - 1;
+
+        if (schemaId === 291) {
+            // One-way trip
+            departureLocationName.value = await renderCity(flightGroup[0].Origin) || "";
+            arrivalLocationName.value = await renderCity(flightGroup[0].Destination) || "";
+            departureLocationName.dataset.id = flightGroup[0].Origin;
+            arrivalLocationName.dataset.id = flightGroup[0].Destination;
+            departureDate.value = convertToPersianDateRetry(flightGroup[0].DepartureDate) || "";
+            departureDate.dataset.date = flightGroup[0].DepartureDate || "";
+        } else if (schemaId === 290) {
+            // Round-trip
+            departureLocationName.value = await renderCity(flightGroup[0].Origin) || "";
+            arrivalLocationName.value = await renderCity(flightGroup[lastIndex].Origin) || "";
+            departureLocationName.dataset.id = flightGroup[0].Origin;
+            arrivalLocationName.dataset.id = flightGroup[lastIndex].Origin;
+            departureDate.value = convertToPersianDateRetry(flightGroup[0].DepartureDate) || "";
+            departureDate.dataset.date = flightGroup[0].DepartureDate || "";
+            arrivalDate.value = convertToPersianDateRetry(flightGroup[lastIndex].ArrivalDate) || "";
+            arrivalDate.dataset.date = flightGroup[lastIndex].ArrivalDate || "";
+            arrivalDateContainer.classList.remove("disabled__date__container");
+        } else {
+            // Multi-city trip
+            const container = document.querySelector("#route__template");
+            if (!container) {
+                throw new Error("Route template container not found");
+            }
+            const templateHTML = container.innerHTML;
+            container.innerHTML = "";
+
+            for (let index = 0; index < flightGroup.length; index++) {
+                const trip = flightGroup[index];
+                const tripClone = document.createElement("div");
+                tripClone.innerHTML = templateHTML.trim();
+                const tripElement = tripClone.firstElementChild;
+
+                // Add trip name
+                const tripNameDiv = document.createElement("div");
+                tripNameDiv.classList.add("route__name", "book-text-sm", "book-mb-1");
+                tripNameDiv.textContent = `${translate("route")} ${tripNames[index] || (index + 1)}`;
+                // Fallback to index
+                tripElement.insertAdjacentElement("afterbegin", tripNameDiv);
+
+                // Update trip details
+                const depInput = tripElement.querySelector(".departure__location__name");
+                const arrInput = tripElement.querySelector(".arrival__location__name");
+                const depDate = tripElement.querySelector(".departure__date");
+                const arrDateContainer = tripElement.querySelector(".arrival__date__container");
+                if (!depInput || !arrInput || !depDate || !arrDateContainer) {
+                    throw new Error("Trip element inputs not found");
+                }
+
+                depInput.value = await renderCity(trip.Origin) || "";
+                arrInput.value = await renderCity(trip.Destination) || "";
+                depInput.dataset.id = trip.Origin;
+                arrInput.dataset.id = trip.Destination;
+                depDate.value = convertToPersianDateRetry(trip.DepartureDate) || "";
+                depDate.dataset.date = trip.DepartureDate || "";
+                arrDateContainer.classList.add("book-hidden");
+
+                // Add delete button for trips 3 and 4
+                if (index === 2 || index === 3) {
+                    const deleteButton = document.createElement("button");
+                    deleteButton.textContent = translate("delete");
+                    deleteButton.type = "button";
+                    deleteButton.classList.add("route__delete", "book-bg-red-500", "book-text-sm", "book-text-white", "book-px-2", "book-py-1", "book-rounded", "book-left-5", "book-top-0", "book-absolute");
+                    deleteButton.onclick = () => deleteRoute(deleteButton); // Assumed to be defined elsewhere
+                    tripElement.appendChild(deleteButton);
+                }
+
+                container.appendChild(tripElement);
+            }
+
+            // Update container styling for multi-city trips
+            container.classList.remove("book-w-3/5");
+            container.classList.add("book-grid", "book-grid-cols-2", "book-gap-4");
+            container.querySelectorAll(".book-min-w-48").forEach(e => e.classList.remove("book-min-w-48"));
+            container.querySelectorAll(".departure__date__container").forEach(e => e.classList.add("book-w-11/12"));
+            const addRouteContainer = document.querySelector(".book__add__roue__container");
+            if (addRouteContainer) {
+                addRouteContainer.classList.remove("book-hidden");
+            }
+        }
+    } catch (error) {
+        console.error("renderResearch: " + error.message);
+    }
+};
+/**
+* Converts a Gregorian date to a Persian (Shamsi) date string.
+*/
+const convertToPersianDateRetry = (element) => {
+    try {
+        const gregorianDate = new Date(element);
+        const formatter = new Intl.DateTimeFormat('fa-IR', {
+            calendar: 'persian',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        return formatter.format(gregorianDate);
+    } catch (error) {
+        console.error("convertToPersianDateRetry: " + error.message);
+        return "";
+    }
+};
 /**
 * Updates the passenger UI with current counts and button states.
 */
@@ -779,7 +1465,7 @@ const toggleReserveArrowIcon = (element) => {
  * Toggles API content visibility, clears radio inputs, and triggers data fetch if needed.
  * @param {HTMLElement} element - Trigger element (e.g., checkbox or button).
  * @param {string} type - API type for the data fetch.
- * @param {string} idToFind - ID for the API call.
+ * @param {string} idToFind - Flight ID for the API call.
  * @param {string} renderingClass - Class to add/remove for rendering state.
  */
 const toggleContentApi = (element, type, parent, fromScroll = false) => {
@@ -822,12 +1508,12 @@ const toggleContentApi = (element, type, parent, fromScroll = false) => {
             // Fetch rules on first run if loader exists for other containers
             if (element.dataset.run === "0" && apiContainer.querySelector(".book-api__container__loader")) {
                 content.classList.add('book-api__container__rendering');
-                const { GroupJson, Id } = getGroupAndId(selectedMode);
+
                 $bc.setSource("cms.rule", {
                     type,
                     SessionId: sessionSearchStorage.SessionId,
-                    Id: Id,
-                    Group: GroupJson,
+                    FlightId: sessionBookStorage.FlightId,
+                    FlightGroup: JSON.stringify(sessionBookStorage.FlightGroup),
                     rkey: getSearchCookie("rkey") || "",
                     run: true
                 });
@@ -994,7 +1680,7 @@ const toggleCompanyRule = (element) => {
         // Trigger API call if not yet run
         if (checkbox.getAttribute("data-run") === "0") {
             $bc.setSource("cms.companyRules", true);
-
+            checkbox.setAttribute("data-run", "1");
         }
     } catch (err) {
         console.error(`toggleCompanyRule: ${err.message}, Line: ${err.lineNumber || 'unknown'}`);
@@ -1071,6 +1757,636 @@ const onProcessedCheckCoupon = async (args) => {
     }
 };
 
+
+/**
+ * Processes Safarmarket flight API response, updates sessionStorage, and displays warning modal if needed.
+ * @param {Object} args - API response object containing status and data.
+ */
+const onProcessedFlightSafarmarket = async (args) => {
+    try {
+        // Trigger research API call
+        $bc.setSource("cms.session", true);
+
+        const response = args.response;
+        if (response.status !== 200) {
+            throw new Error(`Unexpected response status: ${response.status}`);
+        }
+
+        const responseJson = await response.json();
+        if (!responseJson) {
+            throw new Error("Invalid response JSON or missing SessionId");
+        }
+
+        // Save flight data to sessionStorage
+        sessionStorage.setItem("sessionBook", JSON.stringify(responseJson));
+
+        // Update global variable
+        sessionBookStorage = responseJson;
+
+        // Initialize or update sessionSearch in sessionStorage
+        sessionStorage.setItem("sessionSearch", JSON.stringify({}));
+        sessionSearchStorage = sessionStorage.getItem("sessionSearch")
+            ? JSON.parse(sessionStorage.getItem("sessionSearch"))
+            : {};
+
+        // Set schemaId based on FlightGroup length
+        if (Array.isArray(responseJson.FlightGroup)) {
+            const flightGroupCount = responseJson.FlightGroup.length;
+            if (flightGroupCount === 1) {
+                sessionSearchStorage.SchemaId = 291;
+                sessionSearchStorage.Type = "flight";
+            } else if (flightGroupCount === 2) {
+                sessionSearchStorage.SchemaId = 290;
+                sessionSearchStorage.Type = "flight";
+            }
+            // Initialize selectedMode 
+            selectedMode = "flight";
+
+            // Update sessionSearch in sessionStorage
+            sessionStorage.setItem("sessionSearch", JSON.stringify(sessionSearchStorage));
+        }
+
+        // Show modal if message exists
+        if (responseJson.message && responseJson.message.description) {
+            console.log('Warning message received:', responseJson.message.description);
+            const modalHtml = `
+                <div class="book-warning__message__modal__container book-modal__container book-fixed book-top-0 book-left-0 book-w-screen book-h-screen book-overflow-hidden book-z-50">
+                    <div class="book-modal__content book-bg-white book-fixed book-inset-x-0 book-top-1.2 book-w-[560px] book-rounded-2xl book-mx-auto book-p-5 book-text-center">
+                        <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
+                            <use xlink:href="/booking/images/sprite-booking-icons.svg#warning-icon"></use>
+                        </svg>
+                        <div class="book-warning__message book-text-2xl book-font-bold book-mt-6">
+                            ${responseJson.message.description}
+                        </div>
+                        <div class="book-flex book-justify-between book-mt-6">
+                            <button onclick="warningConfirm(this)" type="button"
+                                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-white hover:book-text-primary-400">
+                                حله
+                            </button>
+                            <button onclick="warningReject(this)" type="button"
+                                class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-primary-400 hover:book-text-white">
+                                کنکله
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            document.body.insertAdjacentHTML("beforeend", modalHtml);
+        }
+    } catch (error) {
+        console.error("onProcessedFlightSafarmarket: " + error.message);
+    }
+};
+
+/**
+ * Processes flight group API response, updates sessionStorage, and displays a warning modal if needed.
+ * @param {Object} args - API response object containing the response data.
+ */
+const onProcessedFlightAi = async (args) => {
+    try {
+        // Trigger research API call
+        $bc.setSource("cms.research", true);
+
+        const response = args.response;
+        if (response.status !== 200) {
+            throw new Error(`Unexpected response status: ${response.status}`);
+        }
+
+        const responseJson = await response.json();
+        if (!responseJson || !responseJson.SessionId) {
+            throw new Error("Invalid response JSON or missing SessionId");
+        }
+
+        // Update session ID in sessionStorage
+        sessionSearchStorage.SessionId = responseJson.SessionId;
+        sessionStorage.setItem("sessionSearch", JSON.stringify(sessionSearchStorage));
+        sessionStorage.setItem("sessionBook", JSON.stringify(responseJson));
+
+        // Update sessionBookStorage
+        sessionBookStorage = sessionStorage.getItem("sessionBook")
+            ? JSON.parse(sessionStorage.getItem("sessionBook"))
+            : "";
+        if (!sessionBookStorage) {
+            throw new Error("Failed to parse sessionSearch from sessionStorage");
+        }
+
+        // Set flight group (assumed to be defined elsewhere)
+        setFlightGroup();
+
+        // Display warning modal if message exists
+        if (responseJson.message && responseJson.message.description) {
+            console.log('Warning message received:', responseJson.message.description);
+            const modalHtml = `
+                <div class="book-warning__message__modal__container book-modal__container book-fixed book-top-0 book-left-0 book-w-screen book-h-screen book-overflow-hidden book-z-50">
+                    <div class="book-modal__content book-bg-white book-fixed book-inset-x-0 book-top-1.2 book-w-[560px] book-rounded-2xl book-mx-auto book-p-5 book-text-center">
+                        <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
+                            <use xlink:href="/booking/images/sprite-booking-icons.svg#warning-icon"></use>
+                        </svg>
+                        <div class="book-warning__message book-text-2xl book-font-bold book-mt-6">
+                            ${responseJson.message.description}
+                        </div>
+                        <div class="book-flex book-justify-between book-mt-6">
+                            <button onclick="warningConfirm(this)" type="button"
+                                class="book-min-w-48 book-text-white book-bg-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-white hover:book-text-primary-400">
+                                حله
+                            </button>
+                            <button onclick="warningReject(this)" type="button"
+                                class="book-min-w-48 book-text-primary-400 book-border book-border-solid book-border-primary-400 book-rounded-lg book-p-3 hover:book-bg-primary-400 hover:book-text-white">
+                                کنکله
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            document.body.insertAdjacentHTML("beforeend", modalHtml);
+        }
+    } catch (error) {
+        console.error("onProcessedFlightAi: " + error.message);
+    }
+};
+
+/**
+ * Processes flight API rules for rendering flight rules, baggage, and services.
+ * @param {Object} args - API response object containing the response data.
+ */
+const onProcessedFlightApiRule = async (args) => {
+    try {
+        // Validate response
+        const { response } = args;
+        if (!response || response.status !== 200) return;
+
+        // Parse JSON response
+        const responseJson = await response.json();
+        if (!responseJson) return;
+
+        // Get main rendering container
+        const renderingContainer = document.querySelector(".book-api__container__rendering");
+        if (!renderingContainer) return;
+
+        // Helper function to create container if it doesn't exist
+        const ensureContainer = (parent, className) => {
+            let container = parent.querySelector(`.${className}`);
+            if (!container) {
+                container = document.createElement("div");
+                container.className = className;
+                parent.appendChild(container);
+            }
+            return container;
+        };
+
+        // Helper function to generate passenger table
+        const generatePassengerTable = (tableId, type) => {
+            let rows = '';
+            let passengerIndex = 1;
+            const ordinals = [
+                translate("first"),
+                translate("second"),
+                translate("third"),
+                translate("fourth"),
+                translate("fifth"),
+                translate("sixth"),
+                translate("seventh"),
+                translate("eighth"),
+                translate("ninth")
+            ];
+            const typeCounters = { Adult: 0, Child: 0, Infant: 0 };
+            const typeMap = {
+                Adult: translate("passenger_adult"),
+                Child: translate("passenger_child"),
+                Infant: translate("passenger_infant")
+            };
+
+            const passengers = sessionBookStorage?.PriceInfo?.PassengerFare || [];
+            const passengersData = document.querySelector('.book-passengers__content:not(.book-hidden)');
+            const passengerContainers = passengersData?.querySelectorAll('.book-passenger__container') || [];
+
+            passengers.forEach(p => {
+                const count = Number(p.Count || 0);
+                if (count <= 0) return;
+
+                const passengerTypeFa = typeMap[p.passengerType] || p.passengerType;
+                for (let i = 0; i < count; i++) {
+                    const ordinalIndex = typeCounters[p.passengerType]++;
+                    const ordinalText = ordinals[ordinalIndex] || `${translate("number")} ${ordinalIndex + 1}`;
+                    let fullTitle = `${passengerTypeFa} ${ordinalText}`;
+
+                    const container = passengerContainers[passengerIndex - 1];
+                    if (container) {
+                        const firstName = container.querySelector('.book-FirstName')?.value?.trim();
+                        const lastName = container.querySelector('.book-LastName')?.value?.trim();
+                        if (firstName && lastName) fullTitle = `${firstName} ${lastName}`;
+                    }
+                    rows += `
+                        <tr class="book-border book-passenger__row" data-index="${passengerIndex}">
+                            <td class="book-p-2">
+                                <span class="warning-icon book-h-5 book-leading-6 book-w-5 book-inline-block book-mr-2 book-rounded-full">
+                                    <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <use href="/booking/images/sprite-booking-icons.svg#check-icon"></use>
+                                    </svg>
+                                </span>
+                                ${fullTitle}
+                            </td>
+                            <td class="book-p-2">${translate("not_selected")}</td>
+                            <td class="book-p-2">---</td>
+                        </tr>`;
+                    passengerIndex++;
+                }
+            });
+
+            return `
+                <table class="book-passenger__table book-text-center book-w-full book-text-sm book-border-collapse book-mt-2" id="${tableId}">
+                    <thead>
+                        <tr>
+                            <th class="book-bg-zinc-100 book-border book-p-2 book-rounded-xl">${translate("passenger")}</th>
+                            <th class="book-bg-zinc-100 book-border book-p-2 book-rounded-xl">${type === 'baggage' ? 'بار' : type === 'meal' ? 'غذا' : type === 'seat' ? 'صندلی' : ''}</th>
+                            <th class="book-bg-zinc-100 book-border book-p-2 book-rounded-xl">${translate("price")}</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>`;
+        };
+
+        // Helper function to generate service card
+        const generateServiceCard = async (service, tableId, extraParam = '') => {
+            const currency = await renderCurrency(service.Currency);
+            return `
+                <div class="book-service__card book-p-2 book-border book-mb-2 book-border-zinc-200 book-rounded-md book-text-center book-cursor-pointer book-bg-zinc-50 book-flex book-flex-col book-justify-center hover:book-border-primary-400"
+                    data-id="${service.ServiceId}" onclick="updatePassengerServices(this,'${tableId}', '${service.Description}', ${service.Price}, '${service.Currency}', '${extraParam}')">
+                    <div class="book-mb-2 book-font-arial book-ltr book-text-xs">${service.Description}</div>
+                    <div class="book-text-zinc-500">${new Intl.NumberFormat().format(service.Price)} ${currency}</div>
+                </div>`;
+        };
+
+        // Helper function to generate route section
+        const generateRouteSection = (index, fromCity, toCity, fromCode, toCode, tableId, serviceCards, type) => {
+            const gridClasses = (type !== 'seat' && !isMobile)
+                ? 'book-grid book-grid-cols-3 book-gap-4'
+                : '';
+            return `
+                <div class="book-mb-5 book-excessService__content">
+                    <div
+                        class="book-flex book-justify-between book-items-center book-mb-2 book-text-sm book-font-bold book-cursor-pointer${index === 1 ? ` book-active__roue__excessService` : ''}"
+                        onclick="toggleServiceTable(this,'book-route__service-${type}-${index}')">
+                        <div>
+                            <span>${fromCity}<span class="book-mr-1">(${fromCode})</span></span>
+                            <svg width="24" height="24" class="book-mx-1">
+                                <use href="/booking/images/sprite-booking-icons.svg#left-arrow-icon"></use>
+                            </svg>
+                            <span>${toCity}<span class="book-mr-1">(${toCode})</span></span>
+                        </div>
+                        <div class="book-arrow__icon">
+                            <svg width="24" height="24">
+                                <use href="/booking/images/sprite-booking-icons.svg#${index === 1 ? 'down-arrow-icon' : 'up-arrow-icon'}"></use>
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="book-route__service-${type}-${index}" class="book-route__service ${isMobile ? '' : 'book-flex book-gap-8'} ${index === 1 ? '' : 'book-hidden'}">
+                        <div class="${isMobile ? 'book-w-full book-mb-4' : 'book-w-2/5'}">
+                            ${generatePassengerTable(tableId, type)}
+                        </div>
+                        <div class="${isMobile ? 'book-w-full book-mb-4' : 'book-w-3/5'} book-max-h-80 book-overflow-auto ${gridClasses}">
+                            ${serviceCards.join('')}
+                        </div>
+                    </div>
+                </div>`;
+        };
+
+        const noRules = translate("no_rules_available");
+        const noServices = translate("no_services_available");
+        const noMeals = translate("no_meals_available");
+        const noMealForRoute = translate("no_meal_for_this_route");
+        const noSeats = translate("no_seats_available");
+
+        // Render flight rules if available
+        if (responseJson.FlightRules) {
+            if (responseJson.FlightRules.length > 0) {
+                let output = "";
+                for (const item of responseJson.FlightRules) {
+                    if (item.Rule?.length > 0) {
+                        output += `
+                            <div class="book-text-zinc-900 book-text-sm book-text-justify book-ltr">
+                                <div class="book-mb-2 book-flex book-gap-1">
+                                    <span>${item.From}</span>
+                                    <svg width="24" height="24">
+                                        <use href="/booking/images/sprite-booking-icons.svg#right-arrow-icon"></use>
+                                    </svg>
+                                    <span>${item.To}</span>
+                                </div>
+                                <div>${await renderRule(item.Rule)}</div>
+                            </div>`;
+                    } else {
+                        renderingContainer.innerHTML = noRules;
+                    }
+                }
+                renderingContainer.innerHTML = output || noRules;
+            } else {
+                renderingContainer.innerHTML = noRules;
+            }
+        }
+        // Render baggage details
+        else if (responseJson.Baggages) {
+            if (responseJson.Baggages.length > 0) {
+                let output = `
+                    <table class="book-w-full book-table-auto book-border-separate [border-spacing:0_8px]">
+                        <thead>
+                            <tr>
+                                <th class="book-pt-2 book-pb-4 book-pr-2 book-text-center book-text-primary-400">مبدا</th>
+                                <th class="book-pt-2 book-pb-4 book-text-center book-text-primary-400">مقصد</th>
+                                <th class="book-pt-2 book-pb-4 book-pl-2 book-text-center book-text-primary-400">بار</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                for (const item of responseJson.Baggages) {
+                    output += `
+                        <tr>
+                            <td class="book-py-2 book-bg-zinc-100 book-rounded-s-lg book-pr-2 book-text-center">${item.Origin}</td>
+                            <td class="book-py-2 book-bg-zinc-100 book-text-center">${item.Destination}</td>
+                            <td class="book-py-2 book-bg-zinc-100 book-rounded-e-lg book-pl-2 book-text-center book-ltr book-font-arial">${item.Baggage} ${item.Unit}</td>
+                        </tr>`;
+                }
+                output += `</tbody></table>`;
+                renderingContainer.innerHTML = output;
+            } else {
+                renderingContainer.innerHTML = noRules;
+            }
+        }
+        // Render flight services (baggage, meals)
+        else if (responseJson.FlightServices) {
+            // Remove loader and create service containers
+            renderingContainer.querySelector(".book-api__container__loader")?.remove();
+            const renderingServiceContainer = ensureContainer(renderingContainer, "book-api__container__rendering__baggageService");
+            const renderingMealContainer = ensureContainer(renderingContainer, "book-api__container__rendering__mealService");
+            renderingServiceContainer.classList.add("book-services__content");
+            renderingMealContainer.classList.add("book-services__content");
+            renderingMealContainer.classList.add("book-hidden");
+
+            // Excess Baggage
+            let baggageOutput = `<div>`;
+            let hasAnyBaggageService = false;
+
+            for (const [index, item] of responseJson.FlightServices.entries()) {
+                const baggageServices = item.Services?.filter(s => s.ServiceType === "Excess Baggage") || [];
+                if (baggageServices.length === 0) continue;
+
+                hasAnyBaggageService = true;
+                const fromCity = await renderCity(item.From);
+                const toCity = await renderCity(item.To);
+
+                const baggageServiceCards = await Promise.all(
+                    baggageServices.map(service => generateServiceCard(service, `book-passenger__baggage__table-${index}`, ''))
+                );
+
+                baggageOutput += generateRouteSection(
+                    index + 1,
+                    fromCity,
+                    toCity,
+                    item.From,
+                    item.To,
+                    `book-passenger__baggage__table-${index}`,
+                    baggageServiceCards,
+                    'baggage'
+                );
+            }
+
+            baggageOutput += `</div>`;
+            renderingServiceContainer.innerHTML = hasAnyBaggageService ? baggageOutput : noServices;
+
+            // Meal Services
+            let mealOutput = `<div>`;
+            let hasAnyMealService = false;
+            const routesInfo = sessionBookStorage?.FlightGroup?.flatMap(group => group.RoutesInfo) || [];
+            const routeIds = [1, 2, 3, 4];
+
+            for (const routeId of routeIds) {
+                const routeInfo = routesInfo.find(route => route.SegmentId === routeId);
+                if (!routeInfo) continue;
+
+                const fromCity = await renderCity(routeInfo.OriginAirport);
+                const toCity = await renderCity(routeInfo.DestinationAirport);
+                const fromAirport = routeInfo.OriginAirport;
+                const toAirport = routeInfo.DestinationAirport;
+
+                const mealServices = responseJson.FlightServices.flatMap(item =>
+                    item.Services.filter(s => s.ServiceType === "Meal" && s.routeID === routeId)
+                );
+
+                if (mealServices.length > 0) {
+                    hasAnyMealService = true;
+                    const mealServiceCards = await Promise.all(
+                        mealServices.map(service => generateServiceCard(service, `book-passenger__meal__table-${routeId}`))
+                    );
+
+                    mealOutput += generateRouteSection(
+                        routeId,
+                        fromCity,
+                        toCity,
+                        fromAirport,
+                        toAirport,
+                        `book-passenger__meal__table-${routeId}`,
+                        mealServiceCards,
+                        'meal'
+                    );
+                } else {
+                    mealOutput += `
+                        <div class="book-mb-5 book-excessService__content">
+                            <div
+                                class="book-flex book-justify-between book-items-center book-mb-2 book-text-sm book-font-bold book-cursor-pointer${routeId === 1 ? ' book-active__roue__excessService' : ''}"
+                                onclick="toggleServiceTable(this,'book-route__service-meal-${routeId}')">
+                                <div>
+                                    <span>${fromCity}<span class="book-mr-1">(${fromAirport})</span></span>
+                                    <svg width="24" height="24" class="book-mx-1">
+                                        <use href="/booking/images/sprite-booking-icons.svg#left-arrow-icon"></use>
+                                    </svg>
+                                    <span>${toCity}<span class="book-mr-1">(${toAirport})</span></span>
+                                </div>
+                                <div class="book-arrow__icon">
+                                    <svg width="24" height="24">
+                                        <use href="/booking/images/sprite-booking-icons.svg#${routeId === 1 ? 'down-arrow-icon' : 'up-arrow-icon'}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div id="book-route__service-meal-${routeId}" class="book-route__service book-flex book-gap-8 ${routeId === 1 ? '' : 'book-hidden'}">
+                                <div class="book-w-full book-text-center">${noMealForRoute}</div>
+                            </div>
+                        </div>`;
+                }
+            }
+
+            mealOutput += `</div>`;
+            renderingMealContainer.innerHTML = hasAnyMealService ? mealOutput : noMeals;
+        }
+        // Render seat services
+        else if (responseJson[0]?.FlightSegmentRefID) {
+            renderingContainer.querySelector(".book-api__container__loader")?.remove();
+            const renderingServiceContainer = ensureContainer(renderingContainer, "book-api__container__rendering__seatService");
+            renderingServiceContainer.classList.add("book-services__content");
+
+            let seatOutput = `<div>`;
+            let hasAnySeatService = false;
+
+            const generateSeatSVG = async (seatLabel, isAvailable, seatId, priceRaw, currency, characteristicText, tableId) => {
+                const currencyText = await renderCurrency(currency);
+                const priceText = new Intl.NumberFormat().format(priceRaw) + " " + currencyText;
+
+                const defaultFill = isAvailable ? "#3b82f6" : "#d1d5db";
+                const hoverFill = isAvailable ? "#10b981" : "#d1d5db";
+
+                return `
+                    <div class="book-relative book-group" style="width: 40px; height: 40px;">
+                        <svg width="50" height="50" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"
+                            style="cursor: ${isAvailable ? 'pointer' : 'not-allowed'};" data-id="${seatId}"
+                            ${isAvailable ? `onclick="updatePassengerServices(this,'${tableId}', '${seatLabel}', ${priceRaw}, '${currency}')"` : ""}
+                            onmouseenter="this.querySelectorAll('.book-seat__part').forEach(el => el.setAttribute('fill', '${hoverFill}'))"
+                            onmouseleave="this.querySelectorAll('.book-seat__part').forEach(el => {
+                                if (!this.classList.contains('book-seat__selected')) {
+                                    el.setAttribute('fill', '${defaultFill}');
+                                }
+                            })"
+                        >
+                            <rect class="book-seat__part" x="10" y="2" width="16" height="14" rx="3" fill="${defaultFill}" stroke="#374151" stroke-width="1.2"/>
+                            <path class="book-seat__part" d="M10 16 L26 16 L24 22 L12 22 Z" fill="${defaultFill}" stroke="#374151" stroke-width="1.2"/>
+                            <line x1="8" y1="16" x2="10" y2="22" stroke="#374151" stroke-width="1.2"/>
+                            <line x1="28" y1="16" x2="26" y2="22" stroke="#374151" stroke-width="1.2"/>
+                            <text x="18" y="12" text-anchor="middle" fill="white" font-size="8" font-family="Arial" font-weight="bold">${seatLabel}</text>
+                        </svg>
+                        ${isAvailable ? `
+                            <div class="book-absolute book-z-10 book-hidden book-group-hover:book-block book-w-44 book-top-full book-left-1/2 book--translate-x-1/2 book-bg-white book-shadow-md book-rounded book-text-xs book-p-2">
+                                ${characteristicText ? `<div class="book-font-bold book-mb-2 book-pb-2 book-border-b-1 book-border-solid book-text-center book-font-arial">${characteristicText}</div>` : ""}
+                                <div class="book-flex book-justify-between book-items-center">
+                                    <div class="book-font-arial">${seatLabel}</div> 
+                                    <div><span class="book-ml-1">${translate("price")}:</span>${priceText}</div>
+                                </div>
+                            </div>
+                        ` : ""}
+                    </div>`;
+            };
+
+            for (const [index, item] of responseJson.entries()) {
+                hasAnySeatService = true;
+
+                const fromCity = await renderCity(item.Route.Departure.AirportCode);
+                const toCity = await renderCity(item.Route.Arrival.AirportCode);
+
+                const seatMap = {};
+                for (const seat of item.Seats || []) {
+                    const cabinType = seat.Cabin?.CabinTypeName || "OTHER";
+                    if (!seatMap[cabinType]) seatMap[cabinType] = [];
+                    seatMap[cabinType].push(seat);
+                }
+
+                const seatServiceCards = [];
+
+                for (const [cabin, seats] of Object.entries(seatMap)) {
+                    seats.sort((a, b) => {
+                        const rowA = parseInt(a.Row, 10);
+                        const rowB = parseInt(b.Row, 10);
+                        if (rowA !== rowB) return rowA - rowB;
+
+                        const colA = a.Column.toLowerCase();
+                        const colB = b.Column.toLowerCase();
+                        if (colA < colB) return -1;
+                        if (colA > colB) return 1;
+                        return 0;
+                    });
+
+                    const layoutType = item.Aircraft?.LayoutType || "3-3";
+                    const [leftSeats, rightSeats] = layoutType.split("-").map(Number);
+                    const totalSeatsPerRow = leftSeats + rightSeats;
+
+                    const seatsByRow = {};
+                    for (const seat of seats) {
+                        const row = seat.Row;
+                        if (!seatsByRow[row]) seatsByRow[row] = [];
+                        seatsByRow[row].push(seat);
+                    }
+
+                    seatServiceCards.push(`<div><div class="book-font-bold book-mb-2">${cabin}</div>`);
+                    for (const [row, rowSeats] of Object.entries(seatsByRow)) {
+                        rowSeats.sort((a, b) => {
+                            const colA = a.Column.toLowerCase();
+                            const colB = b.Column.toLowerCase();
+                            if (colA < colB) return -1;
+                            if (colA > colB) return 1;
+                            return 0;
+                        });
+
+                        const leftGroup = rowSeats.filter(seat => ["A", "B", "C"].includes(seat.Column.toUpperCase()));
+                        const rightGroup = rowSeats.filter(seat => ["D", "E", "F"].includes(seat.Column.toUpperCase()));
+
+                        const leftSeatSVGs = await Promise.all(leftGroup.map(seat => {
+                            const seatId = seat.Seat_Id;
+                            const seatLabel = seat.SeatID;
+                            const isAvailable = seat.Available === "true";
+                            const priceRaw = seat.Price?.Total || 0;
+                            const currency = seat.Price?.Currency || "IRR";
+                            const characteristic = seat.SeatCharacteristicCode?.[0] || '';
+                            const characteristicMap = {
+                                WN: "Window",
+                                AS: "Aisle",
+                                "Middle": "Middle",
+                                EX: "ExitRow",
+                                PR: "Premium",
+                                PR2: "Premium",
+                                FR: "FrontRow"
+                            };
+                            const characteristicText = characteristicMap[characteristic] || '';
+                            return generateSeatSVG(seatLabel, isAvailable, seatId, priceRaw, currency, characteristicText, `book-passenger__seat__table-${index}`);
+                        }));
+
+                        const rightSeatSVGs = await Promise.all(rightGroup.map(seat => {
+                            const seatId = seat.Seat_Id;
+                            const seatLabel = seat.SeatID;
+                            const isAvailable = seat.Available === "true";
+                            const priceRaw = seat.Price?.Total || 0;
+                            const currency = seat.Price?.Currency || "IRR";
+                            const characteristic = seat.SeatCharacteristicCode?.[0] || '';
+                            const characteristicMap = {
+                                WN: "Window",
+                                AS: "Aisle",
+                                "Middle": "Middle",
+                                EX: "ExitRow",
+                                PR: "Premium",
+                                PR2: "Premium",
+                                FR: "FrontRow"
+                            };
+                            const characteristicText = characteristicMap[characteristic] || '';
+                            return generateSeatSVG(seatLabel, isAvailable, seatId, priceRaw, currency, characteristicText, `book-passenger__seat__table-${index}`);
+                        }));
+
+                        seatServiceCards.push(`
+                            <div class="book-flex book-items-center book-mb-2">
+                                <div class="book-flex book-gap-2" style="width: ${leftSeats * 48}px;">
+                                    ${leftSeatSVGs.join('')}
+                                </div>
+                                <div class="book-aisle book-bg-zinc-100 book-h-10 book-w-8 book-flex book-items-center book-justify-center book-text-sm book-font-bold book-bg-zinc-200">
+                                    ${row}
+                                </div>
+                                <div class="book-flex book-gap-2" style="width: ${rightSeats * 48}px;">
+                                    ${rightSeatSVGs.join('')}
+                                </div>
+                            </div>`);
+                    }
+                    seatServiceCards.push(`</div>`);
+                }
+
+                seatOutput += generateRouteSection(
+                    index + 1,
+                    fromCity,
+                    toCity,
+                    item.Route.Departure.AirportCode,
+                    item.Route.Arrival.AirportCode,
+                    `book-passenger__seat__table-${index}`,
+                    seatServiceCards,
+                    'seat'
+                );
+            }
+
+            seatOutput += `</div>`;
+            renderingServiceContainer.innerHTML = hasAnySeatService ? seatOutput : noSeats;
+        }
+    } catch (error) {
+        console.error("onProcessedFlightApiRule: " + error.message);
+    }
+};
+
 /**
  * Processes supplier credit response and updates UI based on credit status.
  * @param {Object} args - API response object containing status and data.
@@ -1092,7 +2408,7 @@ const onProcessedSupplierCredit = async (args) => {
                 if (mainContainer) mainContainer.classList.add("book-hidden");
             }
         } else {
-            // Handle non-200 response by clearing book and showing expiry message
+            // Handle non-200 response by clearing flight book and showing expiry message
             sessionStorage.removeItem("sessionBook");
             document.querySelector(".book-expire__message__modal__container")?.classList.remove("book-hidden");
             document.querySelector(".book-no__time")?.classList.remove("book-hidden");
@@ -1194,13 +2510,7 @@ const onProcessedJsonCountryId = async (args) => {
                 // Generate HTML for country list items
                 let output = "";
                 for (const item of responseJson) {
-                    output += `
-                    <li class="book-li-item book-cursor-pointer book-p-2" 
-                        data-id="${item.id}" 
-                        data-value="${currentLanguage === 'fa' ? item.fa : item.en}" 
-                        onclick="selectDropItem(this,'book-info__item__container')">
-                        ${currentLanguage === 'fa' ? item.fa : item.en}
-                    </li>`;
+                    output += `<li class="book-li-item book-cursor-pointer book-p-2" data-id="${item.id}" data-value="${item.fa}" onclick="selectDropItem(this,'book-info__item__container')">${item.fa}</li>`;
                 }
 
                 // Update all NameOfCountry dropdowns in passenger containers
@@ -1310,6 +2620,203 @@ const startTimer = () => {
 };
 
 /**
+ * Sets up flight group data and initializes booking UI.
+ * Loads booking data, passenger counts, and extra services UI.
+ */
+const setFlightGroup = async () => {
+    try {
+
+        if (sessionStorage.getItem("sessionBook")) {
+            const dict = sessionBookStorage.dictionaries;
+            if (Array.isArray(dict)) {
+                dictionaries = dict;
+            } else if (typeof dict === "object" && dict !== null) {
+                dictionaries = [dict];
+            }
+        };
+        $bc.setSource("flight.book", sessionBookStorage);
+        sessionSearchStorage = sessionStorage.getItem("sessionSearch")
+            ? JSON.parse(sessionStorage.getItem("sessionSearch"))
+            : null;
+
+        const Adults = sessionBookStorage.PriceInfo.PassengerFare[0].Count;
+        const Children = sessionBookStorage.PriceInfo.PassengerFare[1].Count;
+        const Infants = sessionBookStorage.PriceInfo.PassengerFare[2].Count;
+        ExcessService = sessionBookStorage.FlightGroup?.[0]?.ExcessService || false;
+        SeatSelection = sessionBookStorage.FlightGroup?.[0]?.SeatSelection || false;
+
+        if (ExcessService || SeatSelection) {
+            const container = document.querySelector(".book-passengers__container");
+            if (!container) throw new Error("Passengers container not found");
+            const div = document.createElement("div");
+            div.innerHTML = `
+                <div class="book-services__container book-api__container book-bg-white book-shadow-md book-border-slate-600 book-rounded-2xl book-border-b-3 book-p-5 book-mb-10">
+                    <div class="book-text-base book-flex book-justify-between book-items-center book-cursor-pointer" onclick="toggleContentApi(this,'','book-services__container')" data-run="0">
+                        <div>
+                            ${translate("optional_services_title")}
+                            <div class="book-text-zinc-500 book-text-xs book-mt-2 book-mb-5">
+                                ${translate("optional_services_description")}
+                            </div>
+                        </div>
+                        <svg class="book-api__container__arrow" width="24" height="24">
+                            <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon"></use>
+                        </svg>
+                    </div>
+                    <div class="book-api__content">
+                        <div class="book-tab__navigation__container ${isMobile ? '' : 'book-flex book-justify-around book-space-x-2 book-space-x-reverse'} book-mb-10">
+                            <button onclick="selectServiceTab(this,'baggageService','ExcessService')" data-run="0" type="button" class="book-tab__navigation__content ${isMobile ? 'book-w-full book-mb-4' : 'book-min-w-52'} book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+                                <svg width="51" height="50"><use href="/booking/images/sprite-booking-icons.svg#wheel-bag-icon"></use></svg>
+                                <h6 class="book-text-sm">${translate("extra_baggage")}</h6>
+                            </button>
+                            <button onclick="selectServiceTab(this,'mealService','ExcessService')" data-run="0" type="button" class="book-tab__navigation__content ${isMobile ? 'book-w-full book-mb-4' : 'book-min-w-52'} book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+                                <svg width="41" height="50"><use href="/booking/images/sprite-booking-icons.svg#meal-icon"></use></svg>
+                                <h6 class="book-text-sm">${translate("meal")}</h6>
+                            </button>
+                            <button onclick="selectServiceTab(this,'seatService','SeatAvailability')" data-run="0" type="button" class="book-tab__navigation__content ${isMobile ? 'book-w-full book-mb-4' : 'book-min-w-52'} book-p-4 book-rounded-xl book-border-zinc-400 book-border book-transition-colors book-text-zinc-500 hover:book-bg-primary-400 hover:book-border-primary-400 hover:book-text-white">
+                                <svg width="41" height="50"><use href="/booking/images/sprite-booking-icons.svg#seat-icon"></use></svg>
+                                <h6 class="book-text-sm">${translate("seat_selection")}</h6>
+                            </button>
+                        </div>
+                        <div class="book-api__container__content book-mt-4 book-hidden">
+                            <span class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-my-3"></span>
+                        </div>
+                    </div>
+                </div>`;
+            container.appendChild(div);
+        }
+
+        const internal = dictionaries[0]?.internal || false;
+
+        if (internal) {
+            const internalContainer = document.querySelector(".book-passengers__container__internal");
+            if (!internalContainer) throw new Error("Internal passengers container not found");
+            internalContainer.classList.remove("book-hidden");
+            addPassenger(".book-passengers__container__internal", Adults, Children, Infants);
+        } else {
+            const externalContainer = document.querySelector(".book-passengers__container__external");
+            if (!externalContainer) throw new Error("External passengers container not found");
+            externalContainer.classList.remove("book-hidden");
+            addPassenger(".book-passengers__container__external", Adults, Children, Infants);
+        }
+
+        startTimer();
+        getWithExpiry("sessionSearch", "sessionBook", "sessionAmenities");
+
+
+        const {
+            requests,
+            productGroupField,
+            productIdField
+        } = getServiceMappingInfo(selectedMode);
+        const supplierCreditUrl = requests.supplierCredit;
+
+        $bc.setSource("cms.supplierCredit", [{
+            SessionId: sessionSearchStorage?.SessionId,
+            Id: sessionBookStorage.FlightId,
+            Group: JSON.stringify(sessionBookStorage.FlightGroup),
+            selectedMode: selectedMode,
+            rkey: getSearchCookie("rkey") || "",
+            url: supplierCreditUrl,
+            productIdField: productIdField,
+            productGroupField: productGroupField,
+            run: true
+        }]);
+
+        originalFirstPay = sessionBookStorage.PriceInfo.TotalCommission;
+        originalTotalCom = sessionBookStorage.PriceInfo.TotalCommission;
+        originalTotal = sessionBookStorage.PriceInfo.Total;
+
+        if (sessionStorage.getItem("sessionAmenities")) {
+            sessionAmenitiesStorage = JSON.parse(sessionStorage.getItem("sessionAmenities"));
+            if (sessionAmenitiesStorage?.FlightGroup?.length > 0) {
+                const fareFamilyHtml = document.createElement("div");
+                fareFamilyHtml.className = "book-flight__fareFamily book-api__container book-p-4 book-border book-border-zinc-300 book-rounded-2xl book-mb-4";
+
+                fareFamilyHtml.innerHTML = `
+                  <div class="book-border-b book-border-zinc-300 book-pb-8 book-mb-7">
+                      <div class="book-flex book-justify-between book-items-center book-mb-2">
+                          <h6 class="book-text-lg book-font-bold book-text-zinc-800">${translate("fare_family")}</h6>
+                          <svg class="book-api__container__arrow" width="24" height="24">
+                              <use href="/booking/images/sprite-booking-icons.svg#down-arrow-icon"></use>
+                          </svg>
+                      </div>
+                  </div>
+                  <div class="book-api__container__content">
+                      <div class="book-grid book-grid-cols-1 book-gap-4 book-ltr"></div>
+                  </div>
+                `;
+
+                const gridContainer = fareFamilyHtml.querySelector(".book-grid");
+
+                for (const group of sessionAmenitiesStorage.FlightGroup) {
+                    const card = document.createElement("div");
+                    card.className = "book-border book-rounded-2xl book-border-zinc-200 book-cursor-pointer book-active__amenities";
+                    card.innerHTML = `
+                    <div class="book-p-3">
+                        <h6 class="book-font-bold book-mb-2 book-text-zinc-900">${group.BrandedFare}</h6>
+                        <p class="book-mb-2 book-text-zinc-900">Included | NotOffered</p>
+                        <ul class="book-font-arial book-space-y-2 book-text-sm book-text-zinc-700 book-h-[21rem] book-overflow-auto">
+                            ${await renderAmenities(group.Amenities)}
+                        </ul>
+                    </div>
+                  `;
+                    gridContainer.appendChild(card);
+                }
+
+                const intervalId = setInterval(() => {
+                    const asideContent = document.querySelector(".book-aside__content");
+                    if (asideContent) {
+                        const tabNav = asideContent.querySelector(".book-tab__navigation__container");
+                        if (tabNav) {
+                            tabNav.insertAdjacentElement("afterend", fareFamilyHtml);
+                            clearInterval(intervalId);
+                        }
+                    }
+                }, 300);
+            }
+        };
+        schemaId = sessionSearchStorage.SchemaId;
+        if (utmSource === "safarmarket" || (getSearchCookie("safarmarketId") && domainId.includes("4869"))) {
+            fetch(`https://safarmarket.com/api/v1/trace/pixel/babanowrouz/2/?smId=${getSearchCookie("safarmarketId") || ""}&bck=false`)
+                .then(response => {
+                    console.log('Content-Type:', response.headers.get('content-type'));
+                    console.log('Status:', response.status);
+                    return response.text();
+                })
+                .then(data => {
+                    console.log('Response:', data);
+                });
+        };
+    } catch (error) {
+        console.error("setFlightGroup: " + error.message);
+    }
+};
+
+
+/**
+* Renders amenities list with chargeable status indicators.
+* @param {Array} element - List of amenities with description and isChargeable status.
+* @returns {Promise<string>} HTML string of amenities list or empty string on error.
+*/
+const renderAmenities = async (element) => {
+    try {
+        let output = "";
+        for (const item of element || []) {
+            const icon = item.isChargeable == 0 ? "check-circle-icon" : "dash-circle-icon";
+            output += `<li class="book-flex book-items-center book-gap-2 book-my-1">
+              <svg width="${icon === "check-circle-icon" ? 17 : 20}" height="${icon === "check-circle-icon" ? 16 : 20}" class="book-shrink-0">
+                  <use href="/booking/images/sprite-booking-icons.svg#${icon}"></use>
+              </svg>
+              <span>${item.description}</span>
+          </li>`;
+        }
+        return output;
+    } catch (error) {
+        console.error("renderAmenities" + error.message);
+        return "";
+    }
+};
+/**
  * Scrolls to a specific section within a modal and updates tab navigation.
  * @param {HTMLElement} element - The element triggering the scroll.
  * @param {string} type - The type of content to toggle.
@@ -1342,7 +2849,7 @@ const scrollModalContainerItem = (element, type, parent) => {
 };
 
 /**
- * Sets up the session data and updates the UI based on search parameters.
+ * Sets up the session data and updates the UI based on flight search parameters.
  * @param {Object} args - Arguments containing source data with SessionId.
  * @returns {void}
  */
@@ -1356,7 +2863,7 @@ const setSession = async (args) => {
         const now = new Date();
         const ttl = 20 * 60 * 1000; // 20 minutes in milliseconds
 
-        // Load or initialize search data from sessionStorage
+        // Load or initialize flight search data from sessionStorage
         let currentSessionSearch = sessionStorage.getItem("sessionSearch");
         sessionSearchStorage = currentSessionSearch ? JSON.parse(currentSessionSearch) : {};
 
@@ -1364,11 +2871,11 @@ const setSession = async (args) => {
         sessionSearchStorage.SessionId = newSessionId;
         sessionSearchStorage.Expiry = now.getTime() + ttl;
 
-        // Save updated search data to sessionStorage
+        // Save updated flight search data to sessionStorage
         sessionStorage.setItem("sessionSearch", JSON.stringify(sessionSearchStorage));
 
-        // Initialize group UI
-        await setProductGroup(); // Assumed to be defined elsewhere
+        // Initialize flight group UI
+        await setFlightGroup(); // Assumed to be defined elsewhere
     } catch (error) {
         console.error("setSession: " + error.message);
     }
@@ -1452,7 +2959,7 @@ const updatePassengerServices = async (element, tableId, description, price, cur
                         if (currentValue) {
                             try {
                                 currentArray = JSON.parse(currentValue);
-                            } catch (e) {
+                            } catch {
                                 currentArray = [];
                             }
                         }
@@ -1569,7 +3076,7 @@ const removePassengerServices = (element) => {
                     if (currentValue) {
                         try {
                             currentArray = JSON.parse(currentValue);
-                        } catch (e) {
+                        } catch {
                             currentArray = [];
                         }
                     }
@@ -1646,47 +3153,7 @@ const getWithExpiry = (key, key2, key3) => {
         return null;
     }
 }
-// Lightweight cache for json/country/currency
-let __countryCurrencyCache = null;
 
-// Fetch and cache the country/currency mapping
-function fetchCountryCurrency() {
-    if (Array.isArray(__countryCurrencyCache)) {
-        return Promise.resolve(__countryCurrencyCache);
-    }
-    return fetch('/json/country/currency?lid=1', { credentials: 'same-origin' })
-        .then(res => {
-            if (!res.ok) throw new Error(`country/currency fetch failed: ${res.status}`);
-            return res.json();
-        })
-        .then(data => {
-            if (!Array.isArray(data)) throw new Error('country/currency response is not an array');
-            __countryCurrencyCache = data;
-            return data;
-        });
-}
-
-// Resolve domainId: prefer global `domainId`, then data-domain-id on parent/template
-function resolveDomainId(parent, templateElement) {
-    if (typeof domainId !== 'undefined' && domainId !== null) return String(domainId);
-    const p = parent.getAttribute('data-domain-id');
-    if (p) return String(p);
-    const t = templateElement.getAttribute('data-domain-id');
-    if (t) return String(t);
-    return null;
-}
-
-// Apply matched country fields to a cloned node
-function applyCountryToNode(node, countryObj) {
-    if (!countryObj) return;
-    node.querySelectorAll('.book-NameOfCountry').forEach(inp => {
-        inp.value = countryObj.country || '';
-        inp.setAttribute('data-value', countryObj.country || '');
-    });
-    node.querySelectorAll('.book-PlaceOfBirth').forEach(inp => {
-        inp.value = countryObj.country_id != null ? String(countryObj.country_id) : '';
-    });
-};
 /**
  * Adds passenger elements to the UI based on counts for adults, children, and infants.
  * @param {string} parentSelector - CSS selector for the parent container.
@@ -1705,6 +3172,12 @@ const addPassenger = (parentSelector, adults, children, infants) => {
             "first", "second", "third", "fourth", "fifth",
             "sixth", "seventh", "eighth", "ninth", "tenth"
         ];
+        const typeKeys = {
+            "ADT": "passenger_adult",
+            "CHD": "passenger_child",
+            "INF": "passenger_infant"
+        };
+
         const addCategory = (typeKey, count, counter, typeCode) => {
             for (let i = 0; i < count; i++) {
                 const newElement = templateElement.cloneNode(true);
@@ -1729,6 +3202,7 @@ const addPassenger = (parentSelector, adults, children, infants) => {
                 const langLabels = newElement.querySelectorAll('.book-label__lang');
                 const firstNameInputs = newElement.querySelectorAll('.book-FirstName');
                 const lastNameInputs = newElement.querySelectorAll('.book-LastName');
+                console.log(selectedMode)
 
                 if (selectedMode === 'flight') {
                     // For flight: set to English
@@ -1754,24 +3228,11 @@ const addPassenger = (parentSelector, adults, children, infants) => {
                         input.removeAttribute('onkeyup');
                     });
 
+                } else {
+                    // For other modes: you can set default behavior here
+                    // Currently keeping as is (no changes to template)
+                    console.log(`selectedMode: ${selectedMode} - using default template configuration`);
                 }
-
-                // --- JSON country/currency mapping (non-blocking, only if language is not 'fa') ---
-                if (typeof currentLanguage !== 'undefined' && currentLanguage !== 'fa') {
-                    const domainIdStr = resolveDomainId(parent, templateElement);
-                    if (domainIdStr) {
-                        fetchCountryCurrency()
-                            .then(list => {
-                                const match = list.find(o => String(o.dmnid) === domainIdStr);
-                                if (match) applyCountryToNode(newElement, match);
-                                selectedCountry = match.country || null;
-                                selectedCountryId = match.country_id || null;
-                                selectedCountryCode = match.code || null;
-                            })
-                            .catch(err => console.warn('country/currency mapping skipped:', err));
-                    }
-                }
-                // -------------------------------------------------------------------------------
 
                 parent.appendChild(newElement);
                 dataIndex++;
@@ -1787,7 +3248,6 @@ const addPassenger = (parentSelector, adults, children, infants) => {
         console.error("addPassenger: " + error.message);
     }
 };
-
 
 
 /**
@@ -1922,6 +3382,57 @@ const updatePrices = async (totalcom, firstpay) => {
     }
 }
 
+/**
+ * Updates the booking step UI and attributes.
+ * @param {string} stepName - Name of the current step (e.g., '${translate("passenger_info")}<', 'مشخصات خریدار').
+ * @param {HTMLElement} element - The element triggering the step update.
+ */
+const updateStep = (stepName, element) => {
+    try {
+        // Update the current step display
+        const routeMap = document.querySelector(".book-current__route__map");
+        if (routeMap) {
+            routeMap.innerText = stepName;
+        }
+
+        // Determine if current step is passenger info
+        const isPassengerStep = stepName === translate("passenger_info");
+
+        // Set data-step attributes based on step
+        element.setAttribute("data-step", isPassengerStep ? "" : "buyer");
+        const nextElement = element.nextElementSibling;
+        if (nextElement) {
+            nextElement.setAttribute("data-step", isPassengerStep ? "passenger" : "buyer");
+        }
+
+        // Update step items UI
+        updateStepItems(isPassengerStep ? "passenger" : "buyer");
+    } catch (error) {
+        console.error("updateStep: " + error.message);
+    }
+};
+
+
+/**
+ * Updates the active state of step navigation items.
+ * @param {string} element - The step identifier (e.g., 'passenger', 'buyer').
+ */
+const updateStepItems = (element) => {
+    try {
+        const stepItems = document.getElementsByClassName('book-route__map__item');
+        Array.from(stepItems).forEach(item => {
+            const isCurrentStep = item.getAttribute("data-step") === element;
+            // Remove active state from all items
+            item.classList.remove("book-route__map__item__active");
+            // Add active state to the current step
+            if (isCurrentStep) {
+                item.classList.add("book-route__map__item__active");
+            }
+        });
+    } catch (error) {
+        console.error("updateStepItems: " + error.message);
+    }
+}
 /**
  * Validates that a keypress is an English letter or space.
  * @param {Event} event - The keydown event.
@@ -2765,7 +4276,7 @@ const checkDate = (element) => {
     }
 };
 /**
- * Processes API rule response and renders rules, baggage, or services.
+ * Processes flight API rule response and renders flight rules, baggage, or services.
  * @param {Object} args - API response object containing status and data.
  */
 // Handle tab navigation click events for service selection
@@ -2834,13 +4345,13 @@ const selectServiceTab = (element, tabType, serviceType) => {
                 }
             });
         }
-        const { GroupJson, Id } = getGroupAndId(selectedMode);
+
         // Prepare and send the API request
         $bc.setSource("cms.rule", {
             type: serviceType,
             SessionId: sessionSearchStorage.SessionId,
-            Id: Id,
-            Group: GroupJson,
+            FlightId: sessionBookStorage.FlightId,
+            FlightGroup: JSON.stringify(sessionBookStorage.FlightGroup),
             rkey: getSearchCookie("rkey") || "",
             run: true
         });
@@ -3036,6 +4547,43 @@ const close_bank_info = (element) => {
     }
 }
 
+/**
+ * Submits SiBank info (mobile and national code) and triggers invoice submission.
+ * @param {HTMLElement} element - The submit button element.
+ * @param {HTMLElement} item - The original invoice element.
+ */
+const siBankIsSubmited = (element, item) => {
+    try {
+        let isExist = true;
+        // Validate SiBank inputs
+        element.closest(".book-get-bank-info-container").querySelectorAll(".book-siBank-info").forEach(e => {
+            if (e.value === "") {
+                isExist = false;
+                e.closest(".book-info__item__content").classList.add("book-invalid");
+            } else {
+                e.closest(".book-info__item__content").classList.remove("book-invalid");
+            }
+        });
+
+        if (isExist) {
+            // Add hidden inputs for SiBank data
+            document.querySelector(".book-invoice-form").insertAdjacentHTML('beforeend',
+                `<input type="hidden" value="${element.closest(".book-get-bank-info-container").querySelector(".book-mobileSiBank").value}" name="mobileSiBank"/>
+                                     <input type="hidden" value="${element.closest(".book-get-bank-info-container").querySelector(".book-nationalCodeSiBank").value}" name="nationalCodeSiBank"/>`);
+            // Close modal and show loader
+            const invoiceContainer = element.closest(".book-invoice__container");
+            invoiceContainer.querySelector(".book-get-bank-info-container").classList.remove("book-get-bank-info-container-toggle");
+            invoiceContainer.insertAdjacentHTML('beforeend',
+                `<div class="book-invoice__loader_container book-mt-2 book-text-center">در حال اتصال به درگاه بانک، لطفا منتظر بمانید</div>`);
+            sendDataWithFetch();
+            // Reset data-run and not-active state
+            item.setAttribute("data-run", "0");
+            item.classList.remove("book-not-active");
+        }
+    } catch (error) {
+        console.error("siBankIsSubmited: " + error.message);
+    }
+}
 
 /**
  * Submits booking data via a dynamically created form.
@@ -3161,12 +4709,12 @@ const sendDataWithFetch = () => {
                 cityid: getFieldValue(buyerDataContent, ".book-cityid")
             };
         }
-        const { Group, Id } = getGroupAndId(selectedMode);
+
         // Create form data
         const formData = {
             SessionId: sessionSearchStorage.SessionId,
-            Id: Id,
-            Group: Group,
+            FlightId: sessionBookStorage.FlightId,
+            FlightGroup: sessionBookStorage.FlightGroup,
             SchemaId: sessionSearchStorage.SchemaId,
             Travelers: passengerList,
             account: buyerData,
@@ -3230,6 +4778,539 @@ const closeModalContainer = (element, forceCloseClass = null, event = window.eve
 };
 
 /**
+ * Navigates to the next booking step (passenger, buyer, or summary) with validation.
+ * @param {HTMLElement} element - The element triggering the step transition (e.g., next button).
+ */
+const nextStep = (element) => {
+    // try {
+    const step = element.getAttribute("data-step");
+
+    if (step === "passenger") {
+        // Validate passenger information
+        let isExist = true;
+        let isValid = true;
+        const passengerInfoContents = document.querySelectorAll(".book-passenger__container");
+
+        // Check required fields and dates for each passenger
+        passengerInfoContents.forEach(passengerContent => {
+            if (!passengerContent.closest(".book-passengers__content").classList.contains("book-hidden")) {
+                const numberItems = passengerContent.querySelectorAll(".book-info__item__container");
+                numberItems.forEach(e => {
+                    // Remove existing error messages
+                    const description = e.querySelector(".book-alert__content");
+                    if (description) description.remove();
+
+                    // Validate required fields
+                    const necessaryField = e.querySelector(".book-Required");
+                    if (necessaryField) {
+                        const innerItem = necessaryField.closest(".book-info__item__content");
+                        innerItem.classList.remove("book-invalid");
+                        if (necessaryField.value === "") {
+                            innerItem.classList.add("book-invalid");
+                            e.insertAdjacentHTML('beforeend', `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("passenger_info_required")}</div>`);
+                            isExist = false;
+                        }
+                    }
+
+                    // Validate date fields
+                    const dateItems = e.querySelectorAll(".book-date__item__content");
+                    dateItems.forEach(dateItem => {
+                        const dateNecessaryField = dateItem.querySelector(".book-Required");
+                        if (dateNecessaryField) {
+                            const dateInnerItem = dateNecessaryField.closest(".book-info__item__content");
+                            dateInnerItem.classList.remove("book-invalid");
+                            if (dateNecessaryField.value === "" ||
+                                (!dateNecessaryField.getAttribute("data-id") || dateNecessaryField.getAttribute("data-id") === "")) {
+                                dateInnerItem.classList.add("book-invalid");
+                                if (!e.querySelector(".book-alert__content")) {
+                                    e.insertAdjacentHTML('beforeend', `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("passenger_info_required")}</div>`);
+                                }
+                                isExist = false;
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
+        if (isExist) {
+            // Validate dates and passenger types
+            const exitDateMsDate = new Date(lastDepartureDate);
+            const passengerContents = document.querySelectorAll(".book-passenger__container");
+
+            passengerContents.forEach(passengerContent => {
+                if (!passengerContent.closest(".book-passengers__content").classList.contains("book-hidden")) {
+                    const passengerType = passengerContent.querySelector(".book-Type").value;
+                    const birthdayField = passengerContent.querySelector(".book-DateOfBirth");
+                    birthdayField.value = checkDate(birthdayField.value);
+                    let birthday = birthdayField.value;
+                    const birthParts = birthday.split('-');
+                    // Validate birth date
+                    const [checkYear, checkMonth, checkDay] = birthParts.map(part => parseInt(part, 10));
+                    const birthdayDate = new Date(birthday);
+                    if (isNaN(checkYear) || isNaN(checkMonth) || isNaN(checkDay) ||
+                        checkMonth < 1 || checkMonth > 12 ||
+                        checkDay < 1 || checkDay > new Date(checkYear, checkMonth, 0).getDate() ||
+                        isNaN(birthdayDate.getTime())) {
+                        addDateError(`${translate("valid_date_required")}`, birthdayField);
+                        isValid = false;
+                    } else {
+                        removeDateError(birthdayField);
+
+                        // Calculate age
+                        const cmsDate = document.querySelector("main").dataset.cmsdate;
+                        const formattedDate = cmsDate
+                            .split("/")
+                            .map(part => part.padStart(2, "0"))
+                            .join("-");
+                        const [MM, DD, YYYY] = formattedDate.split("-");
+                        const finalDate = `${YYYY}-${MM}-${DD}`;
+                        const currentDate = new Date(finalDate);
+                        const daysDiff = Math.ceil((currentDate - birthdayDate) / (1000 * 3600 * 24));
+                        const age = Math.floor(daysDiff / 365);
+
+                        // Validate age based on passenger type
+                        if (passengerType === "ADT" && (age < 12 || age > 98)) {
+                            addDateError(`${translate("valid_adult_birth_date")}`, birthdayField);
+                            isValid = false;
+                        } else if (passengerType === "CHD" && (age < 2 || age > 12)) {
+                            addDateError(`${translate("valid_child_birth_date")}`, birthdayField);
+                            isValid = false;
+                        } else if (passengerType === "INF" && (age < 0 || age > 2)) {
+                            addDateError(`${translate("valid_infant_birth_date")}`, birthdayField);
+                            isValid = false;
+                        } else {
+                            removeDateError(birthdayField);
+                        }
+                    }
+
+                    // Validate passport expiration
+                    const passExpireField = passengerContent.querySelector(".book-PassportExpiration");
+                    if (passExpireField && passExpireField.closest(".book-info__item__container").querySelector(".book-day").classList.contains("book-Required")) {
+                        passExpireField.value = checkDate(passExpireField.value);
+                        let passExpireDate = passExpireField.value;
+                        const passExpireParts = passExpireDate.split('-');
+                        // Convert Jalali to Gregorian if needed
+                        const year = parseInt(passExpireParts[0], 10);
+                        const month = parseInt(passExpireParts[1], 10);
+                        const day = parseInt(passExpireParts[2], 10);
+                        const passExpireDateObject = new Date(passExpireDate);
+                        // Validate passport date
+                        if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(passExpireDateObject.getTime()) ||
+                            month < 1 || month > 12 || day < 1 || day > new Date(year, month, 0).getDate()) {
+                            addDateError(`${translate("valid_date_required")}`, passExpireField);
+                            isValid = false;
+                        } else {
+                            // Check 6-month validity
+                            const timeDiff = passExpireDateObject.getTime() - exitDateMsDate.getTime();
+                            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                            if (daysDiff < 183) {
+                                addDateError(`${translate("passport_expiration_six_month")}`, passExpireField);
+                                isValid = false;
+                            } else {
+                                removeDateError(passExpireField);
+                            }
+                        }
+                    }
+
+                    // Validate passport code
+                    const passportCodeField = passengerContent.querySelector(".book-PassportCode");
+                    if (passportCodeField && passportCodeField.classList.contains("book-Required")) {
+                        const passportCode = passportCodeField.value;
+                        const regex = /^[a-zA-Z]{1}[0-9]{8}$/;
+                        const placeOfBirth = passengerContent.querySelector(".book-PlaceOfBirth");
+                        if (placeOfBirth && placeOfBirth.value === "1002236") {
+                            if (!regex.test(passportCode)) {
+                                addError(passportCodeField, `${translate("invalid_passport_number")}`);
+                                isValid = false;
+                            } else {
+                                removeError(passportCodeField);
+                            }
+                        }
+                    }
+
+                    // Validate national code
+                    const nationalCodeField = passengerContent.querySelector(".book-NationalCode");
+                    if (nationalCodeField && nationalCodeField.classList.contains("book-Required")) {
+                        const placeOfBirth = passengerContent.querySelector(".book-PlaceOfBirth");
+                        if (placeOfBirth && placeOfBirth.value === "1002236") {
+                            const nationalCode = nationalCodeField.value;
+                            let checkArray = 0;
+                            for (let i = 0; i < 10; i++) {
+                                if (nationalCode[0] === nationalCode[i]) {
+                                    checkArray++;
+                                }
+                            }
+                            if (checkArray < 10) {
+                                const check = parseFloat(nationalCode[9]);
+                                let sum = 0;
+                                for (let i = 0; i < 9; i++) {
+                                    sum += parseFloat(nationalCode[i]) * (10 - i);
+                                }
+                                sum %= 11;
+                                if ((sum < 2 && check === sum) || (sum >= 2 && check + sum === 11)) {
+                                    removeError(nationalCodeField);
+                                } else {
+                                    addError(nationalCodeField, `${translate("invalid_national_code")}`);
+                                    isValid = false;
+                                }
+                            } else {
+                                addError(nationalCodeField, `${translate("invalid_national_code")}`);
+                                isValid = false;
+                            }
+                        }
+                    }
+
+                    // Validate English fields
+                    passengerContent.querySelectorAll(".book-EnglishKey").forEach(englishField => {
+                        if (englishField.classList.contains("book-Required")) {
+                            if (englishField.value.length < 2) {
+                                addError(englishField, `${translate("minimum_character_2")}`);
+                                isValid = false;
+                            } else {
+                                const regex = /^[a-zA-Z ]+$/;
+                                if (!regex.test(englishField.value)) {
+                                    addError(englishField, `${translate("invalid_english_character")}`);
+                                    isValid = false;
+                                } else {
+                                    removeError(englishField);
+                                }
+                            }
+                        }
+                    });
+
+                    // Validate country fields
+                    passengerContent.querySelectorAll(".book-NameOfCountry").forEach(countryField => {
+                        if (countryField.classList.contains("book-Required")) {
+                            if (countryField.getAttribute("data-value") === '') {
+                                countryField.closest(".book-info__item__content").classList.add("book-invalid");
+                                countryField.closest(".book-info__item__container").insertAdjacentHTML('beforeend',
+                                    `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("select_country")}</div>`);
+                                isValid = false;
+                            } else {
+                                countryField.closest(".book-info__item__content").classList.remove("book-invalid");
+                                countryField.closest(".book-info__item__container").querySelectorAll(".book-alert__content").forEach(desc => desc.remove());
+                            }
+                        }
+                    });
+                }
+            });
+
+            if (isValid) {
+                // Transition to buyer step or login
+                const mainUserId = document.querySelector(".main-userid").value;
+                if (mainUserId === "0") {
+                    showLoginContainer();
+                } else {
+                    document.querySelector(".book-passengers__container").classList.add("book-hidden");
+                    const buyersContainer = document.querySelector(".book-buyers__container");
+                    buyersContainer.classList.remove("book-hidden");
+                    document.querySelector(".book-current__route__map").innerText = `${translate("buyer_info")}`;
+                    element.setAttribute("data-step", "buyer");
+                    const prevSibling = element.previousElementSibling;
+                    if (prevSibling) {
+                        prevSibling.classList.remove("book-hidden");
+                        prevSibling.setAttribute("data-step", "buyer");
+                    }
+                    updateStepItems("buyer");
+                    if (buyersContainer.getAttribute("data-run") === "0") {
+                        $bc.setSource("cms.buyer", true);
+                        buyersContainer.setAttribute("data-run", "1");
+                    }
+                }
+            }
+        }
+    } else if (step === "buyer") {
+        // Validate buyer information
+        let isExist = true;
+        let isValid = true;
+        let isVerify = true;
+
+        document.querySelectorAll(".book-buyer__info__content").forEach(buyerContent => {
+            buyerContent.querySelectorAll(".book-info__item__container").forEach(e => {
+                // Remove existing error messages
+                const description = e.querySelector(".book-alert__content");
+                if (description) description.remove();
+
+                // Validate required fields
+                const necessaryField = e.querySelector(".book-Required");
+                if (necessaryField) {
+                    necessaryField.closest(".book-info__item__content").classList.remove("book-invalid");
+                    if (necessaryField.value === "") {
+                        necessaryField.closest(".book-info__item__content").classList.add("book-invalid");
+                        e.insertAdjacentHTML('beforeend', `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("enter_buyer_info")}</div>`);
+                        isExist = false;
+                    }
+                }
+
+                // Validate number fields
+                e.querySelectorAll(".book-number__item__container").forEach(numberItem => {
+                    const codeField = numberItem.querySelector(".book-code");
+                    if (codeField) {
+                        codeField.closest(".book-info__item__content").classList.remove("book-invalid");
+                        if (codeField.value === "") {
+                            codeField.closest(".book-info__item__content").classList.add("book-invalid");
+                            isExist = false;
+                        }
+                    }
+                });
+            });
+        });
+
+        if (isExist) {
+            // Validate agency selection
+            if (document.querySelector(".book-buyer-1")) {
+                const agencyContent = document.querySelector(".book-buyer__agency__content");
+                const selectedAgency = document.querySelector(".book-selected__agency");
+                if (!agencyContent.classList.contains("book-hidden") &&
+                    (!selectedAgency.getAttribute("data-id") || selectedAgency.getAttribute("data-id") === '')) {
+                    isValid = false;
+                    selectedAgency.closest(".book-info__item__container").insertAdjacentHTML('beforeend',
+                        `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("select_suggested_agency")}</div>`);
+                }
+            }
+
+            // Validate buyer fields
+            function validateField(element, className, regex, errorMessage) {
+                try {
+                    const field = element.querySelector(className);
+                    if (field?.classList.contains("book-Required")) {
+                        if (!regex.test(field.value)) {
+                            field.closest(".book-info__item__content").classList.add("book-invalid");
+                            element.insertAdjacentHTML('beforeend',
+                                `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${errorMessage}</div>`);
+                            return false;
+                        }
+                        field.closest(".book-info__item__content").classList.remove("book-invalid");
+                        return true;
+                    }
+                    return true;
+                } catch (error) {
+                    console.error("validateField: " + error.message);
+                    return false;
+                }
+            }
+
+            Array.from(document.getElementsByClassName("book-buyer__info__content")).forEach(buyerInfo => {
+                // Validate name
+                Array.from(buyerInfo.getElementsByClassName("book-name")).forEach(e => {
+                    if (!validateField(e.closest(".book-info__item__container"), ".book-name", /^.{2,}$/,
+                        `${translate("minimum_character_2")}`)) {
+                        isValid = false;
+                    }
+                });
+
+                // Validate email
+                Array.from(buyerInfo.getElementsByClassName("book-email")).forEach(e => {
+                    if (!validateField(e.closest(".book-info__item__container"), ".book-email",
+                        /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, `${translate("invalid_email")}`)) {
+                        isValid = false;
+                    }
+                });
+
+                // Validate address
+                Array.from(buyerInfo.getElementsByClassName("book-address")).forEach(e => {
+                    if (!validateField(e.closest(".book-info__item__container"), ".book-address", /^.{5,}$/,
+                        `${translate("minimum_character_5")}`)) {
+                        isValid = false;
+                    }
+                });
+
+                // Validate mobile
+                Array.from(buyerInfo.getElementsByClassName("book-number__item__container")).forEach(e => {
+                    if (e.querySelector(".book-code__number")?.value === '+98') {
+                        if (!validateField(e, ".book-mobile", /^9([0123645789]{9})$/,
+                            `${translate("invalid_mobile_format")}`)) {
+                            isValid = false;
+                        }
+                    }
+                });
+            });
+
+            if (isValid) {
+                // Handle email/mobile verification
+                function handleVerification(e, type) {
+                    try {
+                        const verifyContainer = type === 'email'
+                            ? document.querySelector(".book-email-verify-container")
+                            : document.querySelector(".book-mobile-verify-container");
+                        const verifyInput = verifyContainer.querySelector(`.${type}-verify`);
+                        verifyContainer.classList.remove("book-hidden");
+                        verifyInput.value = e.value;
+                        if (type === 'mobile') {
+                            const codeContainer = verifyContainer.querySelector(".book-code-verify-container");
+                            const btnItem = verifyContainer.querySelector(".book-btn__content");
+                            codeContainer.classList.add("book-hidden");
+                            btnItem.dataset.type = 'verifyrequest';
+                            btnItem.innerHTML = `${translate("send_code")}`;
+                        }
+                    } catch (error) {
+                        console.error("handleVerification: " + error.message);
+                    }
+                }
+
+                document.querySelector(".book-check__has__data").querySelectorAll("input").forEach(e => {
+                    if (e.dataset.verify && e.dataset.verify === 'false') {
+                        if (document.querySelector(".book-verify-request-container").classList.contains("book-verify-request-container-toggle")) {
+                            document.querySelector(".book-verify-request-container").classList.toggle("book-verify-request-container-toggle");
+                        }
+                        isVerify = false;
+                        if (e.classList.contains("book-email")) {
+                            handleVerification(e, 'email');
+                        }
+                        if (e.classList.contains("book-mobile")) {
+                            handleVerification(e, 'mobile');
+                        }
+                    }
+                });
+
+                if (isVerify) {
+                    // Set dash for empty fields
+                    document.querySelectorAll(".book-buyer__info__content").forEach(content => {
+                        content.querySelectorAll(".book-has-dash").forEach(input => {
+                            if (input.value === '') {
+                                input.value = '-';
+                            }
+                        });
+                    });
+
+                    // Transition to summary step
+                    document.querySelector(".book-buyers__container").classList.add("book-hidden");
+                    showSummaryContent(element);
+                }
+            }
+        }
+    } else if (step === "summary") {
+        // Validate summary step
+        let isValid = true;
+        const removeDescription = (container) => {
+            const description = container.querySelector(".book-alert__content");
+            if (description) description.remove();
+        };
+
+        // Validate company rules checkbox
+        const ruleContent = document.querySelector(".book-company__rule__container");
+        removeDescription(ruleContent);
+        if (!ruleContent.querySelector("input[type=checkbox]").checked) {
+            ruleContent.insertAdjacentHTML('beforeend',
+                `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("accept_rules")}</div>`);
+            isValid = false;
+        }
+
+        // Validate counter selection
+        const counterContent = document.querySelector(".book-counter__container");
+        removeDescription(counterContent);
+        if (counterContent.classList.contains("book-Required")) {
+            const counterName = counterContent.querySelector(".book-name").value;
+            if (counterName === "") {
+                counterContent.insertAdjacentHTML('beforeend',
+                    `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("select_action_counter")}</div>`);
+                isValid = false;
+            }
+        }
+
+        if (isValid) {
+            // Transition to invoice step
+            const invoiceContainer = document.querySelector(".book-invoice__container");
+            invoiceContainer.classList.remove("book-hidden");
+            if (invoiceContainer.querySelectorAll(".book-invoice__content")[0]) {
+                invoiceContainer.querySelectorAll(".book-invoice__content").forEach(e => {
+                    e.remove()
+                })
+            };
+            if (invoiceContainer.querySelector(".book-api__container__loader")) {
+                invoiceContainer.querySelector(".book-api__container__loader").remove()
+            };
+            invoiceContainer.insertAdjacentHTML('beforeend', `<span
+                                                  class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-m-3"></span>`);
+
+            // Handle invoice rendering based on account type
+            const accountType = document.querySelector(".book-buyers__container").dataset.accounttype;
+            // Commented out as per original code
+            const share = sessionSearchStorage.share;
+            if (Number(share) === 1) {
+                invoiceContainer.innerHTML =
+                    `<div class="book-invoice__content book-pre__Invoice book-my-2" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">${translate("click_to_register_contract")}</div>`;
+                document.querySelector(".book-bankIdentifier").value = -1;
+            } else if (Number(accountType) === 1) {
+                invoiceContainer.innerHTML =
+                    `<div class="book-invoice__content book-pre__Invoice book-my-2 book-text-xl book-text-center book-cursor-pointer" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">${translate("click_to_register_pre_invoice")}</div>`;
+            } else {
+
+                const {
+                    requests,
+                    productGroupField,
+                    productIdField
+                } = getServiceMappingInfo(selectedMode);
+                const userCreditUrl = requests.userCredit;
+                const bankListData = {
+                    rkey: getSearchCookie("rkey") || "",
+                    selectedMode: selectedMode,
+                    userCreditUrl: userCreditUrl,
+                    run: true
+                };
+
+                if (utmSource === "safarmarket" || (getSearchCookie("safarmarketId") && domainId.includes("4869"))) {
+                    bankListData.engine = 2;
+                }
+
+                $bc.setSource("cms.bankList", [bankListData]);
+
+            }
+            /* } */
+        }
+    }
+    // } catch (error) {
+    //     console.error("nextStep: " + error.message);
+    // }
+}
+/**
+ * Navigates to the previous booking step (buyer to passenger, or summary to buyer) with UI updates.
+ * @param {HTMLElement} element - The element triggering the step transition (e.g., previous button).
+ */
+const prevStep = (element) => {
+    try {
+        const step = element.getAttribute("data-step");
+
+        if (step === "buyer") {
+            // Transition from buyer to passenger step
+            toggleVisibility(".book-passengers__container", ".book-buyers__container");
+            document.querySelector(".book-current__route__map").innerText = `${translate("passenger_info")}`;
+            element.classList.add("book-hidden");
+            updateStep(`${translate("passenger_info")}`, element);
+        } else if (step === "summary") {
+            // Transition from summary to buyer step
+            // Reset coupon if applicable
+            const couponResponse = document.querySelector('.book-coupon__container .book-response-code');
+            if (couponResponse && couponResponse.classList.contains('book-true')) {
+                const couponCode = document.querySelector(".book-coupon__code");
+                const couponButton = document.querySelector(".book-coupon__container button");
+                couponCode.value = "";
+                couponButton.click();
+            }
+
+            // Hide invoice container if visible
+            const summaryInvoice = document.querySelector(".book-invoice__container");
+            if (!summaryInvoice.classList.contains("book-hidden")) {
+                summaryInvoice.classList.add("book-hidden");
+            }
+
+            // Remove error messages from rule and counter containers
+            ["book-rule__container", "book-counter__container"].forEach(className => {
+                const description = document.querySelector(`.${className} .book-description`);
+                if (description) description.remove();
+            });
+
+            // Show buyer container and hide summary
+            toggleVisibility(".book-buyers__container", ".book-summary__container");
+            element.classList.remove("book-hidden");
+            updateStep(`${translate("buyer_info")}`, element);
+        }
+    } catch (error) {
+        console.error("prevStep: " + error.message);
+    }
+}
+/**
  * Handles click events to close dropdowns and hide select item content when clicking outside specific elements.
  */
 const handleClickOutside = (event) => {
@@ -3261,10 +5342,10 @@ document.addEventListener('click', handleClickOutside);
 
 
 /**
- * Returns the mapping information for a given selectedMode (e.g., "flight", "bus","").
+ * Returns the mapping information for a given selectedMode (e.g., "flight", "bus").
  * Throws an error if requestMappingCache is not loaded or the mode is unsupported.
  * 
- * @param {string} selectedMode - Mode of the service (e.g., "flight", "bus" ,"").
+ * @param {string} selectedMode - Mode of the service (e.g., "flight", "bus").
  * @returns {Object} - Contains requests, productGroupField, and productIdField.
  */
 const getServiceMappingInfo = (selectedMode) => {
@@ -3329,6 +5410,7 @@ const generateDays = (dropdownId) => {
             li.setAttribute('data-value', i);
             li.textContent = i;
             li.setAttribute('onclick', "selectDropItem(this, 'book-date__item__content')");
+            // li.onclick = function () { selectDropItem(this, 'book-date__item__content'); };
             dayDropdown.appendChild(li);
         }
     } catch (error) {
@@ -3462,635 +5544,5 @@ const generateYears = (dropdownId, isGregorian = false, isFuture = false) => {
         console.error("generateYears: " + error.message);
         return "";
     }
-};
-const detectBookingType = () => {
-    try {
-        if (document.querySelector(".seat-selection-container")) {
-            return "bus";
-        }
-        if (document.querySelector(".mobile-seat-selection-container")) {
-            return "busmobile";
-        }
-        return null; // In case no matching elements are found
-    } catch (error) {
-        console.error("Error in detectBookingType:", error);
-        return null; // Return null in case of an error
-    }
-};
+}
 
-
-/**
-* Navigates to the next booking step (passenger, buyer, or summary) with validation.
-* @param {HTMLElement} element - The element triggering the step transition (e.g., next button).
-*/
-const nextStep = (element) => {
-    try {
-        const currentStep = element.getAttribute("data-step");
-        const bookingType = detectBookingType();
-        if ((bookingType === "bus" || bookingType === "busmobile") && currentStep === "passengers") {
-            // Bus: Seat selection validation
-            let isValid = true;
-            const seatContainer = document.querySelector(".seat-selection-container");
-            const seatError = seatContainer.querySelector(".book-alert__content");
-            if (seatError) seatError.remove();
-
-            // Check if at least one seat is selected and within limit
-            if (typeof selectedSeats !== "undefined") {
-                if (selectedSeats.length === 0) {
-                    // bookToast("لطفاً حداقل یک صندلی انتخاب کنید.");
-
-                    seatContainer.insertAdjacentHTML('beforeend',
-                        `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right">لطفاً حداقل یک صندلی انتخاب کنید.</div>`);
-                    isValid = false;
-                } else if (
-                    typeof maxSelectableSeats !== "undefined" &&
-                    selectedSeats.length > maxSelectableSeats
-                ) {
-                    // bookToast(
-                    //   `حداکثر ${maxSelectableSeats} صندلی می‌توانید انتخاب کنید.`
-                    // );
-
-                    seatContainer.insertAdjacentHTML('beforeend',
-                        `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right">حداکثر ${maxSelectableSeats} صندلی می‌توانید انتخاب کنید.</div>`);
-                    isValid = false;
-                }
-            }
-
-            if (isValid) {
-                const nextStep = getNextStep(currentStep);
-                if (nextStep) {
-                    transitionToStep(currentStep, nextStep, element);
-                }
-            }
-        } else if (currentStep === "passenger") {
-            // Validate passenger information
-            let isExist = true;
-            let isValid = true;
-            const passengerInfoContents = document.querySelectorAll(".book-passenger__container");
-
-            // Check required fields and dates for each passenger
-            passengerInfoContents.forEach(passengerContent => {
-                if (!passengerContent.closest(".book-passengers__content").classList.contains("book-hidden")) {
-                    const numberItems = passengerContent.querySelectorAll(".book-info__item__container");
-                    numberItems.forEach(e => {
-                        // Remove existing error messages
-                        const description = e.querySelector(".book-alert__content");
-                        if (description) description.remove();
-
-                        // Validate required fields
-                        const necessaryField = e.querySelector(".book-Required");
-                        if (necessaryField) {
-                            const innerItem = necessaryField.closest(".book-info__item__content");
-                            innerItem.classList.remove("book-invalid");
-                            if (necessaryField.value === "") {
-                                innerItem.classList.add("book-invalid");
-                                e.insertAdjacentHTML('beforeend', `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("passenger_info_required")}</div>`);
-                                isExist = false;
-                            }
-                        }
-
-                        // Validate date fields
-                        const dateItems = e.querySelectorAll(".book-date__item__content");
-                        dateItems.forEach(dateItem => {
-                            const dateNecessaryField = dateItem.querySelector(".book-Required");
-                            if (dateNecessaryField) {
-                                const dateInnerItem = dateNecessaryField.closest(".book-info__item__content");
-                                dateInnerItem.classList.remove("book-invalid");
-                                if (dateNecessaryField.value === "" ||
-                                    (!dateNecessaryField.getAttribute("data-id") || dateNecessaryField.getAttribute("data-id") === "")) {
-                                    dateInnerItem.classList.add("book-invalid");
-                                    if (!e.querySelector(".book-alert__content")) {
-                                        e.insertAdjacentHTML('beforeend', `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("passenger_info_required")}</div>`);
-                                    }
-                                    isExist = false;
-                                }
-                            }
-                        });
-                    });
-                }
-            });
-
-            if (isExist) {
-                // Validate dates and passenger types
-                const exitDateMsDate = new Date(lastDepartureDate);
-                const passengerContents = document.querySelectorAll(".book-passenger__container");
-
-                passengerContents.forEach(passengerContent => {
-                    if (!passengerContent.closest(".book-passengers__content").classList.contains("book-hidden")) {
-                        const passengerType = passengerContent.querySelector(".book-Type").value;
-                        const birthdayField = passengerContent.querySelector(".book-DateOfBirth");
-                        birthdayField.value = checkDate(birthdayField.value);
-                        let birthday = birthdayField.value;
-                        const birthParts = birthday.split('-');
-                        // Validate birth date
-                        const [checkYear, checkMonth, checkDay] = birthParts.map(part => parseInt(part, 10));
-                        const birthdayDate = new Date(birthday);
-                        if (isNaN(checkYear) || isNaN(checkMonth) || isNaN(checkDay) ||
-                            checkMonth < 1 || checkMonth > 12 ||
-                            checkDay < 1 || checkDay > new Date(checkYear, checkMonth, 0).getDate() ||
-                            isNaN(birthdayDate.getTime())) {
-                            addDateError(`${translate("valid_date_required")}`, birthdayField);
-                            isValid = false;
-                        } else {
-                            removeDateError(birthdayField);
-
-                            // Calculate age
-                            const cmsDate = document.querySelector("main").dataset.cmsdate;
-
-                            const formattedDate = cmsDate
-                                .split("/")
-                                .map(part => part.padStart(2, "0"))
-                                .join("-");
-                            const [MM, DD, YYYY] = formattedDate.split("-");
-                            const finalDate = `${YYYY}-${MM}-${DD}`;
-                            const currentDate = new Date(finalDate);
-                            const daysDiff = Math.ceil((currentDate - birthdayDate) / (1000 * 3600 * 24));
-                            const age = Math.floor(daysDiff / 365);
-
-                            // Validate age based on passenger type
-                            if (passengerType === "ADT" && (age < 12 || age > 98)) {
-                                addDateError(`${translate("valid_adult_birth_date")}`, birthdayField);
-                                isValid = false;
-                            } else if (passengerType === "CHD" && (age < 2 || age > 12)) {
-                                addDateError(`${translate("valid_child_birth_date")}`, birthdayField);
-                                isValid = false;
-                            } else if (passengerType === "INF" && (age < 0 || age > 2)) {
-                                addDateError(`${translate("valid_infant_birth_date")}`, birthdayField);
-                                isValid = false;
-                            } else {
-                                removeDateError(birthdayField);
-                            }
-                        }
-
-                        // Validate passport expiration
-                        const passExpireField = passengerContent.querySelector(".book-PassportExpiration");
-                        if (passExpireField && passExpireField.closest(".book-info__item__container").querySelector(".book-day").classList.contains("book-Required")) {
-                            passExpireField.value = checkDate(passExpireField.value);
-                            let passExpireDate = passExpireField.value;
-                            const passExpireParts = passExpireDate.split('-');
-                            // Convert Jalali to Gregorian if needed
-                            const year = parseInt(passExpireParts[0], 10);
-                            const month = parseInt(passExpireParts[1], 10);
-                            const day = parseInt(passExpireParts[2], 10);
-                            const passExpireDateObject = new Date(passExpireDate);
-                            // Validate passport date
-                            if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(passExpireDateObject.getTime()) ||
-                                month < 1 || month > 12 || day < 1 || day > new Date(year, month, 0).getDate()) {
-                                addDateError(`${translate("valid_date_required")}`, passExpireField);
-                                isValid = false;
-                            } else {
-                                // Check 6-month validity
-                                const timeDiff = passExpireDateObject.getTime() - exitDateMsDate.getTime();
-                                const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                                if (daysDiff < 183) {
-                                    addDateError(`${translate("passport_expiration_six_month")}`, passExpireField);
-                                    isValid = false;
-                                } else {
-                                    removeDateError(passExpireField);
-                                }
-                            }
-                        }
-
-                        // Validate passport code
-                        const passportCodeField = passengerContent.querySelector(".book-PassportCode");
-                        if (passportCodeField && passportCodeField.classList.contains("book-Required")) {
-                            const passportCode = passportCodeField.value;
-                            const regex = /^[a-zA-Z]{1}[0-9]{8}$/;
-                            const placeOfBirth = passengerContent.querySelector(".book-PlaceOfBirth");
-                            if (placeOfBirth && placeOfBirth.value === "1002236") {
-                                if (!regex.test(passportCode)) {
-                                    addError(passportCodeField, `${translate("invalid_passport_number")}`);
-                                    isValid = false;
-                                } else {
-                                    removeError(passportCodeField);
-                                }
-                            }
-                        }
-
-                        // Validate national code
-                        const nationalCodeField = passengerContent.querySelector(".book-NationalCode");
-                        if (nationalCodeField && nationalCodeField.classList.contains("book-Required")) {
-                            const placeOfBirth = passengerContent.querySelector(".book-PlaceOfBirth");
-                            if (placeOfBirth && placeOfBirth.value === "1002236") {
-                                const nationalCode = nationalCodeField.value;
-                                let checkArray = 0;
-                                for (let i = 0; i < 10; i++) {
-                                    if (nationalCode[0] === nationalCode[i]) {
-                                        checkArray++;
-                                    }
-                                }
-                                if (checkArray < 10) {
-                                    const check = parseFloat(nationalCode[9]);
-                                    let sum = 0;
-                                    for (let i = 0; i < 9; i++) {
-                                        sum += parseFloat(nationalCode[i]) * (10 - i);
-                                    }
-                                    sum %= 11;
-                                    if ((sum < 2 && check === sum) || (sum >= 2 && check + sum === 11)) {
-                                        removeError(nationalCodeField);
-                                    } else {
-                                        addError(nationalCodeField, `${translate("invalid_national_code")}`);
-                                        isValid = false;
-                                    }
-                                } else {
-                                    addError(nationalCodeField, `${translate("invalid_national_code")}`);
-                                    isValid = false;
-                                }
-                            }
-                        }
-
-                        // Validate English fields
-                        passengerContent.querySelectorAll(".book-EnglishKey").forEach(englishField => {
-                            if (englishField.classList.contains("book-Required")) {
-                                if (englishField.value.length < 2) {
-                                    addError(englishField, `${translate("minimum_character_2")}`);
-                                    isValid = false;
-                                } else {
-                                    const regex = /^[a-zA-Z ]+$/;
-                                    if (!regex.test(englishField.value)) {
-                                        addError(englishField, `${translate("invalid_english_character")}`);
-                                        isValid = false;
-                                    } else {
-                                        removeError(englishField);
-                                    }
-                                }
-                            }
-                        });
-
-                        // Validate country fields
-                        passengerContent.querySelectorAll(".book-NameOfCountry").forEach(countryField => {
-                            if (countryField.classList.contains("book-Required")) {
-                                if (countryField.getAttribute("data-value") === '') {
-                                    countryField.closest(".book-info__item__content").classList.add("book-invalid");
-                                    countryField.closest(".book-info__item__container").insertAdjacentHTML('beforeend',
-                                        `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("select_country")}</div>`);
-                                    isValid = false;
-                                } else {
-                                    countryField.closest(".book-info__item__content").classList.remove("book-invalid");
-                                    countryField.closest(".book-info__item__container").querySelectorAll(".book-alert__content").forEach(desc => desc.remove());
-                                }
-                            }
-                        });
-                    }
-                });
-
-                if (isValid) {
-                    // Transition to buyer step or login
-                    const mainUserId = document.querySelector(".main-userid").value;
-                    if (mainUserId === "0") {
-                        showLoginContainer();
-                    } else {
-                        document.querySelector(".book-passengers__container").classList.add("book-hidden");
-                        const buyersContainer = document.querySelector(".book-buyers__container");
-                        buyersContainer.classList.remove("book-hidden");
-                        document.querySelector(".book-current__route__map").innerText = `${translate("buyer_info")}`;
-                        element.setAttribute("data-step", "buyer");
-                        const prevSibling = element.previousElementSibling;
-                        if (prevSibling) {
-                            prevSibling.classList.remove("book-hidden");
-                            prevSibling.setAttribute("data-step", "buyer");
-                        }
-                        updateStepItems("buyer");
-                        if (buyersContainer.getAttribute("data-run") === "0") {
-                            $bc.setSource("cms.buyer", true);
-                            buyersContainer.setAttribute("data-run", "1");
-                        }
-                    }
-                }
-            }
-        } else if (currentStep === "buyer") {
-            // Validate buyer information
-            let isExist = true;
-            let isValid = true;
-            let isVerify = true;
-
-            document.querySelectorAll(".book-buyer__info__content").forEach(buyerContent => {
-                buyerContent.querySelectorAll(".book-info__item__container").forEach(e => {
-                    // Remove existing error messages
-                    const description = e.querySelector(".book-alert__content");
-                    if (description) description.remove();
-
-                    // Validate required fields
-                    const necessaryField = e.querySelector(".book-Required");
-                    if (necessaryField) {
-                        necessaryField.closest(".book-info__item__content").classList.remove("book-invalid");
-                        if (necessaryField.value === "") {
-                            necessaryField.closest(".book-info__item__content").classList.add("book-invalid");
-                            e.insertAdjacentHTML('beforeend', `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("enter_buyer_info")}</div>`);
-                            isExist = false;
-                        }
-                    }
-
-                    // Validate number fields
-                    e.querySelectorAll(".book-number__item__container").forEach(numberItem => {
-                        const codeField = numberItem.querySelector(".book-code");
-                        if (codeField) {
-                            codeField.closest(".book-info__item__content").classList.remove("book-invalid");
-                            if (codeField.value === "") {
-                                codeField.closest(".book-info__item__content").classList.add("book-invalid");
-                                isExist = false;
-                            }
-                        }
-                    });
-                });
-            });
-
-            if (isExist) {
-                // Validate agency selection
-                if (document.querySelector(".book-buyer-1")) {
-                    const agencyContent = document.querySelector(".book-buyer__agency__content");
-                    const selectedAgency = document.querySelector(".book-selected__agency");
-                    if (!agencyContent.classList.contains("book-hidden") &&
-                        (!selectedAgency.getAttribute("data-id") || selectedAgency.getAttribute("data-id") === '')) {
-                        isValid = false;
-                        selectedAgency.closest(".book-info__item__container").insertAdjacentHTML('beforeend',
-                            `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("select_suggested_agency")}</div>`);
-                    }
-                }
-
-                // Validate buyer fields
-                function validateField(element, className, regex, errorMessage) {
-                    try {
-                        const field = element.querySelector(className);
-                        if (field?.classList.contains("book-Required")) {
-                            if (!regex.test(field.value)) {
-                                field.closest(".book-info__item__content").classList.add("book-invalid");
-                                element.insertAdjacentHTML('beforeend',
-                                    `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${errorMessage}</div>`);
-                                return false;
-                            }
-                            field.closest(".book-info__item__content").classList.remove("book-invalid");
-                            return true;
-                        }
-                        return true;
-                    } catch (error) {
-                        console.error("validateField: " + error.message);
-                        return false;
-                    }
-                }
-
-                Array.from(document.getElementsByClassName("book-buyer__info__content")).forEach(buyerInfo => {
-                    // Validate name
-                    Array.from(buyerInfo.getElementsByClassName("book-name")).forEach(e => {
-                        if (!validateField(e.closest(".book-info__item__container"), ".book-name", /^.{2,}$/,
-                            `${translate("minimum_character_2")}`)) {
-                            isValid = false;
-                        }
-                    });
-
-                    // Validate email
-                    Array.from(buyerInfo.getElementsByClassName("book-email")).forEach(e => {
-                        if (!validateField(e.closest(".book-info__item__container"), ".book-email",
-                            /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, `${translate("invalid_email")}`)) {
-                            isValid = false;
-                        }
-                    });
-
-                    // Validate address
-                    Array.from(buyerInfo.getElementsByClassName("book-address")).forEach(e => {
-                        if (!validateField(e.closest(".book-info__item__container"), ".book-address", /^.{5,}$/,
-                            `${translate("minimum_character_5")}`)) {
-                            isValid = false;
-                        }
-                    });
-
-                    // Validate mobile
-                    Array.from(buyerInfo.getElementsByClassName("book-number__item__container")).forEach(e => {
-                        if (e.querySelector(".book-code__number")?.value === '+98') {
-                            if (!validateField(e, ".book-mobile", /^9([0123645789]{9})$/,
-                                `${translate("invalid_mobile_format")}`)) {
-                                isValid = false;
-                            }
-                        }
-                    });
-                });
-
-                if (isValid) {
-                    // Handle email/mobile verification
-                    function handleVerification(e, type) {
-                        try {
-                            const verifyContainer = type === 'email'
-                                ? document.querySelector(".book-email-verify-container")
-                                : document.querySelector(".book-mobile-verify-container");
-                            const verifyInput = verifyContainer.querySelector(`.${type}-verify`);
-                            verifyContainer.classList.remove("book-hidden");
-                            verifyInput.value = e.value;
-                            if (type === 'mobile') {
-                                const codeContainer = verifyContainer.querySelector(".book-code-verify-container");
-                                const btnItem = verifyContainer.querySelector(".book-btn__content");
-                                codeContainer.classList.add("book-hidden");
-                                btnItem.dataset.type = 'verifyrequest';
-                                btnItem.innerHTML = `${translate("send_code")}`;
-                            }
-                        } catch (error) {
-                            console.error("handleVerification: " + error.message);
-                        }
-                    }
-
-                    document.querySelector(".book-check__has__data").querySelectorAll("input").forEach(e => {
-                        if (e.dataset.verify && e.dataset.verify === 'false') {
-                            if (document.querySelector(".book-verify-request-container").classList.contains("book-verify-request-container-toggle")) {
-                                document.querySelector(".book-verify-request-container").classList.toggle("book-verify-request-container-toggle");
-                            }
-                            isVerify = false;
-                            if (e.classList.contains("book-email")) {
-                                handleVerification(e, 'email');
-                            }
-                            if (e.classList.contains("book-mobile")) {
-                                handleVerification(e, 'mobile');
-                            }
-                        }
-                    });
-
-                    if (isVerify) {
-                        // Set dash for empty fields
-                        document.querySelectorAll(".book-buyer__info__content").forEach(content => {
-                            content.querySelectorAll(".book-has-dash").forEach(input => {
-                                if (input.value === '') {
-                                    input.value = '-';
-                                }
-                            });
-                        });
-
-                        // Transition to summary step
-                        document.querySelector(".book-buyers__container").classList.add("book-hidden");
-                        showSummaryContent(element);
-                    }
-                }
-            }
-        } else if (currentStep === "summary") {
-            // Validate summary step
-            let isValid = true;
-            const removeDescription = (container) => {
-                const description = container.querySelector(".book-alert__content");
-                if (description) description.remove();
-            };
-
-            // Validate company rules checkbox
-            const ruleContent = document.querySelector(".book-company__rule__container");
-            removeDescription(ruleContent);
-            if (!ruleContent.querySelector("input[type=checkbox]").checked) {
-                ruleContent.insertAdjacentHTML('beforeend',
-                    `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("accept_rules")}</div>`);
-                isValid = false;
-            }
-
-            // Validate counter selection
-            const counterContent = document.querySelector(".book-counter__container");
-            removeDescription(counterContent);
-            if (counterContent.classList.contains("book-Required")) {
-                const counterName = counterContent.querySelector(".book-name").value;
-                if (counterName === "") {
-                    counterContent.insertAdjacentHTML('beforeend',
-                        `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2">${translate("select_action_counter")}</div>`);
-                    isValid = false;
-                }
-            }
-
-            if (isValid) {
-                // Transition to invoice step
-                const invoiceContainer = document.querySelector(".book-invoice__container");
-                invoiceContainer.classList.remove("book-hidden");
-                if (invoiceContainer.querySelectorAll(".book-invoice__content")[0]) {
-                    invoiceContainer.querySelectorAll(".book-invoice__content").forEach(e => {
-                        e.remove()
-                    })
-                };
-                if (invoiceContainer.querySelector(".book-api__container__loader")) {
-                    invoiceContainer.querySelector(".book-api__container__loader").remove()
-                };
-                invoiceContainer.insertAdjacentHTML('beforeend', `<span
-                                                  class="book-api__container__loader book-bg-white book-relative book-block book-w-3 book-h-3 book-rounded-full book-mx-auto book-m-3"></span>`);
-
-                // Handle invoice rendering based on account type
-                const accountType = document.querySelector(".book-buyers__container").dataset.accounttype;
-                // Commented out as per original code
-                const share = sessionSearchStorage.share;
-                if (Number(share) === 1) {
-                    invoiceContainer.innerHTML =
-                        `<div class="book-invoice__content book-pre__Invoice book-my-2" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">${translate("click_to_register_contract")}</div>`;
-                    document.querySelector(".book-bankIdentifier").value = -1;
-                } else if (Number(accountType) === 1) {
-                    invoiceContainer.innerHTML =
-                        `<div class="book-invoice__content book-pre__Invoice book-my-2 book-text-xl book-text-center book-cursor-pointer" data-run="0" onclick="submitInvoice(this,'pre__Invoice')">${translate("click_to_register_pre_invoice")}</div>`;
-                } else {
-
-                    const {
-                        requests,
-                        productGroupField,
-                        productIdField
-                    } = getServiceMappingInfo(selectedMode);
-                    const userCreditUrl = requests.userCredit;
-                    const bankListData = {
-                        rkey: getSearchCookie("rkey") || "",
-                        selectedMode: selectedMode,
-                        userCreditUrl: userCreditUrl,
-                        run: true
-                    };
-
-                    if (utmSource === "safarmarket" || (getSearchCookie("safarmarketId") && domainId.includes("4869"))) {
-                        bankListData.engine = 2;
-                    }
-
-                    $bc.setSource("cms.bankList", [bankListData]);
-
-                }
-                /* } */
-            }
-        }
-    } catch (error) {
-        console.error("nextStep: " + error.message);
-    }
-};
-
-
-/**
- * Navigates to the previous booking step (buyer to passenger, or summary to buyer) with UI updates.
- * @param {HTMLElement} element - The element triggering the step transition (e.g., previous button).
- */
-const prevStep = (element) => {
-    try {
-        const currentStep = element.getAttribute("data-step");
-        const bookingType = detectBookingType();
-        if ((bookingType === "bus" || bookingType === "busmobile") && previousStep === "passengers") {
-            if (currentStep === "passengers") {
-                // Re-render seat map if going back to seat selection
-                if (
-                    typeof onProcessedRenderSeatMapSelection === "function" &&
-                    window.seatMapResponse
-                ) {
-                    setTimeout(() => {
-                        onProcessedRenderSeatMapSelection({
-                            response: window.seatMapResponse,
-                        });
-                    }, 100);
-                }
-            };
-
-            // Perform the transition
-            transitionToStep(currentStep, previousStep, element);
-
-            // Update current prev button step
-            element.setAttribute("data-step", previousStep);
-
-            // Find and update next button step
-            const nextButton = element.nextElementSibling;
-            if (nextButton) {
-                nextButton.setAttribute("data-step", previousStep);
-            }
-
-            // Handle navigation button visibility
-            const config = getCurrentStepConfig();
-            const stepIndex = config.steps.indexOf(previousStep);
-
-            if (stepIndex === 0) {
-                // Going back to first step - hide previous button
-                element.classList.add("book-invisible");
-            } else {
-                // Make sure previous button is visible for middle steps
-                element.classList.remove("book-invisible", "book-hidden");
-            }
-
-            // Make sure next button is visible when going back from last step
-            if (nextButton && stepIndex < config.steps.length - 1) {
-                nextButton.classList.remove("book-invisible", "book-hidden");
-            }
-
-        } else if (currentStep === "buyer") {
-            // Transition from buyer to passenger step
-            toggleVisibility(".book-passengers__container", ".book-buyers__container");
-            document.querySelector(".book-current__route__map").innerText = `${translate("passenger_info")}`;
-            element.classList.add("book-hidden");
-            updateStep(`${translate("passenger_info")}`, element);
-        } else if (currentStep === "summary") {
-            // Transition from summary to buyer step
-            // Reset coupon if applicable
-            const couponResponse = document.querySelector('.book-coupon__container .book-response-code');
-            if (couponResponse && couponResponse.classList.contains('book-true')) {
-                const couponCode = document.querySelector(".book-coupon__code");
-                const couponButton = document.querySelector(".book-coupon__container button");
-                couponCode.value = "";
-                couponButton.click();
-            }
-
-            // Hide invoice container if visible
-            const summaryInvoice = document.querySelector(".book-invoice__container");
-            if (!summaryInvoice.classList.contains("book-hidden")) {
-                summaryInvoice.classList.add("book-hidden");
-            }
-
-            // Remove error messages from rule and counter containers
-            ["book-rule__container", "book-counter__container"].forEach(className => {
-                const description = document.querySelector(`.${className} .book-description`);
-                if (description) description.remove();
-            });
-
-            // Show buyer container and hide summary
-            toggleVisibility(".book-buyers__container", ".book-summary__container");
-            element.classList.remove("book-hidden");
-            updateStep(`${translate("buyer_info")}`, element);
-        }
-    } catch (error) {
-        console.error("prevStep: " + error.message);
-    }
-};
