@@ -442,91 +442,91 @@ const addPassengerWithSeatDisplay = (
   }
 };
 
-const updateStep = (stepName, element) => {
-  try {
-    document.querySelector(".book-current__route__map").innerText = stepName;
-    if (typeof updateStepItems === "function") {
-      // Extract step name from text for updateStepItems function
-      const stepMap = {
-        "انتخاب صندلی": "seat",
-        "مشخصات مسافران": "passenger",
-        "مشخصات خریدار": "buyer",
-        "خلاصه رزرو": "summary",
-      };
-      const stepKey = stepMap[stepName] || stepName;
-      updateStepItems(stepKey);
-    }
-  } catch (err) {
-    console.error(`updateStep: ${err.message}`);
-  }
-};
+// const updateStep = (stepName, element) => {
+//   try {
+//     document.querySelector(".book-current__route__map").innerText = stepName;
+//     if (typeof updateStepItems === "function") {
+//       // Extract step name from text for updateStepItems function
+//       const stepMap = {
+//         "انتخاب صندلی": "seat",
+//         "مشخصات مسافران": "passenger",
+//         "مشخصات خریدار": "buyer",
+//         "خلاصه رزرو": "summary",
+//       };
+//       const stepKey = stepMap[stepName] || stepName;
+//       updateStepItems(stepKey);
+//     }
+//   } catch (err) {
+//     console.error(`updateStep: ${err.message}`);
+//   }
+// };
 
 
-const updateStepItems = (element) => {
-  try {
-    const stepItems = document.getElementsByClassName("book-route__map__item");
-    Array.from(stepItems).forEach((item) => {
-      const isCurrentStep = item.getAttribute("data-step") === element;
-      // Remove active state from all items
-      item.classList.remove("book-route__map__item__active");
-      // Add active state to the current step
-      if (isCurrentStep) {
-        item.classList.add("book-route__map__item__active");
-      }
-    });
-  } catch (err) {
-    console.error(
-      `updateStepItems: ${err.message}, Line: ${err.lineNumber || "unknown"}`
-    );
-  }
-};
+// const updateStepItems = (element) => {
+//   try {
+//     const stepItems = document.getElementsByClassName("book-route__map__item");
+//     Array.from(stepItems).forEach((item) => {
+//       const isCurrentStep = item.getAttribute("data-step") === element;
+//       // Remove active state from all items
+//       item.classList.remove("book-route__map__item__active");
+//       // Add active state to the current step
+//       if (isCurrentStep) {
+//         item.classList.add("book-route__map__item__active");
+//       }
+//     });
+//   } catch (err) {
+//     console.error(
+//       `updateStepItems: ${err.message}, Line: ${err.lineNumber || "unknown"}`
+//     );
+//   }
+// };
 
 // Step configuration for different booking types
-const STEP_CONFIGS = {
-  flight: {
-    steps: ["passenger", "buyer", "summary"],
-    stepLabels: {
-      passenger: "مشخصات مسافران",
-      buyer: "مشخصات خریدار",
-      summary: "خلاصه رزرو",
-    },
-    containers: {
-      passenger: ".book-passengers__container",
-      buyer: ".book-buyers__container",
-      summary: ".book-summary__container",
-    },
-  },
-  bus: {
-    steps: ["passengers", "passenger", "buyer", "summary"], // passengers = seat selection
-    stepLabels: {
-      passengers: "انتخاب صندلی",
-      passenger: "مشخصات مسافران",
-      buyer: "مشخصات خریدار",
-      summary: "خلاصه رزرو",
-    },
-    containers: {
-      passengers: ".book-seat_selection__container",
-      passenger: ".book-passengers__container",
-      buyer: ".book-buyers__container",
-      summary: ".book-summary__container",
-    },
-  },
-  busmobile: {
-    steps: ["passengers", "passenger", "buyer", "summary"], // passengers = seat selection
-    stepLabels: {
-      passengers: "انتخاب صندلی",
-      passenger: "مشخصات مسافران",
-      buyer: "مشخصات خریدار",
-      summary: "خلاصه رزرو",
-    },
-    containers: {
-      passengers: ".book-seat_selection__container",
-      passenger: ".book-passengers__container",
-      buyer: ".book-buyers__container",
-      summary: ".book-summary__container",
-    },
-  },
-};
+// const STEP_CONFIGS = {
+//   flight: {
+//     steps: ["passenger", "buyer", "summary"],
+//     stepLabels: {
+//       passenger: "مشخصات مسافران",
+//       buyer: "مشخصات خریدار",
+//       summary: "خلاصه رزرو",
+//     },
+//     containers: {
+//       passenger: ".book-passengers__container",
+//       buyer: ".book-buyers__container",
+//       summary: ".book-summary__container",
+//     },
+//   },
+//   bus: {
+//     steps: ["passengers", "passenger", "buyer", "summary"], // passengers = seat selection
+//     stepLabels: {
+//       passengers: "انتخاب صندلی",
+//       passenger: "مشخصات مسافران",
+//       buyer: "مشخصات خریدار",
+//       summary: "خلاصه رزرو",
+//     },
+//     containers: {
+//       passengers: ".book-seat_selection__container",
+//       passenger: ".book-passengers__container",
+//       buyer: ".book-buyers__container",
+//       summary: ".book-summary__container",
+//     },
+//   },
+//   busmobile: {
+//     steps: ["passengers", "passenger", "buyer", "summary"], // passengers = seat selection
+//     stepLabels: {
+//       passengers: "انتخاب صندلی",
+//       passenger: "مشخصات مسافران",
+//       buyer: "مشخصات خریدار",
+//       summary: "خلاصه رزرو",
+//     },
+//     containers: {
+//       passengers: ".book-seat_selection__container",
+//       passenger: ".book-passengers__container",
+//       buyer: ".book-buyers__container",
+//       summary: ".book-summary__container",
+//     },
+//   },
+// };
 
 
 // function detectBookingType() {
@@ -540,124 +540,124 @@ const STEP_CONFIGS = {
 // }
 
 
-function getCurrentStepConfig() {
-  const bookingType = detectBookingType();
-  return STEP_CONFIGS[bookingType];
-}
+// function getCurrentStepConfig() {
+//   const bookingType = detectBookingType();
+//   return STEP_CONFIGS[bookingType];
+// }
 
 
-function getCurrentStepIndex(currentStep) {
-  const config = getCurrentStepConfig();
-  return config.steps.indexOf(currentStep);
-}
+// function getCurrentStepIndex(currentStep) {
+//   const config = getCurrentStepConfig();
+//   return config.steps.indexOf(currentStep);
+// }
 
 
-function getNextStep(currentStep) {
-  const config = getCurrentStepConfig();
-  const currentIndex = getCurrentStepIndex(currentStep);
+// function getNextStep(currentStep) {
+//   const config = getCurrentStepConfig();
+//   const currentIndex = getCurrentStepIndex(currentStep);
 
-  if (currentIndex >= 0 && currentIndex < config.steps.length - 1) {
-    return config.steps[currentIndex + 1];
-  }
-  return null;
-}
-
-
-function getPreviousStep(currentStep) {
-  const config = getCurrentStepConfig();
-  const currentIndex = getCurrentStepIndex(currentStep);
-
-  if (currentIndex > 0) {
-    return config.steps[currentIndex - 1];
-  }
-  return null;
-}
+//   if (currentIndex >= 0 && currentIndex < config.steps.length - 1) {
+//     return config.steps[currentIndex + 1];
+//   }
+//   return null;
+// }
 
 
-function transitionToStep(fromStep, toStep, element) {
-  const config = getCurrentStepConfig();
+// function getPreviousStep(currentStep) {
+//   const config = getCurrentStepConfig();
+//   const currentIndex = getCurrentStepIndex(currentStep);
 
-  // Hide current step container
-  if (config.containers[fromStep]) {
-    const fromContainer = document.querySelector(config.containers[fromStep]);
-    if (fromContainer) {
-      fromContainer.classList.add("book-hidden");
-    }
-  }
+//   if (currentIndex > 0) {
+//     return config.steps[currentIndex - 1];
+//   }
+//   return null;
+// }
 
-  // Show target step container
-  if (config.containers[toStep]) {
-    const toContainer = document.querySelector(config.containers[toStep]);
-    if (toContainer) {
-      toContainer.classList.remove("book-hidden");
-    }
-  }
 
-  // Update UI elements
-  const routeMapElement = document.querySelector(".book-current__route__map");
-  if (routeMapElement && config.stepLabels[toStep]) {
-    routeMapElement.innerText = config.stepLabels[toStep];
-  }
+// function transitionToStep(fromStep, toStep, element) {
+//   const config = getCurrentStepConfig();
 
-  // Find both navigation buttons
-  let prevButton, nextButton;
+//   // Hide current step container
+//   if (config.containers[fromStep]) {
+//     const fromContainer = document.querySelector(config.containers[fromStep]);
+//     if (fromContainer) {
+//       fromContainer.classList.add("book-hidden");
+//     }
+//   }
 
-  // Determine which button was clicked and find the other one
-  if (element.previousElementSibling) {
-    // Element is likely the next button
-    prevButton = element.previousElementSibling;
-    nextButton = element;
-  } else if (element.nextElementSibling) {
-    // Element is likely the prev button
-    prevButton = element;
-    nextButton = element.nextElementSibling;
-  } else {
-    // Try to find buttons by class or other means
-    const container = element.closest(
-      ".book-navigation, .book-buttons, .step-navigation"
-    );
-    if (container) {
-      prevButton = container.querySelector(
-        '[data-step][onclick*="prevStep"], .prev-button, .book-prev'
-      );
-      nextButton = container.querySelector(
-        '[data-step][onclick*="nextStep"], .next-button, .book-next'
-      );
-    }
-  }
+//   // Show target step container
+//   if (config.containers[toStep]) {
+//     const toContainer = document.querySelector(config.containers[toStep]);
+//     if (toContainer) {
+//       toContainer.classList.remove("book-hidden");
+//     }
+//   }
 
-  // Update both buttons' data-step attributes
-  if (prevButton) {
-    prevButton.setAttribute("data-step", toStep);
+//   // Update UI elements
+//   const routeMapElement = document.querySelector(".book-current__route__map");
+//   if (routeMapElement && config.stepLabels[toStep]) {
+//     routeMapElement.innerText = config.stepLabels[toStep];
+//   }
 
-    // Handle prev button visibility
-    const hasPrevStep = getPreviousStep(toStep);
-    if (hasPrevStep) {
-      prevButton.classList.remove("book-hidden", "book-invisible");
-    } else {
-      prevButton.classList.add("book-invisible");
-    }
-  }
+//   // Find both navigation buttons
+//   let prevButton, nextButton;
 
-  if (nextButton) {
-    nextButton.setAttribute("data-step", toStep);
+//   // Determine which button was clicked and find the other one
+//   if (element.previousElementSibling) {
+//     // Element is likely the next button
+//     prevButton = element.previousElementSibling;
+//     nextButton = element;
+//   } else if (element.nextElementSibling) {
+//     // Element is likely the prev button
+//     prevButton = element;
+//     nextButton = element.nextElementSibling;
+//   } else {
+//     // Try to find buttons by class or other means
+//     const container = element.closest(
+//       ".book-navigation, .book-buttons, .step-navigation"
+//     );
+//     if (container) {
+//       prevButton = container.querySelector(
+//         '[data-step][onclick*="prevStep"], .prev-button, .book-prev'
+//       );
+//       nextButton = container.querySelector(
+//         '[data-step][onclick*="nextStep"], .next-button, .book-next'
+//       );
+//     }
+//   }
 
-    // Handle next button visibility
-    const hasNextStep = getNextStep(toStep);
-    if (hasNextStep) {
-      nextButton.classList.remove("book-hidden", "book-invisible");
-    } else {
-      // On last step, you might want to change button text or hide it
-      // Based on your original code, it seems like summary step shows invoice
-      // nextButton.classList.add('book-invisible');
-    }
-  }
+//   // Update both buttons' data-step attributes
+//   if (prevButton) {
+//     prevButton.setAttribute("data-step", toStep);
 
-  // Update step indicators
-  if (typeof updateStepItems === "function") {
-    updateStepItems(toStep);
-  }
-}
+//     // Handle prev button visibility
+//     const hasPrevStep = getPreviousStep(toStep);
+//     if (hasPrevStep) {
+//       prevButton.classList.remove("book-hidden", "book-invisible");
+//     } else {
+//       prevButton.classList.add("book-invisible");
+//     }
+//   }
+
+//   if (nextButton) {
+//     nextButton.setAttribute("data-step", toStep);
+
+//     // Handle next button visibility
+//     const hasNextStep = getNextStep(toStep);
+//     if (hasNextStep) {
+//       nextButton.classList.remove("book-hidden", "book-invisible");
+//     } else {
+//       // On last step, you might want to change button text or hide it
+//       // Based on your original code, it seems like summary step shows invoice
+//       // nextButton.classList.add('book-invisible');
+//     }
+//   }
+
+//   // Update step indicators
+//   if (typeof updateStepItems === "function") {
+//     updateStepItems(toStep);
+//   }
+// }
 
 
 // const nextStep = (element) => {
