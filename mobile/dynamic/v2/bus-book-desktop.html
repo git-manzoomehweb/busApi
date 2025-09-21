@@ -13,7 +13,9 @@
     <link href="[##cms.cms.cdn##]/booking/css/book.ui.min.css?ver=1" type="text/css" rel="stylesheet" />
 
     <style>
-
+.book-clear-both{
+    clear:both;
+}
         
 *, body, html, input, select, ul, h1, h2, h3, p, header *, footer *, input, #contactform, #contactform input, #contactform * #opinionForm *, #search-content-tour, #search-content-tour input, #search-content-tour *, .user-info-comment *, .user-info-comment input, #OpinioUser-box *, #OpinioUser-box input, #OpinioUser-box button {
     font-family: IRANSansWeb ;
@@ -401,11 +403,9 @@
                 </h6>
                 {{
                 return `<div
-                class="book-text-2xl book-font-bold book-text-zinc-900"><span
-                    class="book-firstpay__cost">${new
-                    Intl.NumberFormat().format($data.priceInfo.totalCommission)}</span>
-                <span
-                    class="book-unit__content">${await renderCurrency($data.priceInfo.currency)}</span></div>`
+                class="book-text-2xl book-font-bold book-text-zinc-900">
+                <span class="book-firstpay__cost">${new Intl.NumberFormat().format($data.priceInfo.totalCommission)}</span>
+                <span  class="book-unit__content">${await renderCurrency($data.priceInfo.currency)}</span></div>`
             }}
         </div>
         </div>
@@ -486,7 +486,7 @@
                             <div class="book-summary__container book-hidden">
                            <basis core="call" file="book/summary" lid="1" pageindexid="[##cms.cms.pageindexid|(1)##]"></basis>
                             </div>
-                            <div class="book-flex book-justify-between book-my-5">
+                            <div class="book-flex book-justify-between book-my-5 book-clear-both">
                                 <button
                                     class="book-btn__content book-min-w-40 book-text-white book-rounded-2xl book-p-3 book-cursor-pointer book-text-center book-prev__btn book-bg-zinc-300 hover:book-bg-zinc-200 book-hidden"
                                     data-step="seat" onclick="prevStep(this)">

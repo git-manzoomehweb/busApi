@@ -18,23 +18,6 @@ const busGroup = busData.busGroup || [];
 // let totalTime = 1200; // 20 minutes
 
 
-function renderTotalPricePassengers(seatcount){
-  try {
-    const data = JSON.parse(sessionStorage.getItem("sessionBook"));
-
-    if (data && data.priceInfo && data.priceInfo.total) {
-      document.querySelector(".book-firstpay__cost").innerHTML =  Intl.NumberFormat().format(data.priceInfo.total * seatcount );
-    }else{
-      document.querySelector(".book-firstpay__cost").innerHTML =  0 ;
-    }
-  } catch (error) {
-    console.error("خطا در خواندن مبلغ کل:", error);
-    return 0;
-  }
-
-}
-
-
 
 function getTotalPrice() {
   try {
@@ -286,7 +269,6 @@ const setProductGroup = async () => {
     }
 
     // Set booking data source if search data exists
-    console.log("bus.book :", sessionBookStorage)
     $bc.setSource("bus.book", sessionBookStorage);
 
     sessionSearchStorage = sessionStorage.getItem("sessionSearch")
@@ -1359,7 +1341,6 @@ const onProcessedRenderSeatMapSelection = async (args) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.textContent = seat.number;
-
       btn.className = `book-bg-center book-bg-cover book-w-[30px] book-h-[34px] book-flex book-justify-center book-items-center`;
 
       if (indexInRow === 1) {
@@ -1379,7 +1360,7 @@ const onProcessedRenderSeatMapSelection = async (args) => {
         }
         btn.disabled = true;
       } else if (seat.status === "available") {
-        btn.classList.add("book-seat-available", "book-text-zinc-900");
+        btn.classList.add("book-seat-available", "book-text-zinc-900", "book-cursor-pointer");
         btn.title = "Available";
 
         btn.addEventListener("click", () => {
@@ -1388,42 +1369,28 @@ const onProcessedRenderSeatMapSelection = async (args) => {
           );
 
           if (seatIndex === -1) {
+            if (selectedSeats.length >= maxSelectableSeats) {
+              // bookToast(
+              //   `شما فقط مجاز به انتخاب ${maxSelectableSeats} صندلی هستید.`
+              // );
+              // alert(`شما فقط مجاز به انتخاب ${maxSelectableSeats} صندلی هستید.`);
 
-              const container = document.querySelector(".seat-selection-container");
+              selectedSeats.insertAdjacentHTML('beforeend',
+                `<div class="book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right">شما فقط مجاز به انتخاب ${maxSelectableSeats} صندلی هستید.</div>`);
 
-              if (selectedSeats.length >= maxSelectableSeats) {
-                // 1) خطای قبلی را پاک کن (فقط در محدودهٔ همین کانتینر)
-                const prev = container.parentElement.querySelector(".js-seat-limit-error");
-                if (prev) prev.remove();
 
-                // 2) پیام جدید را بساز و بعد از کانتینر قرار بده
-                const el = document.createElement("div");
-                el.className = "js-seat-limit-error book-alert__content book-text-red-600 book-text-xs book-mt-2 book-float-right";
-                el.textContent = `شما فقط مجاز به انتخاب ${maxSelectableSeats} صندلی هستید.`;
-                container.after(el);
-
-                // 3) اختیاری: پس از 3 ثانیه خودکار حذف شود (و وقفه‌های قبلی پاک شود)
-                clearTimeout(container._seatErrTimer);
-                container._seatErrTimer = setTimeout(() => el.remove(), 3000);
-
-                return;
-              }
-
+              return;
+            }
             selectedSeats.push(seat);
             btn.classList.add("book-seat-selected");
-renderTotalPricePassengers(selectedSeats.length)
           } else {
             selectedSeats.splice(seatIndex, 1);
             btn.classList.remove("book-seat-selected");
-            renderTotalPricePassengers(selectedSeats.length)
-
-
           }
 
           const seatCountElement = document.getElementById("seat-countnum");
           if (seatCountElement) {
             seatCountElement.textContent = selectedSeats.length;
-            console.log(selectedSeats);
           }
           handleSeatSelection(seat);
         });
@@ -1570,7 +1537,7 @@ const onProcessedRenderMobSeatMapSelection = async (args) => {
         }
         btn.disabled = true;
       } else if (seat.status === "available") {
-        addClasses(btn, "book-seat-available book-text-zinc-900");
+        addClasses(btn, "book-seat-available book-text-zinc-900 book-cursor-pointer");
         btn.title = "Available";
 
         btn.addEventListener("click", () => {
@@ -1669,51 +1636,64 @@ const onProcessedRenderMobSeatMapSelection = async (args) => {
 };
 
 function handleSeatSelection(seat) {
-  if (selectedSeats.length > 0) {
-    // Extract passenger counts from search data
+  const seatsSafe = Array.isArray(selectedSeats) ? selectedSeats : [];
+
+  if (seatsSafe.length > 0) {
+    // Extract passenger counts from search data (قبلی شما)
     const Adults = sessionBookStorage.priceInfo.passengerFare[0].count;
     const Children = sessionBookStorage.priceInfo.passengerFare[1].count;
     const Infants = sessionBookStorage.priceInfo.passengerFare[2].count;
 
-    const Adults2 = selectedSeats.length;
+    // ✅ تعداد بزرگسالان را از تعداد صندلی‌های انتخاب‌شده بگیر
+    const Adults2 = seatsSafe.length;
     const Children2 = 0;
     const Infants2 = 0;
 
-    // Determine if the bus is internal (domestic) from dictionaries
     const internal = dictionaries[0] ? dictionaries[0].internal : "";
-
-    // Get provider ID from booking data
     const Provider = sessionBookStorage.Provider.Dmnid;
 
-    // Show appropriate passenger container based on bus type (internal/external)
     if (internal === true) {
       document
         .querySelector(".book-passengers__container__internal")
         .classList.remove("book-hidden");
+
       const countryElement = document
-        .querySelector(".book-passengers__container__internal").querySelector('.book-NameOfCountry');
-      countryElement.removeAttribute('onclick');
-      countryElement.closest(".book-info__item__container").classList.remove("book-has__drop__item");
-      countryElement.setAttribute(`readonly`, true);
+        .querySelector(".book-passengers__container__internal")
+        .querySelector(".book-NameOfCountry");
+      countryElement.removeAttribute("onclick");
+      countryElement
+        .closest(".book-info__item__container")
+        .classList.remove("book-has__drop__item");
+      countryElement.setAttribute("readonly", true);
+
+      // ✅ پاس دادن seatsSafe
       addPassenger(
         ".book-passengers__container__internal",
         Adults2,
         Children2,
-        Infants2
+        Infants2,
+        seatsSafe
       );
     } else {
       document
         .querySelector(".book-passengers__container__external")
         .classList.remove("book-hidden");
+
+      // ✅ پاس دادن seatsSafe
       addPassenger(
         ".book-passengers__container__external",
         Adults2,
         Children2,
-        Infants2
+        Infants2,
+        seatsSafe
       );
     }
+  } else {
+    // (اختیاری) اینجا می‌تونی پیام بده که هنوز صندلی انتخاب نشده
+    console.warn("No seats selected yet.");
   }
 }
+
 
 
 // function bookToast(text) {
@@ -2050,4 +2030,5 @@ const nextBusStep = (element) => {
     console.error("nextBusStep: " + error.message);
   }
 };
+
 
