@@ -180,6 +180,8 @@ const tripGroup = Array.isArray(sessionSearchStorage.tripGroup)
   ? sessionSearchStorage.tripGroup
   : [];
 
+    console.log("testtttttttttttttttttt1111t::::",tripGroup);
+    console.log("testttttttttttttttttttt::::",cleanTripGroup);
 
     // --- باکس «تلاش مجدد/Retry info» (Bus یک‌طرفه)
     const retryInfoContainer = document.querySelector(
@@ -265,7 +267,6 @@ const tripGroup = Array.isArray(sessionSearchStorage.tripGroup)
         let dateformatted = convertToPersianDate(trip.departureDate);
         departureDate.value = dateformatted ;
         departureDate.dataset.date = trip.departureDate;
-        departureDate.dataset.gregorian = trip.departureDate;
       }
 
       if (arrivalDateContainer)

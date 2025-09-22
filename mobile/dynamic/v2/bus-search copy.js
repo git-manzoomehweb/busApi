@@ -180,6 +180,8 @@ const tripGroup = Array.isArray(sessionSearchStorage.tripGroup)
   ? sessionSearchStorage.tripGroup
   : [];
 
+    console.log("testtttttttttttttttttt1111t::::",tripGroup);
+    console.log("testttttttttttttttttttt::::",cleanTripGroup);
 
     // --- باکس «تلاش مجدد/Retry info» (Bus یک‌طرفه)
     const retryInfoContainer = document.querySelector(
@@ -265,7 +267,6 @@ const tripGroup = Array.isArray(sessionSearchStorage.tripGroup)
         let dateformatted = convertToPersianDate(trip.departureDate);
         departureDate.value = dateformatted ;
         departureDate.dataset.date = trip.departureDate;
-        departureDate.dataset.gregorian = trip.departureDate;
       }
 
       if (arrivalDateContainer)
@@ -1097,11 +1098,11 @@ const busManipulation = async (args) => {
           defaultTimeContent.className = "book-time__content";
           defaultTimeContent.setAttribute("data-value", "time");
           defaultTimeContent.innerHTML = `
-                      <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">صبح</div>
-                      <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                          ساعت از: <span class="book-hour">5:00 تا 11:59</span>
-                      </div>
-                  `;
+                    <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">صبح</div>
+                    <div class="book-text-zinc-900 book-text-xs book-mb-4">
+                        ساعت از: <span class="book-hour">5:00 تا 11:59</span>
+                    </div>
+                `;
           content.insertBefore(defaultTimeContent, flexContainer);
         }
       } else {
@@ -1118,11 +1119,11 @@ const busManipulation = async (args) => {
           const defaultTimeContent = existingTimeContents[0];
           defaultTimeContent.setAttribute("data-value", value);
           defaultTimeContent.innerHTML = `
-                      <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
-                      <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                          ساعت از: <span class="book-hour">${timeRange}</span>
-                      </div>
-                  `;
+                    <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+                    <div class="book-text-zinc-900 book-text-xs book-mb-4">
+                        ساعت از: <span class="book-hour">${timeRange}</span>
+                    </div>
+                `;
         } else {
           const duplicateElement = content.querySelector(
             `.book-time__content[data-value="${value}"]`
@@ -1133,52 +1134,52 @@ const busManipulation = async (args) => {
           newTimeContent.className = "book-time__content";
           newTimeContent.setAttribute("data-value", value);
           newTimeContent.innerHTML = `
-                      <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
-                      <div class="book-text-zinc-900 book-text-xs book-mb-4">
-                          ساعت از: <span class="book-hour">${timeRange}</span>
-                      </div>
-                  `;
+                    <div class="book-text-primary-300 book-text-sm book-mb-1 book-heading">${timePeriod}</div>
+                    <div class="book-text-zinc-900 book-text-xs book-mb-4">
+                        ساعت از: <span class="book-hour">${timeRange}</span>
+                    </div>
+                `;
           content.insertBefore(newTimeContent, flexContainer);
         }
       }
-    }
-
-
+    } 
+    
+    
     else if (args.source.id === "cms.price") {
 
 
-      InUpdateFiltering = false;
-      InUpdatePaging = true;
-      selectedFlightId = null;
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedFlightId = null;
 
-      if (!priceSlider) {
-        return;
-      }
+        if (!priceSlider) {
+            return;
+        }
 
-      if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
-        return;
-      }
+        if (!args.source.rows || !Array.isArray(args.source.rows) || args.source.rows.length === 0) {
+            return;
+        }
 
-      cleanupPriceSliderEvents();
+        cleanupPriceSliderEvents();
 
-      // ===== Desktop Mouse Events =====
-      if (!isMobile) {
-        setupDesktopPriceSlider(args.source.rows[0].value);
-      }
-      // ===== Mobile Touch Events =====
-      else {
-        setupMobilePriceSlider(args.source.rows[0].value);
-      }
+        // ===== Desktop Mouse Events =====
+        if (!isMobile) {
+            setupDesktopPriceSlider(args.source.rows[0].value);
+        }
+        // ===== Mobile Touch Events =====
+        else {
+            setupMobilePriceSlider(args.source.rows[0].value);
+        }
 
 
 
 
 
     } else if (args.source.id === "cms.price.update") {
-      InUpdateFiltering = false;
-      InUpdatePaging = true;
-      selectedFlightId = null;
-      mustUpdate = true;
+        InUpdateFiltering = false;
+        InUpdatePaging = true;
+        selectedFlightId = null;
+        mustUpdate = true;
     } else if (args.source.id === "cms.duration") {
       InUpdateFiltering = false;
       InUpdatePaging = true;
@@ -1321,58 +1322,40 @@ const busManipulation = async (args) => {
 
       if (allDataProcessed) {
         if (currentSort.value === "default") {
-          // Sort by price ascending by default, but push availableSeats=0 to the end
-          allBusProposals.sort((a, b) => {
-            // First check available seats
-            const seatsA = a.busGroup?.[0]?.availableSeats ?? 0;
-            const seatsB = b.busGroup?.[0]?.availableSeats ?? 0;
+                          // Sort by price ascending by default
+                allBusProposals.sort((a, b) => {
+                    const priceA = a.priceInfo?.totalCommission ? parseFloat(a.priceInfo.totalCommission) : Infinity;
+                    const priceB = b.priceInfo?.totalCommission ? parseFloat(b.priceInfo.totalCommission) : Infinity;
+                    return priceA - priceB;
+                });
 
-            if (seatsA === 0 && seatsB !== 0) return 1;   // a goes after b
-            if (seatsA !== 0 && seatsB === 0) return -1;  // a goes before b
-            if (seatsA === 0 && seatsB === 0) return 0;   // both last, keep order
-
-            // Then sort by price
-            const priceA = a.priceInfo?.totalCommission
-              ? parseFloat(a.priceInfo.totalCommission)
-              : Infinity;
-            const priceB = b.priceInfo?.totalCommission
-              ? parseFloat(b.priceInfo.totalCommission)
-              : Infinity;
-
-            return priceA - priceB;
-          });
+          // allBusProposals = [...originalBusProposals];
         } else {
           allBusProposals.sort((a, b) => {
             let fieldA, fieldB;
             if (currentSort.value === "price") {
-              const seatsA = a.busGroup?.[0]?.availableSeats ?? 0;
-              const seatsB = b.busGroup?.[0]?.availableSeats ?? 0;
-
-              if (seatsA === 0 && seatsB !== 0) return 1;
-              if (seatsA !== 0 && seatsB === 0) return -1;
-              if (seatsA === 0 && seatsB === 0) return 0;
-
               fieldA = a.priceInfo?.totalCommission
                 ? parseFloat(a.priceInfo.totalCommission)
                 : Infinity;
               fieldB = b.priceInfo?.totalCommission
                 ? parseFloat(b.priceInfo.totalCommission)
                 : Infinity;
-            } else if (
-              currentSort.value === "hour" ||
-              currentSort.value === "departure"
-            ) {
+            } else if (currentSort.value === "hour") {
+              fieldA = convertToMinutes(a.busGroup?.[0]?.departureTime || "");
+              fieldB = convertToMinutes(b.busGroup?.[0]?.departureTime || "");
+            } else if (currentSort.value === "departure") {
               fieldA = convertToMinutes(a.busGroup?.[0]?.departureTime || "");
               fieldB = convertToMinutes(b.busGroup?.[0]?.departureTime || "");
             }
 
             if (fieldA !== undefined && fieldB !== undefined) {
-              return currentSort.order === "ascend" ? fieldA - fieldB : fieldB - fieldA;
+              return currentSort.order === "ascend"
+                ? fieldA - fieldB
+                : fieldB - fieldA;
             }
             return 0;
           });
         }
-
       }
 
       const filters = [
@@ -1693,7 +1676,6 @@ const busManipulation = async (args) => {
               nameToMinPrice[item.Name] = item;
             }
           });
-
           const carrierListResult = Object.values(nameToMinPrice).sort(
             (a, b) => a.Price - b.Price
           );
@@ -1804,7 +1786,7 @@ const busManipulation = async (args) => {
         }
 
         if (args.context && typeof args.context.setAsSource === "function") {
-          console.log("bus.updated", args.context);
+          console.log("bus.updated" , args.context );
           args.context.setAsSource("bus.updated", pagedSource, {
             keyFieldName: "busId",
           });
@@ -1821,11 +1803,11 @@ const busManipulation = async (args) => {
         );
         if (listContainer) {
           listContainer.innerHTML = `
-                      <div class="book-text-center">
-                          <div>هیچ اتوبوسی مطابق با فیلترهای شما وجود ندارد.</div>
-                          <div class="book-text-zinc-900 book-text-xs book-mt-2">برای مشاهده نتایج، فیلترهای خود را پاک کنید.</div>
-                      </div>
-                  `;
+                    <div class="book-text-center">
+                        <div>هیچ اتوبوسی مطابق با فیلترهای شما وجود ندارد.</div>
+                        <div class="book-text-zinc-900 book-text-xs book-mt-2">برای مشاهده نتایج، فیلترهای خود را پاک کنید.</div>
+                    </div>
+                `;
         }
 
         const container = document.querySelector(
@@ -1853,27 +1835,7 @@ const busManipulation = async (args) => {
   }
 };
 
-/**
-* Renders the provider name for a given provider ID.
-* @param {string} element - The provider ID.
-* @returns {string} HTML string representing the provider name or an empty string if not found.
-*/
-const renderProvider = (element) => {
-  try {
-      const minWidthClass = isRTL ? 'book-min-w-24' : 'book-min-w-28';
-      const providerData = providerDataList.find(provider => provider.id === parseInt(element));
-      if (providerData) {
-          const marginLeftClass = isRTL ? 'book-mr-1' : 'book-ml-1';
-          return `<div class="book-bg-secondary-100 book-text-zinc-500 book-flex book-gap-1 book-rounded-full book-text-xs ${minWidthClass} book-py-2 book-items-center book-justify-center ${marginLeftClass}">
-            <span>${providerData.name}</span>
-        </div>`;
-      }
-      return "";
-  } catch (error) {
-      console.error(`renderProvider: ${error.message}`);
-      return "";
-  }
-};
+
 
 
 const renderPaging = async (element) => {
@@ -3510,5 +3472,3 @@ const toggleAside = (element) => {
 };
 
 // mobile bus
-
-
