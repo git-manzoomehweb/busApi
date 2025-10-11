@@ -6,7 +6,8 @@
     <meta name="description" content="جستجو اتوبوس">
 
 
-    <link href="[##cms.cms.cdn##]/booking/css/bus-search.ui.min.css?ver=[##cms.cms.date2##][##cms.cms.time2##]" type="text/css" rel="stylesheet" />
+    <link href="[##cms.cms.cdn##]/booking/css/bus-search.ui.min.css?ver=[##cms.cms.date2##][##cms.cms.time2##]"
+        type="text/css" rel="stylesheet" />
 
 
 </head>
@@ -31,7 +32,7 @@
                 <div
                     class="book-modal__content book-bg-white book-fixed book-inset-x-0 book-top-1.2 book--translate-y-1.2 book-w-[560px] book-rounded-2xl book-mx-auto book-p-5 book-text-center">
                     <svg class="book-stroke-secondary-400 book-mx-auto book-w-44">
-                        <use xlink:href="[##cms.cms.cdn##]/booking/images/sprite-booking-icons.svg#hour-expire-icon">
+                        <use xlink:href="/booking/images/sprite-booking-icons.svg#hour-expire-icon">
                         </use>
                     </svg>
                     <div class="book-no__time book-hidden">
@@ -488,6 +489,8 @@
                                                 class="book-flex book-items-center book-open-third-menu book-gap-2 book-text-sm book-text-zinc-700">
                                                 <img class="book-w-12 book-h-12" src="[##cms.cms.cdn##]/@carrierImage@" alt="@carrierName@" />
                                                 @carrierName@
+                                                {{ return await renderProvider($data.Provider?.ProviderId)}}
+                                              
                                                 </div>
                                                 <div class="book-w-full book-flex book-justify-between book-items-center">
                                                                                                     <div class="book-flex book-items-center book-gap-2 book-font-bold book-text-lg book-text-primary-700">
@@ -525,18 +528,9 @@
                                                 <img src="[##cms.cms.cdn##]/booking/images/bus.svg" alt="bus" />
                                                 @busType@
                                                 </div>
+                                     {{ return await renderSeatAvailableCount($data.availableSeats , 'desktop')}}
 
 
-                                                            {{
-            const data = $bc.tryToGetSource('bus.updated');
-              const seats = (Number(data.rows[0].availableSeats) || 0);
-
-              if(seats === 0){
-                return ``;
-              } else {
-                return `<p class="book-text-zinc-800"> ${seats} صندلی خالی </p>`;
-              }
-            }}
             
 
 
@@ -726,7 +720,8 @@
 
     <!-- footer -->
     <basis core="call" file="footer.inc" lid="1" pageindex="[##cms.cms.pageindex|(1)##]"></basis>
-    <script src="[##cms.cms.cdn##]/booking/js/bus-search.js?ver=[##cms.cms.date2##][##cms.cms.time2##]" type="text/javascript"></script>
+    <script src="[##cms.cms.cdn##]/booking/js/bus-search.js?ver=[##cms.cms.date2##][##cms.cms.time2##]"
+        type="text/javascript"></script>
 </body>
 
 </html>
